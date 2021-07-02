@@ -1,0 +1,12 @@
+{  
+  "home.tutorial.title": "How to manage your passwords",
+  "home.tutorial.text": "Follow this mini tutorial and end your doubts.",
+  "home.tutorial.button": "Watch tutorial",
+  "home.welcome": "Welcome, {user}",
+  "home.welcome.text": "You have new tasks available.",
+  "home.welcome.open.tasks": "Open tasks",
+  "home.recent.passwords": "Recent passwords",
+  "home.recent.passwords.see.all": "See all",
+  "home.accounts": "Accounts",
+  "home.accounts.see.all": "See all"
+}
