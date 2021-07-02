@@ -5,16 +5,17 @@ export const resolvers = {
     getResume: async () => {
       try {
         const resume = await axios.get('http://demo2183093.mockable.io/blazon-workspace-backend/workspace/tasks/executorresume');        
-        return resume.data;
+        return resume.data
       } catch (error) {
-        throw error;
+        throw error
       }
     },
     getPasswordVaultEntries: async () => {
       try {
-        return await axios.get('http://demo2183093.mockable.io/blazon-workspace-backend/workspace/passwordvault/entries');        
+        const entries = await axios.get('http://demo2183093.mockable.io/blazon-workspace-backend/workspace/passwordvault/entries');        
+        return entries.data
       } catch (error) {
-        throw error;
+        throw error
       }
     }
   }

@@ -4,6 +4,8 @@ import Head from 'next/head'
 import { useRouter } from 'next/router'
 import { ThemeProvider } from '@material-ui/core/styles'
 import { IntlProvider } from 'react-intl'
+import { ApolloProvider } from '@apollo/client'
+import apolloClient from '@utils/apollo-client'
 import CssBaseline from '@material-ui/core/CssBaseline'
 import theme from '../src/theme'
 import Layout from '../src/Layout'
@@ -55,17 +57,19 @@ function App(props:any) {
         />
       </Head>
       <ThemeProvider theme={theme}>  
-        <IntlProvider
-          locale={locale}
-          defaultLocale={defaultLocale}
-          messages={messages[locale]}
-          >
-          {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
-          <CssBaseline />
-          <Layout>
-            <Component {...pageProps} />
-          </Layout> 
-        </IntlProvider>                      
+        <ApolloProvider client={apolloClient}>
+          <IntlProvider
+            locale={locale}
+            defaultLocale={defaultLocale}
+            messages={messages[locale]}
+            >
+            {/* CssBaseline kickstart an elegant, consistent, and simple baseline to build upon. */}
+            <CssBaseline />
+            <Layout>
+              <Component {...pageProps} />
+            </Layout> 
+          </IntlProvider>
+        </ApolloProvider>                              
       </ThemeProvider>            
     </React.Fragment>
   )
