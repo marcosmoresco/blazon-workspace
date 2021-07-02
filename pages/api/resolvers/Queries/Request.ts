@@ -1,10 +1,10 @@
 import axios from 'axios'
 
 const RequestQueries = {        
-  getRequests: async () => {
-    try {
-      const entries = await axios.get('http://demo2183093.mockable.io/blazon-workspace-backend/workspace/passwordvault/entries');        
-      return entries.data
+  getRequests: async (page:number, size:number) => {
+    try {           
+      const requests = await axios.post('http://demo2183093.mockable.io/blazon-workspace-backend/workspace/requests/filter', {})          
+      return requests.data
     } catch (error) {
       throw error
     }
@@ -12,4 +12,3 @@ const RequestQueries = {
 }
 
 export default RequestQueries
-

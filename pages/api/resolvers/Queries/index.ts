@@ -13,7 +13,7 @@ const Queries = {
     }
   },
   ...PasswordVaultQueries,
-  ...Request
+  ...RequestQueries
 }
 
 export default Queries
