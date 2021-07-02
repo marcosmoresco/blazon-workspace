@@ -86,7 +86,7 @@ const Home:FC<HomeProps> = ({classes, intl}) => {
             </div>
             <div className={classes.recentPasswordsContent}>
               <Grid container spacing={3}>            
-                {!loading && !error ? data?.getPasswordVaultEntries.map((r:any) => (
+                {!loading && !error ? data?.getPasswordVaultEntries.slice(0, 4).map((r:any) => (
                   <Grid 
                     item 
                     xs={6} 
