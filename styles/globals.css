@@ -24,3 +24,57 @@ label {
   /* identical to box height, or 171% */
   color: #514D65;
 }
+
+.Default-content {
+  margin: 0 64px;
+}
+
+.Default-header-filter {
+	display: flex;
+  justify-content: space-between;
+  padding: 24px 24px 0px 24px;
+	margin-bottom: 20px;	
+}
+
+.flex {
+	display: flex;
+}
+
+.pointer {
+	cursor: pointer;
+}
+
+.pre-wrap {
+	white-space: pre-wrap;
+}
+
+.word-break {
+	word-break: break-all;
+}
+
+.flex-align-center {
+	display: flex;
+	align-items: center;
+}
+
+.flex-justify-center {
+	display: flex;	
+	justify-content: center;
+}
+
+.flex-align-justify-center {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+}
+
+.flex-align-center-justify-space-between {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+}
+
+@keyframes spin {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}

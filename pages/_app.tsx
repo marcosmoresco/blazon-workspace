@@ -16,17 +16,24 @@ import {
   PortalLocalesEn
 } from '../src/portal/locales'
 
+import { 
+  ModulesLocalesPt,
+  ModulesLocalesEn
+} from '../src/modules/locales'
+
 import messages_en from '../src/locales/en.json';
 import messages_pt from '../src/locales/pt.json';
 
 const messages: LocalesType = {
   en: { 
     ...messages_en,
-    ...PortalLocalesEn 
+    ...PortalLocalesEn, 
+    ...ModulesLocalesEn
   },
   pt: { 
     ...messages_pt,
-    ...PortalLocalesPt 
+    ...PortalLocalesPt,
+    ...ModulesLocalesPt
   },
 }
 

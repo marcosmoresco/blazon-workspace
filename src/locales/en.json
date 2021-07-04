@@ -4,8 +4,22 @@
   "suport.blazon": "Suport Blazon",
   "logout": "Logout",
   "darkMode": "Dark mode",
+  "identifier": "Identifier",
+  "name": "Name",
+  "status": "Status",
+  "active": "Active",
+  "inactive": "Inactive",
+  "date": "Date",
   "account.shared": "Shared",
   "account.application": "Application",
   "account.regular": "Regular",
-  "account.administrative": "Administrative"
+  "account.administrative": "Administrative",
+  "no.results": "We didn't find results",
+  "filters": "Filters",
+  "filters.added": "Filters added",
+  "search.filters": "Search filters",
+  "end.of.results": "End of results",
+  "remove": "Remove",
+  "item.selected": "item selected",
+  "items.selected": "items selected"
 }

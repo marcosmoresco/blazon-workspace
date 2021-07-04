@@ -3,9 +3,7 @@ import {
   REMOVE_MESSAGE 
 } from './actionTypes'
 
-import { MessageType } from '../portal/Message/types'
-
-export const addMessage = (message:MessageType, messageType:string) => ({
+export const addMessage = (message:any, messageType?:string) => ({
   type: ADD_MESSAGE,
   message,
   messageType

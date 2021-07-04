@@ -5,7 +5,8 @@
       "@modules/*": ["src/modules/*"],
       "@components/*": ["src/components/*"],
       "@icons/*": ["src/icons/*"],
-      "@utils/*": ["src/utils/*"]
+      "@utils/*": ["src/utils/*"],
+      "@actions/*": ["src/actions/*"]
     },
     "target": "esnext",
     "lib": ["dom", "dom.iterable", "esnext"],
