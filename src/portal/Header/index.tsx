@@ -63,6 +63,7 @@ const Header: FC<HeaderProps> = ({classes, intl}) => {
               className={classes.searchInput}
               id="header-search"
               placeholder={intl.formatMessage({id: "search"})}
+              onClick={() =>  router.push('/search')}
               startAdornment={
                 <InputAdornment position="start">
                   <SearchIcon width={24} height={24} color="#60636A"/>                     

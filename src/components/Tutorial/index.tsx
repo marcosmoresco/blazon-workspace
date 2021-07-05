@@ -6,17 +6,17 @@ import X from '@icons/X'
 import type { TutorialProps } from './types'
 import useStyles from './styles'
 
-const Tutorial:FC<TutorialProps> = ({classes, intl}) => {  
+const Tutorial:FC<TutorialProps> = ({classes, title, text, intl}) => {  
 
   return (
     <div className={classes.root}>
       <div className={classes.headerTutorial}>
         <div>
           <div className={classes.headerTutorialWelcomeText}>
-            {intl.formatMessage({id: 'home.tutorial.title'})}
+            {intl.formatMessage({id: title})}
           </div>
           <div className={classes.headerTutorialWelcomeSubText}>
-            {intl.formatMessage({id: 'home.tutorial.text'})}  
+            {intl.formatMessage({id: text})}  
           </div>           
         </div> 
         <Button variant="contained" color="primary">

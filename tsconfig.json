@@ -3,6 +3,7 @@
     "baseUrl": ".",   
     "paths": {
       "@modules/*": ["src/modules/*"],
+      "@portal/*": ["src/portal/*"],
       "@components/*": ["src/components/*"],
       "@icons/*": ["src/icons/*"],
       "@utils/*": ["src/utils/*"],
