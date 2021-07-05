@@ -9,8 +9,17 @@ const useStyles = () => createStyles({
   root: {
     '& button': {
       textTransform: 'initial',
-      height: 42
+      height: 42,
+      borderRadius: 8
     },         
+    '& .Default-contained-red': {
+      backgroundColor: '#FF134A',
+    },
+    '& .Default-contained-blue': {
+      backgroundColor: '#FFFFFF',
+      border: '1px solid #0E46D7',
+      color: '#0E46D7'
+    },
     '& .Default-rounded': {
       minWidth: 'auto',
       borderRadius: '20px',
@@ -44,7 +53,9 @@ class Button extends Component<ButtonPropsType> {
         <MuiButton
           className={classNames({          
             'Default-rounded': variant === 'rounded',
-            'Red': color === 'secondary'
+            'Red': color === 'secondary',
+            'Default-contained-red': variant === 'contained' && color === 'secondary',
+            'Default-contained-blue': variant === 'contained' && color === 'default-primary'
           })}       
           startIcon={isLoading === 1 ? <Loading/> : startIcon} 
           color={color}
