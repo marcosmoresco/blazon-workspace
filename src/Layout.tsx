@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import Header from './portal/Header'
+import Footer from './portal/Footer'
 
 class Layout extends Component {
   render () {
@@ -7,7 +8,8 @@ class Layout extends Component {
     return (
       <div className='App'>
         <Header />
-        {children}        
+        {children}   
+        <Footer />     
       </div>
     )
   }

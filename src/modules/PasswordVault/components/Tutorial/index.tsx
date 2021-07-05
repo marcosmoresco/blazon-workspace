@@ -1,34 +1,12 @@
-import React, { FC, useState } from 'react'
-import { withStyles } from '@material-ui/core/styles'
-import { injectIntl } from 'react-intl'
-import Button from '@components/Button'
-import X from '@icons/X'
+import React, { FC } from 'react'
+import Tutorial from '@components/Tutorial'
 import type { TutorialProps } from './types'
-import useStyles from './styles'
 
-const Tutorial:FC<TutorialProps> = ({classes, intl}) => {  
+const PasswordVaultTutorial:FC<TutorialProps> = () => {  
 
   return (
-    <div className={classes.root}>
-      <div className={classes.headerTutorial}>
-        <div>
-          <div className={classes.headerTutorialWelcomeText}>
-            {intl.formatMessage({id: 'home.tutorial.title'})}
-          </div>
-          <div className={classes.headerTutorialWelcomeSubText}>
-            {intl.formatMessage({id: 'home.tutorial.text'})}  
-          </div>           
-        </div> 
-        <Button variant="contained" color="primary">
-          {intl.formatMessage({id: 'home.tutorial.button'})}
-        </Button>
-        <span className={classes.close}>
-          <X width={20} height={20}/>
-        </span>          
-      </div>      
-    </div>
-  )
-  
+   <Tutorial title="passwordVault.tutorial.title" text="passwordVault.tutorial.text" />
+  )  
 }
 
-export default withStyles(useStyles)(injectIntl(Tutorial))
+export default PasswordVaultTutorial
