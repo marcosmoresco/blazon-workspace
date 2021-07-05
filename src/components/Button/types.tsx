@@ -1,7 +1,7 @@
 export type ButtonPropsType = {  
   onClick?: any
   isLoading?: number
-  variant?: string
+  variant?: any
   color?: string
   startIcon?: any
   classes: {

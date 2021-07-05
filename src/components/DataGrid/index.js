@@ -59,7 +59,7 @@ class DataGridBlazon extends React.Component {
     })
   }
   
-  componentDidUpdate() {
+  componentDidUpdate(prevProps) {
 
     const {
       size,
@@ -71,6 +71,7 @@ class DataGridBlazon extends React.Component {
       selecteds, 
       bindId,
       defaultOrderBy,
+      expandAll
     } = this.props
 
     const { 
@@ -123,6 +124,11 @@ class DataGridBlazon extends React.Component {
           this.setState({            
             selected: [],
             open: false
+          })
+        }
+        if(prevProps.expandAll && !expandAll) {
+          this.setState({
+            expanded: []
           })
         }
       }                

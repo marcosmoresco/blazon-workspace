@@ -1,5 +1,6 @@
 import React, { FC, useState, useEffect } from 'react'
 import { FormattedMessage, injectIntl } from 'react-intl'
+import Image from 'next/image'
 import Breadcrumbs from '@material-ui/core/Breadcrumbs'
 import Card from '@components/Card'
 import Button from '@components/Button'
@@ -8,6 +9,8 @@ import Filter from '@components/Filter'
 import Dialog from '@components/Dialog'
 import TextField from '@components/TextField'
 import { confirm } from '@components/Dialog/actions'
+import ArrowsOutIcon from '@icons/ArrowsOut'
+import ArrowClockwiseIcon from '@icons/ArrowClockwise'
 import * as yup from 'yup'
 import { connect } from 'react-redux'
 //import { all, save, remove } from './actions'
@@ -23,6 +26,7 @@ const Tasks: FC<ListProps> = ({dispatch}) => {
   const [callbackClear, setCallbackClear] = useState({execute: () => {}})
   const [selecteds, setSelecteds] = useState([])
   const [loading, setLoading] = useState(false)
+  const [expandAll, setExpandAll] = useState(false)
 
   useEffect(() => { 
     if(!tasks?.length) { 
@@ -109,11 +113,28 @@ const Tasks: FC<ListProps> = ({dispatch}) => {
     </React.Fragment>
   )
 
+  const expandContent = (item:any) => (
+    <div style={{margin: '0 20px'}}>
+      <Card> 
+        <div style={{padding: 20}}>
+          Expand item {item.id}
+        </div>        
+      </Card> 
+    </div>    
+  )
   return (   
     <div className="Default-content">
       <Card>
         <div className="Default-header-filter">
           <Filter filters={filters} onChange={(filters:any) => search(filters)}/>
+          <div className="Card-actions">
+            <div className="Action" onClick={() => setExpandAll(!expandAll)}>
+              <ArrowsOutIcon width={20} height={20} color="#514D65"/>
+            </div>
+            <div className="Action" onClick={() => search()}>
+              <ArrowClockwiseIcon width={20} height={20} color="#514D65"/>
+            </div>
+          </div>
         </div>        
         <div>
           <DataGrid 
@@ -125,9 +146,12 @@ const Tasks: FC<ListProps> = ({dispatch}) => {
             page={1} 
             size={25} 
             rowsPerPageList={[25, 50, 75, 100]} 
-            handleClick={handleClickRow} 
+            //handleClick={handleClickRow} 
             handleSelected={handleSelected} 
             actions={actions}
+            expand={expandContent}
+            expandOnClick
+            expandAll={expandAll}
             selectable/>
         </div>      
       </Card>

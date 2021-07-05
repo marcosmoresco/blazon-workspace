@@ -10,7 +10,7 @@ const useStyles = () => createStyles({
     '& button': {
       textTransform: 'initial',
       height: 42
-    },     
+    },         
     '& .Default-rounded': {
       minWidth: 'auto',
       borderRadius: '20px',
@@ -29,7 +29,7 @@ const useStyles = () => createStyles({
           backgroundColor: '#FF134A',
         },        
       },              
-    },  
+    },
   },
 });
 
@@ -47,6 +47,8 @@ class Button extends Component<ButtonPropsType> {
             'Red': color === 'secondary'
           })}       
           startIcon={isLoading === 1 ? <Loading/> : startIcon} 
+          color={color}
+          variant={variant}
           {...other}
         >
           {children}

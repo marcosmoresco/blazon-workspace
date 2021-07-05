@@ -1,6 +1,7 @@
 import React, { FC, useState } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { injectIntl } from 'react-intl'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
 import AppBar from '@material-ui/core/AppBar'
 import Toolbar from '@material-ui/core/Toolbar'
@@ -34,6 +35,7 @@ import useStyles from './styles'
 
 const Header: FC<HeaderProps> = ({classes, intl}) => {
 
+  const router = useRouter()
   const [anchorEl, setAnchorEl] = useState(null)
   const [openProfile, setOpenProfile] = useState(false)
   const [darkMode, setDarkMode] = useState(false)
@@ -54,7 +56,7 @@ const Header: FC<HeaderProps> = ({classes, intl}) => {
       <AppBar position="static" className={classes.root}>
         <Toolbar className={classes.toolBar}>
           <div className={classes.logoSearchInput}>
-            <div>
+            <div className="pointer" onClick={() =>  router.push('/')}>
               <Image src={Logo} alt="Logo" />                          
             </div>
             <OutlinedInput

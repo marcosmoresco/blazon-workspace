@@ -1,16 +1,15 @@
 import React, { FC, useState } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { injectIntl } from 'react-intl'
+import { useRouter } from 'next/router'
 import Image from 'next/image'
 import Button from '@components/Button'
 import X from '@icons/X'
 import CaretRightIcon from '@icons/CaretRight'
 import KeyIcon from '@icons/Key'
 import ShareIcon from '@icons/Share'
-import Card from '@material-ui/core/Card'
-import CardContent from '@material-ui/core/CardContent'
-import Dialog from '@material-ui/core/Dialog'
 import Grid from '@material-ui/core/Grid'
+import PasswordVaultTutorial from '@modules/PasswordVault/components/Tutorial'
 import PasswordVault from '@modules/PasswordVault/components'
 import HeaderImg from './images/header.svg'
 import { gql, useQuery } from '@apollo/client'
@@ -21,6 +20,7 @@ import useStyles from './styles'
 
 const Home:FC<HomeProps> = ({classes, intl}) => { 
 
+  const router = useRouter()
   const [open, setOpen] = useState(false)
   const [passwordVault, setPasswordVault] = useState({})
 
@@ -28,22 +28,7 @@ const Home:FC<HomeProps> = ({classes, intl}) => {
 
   return (
     <div className={classes.root}>
-      <div className={classes.headerTutorial}>
-        <div>
-          <div className={classes.headerTutorialWelcomeText}>
-            {intl.formatMessage({id: 'home.tutorial.title'})}
-          </div>
-          <div className={classes.headerTutorialWelcomeSubText}>
-            {intl.formatMessage({id: 'home.tutorial.text'})}  
-          </div>           
-        </div> 
-        <Button variant="contained" color="primary">
-          {intl.formatMessage({id: 'home.tutorial.button'})}
-        </Button>
-        <span className={classes.close}>
-          <X width={20} height={20}/>
-        </span>          
-      </div>
+      <PasswordVaultTutorial />
       <div className={classes.header}>
         <div>
           <div className={classes.headerWelcomeText}>             
@@ -58,7 +43,10 @@ const Home:FC<HomeProps> = ({classes, intl}) => {
               id: 'home.welcome.text'
             })}
           </div>
-          <Button variant="contained" color="primary">
+          <Button 
+            variant="contained" 
+            color="primary"
+            onClick={() =>  router.push('/tasks')}>
             {intl.formatMessage({
               id: 'home.welcome.open.tasks'
             })}

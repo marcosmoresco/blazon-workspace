@@ -65,13 +65,7 @@ class Row extends React.Component {
           })           
           handleExpand(row, expandAll)          
         }
-      }
-
-      this.setState({
-        row: row,
-        open: expandAll,
-        expandedAll: expandAll
-      })        
+      }          
     } else if (row.id !== this.props.row.id) {
       this.setState({
         row: this.props.row,
