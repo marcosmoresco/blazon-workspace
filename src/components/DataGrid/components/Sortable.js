@@ -1,4 +1,5 @@
 import React from 'react'
+import Image from 'next/image'
 import {
   sortableContainer,
   sortableElement,
@@ -6,7 +7,7 @@ import {
 } from 'react-sortable-hoc'
 import orderIcon from '../images/order.svg'
 
-export const DragHandle = sortableHandle(() => <img alt="Order" src={orderIcon} className="Drag-handle"/>)
+export const DragHandle = sortableHandle(() => <Image alt="Order" src={orderIcon} className="Drag-handle"/>)
 
 export const SortableItem = sortableElement(({component}) => (
   <React.Fragment>    

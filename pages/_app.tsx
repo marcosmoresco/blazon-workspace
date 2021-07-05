@@ -2,12 +2,10 @@ import React from 'react'
 import PropTypes from 'prop-types'
 import Head from 'next/head'
 import { useRouter } from 'next/router'
-import { ThemeProvider } from '@material-ui/core/styles'
 import { IntlProvider } from 'react-intl'
 import { ApolloProvider } from '@apollo/client'
 import apolloClient from '@utils/apollo-client'
 import CssBaseline from '@material-ui/core/CssBaseline'
-import theme from '../src/theme'
 import Layout from '../src/Layout'
 import '../styles/globals.css'
 import type { LocalesType } from '../src/locales/types'
@@ -37,21 +35,21 @@ const messages: LocalesType = {
   },
 }
 
+
 //Redux
 import { storeWrapper } from '../src/store'
 
 function App(props:any) {
-  const { Component, pageProps } = props
+  const { Component, pageProps } = props 
   const router = useRouter()
-  const { locale = 'en', defaultLocale } = router
-  
+  const { locale = 'en', defaultLocale } = router  
 
   React.useEffect(() => {
     // Remove the server-side injected CSS.
     const jssStyles = document.querySelector('#jss-server-side');
     if (jssStyles) {
       jssStyles?.parentElement?.removeChild(jssStyles)
-    }
+    }    
   }, [])
 
   return (
@@ -63,7 +61,6 @@ function App(props:any) {
           content="minimum-scale=1, initial-scale=1, width=device-width"
         />
       </Head>
-      <ThemeProvider theme={theme}>  
         <ApolloProvider client={apolloClient}>
           <IntlProvider
             locale={locale}
@@ -76,8 +73,7 @@ function App(props:any) {
               <Component {...pageProps} />
             </Layout> 
           </IntlProvider>
-        </ApolloProvider>                              
-      </ThemeProvider>            
+        </ApolloProvider>                                                     
     </React.Fragment>
   )
 }

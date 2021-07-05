@@ -2,6 +2,9 @@ import React, { FC, useState } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Image from 'next/image'
 import type { FooterProps } from './types'
+import {  
+  useTheme
+} from '../../theme'
 import useStyles from './styles'
 import LogoImg from './images/logo.svg'
 

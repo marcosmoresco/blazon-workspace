@@ -78,7 +78,7 @@ const Home:FC<HomeProps> = ({classes, intl}) => {
                   <Grid 
                     item 
                     xs={6} 
-                    key={`recenter-password=${r.id}`} 
+                    key={`recenter-password-${r.identifier}`} 
                     onClick={() => {
                       setOpen(true) 
                       setPasswordVault(r)

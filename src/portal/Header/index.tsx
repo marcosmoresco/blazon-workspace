@@ -30,6 +30,7 @@ import SignOutIcon from '@icons/SignOut'
 import Message from '../Message'
 import OutlinedInput from '@material-ui/core/OutlinedInput'
 import InputAdornment from '@material-ui/core/InputAdornment'
+import { useTheme } from '../../theme'
 import type { HeaderProps } from './types'
 import useStyles from './styles'
 
@@ -38,7 +39,9 @@ const Header: FC<HeaderProps> = ({classes, intl}) => {
   const router = useRouter()
   const [anchorEl, setAnchorEl] = useState(null)
   const [openProfile, setOpenProfile] = useState(false)
-  const [darkMode, setDarkMode] = useState(false)
+  const [darkMode, setDarkMode] = useState(false)  
+  
+  const {setTheme} = useTheme()
 
   const handleClick = (event:any) => {    
     setAnchorEl(event.currentTarget)
@@ -157,7 +160,10 @@ const Header: FC<HeaderProps> = ({classes, intl}) => {
                         <Switch
                           color="primary"
                           checked={darkMode}
-                          onChange={(event) => setDarkMode(event.target.checked)}
+                          onChange={(event) => {
+                            setDarkMode(event.target.checked)
+                            setTheme(event.target.checked && 'black' || 'light')
+                          }}
                           name="checkedA"
                         />
                       </div>

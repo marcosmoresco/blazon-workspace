@@ -1,18 +1,22 @@
-import React, { Component } from 'react'
-import Header from './portal/Header'
-import Footer from './portal/Footer'
+import React, { FC } from 'react'
+import {
+  ThemeStateProvider  
+} from './theme'
+import App from './App'
 
-class Layout extends Component {
-  render () {
-    const { children } = this.props
-    return (
-      <div className='App'>
-        <Header />
-        {children}   
-        <Footer />     
-      </div>
-    )
-  }
+export type LayoutProps = { 
+  children: React.ReactNode  
+}
+
+const Layout: FC<LayoutProps> = ({children}) => {
+        
+  return (
+    <ThemeStateProvider>      
+      <App>
+        {children}
+      </App>        
+    </ThemeStateProvider>    
+  )  
 }
 
 export default Layout

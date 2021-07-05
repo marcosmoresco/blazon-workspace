@@ -3,7 +3,7 @@ import { createStyles, Theme } from '@material-ui/core/styles'
 
 const useStyles = (theme:Theme) => createStyles({
   root: {
-    backgroundColor: '#FFFFFF',   
+    backgroundColor: theme.palette.type === 'light' ? '#FFFFFF' : '#0D0C13',   
   },
   toolBar: {
     minHeight: 93,
