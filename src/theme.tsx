@@ -65,6 +65,20 @@ export const themeLight = createMuiTheme({
         color: "#1B202A",
       },
     },
+    MuiCard: {
+      root: {
+        backgroundColor: '#FFFFFF',
+      }
+    },
+    MuiTableRow: {
+      head: {
+        background: '#E9E8EB',
+      },
+      root: {
+        background: '#FFFFFF',
+        color: '#1B202A',
+      }
+    }
   },
   palette: {
     type: "light",
@@ -112,6 +126,20 @@ export const themeBlack = createMuiTheme({
         color: "#FFFFFF",
       },
     },
+    MuiCard: {
+      root: {
+        backgroundColor: '#1B202A',
+      }
+    },
+    MuiTableRow: {
+      head: {
+        background: '#161A21',
+      },
+      root: {
+        background: '#1B202A',
+        color: '#FFFFFF',
+      }
+    }
   },
   palette: {
     type: "dark",

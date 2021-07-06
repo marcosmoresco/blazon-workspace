@@ -211,17 +211,14 @@ export const styles = (theme) => ({
       }
     },
     '& thead tr': {
-      height: 42,
-      background: '#E5E5EA',
+      height: 42,     
       '& th': {
         padding: '0 16px',
         maxHeight: 42,
         textAlign: 'initial',
         fontStyle: 'normal',
         fontWeight: 'normal',
-        fontSize: 15,
-        color: '#232325',
-        background: '#E9E8EB',
+        fontSize: 15,       
         '&.checkbox': {
           width: 50,
           textAlign: 'end'
@@ -238,10 +235,8 @@ export const styles = (theme) => ({
       borderBottom: '1px solid #C4C4C4',
       lineHeight: '55px',
       cursor: 'pointer',
-      backgroundColor: '#FFFFFF',
       '& td': {
-        fontSize: '15px',
-        color: '#232325',
+        fontSize: '15px',       
         '&.checkbox': {
           width: 50,
           textAlign: 'end'
