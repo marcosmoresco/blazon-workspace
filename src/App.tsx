@@ -16,8 +16,8 @@ export type AppProps = {
 const App: FC<AppProps> = ({children}) => {
         
   const { theme } = useTheme()
-  const currentTheme = themes[theme] || themeLight   
-
+  const currentTheme = {...themes[theme] || themeLight} 
+  
   return (
     <ThemeProvider theme={currentTheme}>       
       <Header />

@@ -34,7 +34,12 @@ export const useTheme = () => useContext(StateContext)
 
 // Create a theme instance.
 export const themeLight = createMuiTheme({
-  overrides : {   
+  overrides : {  
+    MuiIcon: {
+      root: {
+        color: '#1B202A'
+      }
+    }, 
     MuiAppBar: {
       colorPrimary: {
         backgroundColor: '#E5E5E5',
@@ -46,8 +51,18 @@ export const themeLight = createMuiTheme({
         marginTop: 0,
         marginBottom: 16,
       }
+    },
+    MuiPaper: {
+      root: {
+        backgroundColor: '#F4F4F5'
+      }     
+    },  
+    MuiButtonBase: {
+      root: {
+        color: '#1B202A'
+      }      
     }
-  },  
+  },    
   palette: {
     type: 'light',
     primary: {
@@ -67,6 +82,11 @@ export const themeLight = createMuiTheme({
 
 export const themeBlack = createMuiTheme({
   overrides : {   
+    MuiIcon: {
+      root: {
+        color: '#FFFFFF'
+      }
+    },
     MuiAppBar: {
       colorPrimary: {
         backgroundColor: '#E5E5E5',
@@ -78,6 +98,16 @@ export const themeBlack = createMuiTheme({
         marginTop: 0,
         marginBottom: 16,
       }
+    },  
+    MuiPaper: {
+      root: {
+        backgroundColor: '#0F141D'
+      }     
+    },    
+    MuiButtonBase: {
+      root: {
+        color: '#FFFFFF'
+      }      
     }
   },  
   palette: {

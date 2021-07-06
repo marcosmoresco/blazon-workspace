@@ -30,7 +30,7 @@ import SignOutIcon from '@icons/SignOut'
 import Message from '../Message'
 import OutlinedInput from '@material-ui/core/OutlinedInput'
 import InputAdornment from '@material-ui/core/InputAdornment'
-import { useTheme } from '../../theme'
+import { useTheme, themes } from '../../theme'
 import type { HeaderProps } from './types'
 import useStyles from './styles'
 
@@ -41,7 +41,14 @@ const Header: FC<HeaderProps> = ({classes, intl}) => {
   const [openProfile, setOpenProfile] = useState(false)
   const [darkMode, setDarkMode] = useState(false)  
   
-  const {setTheme} = useTheme()
+  const {theme, setTheme} = useTheme()
+  const currentTheme = themes[theme]
+  if(typeof window !== 'undefined') {
+    const body = window.document.querySelector('body')
+    if(body) {
+      body.style.backgroundColor = currentTheme.palette.background.default
+    }    
+  }
 
   const handleClick = (event:any) => {    
     setAnchorEl(event.currentTarget)
@@ -51,6 +58,11 @@ const Header: FC<HeaderProps> = ({classes, intl}) => {
   const handleClose = () => {
     setAnchorEl(null)
     setOpenProfile(false)
+  }
+
+  const changeTheme = (event:any) => {
+    setDarkMode(event.target.checked)
+    setTheme(event.target.checked && 'black' || 'light')       
   }
 
   return (
@@ -78,19 +90,19 @@ const Header: FC<HeaderProps> = ({classes, intl}) => {
           <div className={classes.menuOptionsContent}>
             <div className={classes.menuOptions}>
               <div className={classes.optionImage}>
-                <PaperPlaneTiltIcon width={18} height={18} />
+                <PaperPlaneTiltIcon width={18} height={18} color={currentTheme.overrides.MuiIcon.root.color} />
               </div>
               <div className={classes.optionImage}>
-                <KeyIcon width={18} height={18} />                  
+                <KeyIcon width={18} height={18} color={currentTheme.overrides.MuiIcon.root.color} />                  
               </div>
               <div className={classes.optionImage}>                 
-                <ShoppingCartSimpleIcon width={18} height={18} />
+                <ShoppingCartSimpleIcon width={18} height={18} color={currentTheme.overrides.MuiIcon.root.color} />
               </div>
               <div className={classes.optionImage}>
-                <NoteBlankIcon width={18} height={18} />
+                <NoteBlankIcon width={18} height={18} color={currentTheme.overrides.MuiIcon.root.color} />
               </div>
               <div className={classes.optionImage}>
-                <BellSimpleIcon width={18} height={18} /> 
+                <BellSimpleIcon width={18} height={18} color={currentTheme.overrides.MuiIcon.root.color} /> 
               </div> 
             </div> 
             <Button 
@@ -160,10 +172,7 @@ const Header: FC<HeaderProps> = ({classes, intl}) => {
                         <Switch
                           color="primary"
                           checked={darkMode}
-                          onChange={(event) => {
-                            setDarkMode(event.target.checked)
-                            setTheme(event.target.checked && 'black' || 'light')
-                          }}
+                          onChange={changeTheme}
                           name="checkedA"
                         />
                       </div>

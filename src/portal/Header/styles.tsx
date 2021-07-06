@@ -34,8 +34,7 @@ const useStyles = (theme:Theme) => createStyles({
   menuList: {
     marginTop: 10,
     marginRight: 20,
-    width: 300,
-    background: '#F4F4F5',
+    width: 300,   
     boxShadow: '0px 4px 74px rgba(0, 0, 0, 0.16)',
     borderRadius: 8,
     '& .MuiMenuItem-root': {
