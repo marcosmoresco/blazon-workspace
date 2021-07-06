@@ -61,7 +61,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
 
   const changeTheme = (event: any) => {
     setDarkMode(event.target.checked);
-    setTheme((event.target.checked && "black") || "light");
+    setTheme((event.target.checked && "dark") || "light");
   };
 
   return (

@@ -25,16 +25,14 @@ export const ThemeStateProvider: FC<ThemeContextProps> = ({ children }) => {
 export const useTheme = () => useContext(StateContext);
 
 export const themes: { [key: string]: any } = {
-  black: themeDark,
+  dark: themeDark,
   light: themeLight,
 };
 
-const Themes = {
+const Theme = {
   ThemeStateProvider,
   useTheme,
-  themeLight,
-  themeDark,
   themes,
 };
 
-export default Themes;
+export default Theme;
