@@ -1,0 +1,393 @@
+{
+  "type": "RESOURCE",
+  "items": [
+      {
+          "name": "categoryName",
+          "label": "Category",
+          "type": "MULTTEXT",
+          "values": [
+              {
+                  "value": "Bando de Dados",
+                  "label": "Bando de Dados"
+              },
+              {
+                  "value": "Default",
+                  "label": "Default"
+              },
+              {
+                  "value": "Default Category",
+                  "label": "Default Category"
+              },
+              {
+                  "value": "Network Resource",
+                  "label": "Network Resource"
+              },
+              {
+                  "value": "resource category 01",
+                  "label": "resource category 01"
+              },
+              {
+                  "value": "resource category 011",
+                  "label": "resource category 011"
+              },
+              {
+                  "value": "resource category 011-nova",
+                  "label": "resource category 011-nova"
+              },
+              {
+                  "value": "resource category final",
+                  "label": "resource category final"
+              },
+              {
+                  "value": "Shared Resource",
+                  "label": "Shared Resource"
+              },
+              {
+                  "value": "System Resource",
+                  "label": "System Resource"
+              },
+              {
+                  "value": "Third Part Resource",
+                  "label": "Third Part Resource"
+              },
+              {
+                  "value": "tt",
+                  "label": "tt"
+              }
+          ]
+      },
+      {
+          "name": "classification",
+          "label": "Classification",
+          "type": "MULTTEXT",
+          "values": [
+              {
+                  "value": "Application",
+                  "label": "Application"
+              },
+              {
+                  "value": "Default",
+                  "label": "Default"
+              },
+              {
+                  "value": "Default Classification",
+                  "label": "Default Classification"
+              },
+              {
+                  "value": "Device",
+                  "label": "Device"
+              },
+              {
+                  "value": "Directory",
+                  "label": "Directory"
+              },
+              {
+                  "value": "High Risk Resource",
+                  "label": "High Risk Resource"
+              },
+              {
+                  "value": "Low Risk Resource",
+                  "label": "Low Risk Resource"
+              },
+              {
+                  "value": "Medium Risk Resource",
+                  "label": "Medium Risk Resource"
+              },
+              {
+                  "value": "Plaftorm",
+                  "label": "Plaftorm"
+              },
+              {
+                  "value": "resource class 01",
+                  "label": "resource class 01"
+              },
+              {
+                  "value": "resource class 02",
+                  "label": "resource class 02"
+              },
+              {
+                  "value": "resource classification 01",
+                  "label": "resource classification 01"
+              },
+              {
+                  "value": "resource classification 011",
+                  "label": "resource classification 011"
+              },
+              {
+                  "value": "resource classification 011-nova",
+                  "label": "resource classification 011-nova"
+              },
+              {
+                  "value": "resource classification final",
+                  "label": "resource classification final"
+              }
+          ]
+      },
+      {
+          "name": "environment",
+          "label": "Environment",
+          "type": "MULTTEXT",
+          "values": [
+              {
+                  "value": "Default",
+                  "label": "Default"
+              },
+              {
+                  "value": "Default Environment",
+                  "label": "Default Environment"
+              },
+              {
+                  "value": "Development",
+                  "label": "Development"
+              },
+              {
+                  "value": "Distribution",
+                  "label": "Distribution"
+              },
+              {
+                  "value": "environment 01",
+                  "label": "environment 01"
+              },
+              {
+                  "value": "environment 011",
+                  "label": "environment 011"
+              },
+              {
+                  "value": "environment 011-novo",
+                  "label": "environment 011-novo"
+              },
+              {
+                  "value": "environment 011-novo2",
+                  "label": "environment 011-novo2"
+              },
+              {
+                  "value": "environment 011-novo2-45",
+                  "label": "environment 011-novo2-45"
+              },
+              {
+                  "value": "environment final",
+                  "label": "environment final"
+              },
+              {
+                  "value": "Homologation",
+                  "label": "Homologation"
+              },
+              {
+                  "value": "Production",
+                  "label": "Production"
+              }
+          ]
+      },
+      {
+          "name": "resourceType",
+          "label": "Type",
+          "type": "MULTTEXT",
+          "values": [
+              {
+                  "value": "REGULAR",
+                  "label": "Regular"
+              },
+              {
+                  "value": "TEMPORARY",
+                  "label": "Temporary"
+              },
+              {
+                  "value": "SHARED",
+                  "label": "Shared"
+              },
+              {
+                  "value": "APPLICATION",
+                  "label": "Application"
+              },
+              {
+                  "value": "ADMIN",
+                  "label": "Administrative"
+              }
+          ]
+      },
+      {
+          "name": "provisioningEnabled",
+          "label": "Provisioning",
+          "type": "BOOLEAN",
+          "values": [
+              {
+                  "value": "true",
+                  "label": "true"
+              },
+              {
+                  "value": "false",
+                  "label": "false"
+              }
+          ]
+      },
+      {
+          "name": "selfServiceEnabled",
+          "label": "Self-service",
+          "type": "BOOLEAN",
+          "values": [
+              {
+                  "value": "true",
+                  "label": "true"
+              },
+              {
+                  "value": "false",
+                  "label": "false"
+              }
+          ]
+      },
+      {
+          "name": "certificationEnabled",
+          "label": "Certification",
+          "type": "BOOLEAN",
+          "values": [
+              {
+                  "value": "true",
+                  "label": "true"
+              },
+              {
+                  "value": "false",
+                  "label": "false"
+              }
+          ]
+      },
+      {
+          "name": "syncPasswordEnabled",
+          "label": "Sync password",
+          "type": "BOOLEAN",
+          "values": [
+              {
+                  "value": "true",
+                  "label": "true"
+              },
+              {
+                  "value": "false",
+                  "label": "false"
+              }
+          ]
+      },
+      {
+          "name": "dataLevel",
+          "label": "Data Level",
+          "type": "MULTTEXT",
+          "values": [
+              {
+                  "value": "Public",
+                  "label": "Public"
+              },
+              {
+                  "value": "Internal",
+                  "label": "Internal"
+              },
+              {
+                  "value": "Confidential",
+                  "label": "Confidential"
+              },
+              {
+                  "value": "Restricted",
+                  "label": "Restricted"
+              },
+              {
+                  "value": "dataLevel 01",
+                  "label": "dataLevel 01"
+              },
+              {
+                  "value": "dataLevel 011",
+                  "label": "dataLevel 011"
+              },
+              {
+                  "value": "dataLevel 011-novo2",
+                  "label": "dataLevel 011-novo2"
+              },
+              {
+                  "value": "dataLevel 011-novo23",
+                  "label": "dataLevel 011-novo23"
+              },
+              {
+                  "value": "dataLevel 011-novo25",
+                  "label": "dataLevel 011-novo25"
+              },
+              {
+                  "value": "dataLevel final",
+                  "label": "dataLevel final"
+              },
+              {
+                  "value": "Público",
+                  "label": "Público"
+              },
+              {
+                  "value": "Classificado",
+                  "label": "Classificado"
+              },
+              {
+                  "value": "Sigiloso",
+                  "label": "Sigiloso"
+              },
+              {
+                  "value": "Default Datalevel",
+                  "label": "Default Datalevel"
+              },
+              {
+                  "value": "Novo Datalevel",
+                  "label": "Novo Datalevel"
+              }
+          ]
+      },
+      {
+          "name": "confidentiality",
+          "label": "Confidentiality level",
+          "type": "MULTTEXT",
+          "values": [
+              {
+                  "value": "LOW",
+                  "label": "Low"
+              },
+              {
+                  "value": "MEDIUM",
+                  "label": "Medium"
+              },
+              {
+                  "value": "HIGH",
+                  "label": "High"
+              }
+          ]
+      },
+      {
+          "name": "integrity",
+          "label": "Integrity level",
+          "type": "MULTTEXT",
+          "values": [
+              {
+                  "value": "LOW",
+                  "label": "Low"
+              },
+              {
+                  "value": "MEDIUM",
+                  "label": "Medium"
+              },
+              {
+                  "value": "HIGH",
+                  "label": "High"
+              }
+          ]
+      },
+      {
+          "name": "availability",
+          "label": "Availability level",
+          "type": "MULTTEXT",
+          "values": [
+              {
+                  "value": "LOW",
+                  "label": "Low"
+              },
+              {
+                  "value": "MEDIUM",
+                  "label": "Medium"
+              },
+              {
+                  "value": "HIGH",
+                  "label": "High"
+              }
+          ]
+      }
+  ]
+}

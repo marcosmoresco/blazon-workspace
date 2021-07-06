@@ -23,7 +23,7 @@ const Tutorial:FC<TutorialProps> = ({classes, title, text, intl}) => {
           {intl.formatMessage({id: 'tutorial.button'})}
         </Button>
         <span className={classes.close}>
-          <X width={20} height={20}/>
+          <X width={21} height={21}/>
         </span>          
       </div>      
     </div>

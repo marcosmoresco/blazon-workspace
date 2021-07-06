@@ -37,7 +37,7 @@ class PasswordVault extends Component<PasswordVaultProps, PasswordVaultState> {
         open={open}>
         <div className={classes.root}>
           <div className={classes.close} onClick={onClose}>
-            <X width={18} height={18}/>
+            <X width={21} height={21}/>
           </div>  
           <div className={classes.passwordVaultCardContent}>
             <div className={classes.passwordVaultCardContentHeader}>

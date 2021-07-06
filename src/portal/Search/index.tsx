@@ -1,4 +1,4 @@
-import React, { FC } from 'react'
+import React, { FC, useState } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import Divider from '@material-ui/core/Divider'
 import Grid from '@material-ui/core/Grid'
@@ -9,13 +9,14 @@ import ArticleIcon from '@icons/Article'
 import UserGearIcon from '@icons/UserGear'
 import NewspaperClippingIcon from '@icons/NewspaperClipping'
 import ShoppingCartSimpleIcon from '@icons/ShoppingCartSimple'
-import CaretRightIcon from '@icons/CaretRight'
-import FilterIcon from '@icons/Filter'
+import Filters from './components/Filters'
 import type { SearchProps } from './types'
 import useStyles from './styles'
 
 
 const Search: FC<SearchProps> = ({classes}) => {
+
+  const [open, setOpen] = useState(false)
 
   const list = [{
     title: 'Acessos CSC Algar - Firewall_dropbox_liberado',
@@ -85,17 +86,7 @@ const Search: FC<SearchProps> = ({classes}) => {
       <div className={classes.root}>        
         <div className={classes.searchtext}>VPN SS</div>
         <div className={classes.totalItens}>10 Itens</div>
-        <div className={classes.filters}>
-          <div className={classes.filter}>
-            <div className={classes.filterIcon}>
-              <FilterIcon width={20} height={20}/>
-            </div> 
-            Filtros
-            <span className={classes.filterCaretRight}>
-              <CaretRightIcon width={20} height={20}/>
-            </span>            
-          </div>
-        </div>
+        <Filters />
         <Divider />
         <div className={classes.tags}>
           <div className={`${classes.tag} Active`}>
@@ -141,7 +132,7 @@ const Search: FC<SearchProps> = ({classes}) => {
             ))}            
           </Grid>  
         </div>
-      </div>   
+      </div>       
     </div>
   )  
 }
