@@ -1,143 +1,146 @@
-import React, { FC, createContext, useContext, useState } from 'react'
-import { createMuiTheme } from '@material-ui/core/styles'
-import { red } from '@material-ui/core/colors'
+import React, { FC, createContext, useContext, useState } from "react";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { red } from "@material-ui/core/colors";
+
+type Themes = "light" | "dark";
 
 type ThemeState = {
-  theme: 'light' | 'dark',
-  setTheme(theme: 'light' | 'dark'): void,
-}
+  theme: Themes;
+  setTheme(theme: Themes): void;
+};
 
-export type ThemeContextProps = { 
-  children: React.ReactNode  
-}
+export type ThemeContextProps = {
+  children: React.ReactNode;
+};
 
 const StateContext = createContext<ThemeState>({
-  theme: 'light',
-  setTheme: () => {}
-})
+  theme: "light" as Themes,
+  setTheme: () => {},
+});
 
 export const ThemeStateProvider: FC<ThemeContextProps> = ({ children }) => {
-
-  const [theme, setTheme] = useState('light')
+  const [theme, setTheme] = useState("light" as Themes);
 
   return (
-    <StateContext.Provider value={{
-      theme,
-      setTheme
-    }}>
+    <StateContext.Provider
+      value={{
+        theme,
+        setTheme,
+      }}
+    >
       {children}
     </StateContext.Provider>
-  )
-}
+  );
+};
 
-export const useTheme = () => useContext(StateContext)
+export const useTheme = () => useContext(StateContext);
 
 // Create a theme instance.
 export const themeLight = createMuiTheme({
-  overrides : {  
+  overrides: {
     MuiIcon: {
       root: {
-        color: '#1B202A'
-      }
-    }, 
+        color: "#1B202A",
+      },
+    },
     MuiAppBar: {
       colorPrimary: {
-        backgroundColor: '#E5E5E5',
-        boxShadow: 'none',
-      }
+        backgroundColor: "#E5E5E5",
+        boxShadow: "none",
+      },
     },
     MuiFormControl: {
       marginNormal: {
         marginTop: 0,
         marginBottom: 16,
-      }
+      },
     },
     MuiPaper: {
       root: {
-        backgroundColor: '#F4F4F5'
-      }     
-    },  
+        backgroundColor: "#F4F4F5",
+      },
+    },
     MuiButtonBase: {
       root: {
-        color: '#1B202A'
-      }      
-    }
-  },    
+        color: "#1B202A",
+      },
+    },
+  },
   palette: {
-    type: 'light',
+    type: "light",
     primary: {
-      main: '#0E46D7',
+      main: "#0E46D7",
     },
     secondary: {
-      main: '#DC004E',
+      main: "#DC004E",
     },
     error: {
       main: red.A400,
     },
     background: {
-      default: '#F4F4F5',
+      default: "#F4F4F5",
     },
   },
-})
+});
 
 export const themeBlack = createMuiTheme({
-  overrides : {   
+  overrides: {
     MuiIcon: {
       root: {
-        color: '#FFFFFF'
-      }
+        color: "#FFFFFF",
+      },
     },
     MuiAppBar: {
       colorPrimary: {
-        backgroundColor: '#E5E5E5',
-        boxShadow: 'none',
-      }
+        backgroundColor: "#E5E5E5",
+        boxShadow: "none",
+      },
     },
     MuiFormControl: {
       marginNormal: {
         marginTop: 0,
         marginBottom: 16,
-      }
-    },  
+      },
+    },
     MuiPaper: {
       root: {
-        backgroundColor: '#0F141D'
-      }     
-    },    
+        backgroundColor: "#0F141D",
+      },
+    },
     MuiButtonBase: {
       root: {
-        color: '#FFFFFF'
-      }      
-    }
-  },  
+        color: "#FFFFFF",
+      },
+    },
+  },
   palette: {
-    type: 'dark',
+    type: "dark",
     primary: {
-      main: '#0E46D7',
+      main: "#0E46D7",
     },
     secondary: {
-      main: '#DC004E',
+      main: "#DC004E",
     },
     error: {
       main: red.A400,
     },
     background: {
-      default: '#0F141D',
+      default: "#0F141D",
     },
   },
-})
+});
 
 export const themes: { [key: string]: any } = {
-  'black': themeBlack,
-  'light': themeLight
-}
+  black: themeBlack,
+  light: themeLight,
+};
 
 const Themes = {
   ThemeStateProvider,
   useTheme,
   themeLight,
   themeBlack,
-  themes
-}
+  themes,
+};
 
-export default Themes
+export default Themes;

@@ -1,13 +1,7 @@
-import { 
-  CHANGE_THEME,
+import {
   ADD_MESSAGE, 
   REMOVE_MESSAGE 
 } from './actionTypes'
-
-export const changeTheme = (theme:string) => ({
-  type: CHANGE_THEME,
-  theme, 
-})
 
 export const addMessage = (message:any, messageType?:string) => ({
   type: ADD_MESSAGE,

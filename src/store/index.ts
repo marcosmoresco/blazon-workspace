@@ -1,15 +1,15 @@
-import { createStore } from 'redux'
-import { createWrapper } from 'next-redux-wrapper'
-import { composeWithDevTools } from 'redux-devtools-extension/developmentOnly'
-import reducers from '../reducers'
+import { createStore } from "redux";
+import { createWrapper } from "next-redux-wrapper";
+import { composeWithDevTools } from "redux-devtools-extension/developmentOnly";
+import reducers from "../reducers";
 
-const makeStore = ():any => {
+const makeStore = (): any => {
   // Create store
-  const store = createStore(reducers, composeWithDevTools())
+  const store = createStore(reducers, composeWithDevTools());
 
   // Return store
-  return store
-}
+  return store;
+};
 
 // export an assembled wrapper
-export const storeWrapper = createWrapper(makeStore, { debug: false })
+export const storeWrapper = createWrapper(makeStore, { debug: false });

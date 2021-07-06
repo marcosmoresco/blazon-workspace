@@ -1,6 +1,6 @@
-import { IntlShape } from 'react-intl'
+import { IntlShape } from "react-intl";
 
-export type HomeProps = { 
-  intl: IntlShape
-  classes: any  
-}
+export type HomeProps = {
+  intl: IntlShape;
+  classes: any;
+};

@@ -1,12 +1,14 @@
-import React, { FC } from 'react'
-import Tutorial from '@components/Tutorial'
-import type { TutorialProps } from './types'
+import React, { FC } from "react";
+import Tutorial from "@components/Tutorial";
+import type { TutorialProps } from "./types";
 
-const PasswordVaultTutorial:FC<TutorialProps> = () => {  
-
+const PasswordVaultTutorial: FC<TutorialProps> = () => {
   return (
-   <Tutorial title="passwordVault.tutorial.title" text="passwordVault.tutorial.text" />
-  )  
-}
+    <Tutorial
+      title="passwordVault.tutorial.title"
+      text="passwordVault.tutorial.text"
+    />
+  );
+};
 
-export default PasswordVaultTutorial
+export default PasswordVaultTutorial;

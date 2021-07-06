@@ -1,7 +1,5 @@
-import { IntlShape } from 'react-intl'
-
-export type FooterProps = {   
+export type FooterProps = {
   classes: {
-    root: string
-  }
-}
+    root: string;
+  };
+};

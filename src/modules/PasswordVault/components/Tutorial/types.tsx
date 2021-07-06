@@ -1,2 +1,1 @@
-export type TutorialProps = {   
-}
+export type TutorialProps = {};

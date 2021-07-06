@@ -1,25 +1,25 @@
-import type { LocalesType } from '../locales/types'
+import type { LocalesType } from "../locales/types";
 
 //Home
-import HomePt from './Home/locales/pt.json'
-import HomeEn from './Home/locales/en.json'
+import HomePt from "./Home/locales/pt.json";
+import HomeEn from "./Home/locales/en.json";
 //Search
-import SearchPt from './Search/locales/pt.json'
-import SearchEn from './Search/locales/en.json'
+import SearchPt from "./Search/locales/pt.json";
+import SearchEn from "./Search/locales/en.json";
 
 export const PortalLocalesPt: LocalesType = {
-  ...HomePt,  
-  ...SearchPt
-}
+  ...HomePt,
+  ...SearchPt,
+};
 
 export const PortalLocalesEn: LocalesType = {
   ...HomeEn,
-  ...SearchEn
-}
+  ...SearchEn,
+};
 
 const Locales = {
   PortalLocalesPt,
-  PortalLocalesEn
-}
+  PortalLocalesEn,
+};
 
-export default Locales
+export default Locales;

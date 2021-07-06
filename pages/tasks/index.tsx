@@ -1,7 +1,5 @@
-import Tasks from '@modules/Task'
+import Tasks from "@modules/Task";
 
 export default function PageTasks() {
-  return (
-    <Tasks />
-  )
+  return <Tasks />;
 }

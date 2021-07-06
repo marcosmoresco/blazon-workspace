@@ -1,25 +1,25 @@
-import type { LocalesType } from '../locales/types'
+import type { LocalesType } from "../locales/types";
 
 //Task
-import TaskPt from './Task/locales/pt.json'
-import TaskEn from './Task/locales/en.json'
+import TaskPt from "./Task/locales/pt.json";
+import TaskEn from "./Task/locales/en.json";
 //PasswordVault
-import PasswordVaultPt from './PasswordVault/locales/pt.json'
-import PasswordVaultEn from './PasswordVault/locales/en.json'
+import PasswordVaultPt from "./PasswordVault/locales/pt.json";
+import PasswordVaultEn from "./PasswordVault/locales/en.json";
 
 export const ModulesLocalesPt: LocalesType = {
   ...TaskPt,
-  ...PasswordVaultPt  
-}
+  ...PasswordVaultPt,
+};
 
 export const ModulesLocalesEn: LocalesType = {
   ...TaskEn,
-  ...PasswordVaultEn
-}
+  ...PasswordVaultEn,
+};
 
 const Locales = {
   ModulesLocalesPt,
-  ModulesLocalesEn
-}
+  ModulesLocalesEn,
+};
 
-export default Locales
+export default Locales;

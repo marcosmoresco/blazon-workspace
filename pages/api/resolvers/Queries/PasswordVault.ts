@@ -1,15 +1,16 @@
-import axios from 'axios'
+import axios from "axios";
 
-const PasswordVaultQueries = {        
+const PasswordVaultQueries = {
   getPasswordVaultEntries: async () => {
     try {
-      const entries = await axios.get('http://demo2183093.mockable.io/blazon-workspace-backend/workspace/passwordvault/entries');        
-      return entries.data
+      const entries = await axios.get(
+        "http://demo2183093.mockable.io/blazon-workspace-backend/workspace/passwordvault/entries"
+      );
+      return entries.data;
     } catch (error) {
-      throw error
+      throw error;
     }
-  }
-}
+  },
+};
 
-export default PasswordVaultQueries
-
+export default PasswordVaultQueries;

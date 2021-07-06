@@ -1,8 +1,9 @@
-import { gql } from '@apollo/client';
+import { gql } from "@apollo/client";
 
-export const RESUME = gql`{
-  getResume {
-    totalOpenTasks
+export const RESUME = gql`
+  {
+    getResume {
+      totalOpenTasks
+    }
   }
-}`
-;
+`;
