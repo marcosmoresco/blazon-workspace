@@ -20,14 +20,10 @@ function ArrowClockwiseIcon(props: IconProps) {
       <path
         d="M20.25 12H3.75"
         stroke={color}
-        stroke-linecap="round"
-        stroke-linejoin="round"
       />
       <path
         d="M10.5 5.25L3.75 12L10.5 18.75"
         stroke={color}
-        stroke-linecap="round"
-        stroke-linejoin="round"
       />
     </svg>
   );

@@ -1,4 +1,5 @@
 import React, { FC, useState } from "react";
+import { useRouter } from "next/router"
 import { withStyles } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
@@ -14,6 +15,8 @@ import type { SearchProps } from "./types";
 import useStyles from "./styles";
 
 const Search: FC<SearchProps> = ({ classes }) => {
+  
+  const router = useRouter();
   const [open, setOpen] = useState(false);
 
   const list = [
@@ -130,7 +133,7 @@ const Search: FC<SearchProps> = ({ classes }) => {
           <Grid container spacing={3}>
             {list.map((item, index) => (
               <Grid item xs={3} key={`search-card-item-${index}`}>
-                <div className={classes.searchCard}>
+                <div className={classes.searchCard} onClick={() => router.push("/search/detail")}>
                   <div className={classes.searchCardContent}>
                     <div className={classes.searchCardContentHeader}>
                       <div className={classes.searchCardContentHeaderImage}>

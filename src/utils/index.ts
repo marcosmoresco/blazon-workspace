@@ -1,5 +1,5 @@
-export const deepCopyFunction = (inObject) => {
-  let outObject, value, key;
+export const deepCopyFunction = (inObject:any) => {
+  let outObject:any, value, key;
 
   if (typeof inObject !== "object" || inObject === null) {
     return inObject; // Return the value if inObject is not an object
@@ -17,3 +17,5 @@ export const deepCopyFunction = (inObject) => {
 
   return outObject;
 };
+
+export const isDefined = (value:any): boolean => value !== null && value !== undefined;

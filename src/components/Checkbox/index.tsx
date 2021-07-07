@@ -12,10 +12,9 @@ const useStyles = makeStyles(() => ({
     '& .MuiFormControlLabel-label': {
       fontStyle: 'normal',
       fontWeight: 'normal',
-      fontSize: 16,      
+      fontSize: 15,      
       letterSpacing: '0.0125em',
       color: '#232325',
-      marginTop: 20
     }
   }
 }))

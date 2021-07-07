@@ -1,106 +1,167 @@
+import {
+  styled as styledMui,
+  createStyles,
+  Theme,
+} from "@material-ui/core/styles";
+import styled from "styled-components";
+import MuiBox from "@material-ui/core/Box";
+import MuiDivider from "@material-ui/core/Divider";
+import MuiOutlinedInput from "@material-ui/core/OutlinedInput";
 
-import { createStyles, Theme } from '@material-ui/core/styles'
+export const useStyles = (theme: Theme) =>
+  createStyles({
+    expandedFilter: {
+      backgroundColor: "#E9E9EA",
+    },
+  });
 
-const useStyles = (theme:Theme) => createStyles({ 
-  filters: {
-    display: 'flex',
-    justifyContent: 'flex-end',
-    marginBottom: 8,
-    cursor: 'pointer',
-  },
-  filter: {
-    background: '#FFFFFF',
-    borderRadius: 6,
-    height: 48,
-    display: 'flex',
-    alignItems: 'center',
-    padding: 10,
-  },
-  filterIcon: {
-    background: '#E9E8EB',
-    borderRadius: 8,
-    padding: '4px',
-    marginRight: 8,
-  },
-  filterCaretRight: {
-    marginLeft: 20,
-  },  
-  searchFiltersHeader: {
-    padding: '27px 27px 0 27px',
-  },
-  searchFiltersPadding: {
-    padding: '0 27px'
-  },
-  searchFilters: {
-    width: 454,        
-    '& .Search-filter-close': {
-      display: 'flex',
-      justifyContent: 'flex-end',
-      '& img': {
-        cursor: 'pointer'
-      }
-    }, 
-    '& .Filters-expand': {
-      width: 16,
-    },
-    '& .Filtered-expand': {
-      cursor: 'pointer',
-      width: 24,
-    },
-    '& .Content-header-search': {
-      width: '100%',
-      height: 42,
-      '& .MuiOutlinedInput-root': {
-        backgroundColor: 'white',
-        borderRadius: 8
-      },
-      '& input': {
-        padding: '11.5px 10px 10px 10px'
-      },
-    },            
-    '& .Divider': {
-      width: '100%',
-      height: 1,
-      backgroundColor: '#D4D3D9',
-      margin: '10px 0 32px 0',
-    },
-    '& .Filters-selected-title': {
-      fontWeight: 500,
-      fontSize: 18,
-      lineHeight: '22px',
-      color: '#4F486A',
-    },
-    '& .Filters-selected-subTitle': {
-      fontSize: 14,
-      lineHeight: '21px',     
-      color: '#514D65',
-      marginTop: 8,
-    }
-  },
-  searchFiltersContent: {
-    display: 'flex',
-    justifyContent: 'space-between',
-    '& .Search-filters-title': {
-      fontSize: 16,
-      lineHeight: '24px',
-      color: '#777779',
-    },    
-    '&.Filters-header': {
-      marginBottom: 16,
-      padding: '0 27px',
-    },    
-  },
-  searchFiltersContentTitle: {
-    lineHeight: '50px',
-  },
-  searchFiltersContentDivider: {
-    height: 1,
-    width: '100%',
-    backgroundColor: '#E9E8EB',
-    '&.Expanded': {
-      marginBottom: 8,
-    }    
-  },
-})
+export const BoxButton = styled.div`
+  cursor: pointer;
+  display: flex;
+  margin-bottom: 8px;
+  justify-content: flex-end;
+`;
 
-export default useStyles
+export const ButtonFilter = styled.div`
+  height: 48px;
+  display: flex;
+  padding: 10px;
+  background: #ffffff;
+  align-items: center;
+  border-radius: 6px;
+`;
+
+export const ButtonFilterIcon = styled.div`
+  padding: 4px;
+  background: #e9e8eb;
+  margin-right: 8px;
+  border-radius: 8px;
+`;
+
+export const ButtonFilterIconCaretRight = styled.div`
+  margin-left: 20px;
+`;
+
+export const BoxFilters = styled.div`
+  width: 454px;
+`;
+
+export const BoxFiltersHeader = styled.div`
+  padding: 24px 24px 0 24px;
+`;
+
+export const HeaderDivider = styledMui(MuiDivider)({
+  margin: "15px -26px 24px -26px",
+});
+
+export const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
+
+export const HeaderTitle = styled.div`
+  color: #1b202a;
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 21px;
+`;
+
+export const CloseHeader = styled.div`
+  cursor: pointer;
+`;
+
+export const BoxHeader = styled.div`
+  padding: 24px 16px;
+  background: #1b202a;
+  border-radius: 8px;
+`;
+
+export const BoxHeaderTitle = styled.div`
+  color: #ffffff;
+  font-size: 21px;
+  font-weight: 500;
+  line-height: 27px;
+`;
+
+export const BoxHeaderInputSearch = styledMui(MuiOutlinedInput)({
+  height: 48,
+  marginTop: 16,
+  backgroundColor: "#161A21",
+  border: "1px solid #272D38",
+  borderRadius: 8,
+  width: "100%",
+  color: "#7D7A8C",
+});
+
+export const BoxContainerTitle = styled.div`
+  margin: 34px 20px 28px 24px;
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const BoxContainerTitleText = styled.div`
+  font-weight: normal;
+  font-size: 24px;
+  line-height: 36px;
+  color: #1b202a;
+`;
+
+export const BoxContainerTitleTagContent = styled.div`
+  display: flex;
+  align-items: center;
+  margin-right: 14px;
+`;
+
+export const BoxContainerTitleTag = styled.div`
+  background: #d4d3d9;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  padding: 6px;
+  color: #676378;
+  font-size: 14px;
+  margin-right: 5px;
+`;
+
+export const BoxFilter = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-left: 24px;
+  padding: 8px 0;
+  align-items: center;
+  font-size: 15px;
+`;
+
+export const BoxFilterIcon = styled.div`
+  cursor: pointer;
+  margin-right: 45px;
+`;
+
+export const BoxFilterContent = styled.div`
+  margin-left: 32px;
+`;
+
+export const BoxFilterClearContent = styled.div`
+  padding: 18px 24px 18px 24px;
+  margin-bottom: 24px;
+`;
+
+export const BoxFilterClear = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  border: 1px dashed #494d55;
+  box-sizing: border-box;
+  border-radius: 35px;
+  width: max-content;
+  padding: 10px;
+  cursor: pointer;
+`;
+
+export const BoxFilterDivider = styledMui(MuiDivider)({
+  position: "relative",
+}); 

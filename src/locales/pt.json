@@ -18,10 +18,14 @@
   "filters": "Filtros",
   "filters.added": "Filtros adicionado",
   "filters.selected": "filtros selecionados",
+  "filter.selected": "filtro selecionado",
   "search.filters": "Procurar filtros",
   "end.of.results": "Fim dos resultados",
   "remove": "Remover",
   "item.selected": "item selecionado",
   "items.selected": "items selecionados",
-  "tutorial.button": "Assistir tutorial"
+  "tutorial.button": "Assistir tutorial",
+  "enabled": "Habilitado",
+  "disabled": "Desabilitado",
+  "filters.no.selected": "Nenhum filtro selecionado"
 }
