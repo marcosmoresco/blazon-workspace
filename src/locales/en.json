@@ -6,6 +6,7 @@
   "darkMode": "Dark mode",
   "identifier": "Identifier",
   "name": "Name",
+  "description": "Description",
   "status": "Status",
   "active": "Active",
   "inactive": "Inactive",
@@ -27,5 +28,15 @@
   "tutorial.button": "Watch tutorial",
   "enabled": "Enabled",
   "disabled": "Disabled",
-  "filters.no.selected": "No filter selected"
+  "filters.no.selected": "No filter selected",
+  "detailing": "Detailing",
+  "resource": "Resource",
+  "resources": "Resources",
+  "role": "Role",
+  "roles": "Roles",
+  "entitlement": "Entitlement",
+  "entitlements": "Entitlements",
+  "adminAccount": "Admin account",
+  "adminAccounts": "Admin accounts",
+  "cart.add": "Add cart"
 }

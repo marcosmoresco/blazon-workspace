@@ -48,6 +48,8 @@ class Button extends Component<ButtonPropsType> {
 
     const { classes, children, variant, color, isLoading, startIcon, ...other } = this.props
 
+    const _color = color?.replace("default-", "");
+
     return (
       <span className={classes.root}>
         <MuiButton
@@ -58,7 +60,7 @@ class Button extends Component<ButtonPropsType> {
             'Default-contained-blue': variant === 'contained' && color === 'default-primary'
           })}       
           startIcon={isLoading === 1 ? <Loading/> : startIcon} 
-          color={color}
+          color={_color}
           variant={variant}
           {...other}
         >

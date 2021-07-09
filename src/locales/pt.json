@@ -6,6 +6,7 @@
   "darkMode": "Modo escuro",
   "identifier": "Identificador",
   "name": "Nome",
+  "description": "Descrição",
   "status": "Status",
   "active": "Ativo",
   "inactive": "Inativo",
@@ -27,5 +28,15 @@
   "tutorial.button": "Assistir tutorial",
   "enabled": "Habilitado",
   "disabled": "Desabilitado",
-  "filters.no.selected": "Nenhum filtro selecionado"
+  "filters.no.selected": "Nenhum filtro selecionado",
+  "detailing": "Detalhamento",
+  "resource": "Recurso",
+  "resources": "Recursos",
+  "role": "Papel",
+  "roles": "Papéis",
+  "entitlement": "Direito",
+  "entitlements": "Direitos",
+  "adminAccount": "Conta administrativa",
+  "adminAccounts": "Contas administrativa",
+  "cart.add": "Adicionar no carinho"
 }

@@ -17,90 +17,95 @@ import useStyles from "./styles";
 const Search: FC<SearchProps> = ({ classes }) => {
   
   const router = useRouter();
-  const [open, setOpen] = useState(false);
+  const [active, setActive] = useState('ALL');
+
 
   const list = [
     {
       title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <TableIcon width={24} height={24} color="#3174F6" />,
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <TableIcon width={24} height={24} color="#3174F6" />,
+      icon: <PuzzlePieceIcon width={24} height={24} color="#3174F6" />,
+      type: 'RESOURCE',
     },
     {
       title: "Acessos CSC Algar - Firewall_dropbox_liberado",
       icon: <PuzzlePieceIcon width={24} height={24} color="#3174F6" />,
+      type: 'RESOURCE',
     },
     {
       title: "Acessos CSC Algar - Firewall_dropbox_liberado",
       icon: <PuzzlePieceIcon width={24} height={24} color="#3174F6" />,
+      type: 'RESOURCE',
+    },
+    {
+      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
+      icon: <PuzzlePieceIcon width={24} height={24} color="#3174F6" />,
+      type: 'RESOURCE',
     },
     {
       title: "Acessos CSC Algar - Firewall_dropbox_liberado",
       icon: <ArticleIcon width={24} height={24} color="#3174F6" />,
+      type: 'ENTITLEMENT',
     },
     {
       title: "Acessos CSC Algar - Firewall_dropbox_liberado",
       icon: <ArticleIcon width={24} height={24} color="#3174F6" />,
+      type: 'ENTITLEMENT',
     },
     {
       title: "Acessos CSC Algar - Firewall_dropbox_liberado",
       icon: <ArticleIcon width={24} height={24} color="#3174F6" />,
+      type: 'ENTITLEMENT',
     },
     {
       title: "Acessos CSC Algar - Firewall_dropbox_liberado",
       icon: <UserGearIcon width={24} height={24} color="#3174F6" />,
+      type: 'ADMIN_ACCOUNT',
     },
     {
       title: "Acessos CSC Algar - Firewall_dropbox_liberado",
       icon: <UserGearIcon width={24} height={24} color="#3174F6" />,
+      type: 'ADMIN_ACCOUNT',
     },
     {
       title: "Acessos CSC Algar - Firewall_dropbox_liberado",
       icon: <UserGearIcon width={24} height={24} color="#3174F6" />,
+      type: 'ADMIN_ACCOUNT',
     },
     {
       title: "Acessos CSC Algar - Firewall_dropbox_liberado",
       icon: <UserGearIcon width={24} height={24} color="#3174F6" />,
+      type: 'ADMIN_ACCOUNT',
     },
     {
       title: "Acessos CSC Algar - Firewall_dropbox_liberado",
       icon: <UserGearIcon width={24} height={24} color="#3174F6" />,
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <TableIcon width={24} height={24} color="#3174F6" />,
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <TableIcon width={24} height={24} color="#3174F6" />,
+      type: 'ADMIN_ACCOUNT',
     },
     {
       title: "Acessos CSC Algar - Firewall_dropbox_liberado",
       icon: <NewspaperClippingIcon width={24} height={24} color="#3174F6" />,
+      type: 'ROLE',
     },
     {
       title: "Acessos CSC Algar - Firewall_dropbox_liberado",
       icon: <NewspaperClippingIcon width={24} height={24} color="#3174F6" />,
+      type: 'ROLE',
     },
     {
       title: "Acessos CSC Algar - Firewall_dropbox_liberado",
       icon: <NewspaperClippingIcon width={24} height={24} color="#3174F6" />,
+      type: 'ROLE',
     },
     {
       title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <TableIcon width={24} height={24} color="#3174F6" />,
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <TableIcon width={24} height={24} color="#3174F6" />,
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <TableIcon width={24} height={24} color="#3174F6" />,
-    },
+      icon: <NewspaperClippingIcon width={24} height={24} color="#3174F6" />,
+      type: 'ROLE',
+    },    
   ];
+
+  const save = (filtered: {[key: string]: any}) => {
+    console.log(filtered);
+  };
 
   return (
     <div className="Default-content">
@@ -108,30 +113,42 @@ const Search: FC<SearchProps> = ({ classes }) => {
       <div className={classes.root}>
         <div className={classes.searchtext}>VPN SS</div>
         <div className={classes.totalItens}>10 Itens</div>
-        <Filters />
+        <Filters onSave={save}/>
         <Divider />
         <div className={classes.tags}>
-          <div className={`${classes.tag} Active`}>
+          <div 
+            onClick={() => setActive('ALL')}
+            className={`${classes.tag} ${(active === 'ALL' && 'Active') || ''}`}>
             <TableIcon width={25} height={25} color="#0E46D7" /> Todos
           </div>
-          <div className={classes.tag}>
+          <div 
+            onClick={() => setActive('RESOURCE')}
+            className={`${classes.tag} ${(active === 'RESOURCE' && 'Active') || ''}`}>
             <PuzzlePieceIcon width={25} height={25} color="#7D7A8C" /> Resources
           </div>
-          <div className={classes.tag}>
+          <div
+            onClick={() => setActive('ENTITLEMENT')} 
+            className={`${classes.tag} ${(active === 'ENTITLEMENT' && 'Active') || ''}`}>
             <ArticleIcon width={25} height={25} color="#7D7A8C" /> Entitlements
           </div>
-          <div className={classes.tag}>
+          <div 
+            onClick={() => setActive('ADMIN_ACCOUNT')}
+            className={`${classes.tag} ${(active === 'ADMIN_ACCOUNT' && 'Active') || ''}`}>
             <UserGearIcon width={25} height={25} color="#7D7A8C" /> Admin
             accounts
           </div>
-          <div className={classes.tag}>
+          <div 
+            onClick={() => setActive('ROLE')}
+            className={`${classes.tag} ${(active === 'ROLE' && 'Active') || ''}`}>
             <NewspaperClippingIcon width={25} height={25} color="#7D7A8C" />{" "}
             Roles
           </div>
         </div>
         <div className={classes.searchCards}>
           <Grid container spacing={3}>
-            {list.map((item, index) => (
+            {list
+            .filter((item) => active === 'ALL' || item.type === active )
+            .map((item, index) => (
               <Grid item xs={3} key={`search-card-item-${index}`}>
                 <div className={classes.searchCard} onClick={() => router.push("/search/detail")}>
                   <div className={classes.searchCardContent}>

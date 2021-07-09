@@ -6,6 +6,7 @@ import Grid from "@material-ui/core/Grid";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Tutorial from "@components/Tutorial";
+import Button from "@components/Button";
 import Checkbox from "@components/Checkbox";
 import Radio from "@components/Radio";
 import TableIcon from "@icons/Table";
@@ -47,21 +48,40 @@ import {
   BoxFilterContent,
   BoxFilterClearContent,
   BoxFilterClear,
+  BoxFooter,
 } from "./styles";
 import items from "./filters.json";
 
-const Filters: FC<FilterProps> = ({ classes, intl }) => {
+const Filters: FC<FilterProps> = ({ classes, intl, onSave }) => {
   const [open, setOpen] = useState(false);
-  const [active, setActive] = useState("ALL"); 
-  const _filteredItems: { [key: string]: any } = {};
-  items.items.forEach((f:FilterType) => (
-    _filteredItems[f.name] = {}
-  ));   
+  const [filter, setFilter] = useState('');
+  const [active, setActive] = useState("ALL");      
+  const [filters, setFilters] = useState({...items});
+
+  const initFilters = () => {
+    const _filteredItems: { [key: string]: any } = {};
+    items.items.forEach((f:FilterType) => (
+      _filteredItems[f.name] = {}
+    ));
+    return _filteredItems;
+  };
+
   const [filtered, setFiltered] = useState<{[key: string]: any}>({
     total: 0,   
-    ..._filteredItems   
+    ...initFilters()   
   });
-  const [filters, setFilters] = useState(items);
+
+  const clearAll = (): void => {    
+    setFiltered({
+      total: 0,   
+      ...initFilters()   
+    });
+  };
+
+  const save = (): void => {
+    setOpen(false);
+    onSave(filtered);
+  };
 
   const closeFilters = (event: any): void => {
     if (
@@ -182,6 +202,7 @@ const Filters: FC<FilterProps> = ({ classes, intl }) => {
                     <SearchIcon width={25} height={25} color="#60636A" />
                   </InputAdornment>
                 }
+                onChange={(event) => setFilter(event.target.value)}
                 labelWidth={0}
               />
             </BoxHeader>                        
@@ -199,7 +220,9 @@ const Filters: FC<FilterProps> = ({ classes, intl }) => {
                 <CaretDownIcon width={21} height={21} color="#676378"/>
               </BoxContainerTitleTagContent>
             </BoxContainerTitle>
-            {filters.items.map((f: FilterType, index: number) =>
+            {filters.items
+              .filter((f: FilterType) => f.label.toLocaleUpperCase().indexOf(filter.toLocaleUpperCase()) > -1)
+              .map((f: FilterType, index: number) =>
               f.type !== "TEXT" ? (
                 <div
                   key={`filter-${f.name}`}                                 
@@ -286,6 +309,20 @@ const Filters: FC<FilterProps> = ({ classes, intl }) => {
             )}
           </>
         </BoxFilters>
+        <BoxFooter>         
+          <Button
+            variant="contained"
+            color="default-primary"
+            onClick={clearAll}>
+            Limpar filtros
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={save}>
+            Salvar
+          </Button>
+        </BoxFooter>
       </Drawer>
     </>
   );

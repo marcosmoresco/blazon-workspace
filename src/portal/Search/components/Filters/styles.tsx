@@ -4,7 +4,6 @@ import {
   Theme,
 } from "@material-ui/core/styles";
 import styled from "styled-components";
-import MuiBox from "@material-ui/core/Box";
 import MuiDivider from "@material-ui/core/Divider";
 import MuiOutlinedInput from "@material-ui/core/OutlinedInput";
 
@@ -44,6 +43,7 @@ export const ButtonFilterIconCaretRight = styled.div`
 
 export const BoxFilters = styled.div`
   width: 454px;
+  margin-bottom: 98px;
 `;
 
 export const BoxFiltersHeader = styled.div`
@@ -160,6 +160,25 @@ export const BoxFilterClear = styled.div`
   width: max-content;
   padding: 10px;
   cursor: pointer;
+`;
+
+export const BoxFooter = styled.div`
+  background: #E9E8EB;
+  box-shadow: 0px -1px 30px rgba(18, 22, 32, 0.16);
+  height: 98px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  position: fixed;
+  bottom: 0;
+  width: 454px;
+  justify-content: center;
+  & button {
+    min-width: 192px;
+    &.Default-contained-blue {
+      background-color: #D1D2D4;
+    }
+  }
 `;
 
 export const BoxFilterDivider = styledMui(MuiDivider)({

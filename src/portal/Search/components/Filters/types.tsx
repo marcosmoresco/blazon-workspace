@@ -2,6 +2,7 @@ import { IntlShape } from "react-intl";
 
 export type FilterProps = {
   intl: IntlShape;
+  onSave(filtered: {[key: string]: any}): void 
   classes: {
     root: string;
     totalItens: string;

@@ -1,0 +1,60 @@
+import styled from "styled-components";
+
+export const Box = styled.div`
+  margin: 37px; 24px;
+`;
+
+export const BoxHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const BoxHeaderName = styled.div`
+  font-style: normal;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #1B202A;
+`;
+
+export const BoxHeaderTitle = styled.div`
+  display: flex;
+  align-items: center;
+  color: #7D7A8C;
+  gap: 5px;
+`;
+
+export const BoxContent = styled.div`
+  margin-top: 48px;
+`;
+
+export const Label = styled.label`
+  font-weight: 600;
+  text-transform: uppercase;
+  color: #26213F;
+`;
+
+export const BoxDescription = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding: 21px 16px 0px;
+  height: 120px;
+  background: rgba(244, 244, 245, 0.62);
+  border-radius: 8px;
+  color: #A8A6B2;
+  font-size: 18px;
+  overflow-y: auto;
+`;
+
+export const BoxCart = styled.div`
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  height: 84px;
+  border-top: 1px solid #E9E9EA;
+  padding-right: 37px;
+`;
