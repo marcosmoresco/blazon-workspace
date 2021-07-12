@@ -1,11 +1,14 @@
 {
   "changepassword.title": "Criando uma nova senha",
   "changepassword.description": "Sua nova senha deve conter letras maiúsculas, minúsculas, números e símbolos.",
-  "changepassword.current.password": "Senha atual",
-  "changepassword.insert.current.password": "Insira sua senha atual",
-  "changepassword.new.password": "Nova Senha",
-  "changepassword.insert.new.password": "Insira sua nova senha",
+  "changepassword.currentpassword": "Senha atual",
+  "changepassword.currentpassword.placeholder": "Insira sua senha atual",
+  "changepassword.newpassword": "Nova Senha",
+  "changepassword.newpassword.placeholder": "Insira sua nova senha",
+  "changepassword.repeatpassword": "Repita a senha",
+  "changepassword.repeatpassword.placeholder": "Repita sua nova senha",
   "changepassword.forget.password": "Esqueci minha senha",
+
   "changepassword.header.title": "Nova Senha",
   "changepassword.header.breadcrumb": "Perfil",
   "save": "Salvar",

@@ -9,7 +9,10 @@ const useStyles = (theme: Theme) =>
       paddingBottom: 32
     },
     form: {
-      padding: 24
+      padding: 24,
+      '& .MuiFormControl-root': {
+        paddingTop: 24
+      }
     },
     title: {
       fontSize: 18,

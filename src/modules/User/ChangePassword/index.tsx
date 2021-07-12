@@ -11,21 +11,17 @@ import { Divider } from '@material-ui/core'
 import User from '@icons/User'
 import { useRouter } from 'next/router'
 
-const FullSizePasswordField = withStyles((theme) => ({
-  root: {
-    paddingTop: 16
-  }
-}))(PasswordField)
-
 type ChangePasswordScreenProps = {
   intl: IntlShape
   classes: any
 }
 
 const initialValues = {
-  currentPassword: '',
-  newPassword: '',
-  confirmation: ''
+  changePassword: {
+    currentPassword: '',
+    newPassword: '',
+    confirmation: ''
+  }
 }
 
 const validationSchema = Yup.object({
@@ -84,17 +80,7 @@ const ChangePassword: FC<ChangePasswordScreenProps> = ({ classes, intl }) => {
           <Divider />
 
           <Form className={classes.form}>
-            <FullSizePasswordField
-              fullWidth={true}
-              form={form}
-              name='currentPassword'
-              placeholder={intl.formatMessage({
-                id: 'changepassword.current.password'
-              })}
-              label={intl.formatMessage({
-                id: 'changepassword.insert.current.password'
-              })}
-            />
+            <PasswordField form={form} name='changePassword.currentPassword' />
             <div className={classes.forgetPassword}>
               <a href='#'>
                 {intl.formatMessage({
@@ -102,28 +88,8 @@ const ChangePassword: FC<ChangePasswordScreenProps> = ({ classes, intl }) => {
                 })}
               </a>
             </div>
-            <FullSizePasswordField
-              fullWidth={true}
-              form={form}
-              name='newPassword'
-              placeholder={intl.formatMessage({
-                id: 'changepassword.insert.new.password'
-              })}
-              label={intl.formatMessage({
-                id: 'changepassword.new.password'
-              })}
-            />
-            <FullSizePasswordField
-              fullWidth={true}
-              form={form}
-              name='confirmation'
-              placeholder={intl.formatMessage({
-                id: 'changepassword.insert.new.password'
-              })}
-              label={intl.formatMessage({
-                id: 'changepassword.new.password'
-              })}
-            />
+            <PasswordField form={form} name='changePassword.newPassword' />
+            <PasswordField form={form} name='changePassword.repeatPassword' />
           </Form>
         </CardScreen>
       )}

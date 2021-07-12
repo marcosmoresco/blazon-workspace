@@ -1,52 +1,57 @@
-import React, { ChangeEvent, FC, useState } from 'react'
-import { injectIntl, IntlShape } from 'react-intl'
+import React, { ChangeEvent, FC } from 'react'
+import { useIntl } from 'react-intl'
 
 import {
   FormControl,
   FormHelperText,
   Input,
-  OutlinedInput
+  InputProps
 } from '@material-ui/core'
 import { FormikProps } from 'formik'
+import { Label } from './styles'
 
-type TextFieldProps = {
-  intl: IntlShape
+export interface TextFieldProps extends InputProps {
   name: string
-  label: string
-  placeholder?: string
-  fullWidth?: boolean
+  label?: string
   form: FormikProps<any>
   classes?: any
 }
 
 const TextField: FC<TextFieldProps> = ({
-  intl,
-  name,
   label,
-  placeholder,
   form,
-  fullWidth = true,
-  classes
+  classes,
+  ...inputProps
 }) => {
+  const intl = useIntl()
   const { setFieldValue, values, errors } = form
-
-  const handleChange = ({ target }: ChangeEvent<HTMLInputElement>) =>
-    setFieldValue(name, target.value)
+  const { name, fullWidth } = inputProps
+  if (!inputProps.placeholder) {
+    inputProps.placeholder = intl.formatMessage({
+      id: `${name}.placeholder`.toLowerCase()
+    })
+  }
 
   return (
     <FormControl className={classes?.root} fullWidth={fullWidth}>
-      <label htmlFor={name}>{intl.formatMessage({ id: label })}</label>
-      <OutlinedInput
-        name={name}
-        placeholder={placeholder}
-        type='password'
+      <Label htmlFor={name}>
+        {intl.formatMessage({ id: label || name.toLowerCase() })}
+      </Label>
+      <Input
+        {...inputProps}
         value={values[name]}
-        onChange={handleChange}
-        fullWidth={fullWidth}
+        onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
+          setFieldValue(name, target.value)
+        }
       />
       <FormHelperText error={true}>{errors[name]}</FormHelperText>
     </FormControl>
   )
 }
 
-export default injectIntl(TextField)
+TextField.defaultProps = {
+  fullWidth: true,
+  type: 'text'
+}
+
+export default TextField
