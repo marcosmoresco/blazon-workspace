@@ -155,7 +155,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
             <Paper className={classes.menuList}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList autoFocusItem={openProfile} id="menu-list-grow">
-                  <MenuItem>
+                  <MenuItem onClick={() => { router.push("/profile"); return true; }} >
                     <div className={classes.menuItem}>
                       <div className={`${classes.menuImage} blue`}>
                         <UserIcon width={20} height={20} color="#FFFFFF" />

@@ -3,7 +3,7 @@ import { injectIntl } from "react-intl";
 import { TitleProps } from "./types";
 import PaperPlaneTiltIcon from "@icons/PaperPlaneTilt";
 import ArrowLeft from "@icons/ArrowLeft";
-import { TitleBox, TitleText, SubTitleBox, SubTitleText, Line, Header, Box } from "./styles";
+import { TitleBox, TitleText, SubTitleBox, SubTitleText, Line, Header, Box, BackBox } from "./styles";
 
 const TitlePage: React.FC<TitleProps> = ({
   title,
@@ -17,9 +17,9 @@ const TitlePage: React.FC<TitleProps> = ({
       <Box>
         <Header>
           {onBack && (
-            <div onClick={onBack}>
+            <BackBox onClick={onBack}>
               <ArrowLeft />
-            </div>
+            </BackBox>
           )}
           <TitleBox>
             {icon}

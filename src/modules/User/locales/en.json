@@ -1,0 +1,15 @@
+{
+  "changepassword.title": "Creating a new password",
+  "changepassword.description": "Your new password must contain uppercase and lowercase letters, numbers and symbols.",
+  "changepassword.current.password": "Current password",
+  "changepassword.insert.current.password": "Enter your current password",
+  "changepassword.new.password": "New password",
+  "changepassword.insert.new.password": "Enter your new password",
+  "changepassword.forget.password": "Forgot password?",
+  "changepassword.header.title": "New password",
+  "changepassword.header.breadcrumb": "Profile",
+  "save": "Save",
+  "profileedit.header.breadcrumb": "Profile",
+  "profileedit.title": "Personal information",
+  "profileedit.description": "Edit your personal information below, don't forget to save at the end."
+}
