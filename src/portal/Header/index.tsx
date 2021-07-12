@@ -30,6 +30,7 @@ import SignOutIcon from "@icons/SignOut";
 import Message from "../Message";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import { useUser } from "@hooks";
 import { useTheme, themes } from "../../theme";
 import type { HeaderProps } from "./types";
 import useStyles from "./styles";
@@ -40,6 +41,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
   const [openProfile, setOpenProfile] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
+  const [ user, thumb ] = useUser();
   const { theme, setTheme } = useTheme();
   const currentTheme = themes[theme];
   if (typeof window !== "undefined") {
@@ -131,7 +133,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
               aria-controls={openProfile ? "menu-list-grow" : undefined}
               aria-haspopup="true"
             >
-              <Avatar src="/Avatar.svg" />
+              <Avatar src={thumb}/>
             </Button>
           </div>
         </Toolbar>
