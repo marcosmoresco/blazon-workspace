@@ -39,18 +39,7 @@ const useStyles = (theme: Theme) =>
     },
     filterCaretRight: {
       marginLeft: 20,
-    },
-    tags: {
-      background: "#E9EBF3",
-      borderRadius: 4,
-      marginTop: 24,
-      padding: 10,
-      display: "flex",
-      width: "fit-content",
-      position: "relative",
-      left: "50%",
-      transform: "translateX(-50%)",
-    },
+    },    
     tag: {
       fontWeight: "normal",
       fontSize: 16,

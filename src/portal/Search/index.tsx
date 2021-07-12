@@ -3,6 +3,7 @@ import { useRouter } from "next/router"
 import { withStyles } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
+import Section from "@components/Section";
 import Tutorial from "@components/Tutorial";
 import TableIcon from "@icons/Table";
 import PuzzlePieceIcon from "@icons/PuzzlePiece";
@@ -18,7 +19,6 @@ const Search: FC<SearchProps> = ({ classes }) => {
   
   const router = useRouter();
   const [active, setActive] = useState('ALL');
-
 
   const list = [
     {
@@ -107,6 +107,28 @@ const Search: FC<SearchProps> = ({ classes }) => {
     console.log(filtered);
   };
 
+  const sections = [{
+    icon: <TableIcon />,
+    name: "all",
+    value: "ALL"
+  }, {
+    icon: <PuzzlePieceIcon />,
+    name: "resources",
+    value: "RESOURCE"
+  }, {
+    icon: <ArticleIcon />,
+    name: "entitlements",
+    value: "ENTITLEMENT"
+  }, {
+    icon: <UserGearIcon />,
+    name: "adminAccounts",
+    value: "ADMIN_ACCOUNT"
+  }, {
+    icon: <NewspaperClippingIcon />,
+    name: "roles",
+    value: "ROLE"
+  }];
+
   return (
     <div className="Default-content">
       <Tutorial title="search.tutorial.title" text="search.tutorial.text" />
@@ -115,35 +137,7 @@ const Search: FC<SearchProps> = ({ classes }) => {
         <div className={classes.totalItens}>10 Itens</div>
         <Filters onSave={save}/>
         <Divider />
-        <div className={classes.tags}>
-          <div 
-            onClick={() => setActive('ALL')}
-            className={`${classes.tag} ${(active === 'ALL' && 'Active') || ''}`}>
-            <TableIcon width={25} height={25} color="#0E46D7" /> Todos
-          </div>
-          <div 
-            onClick={() => setActive('RESOURCE')}
-            className={`${classes.tag} ${(active === 'RESOURCE' && 'Active') || ''}`}>
-            <PuzzlePieceIcon width={25} height={25} color="#7D7A8C" /> Resources
-          </div>
-          <div
-            onClick={() => setActive('ENTITLEMENT')} 
-            className={`${classes.tag} ${(active === 'ENTITLEMENT' && 'Active') || ''}`}>
-            <ArticleIcon width={25} height={25} color="#7D7A8C" /> Entitlements
-          </div>
-          <div 
-            onClick={() => setActive('ADMIN_ACCOUNT')}
-            className={`${classes.tag} ${(active === 'ADMIN_ACCOUNT' && 'Active') || ''}`}>
-            <UserGearIcon width={25} height={25} color="#7D7A8C" /> Admin
-            accounts
-          </div>
-          <div 
-            onClick={() => setActive('ROLE')}
-            className={`${classes.tag} ${(active === 'ROLE' && 'Active') || ''}`}>
-            <NewspaperClippingIcon width={25} height={25} color="#7D7A8C" />{" "}
-            Roles
-          </div>
-        </div>
+        <Section list={sections} defaultValue="ALL" onSelect={(section) => setActive(section.value)}/>        
         <div className={classes.searchCards}>
           <Grid container spacing={3}>
             {list

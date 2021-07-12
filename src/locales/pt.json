@@ -38,5 +38,8 @@
   "entitlements": "Direitos",
   "adminAccount": "Conta administrativa",
   "adminAccounts": "Contas administrativa",
-  "cart.add": "Adicionar no carinho"
+  "cart.add": "Adicionar no carinho",
+  "tasks": "Tarefas",
+  "tasks.personal": "Tarefas pessoais",
+  "all": "Todos"
 }

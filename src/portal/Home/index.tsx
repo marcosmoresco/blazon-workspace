@@ -22,7 +22,8 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
   const [open, setOpen] = useState(false);
   const [passwordVault, setPasswordVault] = useState({});
 
-  const { loading, error, data } = useQuery(GET_ENTRIES);
+  const { data : dataResume } = useQuery(RESUME);
+  const { loading : loadingEntries, error : errorEntries , data :  dataEntries } = useQuery(GET_ENTRIES);
 
   return (
     <div className={classes.root}>
@@ -41,7 +42,7 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
           </div>
           <div className={classes.headerWelcomeSubText}>
             {intl.formatMessage({
-              id: "home.welcome.text",
+              id: dataResume?.getResume?.totalOpenTasks > 0 ? "home.welcome.text.new" : "home.welcome.text",
             })}
           </div>
           <Button
@@ -76,8 +77,8 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
             </div>
             <div className={classes.recentPasswordsContent}>
               <Grid container spacing={3}>
-                {!loading && !error
-                  ? data?.getPasswordVaultEntries.slice(0, 4).map((r: any) => (
+                {!loadingEntries && !errorEntries
+                  ? dataEntries?.getPasswordVaultEntries.slice(0, 4).map((r: any) => (
                       <Grid
                         item
                         xs={6}

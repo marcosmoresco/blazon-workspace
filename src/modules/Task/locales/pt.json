@@ -1,3 +1,5 @@
 {  
-  "task.remove.message": "Tarefa removida com sucesso!"
+  "task.remove.message": "Tarefa removida com sucesso!",
+  "task.tutorial.title": "Como gerenciar suas tarefas",
+  "task.tutorial.text": "Acompanhe esse mini tutorial e acabe com suas dúvidas."
 }

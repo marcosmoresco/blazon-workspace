@@ -4,9 +4,13 @@ import Card from "@components/Card";
 import Button from "@components/Button";
 import DataGrid from "@components/DataGrid";
 import Filter from "@components/Filter";
+import Section from "@components/Section";
+import Tutorial from "@components/Tutorial";
 import { confirm } from "@components/Dialog/actions";
 import ArrowsOutIcon from "@icons/ArrowsOut";
 import ArrowClockwiseIcon from "@icons/ArrowClockwise";
+import CheckSquareOffsetIcon from "@icons/CheckSquareOffset";
+import UserGearIcon from "@icons/UserGear";
 import { connect } from "react-redux";
 //import { all, save, remove } from './actions'
 import { addMessage } from "@actions/index";
@@ -120,9 +124,22 @@ const Tasks: FC<ListProps> = ({ dispatch }) => {
       </Card>
     </div>
   );
+
+  const sections = [{
+    icon: <CheckSquareOffsetIcon />,
+    name: "tasks",
+    value: "TASKS"
+  }, {
+    icon: <UserGearIcon />,
+    name: "tasks.personal",
+    value: "TASKS_PERSONAL"
+  }];
+
   return (
     <div className="Default-content">
+      <Tutorial title="task.tutorial.title" text="task.tutorial.text"/>
       <Card>
+        <Section list={sections} defaultValue="TASKS"/>
         <div className="Default-header-filter">
           <Filter
             filters={filters}

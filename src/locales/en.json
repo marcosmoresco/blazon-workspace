@@ -38,5 +38,8 @@
   "entitlements": "Entitlements",
   "adminAccount": "Admin account",
   "adminAccounts": "Admin accounts",
-  "cart.add": "Add cart"
+  "cart.add": "Add cart",
+  "tasks": "Tasks",
+  "tasks.personal": "Personal tasks",
+  "all": "All"
 }
