@@ -9,6 +9,7 @@ import {
 } from '@material-ui/core'
 import { FormikProps } from 'formik'
 import { Label } from './styles'
+import { get } from 'lodash'
 
 export interface TextFieldProps extends InputProps {
   name: string
@@ -39,12 +40,12 @@ const TextField: FC<TextFieldProps> = ({
       </Label>
       <Input
         {...inputProps}
-        value={values[name]}
+        value={get(values, name)}
         onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
           setFieldValue(name, target.value)
         }
       />
-      <FormHelperText error={true}>{errors[name]}</FormHelperText>
+      <FormHelperText error={true}>{get(errors, name)}</FormHelperText>
     </FormControl>
   )
 }

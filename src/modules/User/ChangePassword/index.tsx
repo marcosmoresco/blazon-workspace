@@ -20,20 +20,22 @@ const initialValues = {
   changePassword: {
     currentPassword: '',
     newPassword: '',
-    confirmation: ''
+    repeatPassword: ''
   }
 }
 
 const validationSchema = Yup.object({
-  currentPassword: Yup.string()
-    .max(15, 'Must be 15 characters or less')
-    .required('Required'),
-  newPassword: Yup.string()
-    .max(15, 'Must be 15 characters or less')
-    .required('Required'),
-  confirmation: Yup.string()
-    .max(15, 'Must be 15 characters or less')
-    .required('Required')
+  changePassword: Yup.object({
+    currentPassword: Yup.string()
+      .max(15, 'Must be 15 characters or less')
+      .required('Required'),
+    newPassword: Yup.string()
+      .max(15, 'Must be 15 characters or less')
+      .required('Required'),
+    repeatPassword: Yup.string()
+      .max(15, 'Must be 15 characters or less')
+      .required('Required')
+  }).required('Required')
 })
 
 const ChangePassword: FC<ChangePasswordScreenProps> = ({ classes, intl }) => {
@@ -53,7 +55,7 @@ const ChangePassword: FC<ChangePasswordScreenProps> = ({ classes, intl }) => {
       render={(form) => (
         <CardScreen
           title='profile'
-          subTitle='changepassword.new.password'
+          subTitle='changepassword.header.title'
           icon={<User height={24} width={24} />}
           onBack={() => router.push('/profile')}
           actions={

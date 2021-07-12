@@ -24,6 +24,7 @@
     "date-fns": "^2.16.1",
     "formik": "^2.2.9",
     "graphql": "^15.5.1",
+    "lodash": "^4.17.21",
     "next": "11.0.1",
     "next-redux-wrapper": "^7.0.2",
     "notistack": "^1.0.9",
