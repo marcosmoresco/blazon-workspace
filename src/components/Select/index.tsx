@@ -32,7 +32,8 @@ const useStyles = makeStyles((theme) => ({
       top: 0
     },
     '& svg': {
-      marginRight: 10
+      marginRight: 10,
+      marginLeft: 10
     }  
   },
 }))
@@ -56,7 +57,7 @@ export default function CustomizedSelect(props:any) {
         label=""
         className={classes.root}
         IconComponent = {props => (
-         props.className.indexOf('iconOpen') > -1 ? <CaretUpIcon {...props}/> : <CaretDownIcon {...props}/>
+         props.className.indexOf('iconOpen') > -1 ? <CaretUpIcon {...props} width={50}/> : <CaretDownIcon {...props} width={50}/>
         )}                                   
         style={{width: "100%"}}             
       >

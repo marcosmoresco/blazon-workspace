@@ -476,7 +476,7 @@ class Filter extends Component<FilterPropsType, FilterStateType> {
                   </InputAdornment>                  
                </div>
                }
-               endAdornment={<InputAdornment position="end">{open ? <CaretUpIcon /> : <CaretDownIcon/>}</InputAdornment>}
+               endAdornment={<InputAdornment position="end">{open ? <CaretUpIcon width={25}/> : <CaretDownIcon width={25}/>}</InputAdornment>}
                labelWidth={0}
              />
              {open ? (

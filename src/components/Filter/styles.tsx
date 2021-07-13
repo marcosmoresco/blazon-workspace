@@ -24,7 +24,7 @@ const useStyles = (theme:Theme) => createStyles({
     boxShadow: '0px 24px 71px 5px rgba(0, 0, 0, 0.25)',
     borderRadius: 8,
     marginTop: 15,
-    width: 504,
+    width: 498,
     position: 'absolute',
     zIndex: 10,
     '& .Filters-list': {
