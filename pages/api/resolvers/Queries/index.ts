@@ -7,7 +7,7 @@ const Queries = {
   getResume: async () => {
     try {
       const resume = await axios.get(
-        "http://demo2183093.mockable.io/blazon-workspace-backend/workspace/tasks/executorresume"
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/tasks/executorresume`
       );
       return resume.data;
     } catch (error) {
