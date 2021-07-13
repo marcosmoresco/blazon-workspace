@@ -1,9 +1,9 @@
 import axios from "axios";
 
-import PasswordVaultQueries from "./PasswordVault";
-import RequestQueries from "./Request";
+import { PasswordVaultQueries } from "./PasswordVault";
+import { RequestQueries } from "./Request";
 
-const Queries = {
+export const Queries = {
   getResume: async () => {
     try {
       const resume = await axios.get(
@@ -17,5 +17,3 @@ const Queries = {
   ...PasswordVaultQueries,
   ...RequestQueries,
 };
-
-export default Queries;

@@ -1,4 +1,4 @@
-const Permission = `
+export const Permission = `
   type Permission {
     user: User
     modify: Boolean
@@ -7,4 +7,3 @@ const Permission = `
     links: [Link]
   }
 `;
-export default Permission;

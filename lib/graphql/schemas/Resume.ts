@@ -1,4 +1,4 @@
-const Resume = `
+export const Resume = `
   type Resume {
     openApprovalTasks: Int
     openProvisioningTasks: Int
@@ -9,4 +9,3 @@ const Resume = `
     links: [Link]
   }
 `;
-export default Resume;

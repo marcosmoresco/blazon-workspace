@@ -1,4 +1,4 @@
-const Request = `
+export const Request = `
   type DetailRequest {
     identifier: Int
     name: String
@@ -27,4 +27,3 @@ const Request = `
     requests: [Request]
   }
 `;
-export default Request;

@@ -1,4 +1,4 @@
-const ApprovalDetails = `
+export const ApprovalDetails = `
   type ApprovalDetails {
     identifier: Int
     creation: String
@@ -7,4 +7,3 @@ const ApprovalDetails = `
     taskId: Int
   }
 `;
-export default ApprovalDetails;

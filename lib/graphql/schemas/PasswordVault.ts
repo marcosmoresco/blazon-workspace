@@ -1,4 +1,4 @@
-const PasswordVault = `
+export const PasswordVault = `
   type PasswordVault {
     identifier: Int
     name: String
@@ -10,4 +10,3 @@ const PasswordVault = `
     links: [Link]
   }
 `;
-export default PasswordVault;

@@ -1,4 +1,4 @@
-const User = `
+export const User = `
   type User {
     identifier: ID
     username: String
@@ -6,4 +6,3 @@ const User = `
     links: [Link]
   }
 `;
-export default User;

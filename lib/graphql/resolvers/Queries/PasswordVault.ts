@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const PasswordVaultQueries = {
+export const PasswordVaultQueries = {
   getPasswordVaultEntries: async () => {
     try {
       const entries = await axios.get(
@@ -12,5 +12,3 @@ const PasswordVaultQueries = {
     }
   },
 };
-
-export default PasswordVaultQueries;
