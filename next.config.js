@@ -10,5 +10,8 @@ module.exports = {
   },
   typescript: {
     ignoreBuildErrors: true,
-  }
+  },
+  images: {
+    domains: ['i.ibb.co'],
+  },
 }

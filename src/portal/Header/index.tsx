@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { injectIntl } from "react-intl";
 import { useRouter } from "next/router";
+import Link from "next/link";
 import Image from "next/image";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -91,11 +92,15 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
           <div className={classes.menuOptionsContent}>
             <div className={classes.menuOptions}>
               <div className={classes.optionImage}>
-                <PaperPlaneTiltIcon
-                  width={21}
-                  height={21}
-                  color={currentTheme.overrides.MuiIcon.root.color}
-                />
+              <Link href="/requests">
+                <a>
+                  <PaperPlaneTiltIcon
+                    width={21}
+                    height={21}
+                    color={currentTheme.overrides.MuiIcon.root.color}
+                  />
+               </a>
+              </Link>
               </div>
               <div className={classes.optionImage}>
                 <KeyIcon
