@@ -7,7 +7,11 @@ import { info } from "../log";
 const { ApolloServer } = require("apollo-server-express");
 
 const graphql = async function () {
-  const server = new ApolloServer({ typeDefs, resolvers });
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    context: ({ req } : {req : any}) => ({ req }),
+  });
 
   await server.start();
 
@@ -15,7 +19,7 @@ const graphql = async function () {
   server.applyMiddleware({ app, path });
 
   const httpServer = http.createServer(app);
-  
+
   const port = process.env.PORT || 3000;
 
   info(`

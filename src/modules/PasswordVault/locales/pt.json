@@ -1,4 +1,6 @@
 {  
   "passwordVault.tutorial.title": "Como gerenciar as suas senhas",
-  "passwordVault.tutorial.text": "Acompanhe esse mini tutorial e acabe com suas dúvidas."  
+  "passwordVault.tutorial.text": "Acompanhe esse mini tutorial e acabe com suas dúvidas.",
+  "passwordVault.no.password": "Nenhuma senha",
+  "passwordVault.no.password.text": "Não existem acessos adicionados a sua conta." 
 }

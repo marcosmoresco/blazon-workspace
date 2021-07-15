@@ -17,6 +17,10 @@ export const GET_REQUESTS = gql`
         status
         justification
       }
+      links {
+        rel
+        href
+      }
     }
   }
 `;

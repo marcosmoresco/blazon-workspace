@@ -1,12 +1,18 @@
 import express from "express";
 const session = require("express-session");
+import cors from "cors";
+import axios from "axios";
 const uid = require("uid-safe");
 import passport from "./passport";
+import { info } from "./log";
 
 //Create server express
 const server = express();
 server.use(express.json());
 server.use(express.urlencoded({ extended: true }));
+server.use(cors({
+  credentials: true // enable set cookie
+}));
 
 //Config session
 const sessionConfig = {
@@ -14,7 +20,7 @@ const sessionConfig = {
   cookie: {
     maxAge: 86400 * 1000, // 24 hours in milliseconds
   },
-  resave: false,
+  resave: true,
   saveUninitialized: true,
 };
 server.use(session(sessionConfig));
@@ -50,8 +56,31 @@ server.get(
 server.post(
   "/login/callback",
   passport.authenticate("saml", { failureRedirect: "/login/fail" }),
-  function (req, res) {
-    res.redirect("/");
+  async (req: any, res: any) => {
+
+    info(" \n ............. Requesting token oauth .............\n");
+    try {
+      const params = new URLSearchParams();
+      params.append("grant_type", "urn:ietf:params:oauth:grant-type:saml2-bearer");
+      params.append("assertion", req.body.SAMLResponse);
+
+      const response = await axios.post(
+        `${process.env.SERVER_OAUTH}/blazon-oauth-server/oauth2/token.oauth2`,
+        params,
+        {
+          headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/x-www-form-urlencoded",            
+          },          
+        }
+      );     
+      req.session.passport.AccessToken = response.data.access_token;
+      req.session.passport.RefreshToken = response.data.refresh_token;
+      info(`Response OAuth token success, expire in ${response.data.expires_in} milliseconds \n`);           
+      res.redirect("/");
+    } catch(e) {      
+      res.sendStatus(500);
+    }       
   }
 );
 

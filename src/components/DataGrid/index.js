@@ -9,8 +9,9 @@ import TableContainer from '@material-ui/core/TableContainer'
 import TablePagination from '@material-ui/core/TablePagination'
 import TableRow from '@material-ui/core/TableRow'
 import Snackbar from '../Snackbar'
-import { replaceQueryParam } from '@utils/queryParam'
+import { getQueryParam, replaceQueryParam } from '@utils/queryParam'
 import { connect } from 'react-redux'
+import apolloClient from '@utils/apollo-client';
 import axios from 'axios'
 import CustomNoRowsOverlay from './components/CustomNoRowsOverlay'
 import Head from './components/Head'
@@ -143,6 +144,7 @@ class DataGridBlazon extends React.Component {
       method,
       body,
       links, 
+      query,
       type, 
       height, 
       expand, 
@@ -364,9 +366,31 @@ class DataGridBlazon extends React.Component {
         this.setState({
           isFetching: true,
           internalFetching: true
-        })        
-       
-        axios
+        }) 
+        
+        if(query) {
+
+          const size = getQueryParam("size", link);
+          const page = getQueryParam("page", link);
+
+          apolloClient
+            .query({ 
+              query, 
+              variables: {
+                page,
+                size 
+              }
+            })
+            .then(({ data }) => this.setState({
+              isFetching: false,
+              internalFetching: false,
+              gridLinks: data?.getRequests?.links || [],
+              rows: (data?.getRequests?.requests?.representation || []).map((u) => ({...u, id: (bindId && bindId(u)) || u.identifier}))
+            }));   
+
+        } else {
+
+          axios
           .request({
             url: link,
             method: method || 'POST',
@@ -379,7 +403,8 @@ class DataGridBlazon extends React.Component {
               gridLinks: data.links,
               rows: data.representation.map((u) => ({...u, id: (bindId && bindId(u)) || u.identifier}))
             })
-          })                
+          })   
+        }                           
       }       
     }
 

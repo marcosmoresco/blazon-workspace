@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "hom": "env-cmd -f .env.staging ts-node --project tsconfig.server.json server.ts",
+    "hom": "env-cmd -f .env.staging nodemon",
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
@@ -31,6 +31,7 @@
     "lodash": "^4.17.21",
     "next": "11.0.1",
     "next-redux-wrapper": "^7.0.2",
+    "nodemon": "^2.0.12",
     "notistack": "^1.0.9",
     "passport": "^0.4.1",
     "passport-saml": "1.5.0",
@@ -49,6 +50,7 @@
   "devDependencies": {
     "@types/react": "17.0.11",
     "chalk": "^4.1.1",
+    "cors": "^2.8.5",
     "env-cmd": "^10.1.0",
     "eslint": "7.29.0",
     "eslint-config-next": "11.0.1",

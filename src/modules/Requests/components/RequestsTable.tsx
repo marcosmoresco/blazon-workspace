@@ -159,16 +159,16 @@ export const filters: FilterType[] = [
 const Tasks: FC = () => {
   const router = useRouter();
   const { loading, error, data } = useQuery<{
-    getRequests: { requests: Request[] };
+    getRequests: { requests: Request[], links: [] };
   }>(GET_REQUESTS, {
     variables: {
-      page: 1,
+      page: 0,
       size: 20,
     },
   });
 
   const requests = data?.getRequests.requests;
-  console.log({ loading, error, requests });
+  const links = data?.getRequests.links;
 
   const [isFetching, setIsFetching] = useState(false);
   const [callbackClear, setCallbackClear] = useState({ execute: () => {} });
@@ -257,19 +257,20 @@ const Tasks: FC = () => {
           <DataGrid
             height={600}
             list={requests}
-            links={[]}
+            links={links || []}
+            query={GET_REQUESTS}
             fetching={loading || isFetching}
             columns={columns}
             page={1}
             size={25}
-            rowsPerPageList={[25, 50, 75, 100]}
-            // handleClick={handleClickRow}
+            rowsPerPageList={[25, 50, 75, 100]}            
             handleSelected={handleSelected}
             actions={[]}
             expand={expandContent}
             expandOnClick
             expandAll={expandAll}
             selectable
+            type="pagination"
           />
         </div>
       </Card>

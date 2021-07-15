@@ -11,6 +11,7 @@ import Grid from "@material-ui/core/Grid";
 import PasswordVaultTutorial from "@modules/PasswordVault/components/Tutorial";
 import PasswordVault from "@modules/PasswordVault/components";
 import HeaderImg from "./images/header.svg";
+import EmptyState from "./components/EmptyState";
 import { gql, useQuery } from "@apollo/client";
 import { RESUME } from "./queries";
 import { GET_ENTRIES } from "@modules/PasswordVault/queries";
@@ -77,7 +78,7 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
             </div>
             <div className={classes.recentPasswordsContent}>
               <Grid container spacing={3}>
-                {!loadingEntries && !errorEntries
+                {!loadingEntries && !errorEntries && (dataEntries?.getPasswordVaultEntries || []).length
                   ? dataEntries?.getPasswordVaultEntries.slice(0, 4).map((r: any) => (
                       <Grid
                         item
@@ -134,7 +135,7 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                         </div>
                       </Grid>
                     ))
-                  : null}
+                  : <EmptyState title="passwordVault.no.password" text="passwordVault.no.password.text"/>}
               </Grid>
             </div>
           </div>

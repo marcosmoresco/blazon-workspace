@@ -16,7 +16,7 @@ export const typeDefs = gql`
   ${ApprovalDetails}
   ${Request}
 
-  type Query {
+  type Query {    
     getResume: Resume
     getPasswordVaultEntries: [PasswordVault]
     getRequests(page: Int, size: Int): RequestRepresentation

@@ -12,6 +12,6 @@ module.exports = {
     ignoreBuildErrors: true,
   },
   images: {
-    domains: ['i.ibb.co'],
+    domains: ["i.ibb.co", "localhost"],
   },
 }

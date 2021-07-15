@@ -28,7 +28,7 @@ function DotsThreeIcon(props: IconProps) {
       <path
         d="M24 17C24.5523 17 25 16.5523 25 16C25 15.4477 24.5523 15 24 15C23.4477 15 23 15.4477 23 16C23 16.5523 23.4477 17 24 17Z"
         fill={color}
-      />{" "}
+      />
     </svg>
   );
 }
