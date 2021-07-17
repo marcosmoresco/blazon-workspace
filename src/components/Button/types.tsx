@@ -3,7 +3,10 @@ export type ButtonPropsType = {
   isLoading?: number
   variant?: any
   color?: string
+  secondColor?: string
   startIcon?: any
+  disabled?: boolean
+  children: any
   classes: {
     root: string   
   }

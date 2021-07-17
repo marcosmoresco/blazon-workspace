@@ -12,8 +12,8 @@ import RequestsPt from "./Requests/locales/pt.json";
 import RequestsEn from "./Requests/locales/en.json";
 
 //RequestsDatailing
-import RequestsDatailingPt from "./RequestsDetailing/locales/pt.json";
-import RequestsDatailingEn from "./RequestsDetailing/locales/en.json";
+import RequestsDatailingPt from "./Requests/Detail/locales/pt.json";
+import RequestsDatailingEn from "./Requests/Detail/locales/en.json";
 
 export const ModulesLocalesPt: LocalesType = {
   ...TaskPt,

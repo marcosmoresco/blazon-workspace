@@ -210,7 +210,7 @@ export const styles = (theme) => ({
         pointerEvents: 'none',
       }
     },
-    '& thead tr': {
+    '& > thead > tr': {
       height: 42,     
       '& th': {
         padding: '0 16px',
@@ -231,7 +231,7 @@ export const styles = (theme) => ({
         },
       },
     },
-    '& tbody tr': {
+    '& > tbody > tr': {
       borderBottom: '1px solid #C4C4C4',
       lineHeight: '55px',
       cursor: 'pointer',
@@ -279,8 +279,7 @@ export const styles = (theme) => ({
       '& td': {
         paddingBottom: 0,
         padding: 0,
-        border: 0,
-        backgroundColor: '#E6EAEB',
+        border: 0,       
         '& .MuiBox-root': {
           margin: 0
         }

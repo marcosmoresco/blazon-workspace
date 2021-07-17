@@ -2,6 +2,7 @@ import axios from "axios";
 import { config } from "../utils";
 import { PasswordVaultQueries } from "./PasswordVault";
 import { RequestQueries } from "./Request";
+import { SelfServiceQueries } from "./SelfService";
 
 export const Queries = {
   getResume: async (parent: any, args: any, context: any) => {
@@ -17,4 +18,5 @@ export const Queries = {
   },
   ...PasswordVaultQueries,
   ...RequestQueries,
+  ...SelfServiceQueries,
 };

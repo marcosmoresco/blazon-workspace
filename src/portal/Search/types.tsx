@@ -17,3 +17,17 @@ export type SearchProps = {
     searchCartContent: string;
   };
 };
+
+export type ReferenceTo = {
+  referenceToIdentifier: number;
+  referenceToName: string;
+  referenceToType: string;
+};
+
+export type SelfService = {
+  name: string;
+  description: string;
+  type: string;
+  identifier: string;
+  referenceTo: ReferenceTo;
+};

@@ -6,6 +6,7 @@ import Image from "next/image";
 import { FormattedMessage, injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { useQuery } from "@apollo/client";
+import apolloClient from '@utils/apollo-client';
 
 // types
 import type { FilterType } from "@components/Filter/types";
@@ -20,11 +21,14 @@ import ArrowClockwiseIcon from "@icons/ArrowClockwise";
 import { GET_REQUESTS } from "../queries";
 import Tag from "@icons/Tag";
 import CaretRight from "@icons/CaretRight";
+import { getContent } from "@modules/Requests/constants";
+import type { RequestsTableProps } from "./types";
 
 // styles
 import {
   ExpandContentCard,
   StyleMenuGrid,
+  StyleMenuGridTitle,
   StyleResource,
   StyledTableResource,
   StyledTableResourceMenu,
@@ -72,7 +76,7 @@ export const columns = [
   {
     field: "identifier",
     headerName: <FormattedMessage id="request.identifier" />,
-    sortable: true,
+    sortable: false,
   },
   {
     field: "beneficiary.displayName",
@@ -80,18 +84,18 @@ export const columns = [
     sortable: false,
     // eslint-disable-next-line react/display-name
     renderCell: (row: Request) => {
-      return (
+      return row?.beneficiary ? (
         <Beneficiary
-          name={row.beneficiary.displayName}
-          image={row.beneficiary.links[1].href}
+          name={row?.beneficiary.displayName}
+          image={row?.beneficiary.links[1].href}
         />
-      );
+      ) : " - ";
     },
   },
   {
     field: "type",
     headerName: <FormattedMessage id="request.type" />,
-    sortable: false,
+    sortable: true,
     renderCell: (row: Request) => {
       return <Type type={row.type ? row.type : " - "} />;
     },
@@ -111,7 +115,7 @@ export const columns = [
   {
     field: "status",
     headerName: <FormattedMessage id="request.status" />,
-    sortable: false,
+    sortable: true,
     renderCell: (row: Request) => {
       return <Status status={row.status} />;
     },
@@ -156,14 +160,15 @@ export const filters: FilterType[] = [
   },
 ];
 
-const Tasks: FC = () => {
+
+const Tasks: FC<RequestsTableProps> = ({intl}) => {
   const router = useRouter();
   const { loading, error, data } = useQuery<{
     getRequests: { requests: Request[], links: [] };
   }>(GET_REQUESTS, {
     variables: {
       page: 0,
-      size: 20,
+      size: 100,
     },
   });
 
@@ -174,13 +179,25 @@ const Tasks: FC = () => {
   const [callbackClear, setCallbackClear] = useState({ execute: () => {} });
   const [selecteds, setSelecteds] = useState([]);
   const [expandAll, setExpandAll] = useState(false);
+  const [requestsFiltered, setRequestsFiltered] = useState(requests);
 
   const search = (filters?: any) => {
-    console.log(filters);
+    
     setIsFetching(true);
-    setTimeout(() => {
-      setIsFetching(false);
-    }, 4000);
+    apolloClient
+      .query({ 
+        query: GET_REQUESTS, 
+        variables: {
+          page: 0,
+          size: 20,
+          filters: JSON.stringify(filters)
+        }
+      })
+      .then(({ data }) => {
+        setRequestsFiltered(data?.getRequests.requests);
+        //links = data?.getRequests.links;
+        setIsFetching(false);
+      });   
   };
 
   const handleSelected = (selecteds: any, callbackClear: any) => {
@@ -188,8 +205,7 @@ const Tasks: FC = () => {
     setSelecteds(selecteds);
   };
 
-  const handleClickRow = (request: Request) => {
-    // dispatch(addMessage(`Click task : ${row.identifier}`));
+  const handleClickRow = (request: Request) => {    
     router.push(`/requests/${request.identifier}`);
   };
 
@@ -198,39 +214,20 @@ const Tasks: FC = () => {
       <ExpandContent>
         <ExpandContentCard>
           <StyleMenuGrid>
-            <Tag height={16} width={15} />
-            <span>
-              <FormattedMessage id="request.request.detail" />
-            </span>
-          </StyleMenuGrid>
-          <StyleResource>
-            <span>
-              <FormattedMessage id="request.resource" />
-            </span>
+            <StyleMenuGridTitle>
+              <Tag height={16} width={15} />
+              <span>
+                <FormattedMessage id="request.request.detail" />
+              </span>
+            </StyleMenuGridTitle>            
             <Link href={`/requests/${item.identifier}`}>
               <a>
-                <FormattedMessage id="request.seeAll" />
+                <FormattedMessage id="detail" />
                 <CaretRight height={15} width={18} />
               </a>
             </Link>
-          </StyleResource>
-          <StyledTableResource>
-            <StyledTableResourceMenu>
-              <span>
-                <FormattedMessage id="request.name" />
-              </span>
-              <span>
-                <FormattedMessage id="request.description" />
-              </span>
-            </StyledTableResourceMenu>
-            <StyledTableResourceRow>
-              <span>EXPENSE MOBI (APP)??</span>
-              <span>
-                Libera acessa ao sistema ultilizado para realizar reembolso de
-                despesas??
-              </span>
-            </StyledTableResourceRow>
-          </StyledTableResource>
+          </StyleMenuGrid>                    
+          {getContent(item, intl)} 
         </ExpandContentCard>
       </ExpandContent>
     );
@@ -256,7 +253,7 @@ const Tasks: FC = () => {
         <div>
           <DataGrid
             height={600}
-            list={requests}
+            list={requestsFiltered || requests}
             links={links || []}
             query={GET_REQUESTS}
             fetching={loading || isFetching}

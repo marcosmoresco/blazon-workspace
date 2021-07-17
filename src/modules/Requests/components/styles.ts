@@ -55,15 +55,27 @@ export const ExpandContentCard = styled.div`
 export const StyleMenuGrid = styled.div`
   display: flex;
   align-items: center;
-  padding: 0 24px 34px 0;
-  gap: 10px;
-  background: #ffff;
-  border-radius: 6px 6px 0 0;
+  justify-content: space-between;  
+  margin-bottom: 24px;
 
   span {
     color: #1b202a;
     font-size: 16px;
   }
+
+  a {
+    cursor: pointer;
+    font-size: 18px;
+    color: #1b202a;
+  }
+`;
+
+export const StyleMenuGridTitle = styled.div`
+  display: flex;
+  align-items: center;  
+  gap: 10px;
+  background: #ffff;
+  border-radius: 6px 6px 0 0;  
 `;
 
 export const StyleResource = styled.div`

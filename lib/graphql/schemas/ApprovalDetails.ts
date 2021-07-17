@@ -5,5 +5,6 @@ export const ApprovalDetails = `
     approvalDate: String
     outcome: String
     taskId: Int
+    approver: User
   }
 `;

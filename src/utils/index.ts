@@ -19,3 +19,13 @@ export const deepCopyFunction = (inObject:any) => {
 };
 
 export const isDefined = (value:any): boolean => value !== null && value !== undefined;
+
+interface Link {
+  rel: string;
+  href: string;
+}
+
+export const getLink = (rel: string, links: Link[]): string => {
+  const searched: Link[] = links.filter((l: Link) => l.rel === rel);
+  return (searched?.length && searched[0].href) || "";
+}

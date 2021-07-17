@@ -86,10 +86,11 @@ const useStyles = (theme: Theme) =>
       marginRight: 8,
     },
     searchCardContentHeaderTitle: {
-      fontWeight: 600,
-      fontSize: 16,
-      lineHeight: "24px",
+      fontWeight: "normal",
+      fontSize: 18,     
       color: "#26213F",
+      marginLeft: 14,
+      marginBottom: 16
     },
     searchCartContent: {
       padding: 16,

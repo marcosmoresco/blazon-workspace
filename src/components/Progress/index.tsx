@@ -16,19 +16,14 @@ const useStyles = makeStyles((theme) => ({
   }
 }))
 
-export default function CustomizedProgress(props) {
+export default function CustomizedProgress() {
   
-    const classes = useStyles()      
-
-    const text = props.text || <FormattedMessage id="app.loadingInformations"/>
+    const classes = useStyles()          
 
     return (      
       <div className={classes.root}>
         <div>
-          <CircularProgress />
-          <div>
-            {text}
-          </div>
+          <CircularProgress />          
         </div>    
       </div>                                                           
     )

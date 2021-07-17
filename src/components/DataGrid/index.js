@@ -189,30 +189,59 @@ class DataGridBlazon extends React.Component {
       if(link) {
 
         link = link.replace(/{.*?}/g, '')
-        
-        let url = replaceQueryParam(link, 'page', '0')
-        url = replaceQueryParam(url, 'ord', orderChanged)    
 
-        this.setState({isFetching: true, internalFetching: true})
+        if(query) {
 
-        axios
-        .request({
-          url,
-          method: method || 'POST',
-          data: body || {}
-        })
-        .then(({ data }) => {
+          const size = Number(getQueryParam("size", link));
+          const page = 0;
+          const ord = orderChanged;
 
-          this.setState({
-            isFetching: false,
-            internalFetching: false,
-            gridLinks: data.links,
-            rows: (data.representation || []).map((u) => ({...u, id: (bindId && bindId(u)) || u.identifier})),
-            page: 0,
-            order: isAsc ? 'desc' : 'asc',
-            orderBy: property
-          })                
-        }) 
+          apolloClient
+            .query({ 
+              query, 
+              variables: {
+                page,
+                size,
+                ord 
+              }
+            })
+            .then(({ data }) => this.setState({
+              isFetching: false,
+              internalFetching: false,
+              gridLinks: data?.getRequests?.links || [],
+              rows: (data?.getRequests?.requests || []).map((u) => ({...u, id: (bindId && bindId(u)) || u.identifier})),
+              page: 0,
+              order: isAsc ? 'desc' : 'asc',
+              orderBy: property
+            }));   
+
+        } else {
+          
+          let url = replaceQueryParam(link, 'page', '0')
+          url = replaceQueryParam(url, 'ord', orderChanged)    
+
+          this.setState({isFetching: true, internalFetching: true})
+
+          axios
+          .request({
+            url,
+            method: method || 'POST',
+            data: body || {}
+          })
+          .then(({ data }) => {
+
+            this.setState({
+              isFetching: false,
+              internalFetching: false,
+              gridLinks: data.links,
+              rows: (data.representation || []).map((u) => ({...u, id: (bindId && bindId(u)) || u.identifier})),
+              page: 0,
+              order: isAsc ? 'desc' : 'asc',
+              orderBy: property
+            })                
+          }) 
+
+        }                
       } else {            
         rows.sort((a, b) => isAsc ? (("" + a[property]) || "").localeCompare(b[property]) : (("" + b[property]) || "").localeCompare(a[property]))     
         this.setState({
@@ -370,22 +399,24 @@ class DataGridBlazon extends React.Component {
         
         if(query) {
 
-          const size = getQueryParam("size", link);
-          const page = getQueryParam("page", link);
+          const size = Number(getQueryParam("size", link));
+          const page = Number(getQueryParam("page", link));
+          const ord = getQueryParam("ord", link);
 
           apolloClient
             .query({ 
               query, 
               variables: {
                 page,
-                size 
+                size,
+                ord 
               }
             })
             .then(({ data }) => this.setState({
               isFetching: false,
               internalFetching: false,
               gridLinks: data?.getRequests?.links || [],
-              rows: (data?.getRequests?.requests?.representation || []).map((u) => ({...u, id: (bindId && bindId(u)) || u.identifier}))
+              rows: (data?.getRequests?.requests || []).map((u) => ({...u, id: (bindId && bindId(u)) || u.identifier}))
             }));   
 
         } else {

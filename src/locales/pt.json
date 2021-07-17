@@ -41,5 +41,17 @@
   "cart.add": "Adicionar no carinho",
   "tasks": "Tarefas",
   "tasks.personal": "Tarefas pessoais",
-  "all": "Todos"
+  "all": "Todos",
+  "user": "Usuário",
+  "middleName": "Nome do meio",
+  "lastName": "Último nome",
+  "email": "Email",
+  "personalEmail": "Email pessoal",
+  "displayName": "Nome de exibição",
+  "mobilePhone": "Celular",
+  "phone": "Telefone",
+  "birthDate": "Data de nascimento",
+  "username": "Nome do usuário",
+  "account": "Conta",
+  "accountIdentifier": "Identificador da conta"
 }

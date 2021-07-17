@@ -1,6 +1,7 @@
 import React, { FC, useState } from "react";
 import { useRouter } from "next/router"
 import { withStyles } from "@material-ui/core/styles";
+import { useQuery } from "@apollo/client";
 import Divider from "@material-ui/core/Divider";
 import Grid from "@material-ui/core/Grid";
 import Section from "@components/Section";
@@ -12,99 +13,39 @@ import UserGearIcon from "@icons/UserGear";
 import NewspaperClippingIcon from "@icons/NewspaperClipping";
 import ShoppingCartSimpleIcon from "@icons/ShoppingCartSimple";
 import Filters from "./components/Filters";
-import type { SearchProps } from "./types";
+import type { SearchProps, SelfService } from "./types";
 import useStyles from "./styles";
+import { GET_SELF_SERVICE } from "./queries";
 
 const Search: FC<SearchProps> = ({ classes }) => {
   
   const router = useRouter();
   const [active, setActive] = useState('ALL');
 
-  const list = [
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <PuzzlePieceIcon width={24} height={24} color="#3174F6" />,
-      type: 'RESOURCE',
+  /*let q = "";
+  if(document) {
+    const inputSearch = document.querySelector("#header-search");
+    q = inputSearch?.nodeValue || "";   
+  }*/
+
+  const { loading, error, data } = useQuery<{
+    getSelfService: SelfService[];
+  }>(GET_SELF_SERVICE, {
+    variables: {      
     },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <PuzzlePieceIcon width={24} height={24} color="#3174F6" />,
-      type: 'RESOURCE',
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <PuzzlePieceIcon width={24} height={24} color="#3174F6" />,
-      type: 'RESOURCE',
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <PuzzlePieceIcon width={24} height={24} color="#3174F6" />,
-      type: 'RESOURCE',
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <ArticleIcon width={24} height={24} color="#3174F6" />,
-      type: 'ENTITLEMENT',
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <ArticleIcon width={24} height={24} color="#3174F6" />,
-      type: 'ENTITLEMENT',
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <ArticleIcon width={24} height={24} color="#3174F6" />,
-      type: 'ENTITLEMENT',
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <UserGearIcon width={24} height={24} color="#3174F6" />,
-      type: 'ADMIN_ACCOUNT',
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <UserGearIcon width={24} height={24} color="#3174F6" />,
-      type: 'ADMIN_ACCOUNT',
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <UserGearIcon width={24} height={24} color="#3174F6" />,
-      type: 'ADMIN_ACCOUNT',
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <UserGearIcon width={24} height={24} color="#3174F6" />,
-      type: 'ADMIN_ACCOUNT',
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <UserGearIcon width={24} height={24} color="#3174F6" />,
-      type: 'ADMIN_ACCOUNT',
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <NewspaperClippingIcon width={24} height={24} color="#3174F6" />,
-      type: 'ROLE',
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <NewspaperClippingIcon width={24} height={24} color="#3174F6" />,
-      type: 'ROLE',
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <NewspaperClippingIcon width={24} height={24} color="#3174F6" />,
-      type: 'ROLE',
-    },
-    {
-      title: "Acessos CSC Algar - Firewall_dropbox_liberado",
-      icon: <NewspaperClippingIcon width={24} height={24} color="#3174F6" />,
-      type: 'ROLE',
-    },    
-  ];
+  });
+
+  const list = data?.getSelfService || [];
 
   const save = (filtered: {[key: string]: any}) => {
     console.log(filtered);
+  };
+
+  const iconByType: {[key: string]: any} = {
+    "RESOURCE": <PuzzlePieceIcon width={24} height={24} color="#3174F6" />,
+    "ENTITLEMENT": <ArticleIcon width={24} height={24} color="#3174F6" />,
+    "ROLE": <NewspaperClippingIcon width={24} height={24} color="#3174F6" />,
+    "ADMIN_ACCOUNT": <UserGearIcon width={24} height={24} color="#3174F6" />,
   };
 
   const sections = [{
@@ -148,13 +89,11 @@ const Search: FC<SearchProps> = ({ classes }) => {
                   <div className={classes.searchCardContent}>
                     <div className={classes.searchCardContentHeader}>
                       <div className={classes.searchCardContentHeaderImage}>
-                        {item.icon}
-                      </div>
-                      <div>
-                        <div className={classes.searchCardContentHeaderTitle}>
-                          {item.title}
-                        </div>
-                      </div>
+                        {iconByType[item.type]}
+                      </div>                      
+                    </div>
+                    <div className={classes.searchCardContentHeaderTitle}>
+                      {item.name}
                     </div>
                     <Divider />
                     <div className={classes.searchCartContent}>

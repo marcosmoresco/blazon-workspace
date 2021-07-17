@@ -41,5 +41,17 @@
   "cart.add": "Add cart",
   "tasks": "Tasks",
   "tasks.personal": "Personal tasks",
-  "all": "All"
+  "all": "All",
+  "user": "User",
+  "middleName": "Middle name",
+  "lastName": "Last name",
+  "email": "Email",
+  "personalEmail": "Personal email",
+  "displayName": "Display name",
+  "mobilePhone": "Mobile phone",
+  "phone": "Phone",
+  "birthDate": "Birth date",
+  "username": "Username",
+  "account": "Account",
+  "accountIdentifier": "Account identifier"
 }

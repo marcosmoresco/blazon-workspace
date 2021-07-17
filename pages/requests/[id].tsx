@@ -1,6 +1,6 @@
 import React from "react";
 import { useRouter } from "next/router";
-import RequestsDetailing from "../../src/modules/RequestsDetailing";
+import RequestsDetailing from "../../src/modules/Requests/Detail";
 
 export default function RequestsDetailingPage() {
   const router = useRouter();
