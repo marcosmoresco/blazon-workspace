@@ -38,6 +38,7 @@
   "request.type.ACTIVATE_USER": "Ativar usuário",
   "request.type.INACTIVATE_USER": "Inativar usuário",
   "request.type.UPDATE_USER": "Atualizar usuário",
+  "request.type.REVOKE_USER": "Revogar usuário",
   "request.type.ACTIVATE_ACCOUNT": "Ativar conta",
   "request.type.INACTIVATE_ACCOUNT": "Inativar conta",
   "request.type.CREATE_ACCOUNT": "Criar conta",
@@ -50,5 +51,12 @@
   "request.type.CHECKIN_ADMIN_ACCOUNT_PASSWORD": "Check-in da senha da conta de administrador",
   "request.type.CHECKIN_APPLICATION_ACCOUNT_PASSWORD": "Check-in da senha da conta de aplicação",
   "request.type.CHECKOUT_ADMIN_ACCOUNT_PASSWORD": "Check-out da senha da conta de administrador",
-  "request.type.RESET_PASSWORD": "Redefinir senha"
+  "request.type.RESET_PASSWORD": "Redefinir senha",
+  "request.status.SUCCESS": "Sucesso",
+  "request.status.WAITING_APPROVAL": "Aguardando aprovação",
+  "request.status.DISAPPROVED": "Disaprovado",
+  "request.status.ERROR": "Erro",
+  "request.status.CANCELED": "Cancelado",
+  "request.status.SOD_NOT_ALLOWED": "SoD não permitido",
+  "request.status.WAITING_PROVISIONING": "Aguardando provisonamento"
 }

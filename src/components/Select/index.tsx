@@ -57,7 +57,7 @@ export default function CustomizedSelect(props:any) {
         label=""
         className={classes.root}
         IconComponent = {props => (
-         props.className.indexOf('iconOpen') > -1 ? <CaretUpIcon {...props} width={50}/> : <CaretDownIcon {...props} width={50}/>
+         props.className.indexOf('iconOpen') > -1 ? <CaretUpIcon {...props} /> : <CaretDownIcon {...props} />
         )}                                   
         style={{width: "100%"}}             
       >

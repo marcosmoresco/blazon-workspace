@@ -2,11 +2,14 @@
 import React, { FC, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
-import Image from "next/image";
 import { FormattedMessage, injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { useQuery } from "@apollo/client";
 import apolloClient from '@utils/apollo-client';
+
+//queries
+import { GET_USER_FULL_TEXT } from "@modules/User/queries"; 
+import { GET_REQUESTS } from "../queries";
 
 // types
 import type { FilterType } from "@components/Filter/types";
@@ -18,7 +21,6 @@ import DataGrid from "@components/DataGrid";
 import Filter from "@components/Filter";
 import ArrowsOutIcon from "@icons/ArrowsOut";
 import ArrowClockwiseIcon from "@icons/ArrowClockwise";
-import { GET_REQUESTS } from "../queries";
 import Tag from "@icons/Tag";
 import CaretRight from "@icons/CaretRight";
 import { getContent } from "@modules/Requests/constants";
@@ -39,127 +41,8 @@ import {
   StyledNormal,
 } from "./styles";
 
-function Beneficiary({ name, image }: { name: string; image: string }) {
-  return (
-    <StyledBeneficiary>
-      <Image src={image} alt={name} width={32} height={32} />
-      <span>{name}</span>
-    </StyledBeneficiary>
-  );
-}
-
-function Status({ status }: { status: string }) {
-  return (
-    <StyledStatus>
-      <span>{status}</span>
-    </StyledStatus>
-  );
-}
-
-function Type({ type }: { type: string }) {
-  return (
-    <StyledNormal>
-      <span>{type}</span>
-    </StyledNormal>
-  );
-}
-
-function EffectiveDate({ effectiveDate }: { effectiveDate: string }) {
-  return (
-    <StyledNormal>
-      <span>{effectiveDate}</span>
-    </StyledNormal>
-  );
-}
-
-export const columns = [
-  {
-    field: "identifier",
-    headerName: <FormattedMessage id="request.identifier" />,
-    sortable: false,
-  },
-  {
-    field: "beneficiary.displayName",
-    headerName: <FormattedMessage id="request.beneficiary" />,
-    sortable: false,
-    // eslint-disable-next-line react/display-name
-    renderCell: (row: Request) => {
-      return row?.beneficiary ? (
-        <Beneficiary
-          name={row?.beneficiary.displayName}
-          image={row?.beneficiary.links[1].href}
-        />
-      ) : " - ";
-    },
-  },
-  {
-    field: "type",
-    headerName: <FormattedMessage id="request.type" />,
-    sortable: true,
-    renderCell: (row: Request) => {
-      return <Type type={row.type ? row.type : " - "} />;
-    },
-  },
-  {
-    field: "effectiveDate",
-    headerName: <FormattedMessage id="request.date" />,
-    sortable: true,
-    renderCell: (row: Request) => {
-      return (
-        <EffectiveDate
-          effectiveDate={row.effectiveDate ? row.effectiveDate : " - "}
-        />
-      );
-    },
-  },
-  {
-    field: "status",
-    headerName: <FormattedMessage id="request.status" />,
-    sortable: true,
-    renderCell: (row: Request) => {
-      return <Status status={row.status} />;
-    },
-  },
-];
-
-export const filters: FilterType[] = [
-  {
-    name: "identifier",
-    label: <FormattedMessage id="request.identifier" />,
-    type: "number",
-  },
-  {
-    name: "status",
-    label: <FormattedMessage id="request.status" />,
-    type: "list",
-    values: [
-      {
-        label: <FormattedMessage id="new" />,
-        value: "NEW",
-      },
-      {
-        label: <FormattedMessage id="error" />,
-        value: "ERROR",
-      },
-      {
-        label: <FormattedMessage id="success" />,
-        value: "SUCCESS",
-      },
-    ],
-    bind: "value",
-    view: "label",
-  },
-  {
-    name: "date",
-    label: <FormattedMessage id="request.date" />,
-    type: "date",
-    bind: {
-      start: "initDateAt",
-      end: "endDateAt",
-    },
-  },
-];
-
+//constants
+import { columns, filters } from "./constants";
 
 const Tasks: FC<RequestsTableProps> = ({intl}) => {
   const router = useRouter();

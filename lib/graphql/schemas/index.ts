@@ -26,5 +26,6 @@ export const typeDefs = gql`
     getRequestTransitionStates(id: Int): [RequestTransitionState]
     getRequests(page: Int, size: Int, ord: String, filters: String): RequestRepresentation     
     getSelfService(q: String, type: String): [SelfService]
+    getUserFullText(q: String, size: Int): [User]
   }
 `;

@@ -38,6 +38,7 @@
   "request.type.ACTIVATE_USER": "Activate user",
   "request.type.INACTIVATE_USER": "Inactivate user",
   "request.type.UPDATE_USER": "Update user",
+  "request.type.REVOKE_USER": "Revoke user",
   "request.type.ACTIVATE_ACCOUNT": "Activate account",
   "request.type.INACTIVATE_ACCOUNT": "Inactivate account",
   "request.type.CREATE_ACCOUNT": "Create account",
@@ -50,5 +51,12 @@
   "request.type.CHECKIN_ADMIN_ACCOUNT_PASSWORD": "Check-in admin account password",
   "request.type.CHECKIN_APPLICATION_ACCOUNT_PASSWORD": "Check-in application account password",
   "request.type.CHECKOUT_ADMIN_ACCOUNT_PASSWORD": "Check-out admin account password",
-  "request.type.RESET_PASSWORD": "Reset password"
+  "request.type.RESET_PASSWORD": "Reset password",
+  "request.status.SUCCESS": "Success",
+  "request.status.WAITING_APPROVAL": "Waiting approval",
+  "request.status.DISAPPROVED": "Disapproved",
+  "request.status.ERROR": "Error",
+  "request.status.CANCELED": "Canceled",
+  "request.status.SOD_NOT_ALLOWED": "SoD not allowed",
+  "request.status.WAITING_PROVISIONING": "Waiting provisioning"
 }

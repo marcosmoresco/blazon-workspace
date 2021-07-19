@@ -16,6 +16,9 @@ const useStyles = makeStyles(() => ({
       paddingTop: 4,
       paddingBottom: 4,
       height: 42,
+      "& .MuiButtonBase-root": {
+        bottom: 4
+      }
     },
   },
   inputFilter: {

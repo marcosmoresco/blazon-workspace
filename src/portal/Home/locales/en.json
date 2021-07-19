@@ -8,5 +8,8 @@
   "home.recent.passwords": "Recent passwords",
   "home.recent.passwords.see.all": "See all",
   "home.accounts": "Accounts",
-  "home.accounts.see.all": "See all"
+  "home.accounts.see.all": "See all",
+  "home.requests.in.progress": "Requests in progress",
+  "home.no.request": "No request",
+  "home.no.request.text": "No requests in progress"
 }

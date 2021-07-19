@@ -73,6 +73,7 @@ export const GET_REQUEST = gql`
       }
       type
       effectiveDate
+      createdAt
       finalizedAt
       status
       justification      

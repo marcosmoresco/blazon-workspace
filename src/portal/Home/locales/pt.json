@@ -8,5 +8,8 @@
   "home.recent.passwords": "Senhas recentes",
   "home.recent.passwords.see.all": "Ver todas",
   "home.accounts": "Contas",
-  "home.accounts.see.all": "Ver outros"
+  "home.accounts.see.all": "Ver outros",
+  "home.requests.in.progress": "Requisições em andamento",
+  "home.no.request": "Nenhuma requisição",
+  "home.no.request.text": "Nenhuma requisição em andamamento"
 }

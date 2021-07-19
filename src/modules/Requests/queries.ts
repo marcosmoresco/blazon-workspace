@@ -39,6 +39,7 @@ export const GET_REQUESTS = gql`
           description
         }
         type
+        createdAt
         effectiveDate
         status
         justification

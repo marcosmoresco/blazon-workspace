@@ -63,6 +63,11 @@ class Filter extends Component<FilterPropsType, FilterStateType> {
         if (f.label && f.label.type) {
           f.label = intl.formatMessage({ id: f.label.props.id });
         }
+        if(f.type === "list" && f.values) {
+          f.values.forEach((o: any) => {
+            o.label = intl.formatMessage({ id: o.label.props.id });
+          });
+        }
       });
       this.setState(
         {
@@ -215,11 +220,11 @@ class Filter extends Component<FilterPropsType, FilterStateType> {
             filtered.indexOf(f.name) > -1 ||
             f.name === _selectedFilter.name
           ) {
-            if (f.type === "list" && f.bind && f.values.length > 10) {
+            if (f.type === "list" && f.bind && f.values.length > 3) {
               _filters[f.name] =
                 (f.formatValue && f.formatValue(f.value[f.bind])) ||
                 f.value[f.bind];
-            } else if (f.type === "date" && f.bind) {
+            } else if (f.type === "date" && f.bind && f.value) {
               _filters[f.bind.start] = f.value.start;
               _filters[f.bind.end] = f.value.end;
             } else if (f.type === "group") {
@@ -308,7 +313,7 @@ class Filter extends Component<FilterPropsType, FilterStateType> {
         );
       } else if (filter.type === "list") {
         if (filter.values && filter.values.length) {
-          if (filter.values.length <= 10) {
+          if (filter.values.length <= 3) {
             component = (
               <Select
                 label={filter.label}
@@ -472,16 +477,16 @@ class Filter extends Component<FilterPropsType, FilterStateType> {
   getValue(filter: FilterType) {
     let value = null;
 
-    if (filter.type === "date") {
+    if (filter.type === "date" && filter.value) {
       value = (
         <span>
-          `${filter.value.start} - ${filter.value.end}`
+          {filter.value.start} - {filter.value.end}
         </span>
       );
     } else if (filter.type === "group") {
       value = (
         <span>
-          `${filter.label} : ${filter.list[0].value} = ${filter.list[1].value}`
+          {filter.label} : ${filter.list[0].value} = ${filter.list[1].value}
         </span>
       );
     } else if (filter.type === "list" && filter.view) {
@@ -494,18 +499,18 @@ class Filter extends Component<FilterPropsType, FilterStateType> {
             </div>
           );
         } else {
-          value = <span>filter.value[filter.view]</span>;
+          value = <span>{filter.value[filter.view]}</span>;
         }
       } else {
         const filtered = filter.values.filter(
           (val: any) =>
             val[filter.bind] ===
-            (filter.values.length > 10
+            (filter.values.length > 3
               ? filter.value[filter.bind]
               : filter.value)
         );
         if (filtered && filtered.length) {
-          value = <span>filtered[0][filter.view]</span>;
+          value = <span>{filtered[0][filter.view]}</span>;
         }
       }
     } else {

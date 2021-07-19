@@ -1,6 +1,7 @@
 import { createStyles, Theme } from "@material-ui/core/styles";
+import styled from "styled-components";
 
-const useStyles = (theme: Theme) =>
+export const useStyles = (theme: Theme) =>
   createStyles({
     root: {
       margin: "42px 64px",
@@ -114,13 +115,24 @@ const useStyles = (theme: Theme) =>
       marginTop: 8,
     },
     accounts: {
-      margin: 24,
+      marginTop: 24,
     },
     accountsContent: {
       display: "flex",
       justifyContent: "space-between",
       alignItems: "center",
-      paddingBottom: 24,
+      marginBottom: 12,
+      cursor: "pointer",
+      padding: "5px 24px",
+      "&:hover": {
+        background: "#E9E8EB",
+        "& .contentInfoIcon": {
+          background: "#514D65"
+        },
+        "& .caretRight-icon": {
+          filter: "invert(20%) sepia(94%) saturate(2990%) hue-rotate(222deg) brightness(84%) contrast(101%)"
+        }
+      }
     },
     accountsContentInfo: {
       display: "flex",
@@ -134,8 +146,71 @@ const useStyles = (theme: Theme) =>
       borderRadius: 4,
       marginRight: 12,
       width: 32,
-      height: 32,
+      height: 32,      
     },
   });
 
-export default useStyles;
+export const BoxCard = styled.div`
+  cursor: pointer;
+  background: #FFFFFF;
+  box-shadow: 0px 0px 28px rgba(27, 32, 42, 0.16);
+  border-radius: 8px;
+  padding: 24px;
+  &:hover {
+    border: 1px solid #A8A6B2;
+  }
+`;
+
+export const BoxRequest = styled.div`
+  padding: 24px;
+`;
+
+export const BoxRequestHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`;
+
+export const BoxRequestHeaderIdentifier = styled.div`
+  background: #EAF1FE;
+  border-radius: 30px;
+  padding: 8px;
+  color: #0E46D7;
+`;
+
+export const BoxRequestHeaderDate = styled.div`
+  background: rgba(183, 188, 193, 0.14);
+  border-radius: 35px;
+  padding: 8px;
+  color: #26213F;
+`;
+
+export const BoxRequestHeaderTitle = styled.div`
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 100%;
+  color: #26213F;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-right: 15px;
+`;
+
+export const BoxRequestHeaderType = styled.div`
+  background: rgba(19, 119, 213, 0.14);
+  border-radius: 35px;
+  padding: 8px;
+  color: #1377D5;
+  margin-top: 12px;
+`;
+
+export const BoxRequestDescription = styled.div`
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 150%;
+  color: #676378;
+  margin-top: 12px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;

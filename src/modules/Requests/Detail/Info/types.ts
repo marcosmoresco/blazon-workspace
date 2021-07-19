@@ -4,5 +4,5 @@ import { Request } from "@modules/Requests/types";
 export type FirstTaskProps = {
   intl: IntlShape;
   request: Request | undefined;
-  reload(): void
+  refetch(): void
 };
