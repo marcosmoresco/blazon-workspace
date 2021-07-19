@@ -2,7 +2,6 @@ import React, { FC, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { injectIntl } from "react-intl";
 import { useRouter } from "next/router";
-import Link from "next/link";
 import Image from "next/image";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -31,6 +30,7 @@ import SignOutIcon from "@icons/SignOut";
 import Message from "../Message";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import Tooltip from "@components/Tooltip";
 import { useUser } from "@hooks";
 import { useTheme, themes } from "../../theme";
 import type { HeaderProps } from "./types";
@@ -91,45 +91,51 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
           </div>
           <div className={classes.menuOptionsContent}>
             <div className={classes.menuOptions}>
-              <div className={classes.optionImage}>
-              <Link href="/requests">
-                <a>
+              <Tooltip title="Requests" placement="bottom">
+                <div className={`${classes.optionImage} ${router.pathname === "/requests" && "Active"}`} onClick={() => router.push("/requests")}>
                   <PaperPlaneTiltIcon
+                    width={21}
+                    height={21}
+                    color={router.pathname === "/requests" && "#0E46D7" || currentTheme.overrides.MuiIcon.root.color}
+                  />
+                </div>
+              </Tooltip>   
+              <Tooltip title="Password vault" placement="bottom">
+                <div className={classes.optionImage}>
+                  <KeyIcon
                     width={21}
                     height={21}
                     color={currentTheme.overrides.MuiIcon.root.color}
                   />
-               </a>
-              </Link>
-              </div>
-              <div className={classes.optionImage}>
-                <KeyIcon
-                  width={21}
-                  height={21}
-                  color={currentTheme.overrides.MuiIcon.root.color}
-                />
-              </div>
-              <div className={classes.optionImage}>
-                <ShoppingCartSimpleIcon
-                  width={21}
-                  height={21}
-                  color={currentTheme.overrides.MuiIcon.root.color}
-                />
-              </div>
-              <div className={classes.optionImage}>
-                <NoteBlankIcon
-                  width={21}
-                  height={21}
-                  color={currentTheme.overrides.MuiIcon.root.color}
-                />
-              </div>
-              <div className={classes.optionImage}>
-                <BellSimpleIcon
-                  width={21}
-                  height={21}
-                  color={currentTheme.overrides.MuiIcon.root.color}
-                />
-              </div>
+                </div>
+              </Tooltip> 
+              <Tooltip title="Request cart" placement="bottom">
+                <div className={classes.optionImage}>
+                  <ShoppingCartSimpleIcon
+                    width={21}
+                    height={21}
+                    color={currentTheme.overrides.MuiIcon.root.color}
+                  />
+                </div>
+              </Tooltip>      
+              <Tooltip title="Tasks" placement="bottom">
+                <div className={`${classes.optionImage} ${router.pathname === "/tasks" && "Active"}`} onClick={() => router.push("/tasks")}>
+                  <NoteBlankIcon
+                    width={21}
+                    height={21}
+                    color={router.pathname === "/tasks" && "#0E46D7" || currentTheme.overrides.MuiIcon.root.color}
+                  />
+                </div>
+              </Tooltip> 
+              <Tooltip title="Notificações" placement="bottom">
+                <div className={classes.optionImage}>
+                  <BellSimpleIcon
+                    width={21}
+                    height={21}
+                    color={currentTheme.overrides.MuiIcon.root.color}
+                  />
+                </div>
+              </Tooltip>                                                          
             </div>
             <Button
               className="Button-avatar"

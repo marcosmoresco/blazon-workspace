@@ -60,12 +60,14 @@ class Filter extends Component<FilterPropsType, FilterStateType> {
 
     this.generateFilters(filters || [], () => {
       (filters || []).forEach((f: FilterType) => {
-        if (f.label && f.label.type) {
+        if (f.label && f.label.type && f.label.props) {
           f.label = intl.formatMessage({ id: f.label.props.id });
         }
         if(f.type === "list" && f.values) {
           f.values.forEach((o: any) => {
-            o.label = intl.formatMessage({ id: o.label.props.id });
+            if(o.label && o.label.type && o.label.props) {
+              o.label = intl.formatMessage({ id: o.label.props.id });
+            }            
           });
         }
       });

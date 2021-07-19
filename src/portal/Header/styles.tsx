@@ -29,7 +29,27 @@ const useStyles = (theme: Theme) =>
       display: "flex",
     },
     optionImage: {
-      marginRight: 27,
+      marginRight: 20,
+      cursor: "pointer",
+      width: 32,
+      height: 32,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      backgroundColor: "#FFFFFF",    
+      borderRadius: 4,   
+      "&.Active::after": {                
+        content: '"*"',
+        display: "block",   
+        height: 4,
+        width: 38,
+        marginTop: 90,   
+        position: "absolute",    
+        backgroundColor: "#0E46D7"       
+      }, 
+      "&:hover": {       
+        background: "#F4F4F5",        
+      }
     },
     menuList: {
       marginTop: 10,
