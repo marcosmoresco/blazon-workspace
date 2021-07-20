@@ -53,5 +53,8 @@
   "birthDate": "Data de nascimento",
   "username": "Nome do usuário",
   "account": "Conta",
-  "accountIdentifier": "Identificador da conta"
+  "accountIdentifier": "Identificador da conta",
+  "results": "Resultados",
+  "searchIn": "Procurar em",
+  "viewAll.results.for": "Ver todos os resultados para"
 }

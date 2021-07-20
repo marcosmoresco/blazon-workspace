@@ -1,6 +1,9 @@
-import { createStyles, Theme } from "@material-ui/core/styles";
+import {
+  createStyles,
+  Theme
+} from "@material-ui/core/styles";
 
-const useStyles = (theme: Theme) =>
+export const useStyles = (theme: Theme) =>
   createStyles({
     root: {
       backgroundColor: theme.palette.type === "light" ? "#FFFFFF" : "#0D0C13",
@@ -20,6 +23,11 @@ const useStyles = (theme: Theme) =>
       marginLeft: 42,
       width: 600,
       borderRadius: 8,
+      backgroundColor: "#FFFFFF",
+      '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]': {
+        padding: "2px 9px",
+        borderRadius: 8,
+      },
     },
     menuOptionsContent: {
       display: "flex",
@@ -36,20 +44,20 @@ const useStyles = (theme: Theme) =>
       display: "flex",
       alignItems: "center",
       justifyContent: "center",
-      backgroundColor: "#FFFFFF",    
-      borderRadius: 4,   
-      "&.Active::after": {                
+      backgroundColor: "#FFFFFF",
+      borderRadius: 4,
+      "&.Active::after": {
         content: '"*"',
-        display: "block",   
+        display: "block",
         height: 4,
         width: 38,
-        marginTop: 90,   
-        position: "absolute",    
-        backgroundColor: "#0E46D7"       
-      }, 
-      "&:hover": {       
-        background: "#F4F4F5",        
-      }
+        marginTop: 90,
+        position: "absolute",
+        backgroundColor: "#0E46D7",
+      },
+      "&:hover": {
+        background: "#F4F4F5",
+      },
     },
     menuList: {
       marginTop: 10,
@@ -115,5 +123,3 @@ const useStyles = (theme: Theme) =>
       },
     },
   });
-
-export default useStyles;

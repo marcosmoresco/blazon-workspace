@@ -16,7 +16,6 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Switch from "@material-ui/core/Switch";
 import Logo from "../../logo.svg";
-import SearchIcon from "@icons/Search";
 import PaperPlaneTiltIcon from "@icons/PaperPlaneTilt";
 import KeyIcon from "@icons/Key";
 import ShoppingCartSimpleIcon from "@icons/ShoppingCartSimple";
@@ -28,13 +27,14 @@ import UserIcon from "@icons/User";
 import InfoIcon from "@icons/Info";
 import SignOutIcon from "@icons/SignOut";
 import Message from "../Message";
-import OutlinedInput from "@material-ui/core/OutlinedInput";
-import InputAdornment from "@material-ui/core/InputAdornment";
 import Tooltip from "@components/Tooltip";
 import { useUser } from "@hooks";
 import { useTheme, themes } from "../../theme";
 import type { HeaderProps } from "./types";
-import useStyles from "./styles";
+import HeaderAutocomplete from "./components/HeaderAutocomplete";
+import {
+  useStyles 
+} from "./styles";
 
 const Header: FC<HeaderProps> = ({ classes, intl }) => {
   const router = useRouter();
@@ -42,7 +42,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
   const [openProfile, setOpenProfile] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
 
-  const [ user, thumb ] = useUser();
+  const [user, thumb] = useUser();
   const { theme, setTheme } = useTheme();
   const currentTheme = themes[theme];
   if (typeof window !== "undefined") {
@@ -76,7 +76,8 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
             <div className="pointer" onClick={() => router.push("/")}>
               <Image src={Logo} alt="Logo" />
             </div>
-            <OutlinedInput
+            <HeaderAutocomplete classes={classes}/>
+            {/*<OutlinedInput
               className={classes.searchInput}
               id="header-search"
               placeholder={intl.formatMessage({ id: "search" })}
@@ -87,19 +88,27 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                 </InputAdornment>
               }
               labelWidth={0}
-            />
+            />*/}
           </div>
           <div className={classes.menuOptionsContent}>
             <div className={classes.menuOptions}>
               <Tooltip title="Requests" placement="bottom">
-                <div className={`${classes.optionImage} ${router.pathname === "/requests" && "Active"}`} onClick={() => router.push("/requests")}>
+                <div
+                  className={`${classes.optionImage} ${
+                    router.pathname === "/requests" && "Active"
+                  }`}
+                  onClick={() => router.push("/requests")}
+                >
                   <PaperPlaneTiltIcon
                     width={21}
                     height={21}
-                    color={router.pathname === "/requests" && "#0E46D7" || currentTheme.overrides.MuiIcon.root.color}
+                    color={
+                      (router.pathname === "/requests" && "#0E46D7") ||
+                      currentTheme.overrides.MuiIcon.root.color
+                    }
                   />
                 </div>
-              </Tooltip>   
+              </Tooltip>
               <Tooltip title="Password vault" placement="bottom">
                 <div className={classes.optionImage}>
                   <KeyIcon
@@ -108,7 +117,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                     color={currentTheme.overrides.MuiIcon.root.color}
                   />
                 </div>
-              </Tooltip> 
+              </Tooltip>
               <Tooltip title="Request cart" placement="bottom">
                 <div className={classes.optionImage}>
                   <ShoppingCartSimpleIcon
@@ -117,16 +126,24 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                     color={currentTheme.overrides.MuiIcon.root.color}
                   />
                 </div>
-              </Tooltip>      
+              </Tooltip>
               <Tooltip title="Tasks" placement="bottom">
-                <div className={`${classes.optionImage} ${router.pathname === "/tasks" && "Active"}`} onClick={() => router.push("/tasks")}>
+                <div
+                  className={`${classes.optionImage} ${
+                    router.pathname === "/tasks" && "Active"
+                  }`}
+                  onClick={() => router.push("/tasks")}
+                >
                   <NoteBlankIcon
                     width={21}
                     height={21}
-                    color={router.pathname === "/tasks" && "#0E46D7" || currentTheme.overrides.MuiIcon.root.color}
+                    color={
+                      (router.pathname === "/tasks" && "#0E46D7") ||
+                      currentTheme.overrides.MuiIcon.root.color
+                    }
                   />
                 </div>
-              </Tooltip> 
+              </Tooltip>
               <Tooltip title="Notificações" placement="bottom">
                 <div className={classes.optionImage}>
                   <BellSimpleIcon
@@ -135,7 +152,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                     color={currentTheme.overrides.MuiIcon.root.color}
                   />
                 </div>
-              </Tooltip>                                                          
+              </Tooltip>
             </div>
             <Button
               className="Button-avatar"
@@ -144,7 +161,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
               aria-controls={openProfile ? "menu-list-grow" : undefined}
               aria-haspopup="true"
             >
-              <Avatar src={thumb}/>
+              <Avatar src={thumb} />
             </Button>
           </div>
         </Toolbar>
@@ -168,7 +185,12 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
             <Paper className={classes.menuList}>
               <ClickAwayListener onClickAway={handleClose}>
                 <MenuList autoFocusItem={openProfile} id="menu-list-grow">
-                  <MenuItem onClick={() => { router.push("/profile"); return true; }} >
+                  <MenuItem
+                    onClick={() => {
+                      router.push("/profile");
+                      return true;
+                    }}
+                  >
                     <div className={classes.menuItem}>
                       <div className={`${classes.menuImage} blue`}>
                         <UserIcon width={20} height={20} color="#FFFFFF" />

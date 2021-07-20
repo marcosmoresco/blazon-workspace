@@ -25,7 +25,7 @@ export const typeDefs = gql`
     getCancelRequest(id: Int): Boolean
     getRequestTransitionStates(id: Int): [RequestTransitionState]
     getRequests(page: Int, size: Int, ord: String, filters: String): RequestRepresentation     
-    getSelfService(q: String, type: String): [SelfService]
+    getSelfService(q: String, size: Int, type: String): [SelfService]
     getUserFullText(q: String, size: Int): [User]
   }
 `;
