@@ -56,5 +56,9 @@
   "accountIdentifier": "Identificador da conta",
   "results": "Resultados",
   "searchIn": "Procurar em",
-  "viewAll.results.for": "Ver todos os resultados para"
+  "viewAll.results.for": "Ver todos os resultados para",
+  "requests": "Requisições",
+  "passwordVault": "Cofre de senhas",
+  "requestCart": "Carrinho de solicitações",
+  "notifications": "Notificações"
 }

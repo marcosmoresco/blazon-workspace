@@ -76,23 +76,11 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
             <div className="pointer" onClick={() => router.push("/")}>
               <Image src={Logo} alt="Logo" />
             </div>
-            <HeaderAutocomplete classes={classes}/>
-            {/*<OutlinedInput
-              className={classes.searchInput}
-              id="header-search"
-              placeholder={intl.formatMessage({ id: "search" })}
-              onClick={() => router.push("/search")}
-              startAdornment={
-                <InputAdornment position="start">
-                  <SearchIcon width={25} height={25} color="#60636A" />
-                </InputAdornment>
-              }
-              labelWidth={0}
-            />*/}
+            <HeaderAutocomplete classes={classes}/>            
           </div>
           <div className={classes.menuOptionsContent}>
             <div className={classes.menuOptions}>
-              <Tooltip title="Requests" placement="bottom">
+              <Tooltip title={intl.formatMessage({id: "requests"})} placement="bottom">
                 <div
                   className={`${classes.optionImage} ${
                     router.pathname === "/requests" && "Active"
@@ -109,7 +97,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                   />
                 </div>
               </Tooltip>
-              <Tooltip title="Password vault" placement="bottom">
+              <Tooltip title={intl.formatMessage({id: "passwordVault"})} placement="bottom">
                 <div className={classes.optionImage}>
                   <KeyIcon
                     width={21}
@@ -118,7 +106,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                   />
                 </div>
               </Tooltip>
-              <Tooltip title="Request cart" placement="bottom">
+              <Tooltip title={intl.formatMessage({id: "requestCart"})} placement="bottom">
                 <div className={classes.optionImage}>
                   <ShoppingCartSimpleIcon
                     width={21}
@@ -127,7 +115,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                   />
                 </div>
               </Tooltip>
-              <Tooltip title="Tasks" placement="bottom">
+              <Tooltip title={intl.formatMessage({id: "tasks"})} placement="bottom">
                 <div
                   className={`${classes.optionImage} ${
                     router.pathname === "/tasks" && "Active"
@@ -144,7 +132,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                   />
                 </div>
               </Tooltip>
-              <Tooltip title="Notificações" placement="bottom">
+              <Tooltip title={intl.formatMessage({id: "notifications"})} placement="bottom">
                 <div className={classes.optionImage}>
                   <BellSimpleIcon
                     width={21}

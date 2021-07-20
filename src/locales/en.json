@@ -56,5 +56,9 @@
   "accountIdentifier": "Account identifier",
   "results": "Results",
   "searchIn": "Search in",
-  "viewAll.results.for": "View all results for"
+  "viewAll.results.for": "View all results for",
+  "requests": "Requests",
+  "passwordVault": "Password vault",
+  "requestCart": "Request cart",
+  "notifications": "Notifications"
 }
