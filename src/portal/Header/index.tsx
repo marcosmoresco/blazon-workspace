@@ -36,7 +36,9 @@ import { useTheme, themes } from "../../theme";
 import type { HeaderProps } from "./types";
 import HeaderAutocomplete from "./components/HeaderAutocomplete";
 import {
-  useStyles 
+  useStyles,
+  HeaderProfileBox, 
+  HeaderProfileBoxInfo
 } from "./styles";
 
 const Header: FC<HeaderProps> = ({ classes, intl }) => {
@@ -79,7 +81,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
             <div className="pointer" onClick={() => router.push("/")}>
               <Image src={Logo} alt="Logo" />
             </div>
-            <HeaderAutocomplete classes={classes}/>            
+            {router.pathname !== "/search" && <HeaderAutocomplete classes={classes}/>}           
 
 
 
@@ -157,7 +159,13 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
               aria-controls={openProfile ? "menu-list-grow" : undefined}
               aria-haspopup="true"
             >
-              <Avatar src={thumb} />
+              <HeaderProfileBox>
+                <Avatar src={thumb} />
+                <HeaderProfileBoxInfo>
+                  <div className="Username">{user?.username}</div>
+                  <div className="FirstName">{user?.firstName}</div>
+                </HeaderProfileBoxInfo>               
+              </HeaderProfileBox>              
             </Button>
           </div>
         </Toolbar>

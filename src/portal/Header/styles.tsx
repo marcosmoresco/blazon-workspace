@@ -1,4 +1,5 @@
 import { createStyles, Theme } from '@material-ui/core/styles'
+import styled from "styled-components";
 
 export const useStyles = (theme: Theme) =>
   createStyles({
@@ -120,3 +121,30 @@ export const useStyles = (theme: Theme) =>
       }
     }
   })
+
+export const HeaderProfileBox = styled.div`
+  display: flex;
+  align-items: center;
+`;  
+
+export const HeaderProfileBoxInfo = styled.div`
+  display: block;
+  margin-left: 10px;
+  text-align: initial;
+  text-transform: initial;
+
+  .Username {
+    font-weight: normal;
+    font-size: 12px;
+    line-height: 12px;
+    color: #1B202A;
+    margin-bottom: 4px;
+  }
+
+  .FirstName {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 16px;
+    color: #1B202A;
+  }
+`;  

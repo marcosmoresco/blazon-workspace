@@ -5,7 +5,7 @@ export const columns = [
   {
     field: "name",
     headerName: <FormattedMessage id="name" />,
-    sortable: false,
+    sortable: true,
   },
   {
     field: "description",

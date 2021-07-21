@@ -1,4 +1,7 @@
+import { IntlShape } from "react-intl";
+
 export type SearchProps = {
+  intl: IntlShape,
   classes: {
     root: string;
     totalItens: string;
@@ -30,4 +33,28 @@ export type SelfService = {
   type: string;
   identifier: string;
   referenceTo: ReferenceTo;
+};
+
+export type ResourceDirectory = {
+  identifier: number;
+  name: string;
+  description: string;
+};
+
+export type EntitlementDirectory = {
+  identifier: number;
+  name: string;
+  description: string;
+  resource: ResourceDirectory;
+};
+
+export type RoleDirectory = {
+  identifier: number;
+  name: string;
+  description: string;
+};
+
+export type RoleDirectoryRight = {
+  group: RoleDirectory,
+  resource: ResourceDirectory
 };

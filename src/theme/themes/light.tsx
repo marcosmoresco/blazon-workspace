@@ -44,6 +44,14 @@ export const light = createMuiTheme({
         background: '#FFFFFF',
         color: '#1B202A',
       }
+    },
+    MuiBadge: {
+      badge: {
+        width: 26,
+        height: 26,
+        borderRadius: 20,
+        fontSize: 16,
+      }
     }
   },
   palette: {

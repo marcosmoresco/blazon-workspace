@@ -6,10 +6,9 @@ import { useRouter } from "next/router";
 import { FormattedMessage, injectIntl } from "react-intl";
 import { connect } from "react-redux";
 import { useQuery } from "@apollo/client";
-import apolloClient from '@utils/apollo-client';
+import apolloClient from "@utils/apollo-client";
 
 //queries
-import { GET_USER_FULL_TEXT } from "@modules/User/queries"; 
 import { GET_REQUESTS } from "../queries";
 
 // types
@@ -33,24 +32,17 @@ import {
   ExpandContentCard,
   StyleMenuGrid,
   StyleMenuGridTitle,
-  StyleResource,
-  StyledTableResource,
-  StyledTableResourceMenu,
-  StyledTableResourceRow,
   ExpandContent,
-  StyledBeneficiary,
-  StyledStatus,
-  StyledNormal,
 } from "./styles";
 
 //constants
 import { columns, filters } from "./constants";
 
 
-const Tasks: FC<RequestsTableProps> = ({intl}) => {
+const Tasks: FC<RequestsTableProps> = ({ intl }) => {
   const router = useRouter();
   const { loading, error, data } = useQuery<{
-    getRequests: { requests: Request[], links: [] };
+    getRequests: { requests: Request[]; links: [] };
   }>(GET_REQUESTS, {
     variables: {
       page: 0,
@@ -68,22 +60,21 @@ const Tasks: FC<RequestsTableProps> = ({intl}) => {
   const [requestsFiltered, setRequestsFiltered] = useState(requests);
 
   const search = (filters?: any) => {
-    
     setIsFetching(true);
     apolloClient
-      .query({ 
-        query: GET_REQUESTS, 
+      .query({
+        query: GET_REQUESTS,
         variables: {
           page: 0,
           size: 20,
-          filters: JSON.stringify(filters)
-        }
+          filters: JSON.stringify(filters),
+        },
       })
       .then(({ data }) => {
         setRequestsFiltered(data?.getRequests.requests);
         //links = data?.getRequests.links;
         setIsFetching(false);
-      });   
+      });
   };
 
   const handleSelected = (selecteds: any, callbackClear: any) => {
@@ -91,7 +82,7 @@ const Tasks: FC<RequestsTableProps> = ({intl}) => {
     setSelecteds(selecteds);
   };
 
-  const handleClickRow = (request: Request) => {    
+  const handleClickRow = (request: Request) => {
     router.push(`/requests/${request.identifier}`);
   };
 
@@ -105,15 +96,15 @@ const Tasks: FC<RequestsTableProps> = ({intl}) => {
               <span>
                 <FormattedMessage id="request.request.detail" />
               </span>
-            </StyleMenuGridTitle>            
+            </StyleMenuGridTitle>
             <Link href={`/requests/${item.identifier}`}>
               <a>
                 <FormattedMessage id="detail" />
                 <CaretRight height={15} width={18} />
               </a>
             </Link>
-          </StyleMenuGrid>                    
-          {getContent(item, intl)} 
+          </StyleMenuGrid>
+          {getContent(item, intl)}
         </ExpandContentCard>
       </ExpandContent>
     );
@@ -142,11 +133,13 @@ const Tasks: FC<RequestsTableProps> = ({intl}) => {
             list={requestsFiltered || requests}
             links={links || []}
             query={GET_REQUESTS}
+            getResponseLinks={(data: any) => data?.getRequests?.links}
+            getResponse={(data: any) => data?.getRequests?.requests}
             fetching={loading || isFetching}
             columns={columns}
             page={1}
             size={25}
-            rowsPerPageList={[25, 50, 75, 100]}            
+            rowsPerPageList={[25, 50, 75, 100]}
             handleSelected={handleSelected}
             actions={[]}
             expand={expandContent}

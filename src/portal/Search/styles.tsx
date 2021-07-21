@@ -1,16 +1,17 @@
-import { createStyles, Theme } from "@material-ui/core/styles";
+import {
+  styled as styledMui,
+  createStyles,
+  Theme,
+} from "@material-ui/core/styles";
+import Divider from "@material-ui/core/Divider";
+import OutlinedInput from "@material-ui/core/OutlinedInput";
+import styled from "styled-components";
 
-const useStyles = (theme: Theme) =>
+export const useStyles = (theme: Theme) =>
   createStyles({
     root: {
       marginTop: 20,
       marginBottom: 20,
-    },
-    searchtext: {
-      fontWeight: 600,
-      fontSize: 21,
-      color: "#26213F",
-      marginTop: 48,
     },
     totalItens: {
       fontWeight: "normal",
@@ -39,7 +40,7 @@ const useStyles = (theme: Theme) =>
     },
     filterCaretRight: {
       marginLeft: 20,
-    },    
+    },
     tag: {
       fontWeight: "normal",
       fontSize: 16,
@@ -60,13 +61,11 @@ const useStyles = (theme: Theme) =>
         marginRight: 8,
       },
     },
-    searchCards: {
-      marginTop: 64,
-    },
     searchCard: {
       background: "#FFFFFF",
       boxShadow: "0px 0px 16px rgba(39, 36, 52, 0.06)",
       borderRadius: 8,
+      cursor: "pointer",
     },
     searchCardContent: {
       position: "relative",
@@ -76,7 +75,7 @@ const useStyles = (theme: Theme) =>
       padding: 14,
     },
     searchCardContentHeaderImage: {
-      background: "#E9E8EB",
+      background: "#f4f4f5",
       borderRadius: 6,
       display: "flex",
       justifyContent: "center",
@@ -87,10 +86,13 @@ const useStyles = (theme: Theme) =>
     },
     searchCardContentHeaderTitle: {
       fontWeight: "normal",
-      fontSize: 18,     
+      fontSize: 18,
       color: "#26213F",
       marginLeft: 14,
-      marginBottom: 16
+      marginBottom: 16,
+      textOverflow: "ellipsis",
+      whiteSpace: "nowrap",
+      overflow: "hidden",
     },
     searchCartContent: {
       padding: 16,
@@ -102,10 +104,142 @@ const useStyles = (theme: Theme) =>
       alignItems: "center",
       justifyContent: "center",
       cursor: "pointer",
-      "& svg": {
-        marginRight: 10,
+      "& > div": {
+        background: "#F4F4F5",
+        borderRadius: 6,
+        padding: 12,
+        height: 48,
+        width: "100%",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        "& .Icon-content": {
+          width: 32,
+          height: 32,
+          background: "#E9E8EB",
+          borderRadius: 8,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          marginRight: 10,
+        },
+        "&:hover": {
+          color: "#3174F6",
+          "& .Icon-content": {
+            background: "#3174F6",
+            "& svg": {
+              filter:
+                "invert(100%) sepia(0%) saturate(0%) hue-rotate(276deg) brightness(103%) contrast(101%)",
+            },
+          },
+        },
       },
     },
   });
 
-export default useStyles;
+export const InputSearchBox = styled.div`
+  display: flex;
+  justify-content: center;
+`;
+export const OutlinedInputSearch = styledMui(OutlinedInput)({
+  border: "1px solid #BBBDC0",
+  borderRadius: 8,
+  background: "#FFFFFF",
+  width: 800,
+  height: 48,
+  marginTop: 20,
+});
+
+export const DividerSearch = styledMui(Divider)({
+  marginTop: 40,
+});
+
+export const TotalFiltersBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 27px;
+`;
+export const OptionListFiltersContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-bottom: 10px;
+`;
+
+export const OptionListContent = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  margin-right: 10px;
+`;
+export const OptionList = styled.div`
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 8px;
+  cursor: pointer;
+  &.Active {
+    background: #e9e8eb;
+    border: 1px solid #d4d3d9;
+  }
+`;
+
+export const ListItemBox = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 18px;
+  background: #ffffff;
+  box-shadow: 0px 0px 16px rgba(39, 36, 52, 0.06);
+  border-radius: 8px;
+  height: 80px;
+  padding: 14px;
+  cursor: pointer;
+`;
+
+export const ListItemContent = styled.div`
+  display: flex;
+  align-items: center;
+  max-width: 90%;
+`;
+
+export const ListItemIconContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #f4f4f5;
+  border-radius: 8px;
+  width: 48px;
+  height: 48px;
+
+  &.Selectable:hover {
+    cursor: pointer;
+    background: #3174f6;
+    & svg {
+      filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(276deg)
+        brightness(103%) contrast(101%);
+    }
+  }
+`;
+
+export const ListItemText = styled.div`
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 100%;
+  color: #26213f;
+  margin-left: 15px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-right: 15px;
+`;
+
+export const LoadMoreContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 64px;
+  margin-bottom: 30px;
+`;

@@ -1,11 +1,10 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { FormattedMessage, injectIntl } from "react-intl";
 import Drawer from "@material-ui/core/Drawer";
 import Grid from "@material-ui/core/Grid";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import Tutorial from "@components/Tutorial";
 import Button from "@components/Button";
 import Checkbox from "@components/Checkbox";
 import Radio from "@components/Radio";
@@ -14,7 +13,6 @@ import PuzzlePieceIcon from "@icons/PuzzlePiece";
 import ArticleIcon from "@icons/Article";
 import UserGearIcon from "@icons/UserGear";
 import NewspaperClippingIcon from "@icons/NewspaperClipping";
-import ShoppingCartSimpleIcon from "@icons/ShoppingCartSimple";
 import CaretUpIcon from "@icons/CaretUp";
 import CaretDownIcon from "@icons/CaretDown";
 import CaretRightIcon from "@icons/CaretRight";
@@ -23,6 +21,9 @@ import XIcon from "@icons/X";
 import SearchIcon from "@icons/Search";
 import { isDefined } from '@utils/index';
 import type { FilterProps, FilterType, FilterValueType } from "./types";
+import { deepCopyFunction } from "@utils/index";
+import apolloClient from "@utils/apollo-client";
+import { GET_SELF_SERVICE_FILTERS } from "@portal/Search/queries";
 import { 
   useStyles, 
   BoxButton,
@@ -49,38 +50,60 @@ import {
   BoxFilterClearContent,
   BoxFilterClear,
   BoxFooter,
+  BoxHeaderInputFilter,
 } from "./styles";
-import items from "./filters.json";
 
-const Filters: FC<FilterProps> = ({ classes, intl, onSave }) => {
-  const [open, setOpen] = useState(false);
-  const [filter, setFilter] = useState('');
-  const [active, setActive] = useState("ALL");      
-  const [filters, setFilters] = useState({...items});
+const initFilters = (filters: any, filterMapReference: any) => {
+  const _filteredItems: { [key: string]: any } = {};
+  filters.forEach((f:FilterType) => {
+    _filteredItems[f.name] = {};
+    const ref = {
+      name: f.name,
+      type: f.type,
+      values: []
+    };
 
-  const initFilters = () => {
-    const _filteredItems: { [key: string]: any } = {};
-    items.items.forEach((f:FilterType) => (
-      _filteredItems[f.name] = {}
-    ));
-    return _filteredItems;
-  };
-
-  const [filtered, setFiltered] = useState<{[key: string]: any}>({
-    total: 0,   
-    ...initFilters()   
+    filterMapReference[f.name] = ref  
   });
+  return _filteredItems;
+};
+
+const Filters: FC<FilterProps> = ({ classes, intl, activeType, onSave }) => {
+  const [open, setOpen] = useState(false);
+  const [filter, setFilter] = useState("");        
+  const [filters, setFilters] = useState([]);
+  const [filtered, setFiltered] = useState<{[key: string]: any}>({}); 
+  const [filterMapReference, setFilterMapReference] = useState<{[key: string]: any}>({});
+  const [current, setCurrent] = useState<string>("");
+
+  useEffect(() => {
+    if(!current || (current !== activeType)) {
+
+      apolloClient
+      .query({
+        query: GET_SELF_SERVICE_FILTERS,
+        variables: {
+          type: activeType
+        },
+      })
+      .then(({ data }) => {
+        setFilters(deepCopyFunction(data.getSelfServiceFilters));        
+        setFiltered({
+          total: 0,   
+          ...initFilters(data.getSelfServiceFilters, filterMapReference)   
+        })      
+      });
+      
+      setCurrent(activeType);
+    }  
+  }, [current, activeType, filterMapReference]);  
 
   const clearAll = (): void => {    
     setFiltered({
       total: 0,   
-      ...initFilters()   
+      ...initFilters(filters, filterMapReference)   
     });
-  };
-
-  const save = (): void => {
-    setOpen(false);
-    onSave(filtered);
+    onSave(filterMapReference, 0);
   };
 
   const closeFilters = (event: any): void => {
@@ -93,30 +116,44 @@ const Filters: FC<FilterProps> = ({ classes, intl, onSave }) => {
     setOpen(false);
   };
 
-  const changeFilter = (filter: FilterType, value: any, property: string, options?: FilterValueType[]): void => {
+  const changeFilter = (filter: FilterType, value: any, property: string, options?: FilterValueType[], valueObject?: any): void => {
     let _filtered = {...filtered};     
     if(options) {
       options.forEach((o) => {  
         if(value) {
           if(!_filtered[filter.name][o.value]) {
             _filtered.total++;
+            filterMapReference[filter.name].values.push(o);
           }          
         } else {
           if(_filtered[filter.name][o.value]) {
             --_filtered.total;
+            filterMapReference[filter.name].values = filterMapReference[filter.name].values.filter((v: any) => v.value !== o.value) || [];
           }          
         }
         _filtered[filter.name][o.value] = value;
       });     
-    } else if(filter.type !== 'BOOLEAN'){
-      if(value) {
-        _filtered.total++;          
+    } else if (filter.type === 'TEXT') {
+      if(value) {  
+        if(!filterMapReference[filter.name].values.length) {
+          _filtered.total++;                  
+          filterMapReference[filter.name].values.push(valueObject);
+        } else {
+          filterMapReference[filter.name].values[0] = valueObject;
+        }               
       } else {
+        filterMapReference[filter.name].values = [];
+        _filtered.total--;           
+      }
+    } else if(filter.type !== 'BOOLEAN'){
+      if(value) {        
+        _filtered.total++;                 
+      } else {       
         _filtered.total--;           
       }
       if(filter.values) {
         var selectedFilters = filter.values.filter((v) => _filtered[filter.name][v.value]);
-        if(selectedFilters.length === filter.values.length) {
+        if(selectedFilters.length + (value && 1 || -1) === filter.values.length) {
           _filtered[filter.name].selected = true;
         } else {
           _filtered[filter.name].selected = false;
@@ -124,36 +161,37 @@ const Filters: FC<FilterProps> = ({ classes, intl, onSave }) => {
       }
     } else {
       if(isDefined(value) && !isDefined(filtered[filter.name].selected)) {
-        _filtered.total++;          
+        _filtered.total++;                  
       } else if(!isDefined(value)) {
         _filtered.total--;
-      }
+      }      
     }     
     
     _filtered[filter.name][property] = value; 
     setFiltered(_filtered);
+    onSave(filterMapReference, _filtered?.total);
   };
 
   const currentFilter: { [key: string]: any } = {
     ALL: {
       icon: <TableIcon width={18} height={18}/>,
-      text: 'Todos',
+      text: <FormattedMessage id="all" />,
     },
     ROLE: {
       icon: <NewspaperClippingIcon width={18} height={18}/>,
-      text: <FormattedMessage id="app.roles" />,
+      text: <FormattedMessage id="roles" />,
     },
     ADMIN_ACCOUNT: {
       icon: <UserGearIcon width={18} height={18}/>,
-      text: <FormattedMessage id="app.users" />,
+      text: <FormattedMessage id="adminAccounts" />,
     },
     ENTITLEMENT: {
       icon: <ArticleIcon width={18} height={18}/>,
-      text: <FormattedMessage id="app.entitlements" />,
+      text: <FormattedMessage id="entitlements" />,
     },
     RESOURCE: {
       icon: <PuzzlePieceIcon width={18} height={18}/>,
-      text: <FormattedMessage id="app.resources" />,
+      text: <FormattedMessage id="resources" />,
     },
   };
 
@@ -214,33 +252,33 @@ const Filters: FC<FilterProps> = ({ classes, intl, onSave }) => {
               </BoxContainerTitleText>
               <BoxContainerTitleTagContent>
                 <BoxContainerTitleTag>
-                  {currentFilter[active].icon}
-                  <span>{currentFilter[active].text}</span>
+                  {currentFilter[activeType].icon}
+                  <span>{currentFilter[activeType].text}</span>
                 </BoxContainerTitleTag>
                 <CaretDownIcon width={21} height={21} color="#676378"/>
               </BoxContainerTitleTagContent>
             </BoxContainerTitle>
-            {filters.items
+            {filters
               .filter((f: FilterType) => f.label.toLocaleUpperCase().indexOf(filter.toLocaleUpperCase()) > -1)
               .map((f: FilterType, index: number) =>
               f.type !== "TEXT" ? (
                 <div
                   key={`filter-${f.name}`}                                 
                 >                  
-                  <BoxFilter>
+                  <BoxFilter>                   
                     {f.type === "MULTTEXT" ? (
                       <Checkbox
                         label={f.label}   
-                        value={filtered[f.name].selected}                     
+                        value={filtered[f.name]?.selected}                     
                         onChange={(value:any) => changeFilter(f, value, "selected", f.values)}
                       />
                     ) : null}
                     {f.type === "BOOLEAN" ? <div>{f.label}</div> : null}
                     <BoxFilterIcon                       
                       onClick={() => {
-                        let _filters = {...filters};
-                        if(_filters.items[index]) {
-                          const _filter: FilterType = _filters.items[index]
+                        let _filters = [...filters];
+                        if(_filters[index]) {
+                          const _filter: FilterType = _filters[index]
                           _filter.expanded = !f.expanded;
                           setFilters(_filters);
                         }                        
@@ -258,7 +296,7 @@ const Filters: FC<FilterProps> = ({ classes, intl, onSave }) => {
                           <Checkbox
                             label={v.label}
                             value={filtered[f.name][v.value]}
-                            onChange={(value:any) => changeFilter(f, value, v.value)}
+                            onChange={(value:any) => changeFilter(f, value, v.value, undefined, v)}
                           />
                         </BoxFilterContent>
                       ))
@@ -299,13 +337,19 @@ const Filters: FC<FilterProps> = ({ classes, intl, onSave }) => {
                       <BoxFilterClearContent>
                         <BoxFilterClear onClick={() => changeFilter(f, f.type !== 'BOOLEAN' ? false : undefined, "selected", f.type !== 'BOOLEAN' ? f.values : undefined)}>
                           <XIcon width={15} height={15}/>
-                          Limpar todos
+                          <FormattedMessage id="search.filters.clear.all" />
                         </BoxFilterClear>
                       </BoxFilterClearContent>                      
                     </>  
                   ) : null}
                 </div>
-              ) : null
+              ) :  (
+                <BoxHeaderInputFilter
+                  placeholder={f.label}    
+                  value={filtered[f.name]?.resourceName}                                            
+                  onChange={(e:any) => changeFilter(f, e?.target?.value, "resourceName", undefined, {value: e?.target?.value})}
+                />
+              )
             )}
           </>
         </BoxFilters>
@@ -314,14 +358,8 @@ const Filters: FC<FilterProps> = ({ classes, intl, onSave }) => {
             variant="contained"
             color="default-primary"
             onClick={clearAll}>
-            Limpar filtros
-          </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            onClick={save}>
-            Salvar
-          </Button>
+            <FormattedMessage id="search.filters.clear" />
+          </Button>          
         </BoxFooter>
       </Drawer>
     </>

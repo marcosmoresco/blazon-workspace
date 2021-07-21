@@ -50,7 +50,8 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
         onOpen={() => {
           setOpen(true);
         }}                   
-        freeSolo={true}      
+        freeSolo={true}    
+        filterOptions={x => x}  
         PaperComponent={AutocompletePaper}
         getOptionSelected={(option: any, value: any) =>
           option.identifier === value.identifier
@@ -94,7 +95,7 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
             onKeyDown={(event: any) => {
               if(event.key === 'Enter') {
                 setOpen(false);
-                router.push("/search");
+                router.push(`/search?q=${filter}`);
               }              
             }}
             onChange={(event: any) => {

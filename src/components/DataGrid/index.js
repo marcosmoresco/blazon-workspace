@@ -141,6 +141,9 @@ class DataGridBlazon extends React.Component {
       body,
       links,
       query,
+      params = {},
+      getResponseLinks,
+      getResponse,
       type,
       height,
       expand,
@@ -196,18 +199,16 @@ class DataGridBlazon extends React.Component {
               variables: {
                 page,
                 size,
-                ord
+                ord,
+                ...params  
               }
             })
             .then(({ data }) =>
               this.setState({
                 isFetching: false,
                 internalFetching: false,
-                gridLinks: data?.getRequests?.links || [],
-                rows: (data?.getRequests?.requests || []).map((u) => ({
-                  ...u,
-                  id: (bindId && bindId(u)) || u.identifier
-                })),
+                gridLinks: (getResponseLinks && getResponseLinks(data)) || (data?.getRepresentation?.links || []),
+                rows: ((getResponse && getResponse(data)) || (data?.getRepresentation?.representation || [])).map((u) => ({...u, id: (bindId && bindId(u)) || u.identifier})),                
                 page: 0,
                 order: isAsc ? 'desc' : 'asc',
                 orderBy: property

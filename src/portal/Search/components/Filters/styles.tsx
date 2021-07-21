@@ -184,3 +184,13 @@ export const BoxFooter = styled.div`
 export const BoxFilterDivider = styledMui(MuiDivider)({
   position: "relative",
 }); 
+
+export const BoxHeaderInputFilter = styledMui(MuiOutlinedInput)({
+  height: 48,  
+  marginLeft: 20,
+  marginBottom: 10,
+  backgroundColor: "#FFFFFF",  
+  borderRadius: 8,
+  width: 390,
+  color: "#000000",
+});

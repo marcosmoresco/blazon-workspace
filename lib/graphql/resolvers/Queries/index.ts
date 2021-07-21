@@ -4,6 +4,7 @@ import { PasswordVaultQueries } from "./PasswordVault";
 import { RequestQueries } from "./Request";
 import { SelfServiceQueries } from "./SelfService";
 import { UserQueries } from "./User";
+import { DirectoryQueries } from "./Directory";
 
 export const Queries = {
   getResume: async (parent: any, args: any, context: any) => {
@@ -20,5 +21,6 @@ export const Queries = {
   ...PasswordVaultQueries,
   ...RequestQueries,
   ...SelfServiceQueries,
-  ...UserQueries
+  ...UserQueries,
+  ...DirectoryQueries
 };

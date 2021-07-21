@@ -43,6 +43,7 @@ export const BoxDescription = styled.div`
   height: 120px;
   background: rgba(244, 244, 245, 0.62);
   border-radius: 8px;
+  border: 1px solid #E9E8EB;
   color: #A8A6B2;
   font-size: 18px;
   overflow-y: auto;
@@ -57,4 +58,11 @@ export const BoxCart = styled.div`
   height: 84px;
   border-top: 1px solid #E9E9EA;
   padding-right: 37px;
+`;
+
+export const BoxLoading = styled.div`
+  display: flex; 
+  justify-content: center;
+  align-items: center;
+  height: 300px;
 `;

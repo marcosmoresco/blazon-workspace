@@ -10,6 +10,7 @@ import ShareIcon from "@icons/Share";
 import Grid from "@material-ui/core/Grid";
 import PasswordVault from "@modules/PasswordVault/components";
 import Progress from "@components/Progress";
+import Tooltip from "@components/Tooltip";
 import HeaderImg from "./images/header.svg";
 import EmptyState from "./components/EmptyState";
 import { gql, useQuery } from "@apollo/client";
@@ -278,40 +279,49 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                     <>
                       <Grid container spacing={3}>
                         {(dataRequests?.getRequests?.requests || []).map(
-                          (request: Request, index: number) => (
-                            <Grid item xs={6} key={`home-request=${index}`}>
-                              <BoxCard
-                                onClick={() =>
-                                  router.push(`/requests/${request.identifier}`)
-                                }
-                              >
-                                <BoxRequestHeader>
-                                  <BoxRequestHeaderIdentifier>
-                                    {request.identifier}
-                                  </BoxRequestHeaderIdentifier>
-                                  <BoxRequestHeaderDate>
-                                    {request.createdAt}
-                                  </BoxRequestHeaderDate>
-                                </BoxRequestHeader>
-                                <BoxRequestHeader>
-                                  <BoxRequestHeaderTitle>
-                                    {request?.entitlement?.name ||
-                                      request?.resource?.name ||
-                                      request?.role?.name ||
-                                      request?.user?.displayName ||
-                                      request?.beneficiary?.displayName ||
-                                      " - "}
-                                  </BoxRequestHeaderTitle>
-                                  <BoxRequestHeaderType>
-                                    {request?.type || " - "}
-                                  </BoxRequestHeaderType>
-                                </BoxRequestHeader>
-                                <BoxRequestDescription>
-                                  {request?.justification}
-                                </BoxRequestDescription>
-                              </BoxCard>
-                            </Grid>
+                          (request: Request, index: number) => {
+
+                            const itemName = request?.entitlement?.name ||
+                            request?.resource?.name ||
+                            request?.role?.name ||
+                            request?.user?.displayName ||
+                            request?.beneficiary?.displayName ||
+                            " - ";
+
+                            return (
+                              <Grid item xs={6} key={`home-request=${index}`}>
+                                <BoxCard
+                                  onClick={() =>
+                                    router.push(`/requests/${request.identifier}`)
+                                  }
+                                >
+                                  <BoxRequestHeader>
+                                    <BoxRequestHeaderIdentifier>
+                                      {request.identifier}
+                                    </BoxRequestHeaderIdentifier>
+                                    <BoxRequestHeaderDate>
+                                      {request.createdAt}
+                                    </BoxRequestHeaderDate>
+                                  </BoxRequestHeader>
+                                  <BoxRequestHeader>
+                                    <Tooltip title={itemName} placement="bottom">
+                                      <BoxRequestHeaderTitle>
+                                        {itemName}
+                                      </BoxRequestHeaderTitle>
+                                    </Tooltip>                                    
+                                    <BoxRequestHeaderType>
+                                      {request?.type || " - "}
+                                    </BoxRequestHeaderType>
+                                  </BoxRequestHeader>
+                                  <Tooltip title={request?.justification} placement="bottom">
+                                    <BoxRequestDescription>
+                                      {request?.justification}
+                                    </BoxRequestDescription>
+                                  </Tooltip>                                  
+                                </BoxCard>
+                              </Grid>
                           )
+                        }
                         )}
                       </Grid>
                     </>

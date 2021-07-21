@@ -43,6 +43,14 @@ export const dark = createMuiTheme({
         background: '#1B202A',
         color: '#FFFFFF',
       }
+    },
+    MuiBadge: {
+      badge: {
+        width: 26,
+        height: 26,
+        borderRadius: 20,
+        fontSize: 16,
+      }
     }
   },
   palette: {
