@@ -1,3 +1,5 @@
+import { SelfServiceAttribute } from "@portal/Search/types";
+
 export const deepCopyFunction = (inObject: any) => {
   let outObject: any, value, key;
 
@@ -34,3 +36,13 @@ export const getLink = (rel: string, links: Link[]): string => {
 export function paginate<T>(array: T[], size: number, page: number): T[] {
   return array.slice(page * size, (page + 1) * size);
 }
+
+export const getSelfServiceAttributeValue = (
+  name: string,
+  values: SelfServiceAttribute[]
+): string => {
+  const searched: SelfServiceAttribute[] = values.filter(
+    (l: SelfServiceAttribute) => l.name === name
+  );
+  return (searched?.length && searched[0].value) || "";
+};

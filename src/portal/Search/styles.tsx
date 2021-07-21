@@ -243,3 +243,8 @@ export const LoadMoreContent = styled.div`
   margin-top: 64px;
   margin-bottom: 30px;
 `;
+
+export const ItemTitleParent = styled.span`
+  font-size: 12px;
+  opacity: 0.4;
+`;

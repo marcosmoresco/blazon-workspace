@@ -30,6 +30,7 @@ export const typeDefs = gql`
     getSelfService(q: String, size: Int, type: String): [SelfService]  
     getSelfServiceAdvanced(q: String, size: Int, type: String, filters: String): [SelfService] 
     getSelfServiceFilters(type: String): [SelfServiceFilter]
+    getSelfServiceItem(id: String): SelfService
     getUserFullText(q: String, size: Int): [User]
     getDirectoryResource(id: Int): ResourceDirectory
     getDirectoryResourceEntitlements(id: Int, page: Int, size: Int, ord: String): EntitlementDirectoryRepresentation

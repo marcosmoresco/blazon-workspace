@@ -27,12 +27,18 @@ export type ReferenceTo = {
   referenceToType: string;
 };
 
+export type SelfServiceAttribute = {
+  name: string;
+  value: string;
+};
+
 export type SelfService = {
   name: string;
   description: string;
   type: string;
   identifier: string;
   referenceTo: ReferenceTo;
+  attributes: SelfServiceAttribute[]
 };
 
 export type ResourceDirectory = {

@@ -12,6 +12,10 @@ export const GET_SELF_SERVICE = gql`
         referenceToName
         referenceToType
       }
+      attributes {
+        name
+        value
+      }
     }
   }
 `;
@@ -32,6 +36,30 @@ export const GET_SELF_SERVICE_ADVANCED = gql`
         referenceToIdentifier
         referenceToName
         referenceToType
+      }
+      attributes {
+        name
+        value
+      }
+    }
+  }
+`;
+
+export const GET_SELF_SERVICE_ITEM = gql`
+  query getSelfServiceItem($id: String) {
+    getSelfServiceItem(id: $id) {
+      name
+      description
+      type
+      identifier
+      referenceTo {
+        referenceToIdentifier
+        referenceToName
+        referenceToType
+      },
+      attributes {
+        name
+        value
       }
     }
   }

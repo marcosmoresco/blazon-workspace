@@ -14,6 +14,7 @@ import UserGearIcon from "@icons/UserGear";
 import NewspaperClippingIcon from "@icons/NewspaperClipping";
 import CaretRightIcon from "@icons/CaretRight";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import { getSelfServiceAttributeValue } from "@utils/index";
 import type { HeaderAutocompleteProps } from "./types";
 import {
   AutocompletePaper,
@@ -21,6 +22,7 @@ import {
   BoxAutocompleteContent,
   BoxAutocompleteContentInfo,
   BoxAutocompleteTitle,
+  BoxAutocompleteTitleParent,
   BoxAutocompleteText,
 } from "./styles";
 
@@ -39,7 +41,7 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
 
   const list = data?.getSelfService || [];
 
-  AutocompletePaper.defaultProps = { refetch, filter, open, setOpen };
+  AutocompletePaper.defaultProps = { refetch, filter, open, setOpen, setFilter };
 
   return (
     <>
@@ -47,9 +49,15 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
         id="blazon-workspace-header-search"
         className={classes.searchInput}
         open={open}
-        onOpen={() => {
+        onOpen={() => {  
+          const variables = {
+            size: 5,
+            q: filter || "",
+            type: undefined
+          };          
+          refetch(variables);                  
           setOpen(true);
-        }}                   
+        }}                     
         freeSolo={true}    
         filterOptions={x => x}  
         PaperComponent={AutocompletePaper}
@@ -59,6 +67,18 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
         getOptionLabel={(option: any) => option.name}
         options={list}
         loading={loading}
+        onChange={(event: any, value: any) => {
+          if(value?.type) {
+            setOpen(false);
+            router.push(
+              `/search/selfService/${value.type
+                .replaceAll("_", "")
+                .toLocaleLowerCase()}/${
+                value.identifier
+              }`
+            );
+          }          
+        }}
         renderOption={(option: any) => (
           <>
             <BoxAutocomplete>
@@ -71,12 +91,20 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
               {option?.type === "ENTITLEMENT" && (
                 <ArticleIcon width={17} height={17} />
               )}
-              {option?.type === "ADMIN_ACCOUNT" && (
+              {option?.type === "ADMIN_PASSWORD" && (
                 <UserGearIcon width={17} height={17} />
               )}
               <BoxAutocompleteContent>
                 <BoxAutocompleteContentInfo>
-                  <BoxAutocompleteTitle>{option.name}</BoxAutocompleteTitle>
+                  <BoxAutocompleteTitle>
+                    {option?.type === "ENTITLEMENT" && (
+                      <BoxAutocompleteTitleParent>{getSelfServiceAttributeValue("resourceName", option.attributes) || " - "} / </BoxAutocompleteTitleParent>
+                    )}
+                    {option?.type === "ADMIN_PASSWORD" && (
+                      <BoxAutocompleteTitleParent>{getSelfServiceAttributeValue("resourceName", option.attributes) || " - "} / </BoxAutocompleteTitleParent>
+                    )}
+                    {option.name}
+                  </BoxAutocompleteTitle>
                   <BoxAutocompleteText>
                     {option.description || " - "}
                   </BoxAutocompleteText>

@@ -81,11 +81,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
             <div className="pointer" onClick={() => router.push("/")}>
               <Image src={Logo} alt="Logo" />
             </div>
-            {router.pathname !== "/search" && <HeaderAutocomplete classes={classes}/>}           
-
-
-
-
+            {router.pathname !== "/search" && <HeaderAutocomplete classes={classes}/>}
           </div>
           <div className={classes.menuOptionsContent}>
             <div className={classes.menuOptions}>

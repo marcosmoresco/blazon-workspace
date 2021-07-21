@@ -181,7 +181,7 @@ const Filters: FC<FilterProps> = ({ classes, intl, activeType, onSave }) => {
       icon: <NewspaperClippingIcon width={18} height={18}/>,
       text: <FormattedMessage id="roles" />,
     },
-    ADMIN_ACCOUNT: {
+    ADMIN_PASSWORD: {
       icon: <UserGearIcon width={18} height={18}/>,
       text: <FormattedMessage id="adminAccounts" />,
     },

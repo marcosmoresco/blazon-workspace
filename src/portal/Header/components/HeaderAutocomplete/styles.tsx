@@ -31,6 +31,11 @@ export const BoxAutocompleteTitle = styled.div`
   display: inline-block;
 `;
 
+export const BoxAutocompleteTitleParent = styled.span`
+  font-size: 12px;
+  opacity: 0.4;
+`;
+
 export const BoxAutocompleteText = styled.div`
   font-size: 12px !important;
   line-height: 18px;
@@ -103,12 +108,14 @@ export const AutocompletePaper = ({
   filter,
   open,
   setOpen,
+  setFilter,
 }: {
   children: any;
   refetch: any;
   filter: any;
   open: boolean;
   setOpen: any;
+  setFilter: any;
 }) => {
   const [active, setActive] = useState("");
 
@@ -121,6 +128,7 @@ export const AutocompletePaper = ({
       );
       if (!filtered.length) {
         setOpen(false);
+        setActive("");        
         document.onclick = null;
       }
     };
@@ -198,21 +206,21 @@ export const AutocompletePaper = ({
               q: filter || "",
               type: "",
             };
-            if (active !== "ADMIN_ACCOUNTS") {
-              setActive("ADMIN_ACCOUNTS");
-              variables.type = "ADMIN_ACCOUNT";
+            if (active !== "ADMIN_PASSWORD") {
+              setActive("ADMIN_PASSWORD");
+              variables.type = "ADMIN_PASSWORD";
             } else {
               setActive("");
             }
 
             refetch(variables);
           }}
-          className={`${active === "ADMIN_ACCOUNTS" && "Active"}`}
+          className={`${active === "ADMIN_PASSWORD" && "Active"}`}
         >
           <UserGearIcon
             width={17}
             height={17}
-            color={(active === "ADMIN_ACCOUNTS" && "#006AC6") || "black"}
+            color={(active === "ADMIN_PASSWORD" && "#006AC6") || "black"}
           />
           <FormattedMessage id="adminAccounts" />
         </HeaderTag>

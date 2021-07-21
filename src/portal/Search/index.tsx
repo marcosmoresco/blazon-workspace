@@ -21,7 +21,7 @@ import SearchIcon from "@icons/Search";
 import SquaresFourIcon from "@icons/SquaresFour";
 import ListBulletsIcon from "@icons/ListBullets";
 import Filters from "./components/Filters";
-import { paginate } from "@utils/index";
+import { paginate, getSelfServiceAttributeValue } from "@utils/index";
 import type { SearchProps, SelfService } from "./types";
 import {
   useStyles,
@@ -36,7 +36,8 @@ import {
   ListItemContent,
   ListItemIconContent,
   ListItemText,
-  LoadMoreContent
+  LoadMoreContent,
+  ItemTitleParent
 } from "./styles";
 import { GET_SELF_SERVICE, GET_SELF_SERVICE_ADVANCED } from "./queries";
 
@@ -87,7 +88,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
     RESOURCE: <PuzzlePieceIcon width={24} height={24} color="#3174F6" />,
     ENTITLEMENT: <ArticleIcon width={24} height={24} color="#3174F6" />,
     ROLE: <NewspaperClippingIcon width={24} height={24} color="#3174F6" />,
-    ADMIN_ACCOUNT: <UserGearIcon width={24} height={24} color="#3174F6" />,
+    ADMIN_PASSWORD: <UserGearIcon width={24} height={24} color="#3174F6" />,
   };
 
   const sections = [
@@ -109,7 +110,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
     {
       icon: <UserGearIcon />,
       name: "adminAccounts",
-      value: "ADMIN_ACCOUNT",
+      value: "ADMIN_PASSWORD",
     },
     {
       icon: <NewspaperClippingIcon />,
@@ -214,10 +215,10 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                     className={classes.searchCard}
                     onClick={() =>
                       router.push(
-                        `/search/${item.type
+                        `/search/selfService/${item.type
                           .replaceAll("_", "")
                           .toLocaleLowerCase()}/${
-                          item.referenceTo.referenceToIdentifier
+                          item.identifier
                         }`
                       )
                     }
@@ -229,8 +230,14 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                         </div>
                       </div>
                       <Tooltip title={item.name} placement="bottom">
-                        <div className={classes.searchCardContentHeaderTitle}>
-                          {item.name}
+                        <div className={classes.searchCardContentHeaderTitle}>                          
+                          {item?.type === "ENTITLEMENT" && (
+                            <ItemTitleParent>{getSelfServiceAttributeValue("resourceName", item.attributes) || " - "} / </ItemTitleParent>
+                          )}
+                          {item?.type === "ADMIN_PASSWORD" && (
+                            <ItemTitleParent>{getSelfServiceAttributeValue("resourceName", item.attributes) || " - "} / </ItemTitleParent>
+                          )}                       
+                          {item.name}                                                  
                         </div>
                       </Tooltip>
                       <Divider />
@@ -257,10 +264,10 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                 <ListItemBox
                   onClick={() =>
                     router.push(
-                      `/search/${item.type
+                      `/search/selfService/${item.type
                         .replaceAll("_", "")
                         .toLocaleLowerCase()}/${
-                        item.referenceTo.referenceToIdentifier
+                        item.identifier
                       }`
                     )
                   }
@@ -271,7 +278,15 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                       {iconByType[item.type]}
                     </ListItemIconContent>
                     <Tooltip title={item.name} placement="bottom">
-                      <ListItemText>{item.name}</ListItemText>
+                      <ListItemText>
+                        {item?.type === "ENTITLEMENT" && (
+                          <ItemTitleParent>{getSelfServiceAttributeValue("resourceName", item.attributes) || " - "} / </ItemTitleParent>
+                        )}
+                        {item?.type === "ADMIN_PASSWORD" && (
+                          <ItemTitleParent>{getSelfServiceAttributeValue("resourceName", item.attributes) || " - "} / </ItemTitleParent>
+                        )}                       
+                        {item.name}
+                      </ListItemText>
                     </Tooltip>
                   </ListItemContent>
                   <ListItemIconContent className="Selectable">

@@ -1,5 +1,10 @@
 export const SelfService = `  
 
+  type SelfServiceAttribute {
+    name: String
+    value: String
+  }
+
   type SelfServiceFilterValue {
     label: String
     value: String
@@ -23,6 +28,7 @@ export const SelfService = `
     description: String
     type: String
     identifier: String
-    referenceTo: ReferenceTo    
+    referenceTo: ReferenceTo 
+    attributes: [SelfServiceAttribute]   
   }
 `;
