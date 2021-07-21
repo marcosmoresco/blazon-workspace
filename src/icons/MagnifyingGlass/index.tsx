@@ -1,37 +1,38 @@
-import React from 'react'
+import React from "react";
 
 export type IconProps = {
-  width?: number
-  height?: number
-}
+  width?: number;
+  height?: number;
+  color?: string;
+};
 
 function MagnifyingGlassIcon(props: IconProps) {
-  const { width, height } = props
+  const { width, height, color } = props;
 
   return (
     <svg
       width={width}
       height={height}
-      viewBox='0 0 32 32'
-      fill='none'
-      xmlns='http://www.w3.org/2000/svg'
+      viewBox={`0 0 32 32`}
+      fill="none"
+      xmlns="http://www.w3.org/2000/svg"
     >
       <path
-        d='M14.4998 25C20.2987 25 24.9998 20.299 24.9998 14.5C24.9998 8.70101 20.2987 4 14.4998 4C8.70077 4 3.99976 8.70101 3.99976 14.5C3.99976 20.299 8.70077 25 14.4998 25Z'
-        stroke='#7D7A8C'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        d="M14.4999 25C20.2989 25 24.9999 20.299 24.9999 14.5C24.9999 8.70101 20.2989 4 14.4999 4C8.70089 4 3.99988 8.70101 3.99988 14.5C3.99988 20.299 8.70089 25 14.4999 25Z"
+        stroke={color}
+        stroke-linecap="round"
+        stroke-linejoin="round"
       />
       <path
-        d='M21.9241 21.9248L27.9991 27.9999'
-        stroke='#7D7A8C'
-        stroke-linecap='round'
-        stroke-linejoin='round'
+        d="M21.9241 21.925L27.9991 28.0001"
+        stroke={color}
+        stroke-linecap="round"
+        stroke-linejoin="round"
       />
     </svg>
-  )
+  );
 }
 
-MagnifyingGlassIcon.defaultProps = { width: 32, height: 32, color: 'black' }
+MagnifyingGlassIcon.defaultProps = { width: 32, height: 32, color: "#000000" };
 
-export default MagnifyingGlassIcon
+export default MagnifyingGlassIcon;
