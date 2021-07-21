@@ -4,20 +4,23 @@ const useStyles = (theme: Theme) =>
   createStyles({
     userBox: {
       backgroundColor: '#F4F4F5',
-      padding: 24,
       marginLeft: 24,
       marginRight: 24,
       marginTop: 24,
       marginBottom: 32,
       borderRadius: 8
     },
-    menuBox: {
-      backgroundColor: '#F4F4F5',
-      marginBottom: 55,
-      borderRadius: 8
-    },
-    menuBoxes: {
-      margin: 9
+    box: {
+      '& .left .listing': {
+        marginLeft: 24,
+        marginTop: 32,
+        marginBottom: 32
+      },
+      '& .right .listing': {
+        marginRight: 24,
+        marginTop: 32,
+        marginBottom: 32
+      }
     },
     avatar: {
       height: 80,

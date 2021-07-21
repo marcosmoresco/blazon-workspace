@@ -12,6 +12,9 @@ export default function Index() {
 
   const router = useRouter()
   const { name } = router.query
+  if (!name) {
+    return <div></div>
+  }
 
   return (
     <div className='App'>

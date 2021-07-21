@@ -1,4 +1,6 @@
 {
+  "actions": "Ações",
+  "app.save": "Salvar",
   "search": "Busca",
   "profile": "Perfil",
   "suport.blazon": "Suporte Blazon",
@@ -54,11 +56,14 @@
   "username": "Nome do usuário",
   "account": "Conta",
   "accountIdentifier": "Identificador da conta",
+  "createdAt": "Criado em",
+  "expireAt": "Expira em",
   "results": "Resultados",
   "searchIn": "Procurar em",
   "viewAll.results.for": "Ver todos os resultados para",
   "requests": "Requisições",
   "passwordVault": "Cofre de senhas",
   "requestCart": "Carrinho de solicitações",
-  "notifications": "Notificações"
+  "notifications": "Notificações",
+  "requiredField": "Campo obrigatório"
 }

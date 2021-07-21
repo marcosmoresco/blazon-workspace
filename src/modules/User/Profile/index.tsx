@@ -19,30 +19,32 @@ type ProfileProps = {
   classes: any
 }
 
-const UserActionListing = withStyles(() => ({
+const BoxListing = withStyles(() => ({
   root: {
-    paddingLeft: 40
+    backgroundColor: '#F4F4F5',
+    borderRadius: 8,
+    paddingTop: 24,
+    paddingBottom: 24
+  },
+  title: {
+    paddingLeft: 32,
+    paddingRight: 32
   }
 }))(Listing)
 
-const MenuListing = withStyles(() => ({
-  root: {
-    paddingTop: 24,
-    paddingBottom: 32,
+const BoxListingItem = withStyles(() => ({
+  listingRow: {
     paddingLeft: 32,
-    paddingRight: 32,
-    backgroundColor: '#F4F4F5',
-    borderRadius: 8,
-    height: '100%'
+    paddingRight: 32
   }
-}))(Listing)
+}))(ListingItem)
 
 const Profile: FC<ProfileProps> = ({ classes, intl }) => {
   const router = useRouter()
   return (
     <CardScreen title='profile' icon={<User height={24} width={24} />}>
       <Grid container>
-        <Grid container className={classes.userBox}>
+        <Grid container className={classes.userBox} spacing={5}>
           <Grid item xs={4}>
             <Grid
               container
@@ -77,7 +79,7 @@ const Profile: FC<ProfileProps> = ({ classes, intl }) => {
             </Grid>
           </Grid>
           <Grid item xs={4}>
-            <UserActionListing title='profile.login'>
+            <Listing title='profile.login'>
               <ListingItem
                 label='profile.login.changepassword'
                 subtitle='profile.login.changepassword.subtitle'
@@ -85,10 +87,10 @@ const Profile: FC<ProfileProps> = ({ classes, intl }) => {
                 iconBg='#0E46D7'
                 action={() => router.push('/profile/change-password')}
               />
-            </UserActionListing>
+            </Listing>
           </Grid>
           <Grid item xs={4}>
-            <UserActionListing title='profile.options'>
+            <Listing title='profile.options'>
               <ListingItem
                 label='profile.options.suport.blazon'
                 icon={<InfoIcon width={21} height={21} color='#FFFFFF' />}
@@ -101,46 +103,48 @@ const Profile: FC<ProfileProps> = ({ classes, intl }) => {
                 iconBg='#FF134A'
                 action={() => router.push('/profile/change-password')}
               />
-            </UserActionListing>
+            </Listing>
           </Grid>
         </Grid>
         <Divider />
-        <Grid container className={classes.menuBoxes} spacing={4}>
-          <Grid item xs={6}>
-            <MenuListing title='profile.accounts'>
-              <ListingItem
-                label='profile.accounts.shared'
-                action={() => router.push('/profile/access/shared')}
-              />
-              <ListingItem
-                label='profile.accounts.temporary'
-                action={() => router.push('/profile/access/temporary')}
-              />
-              <ListingItem
-                label='profile.accounts.application'
-                action={() => router.push('/profile/access/application')}
-              />
-              <ListingItem
-                label='profile.accounts.regular'
-                action={() => router.push('/profile/access/regular')}
-              />
-              <ListingItem
-                label='profile.accounts.adminstrative'
-                action={() => router.push('/profile/access/adminstrative')}
-              />
-            </MenuListing>
+        <Grid container spacing={4} className={classes.box}>
+          <Grid item xs={6} className='left'>
+            <div>
+              <BoxListing title='profile.accounts'>
+                <BoxListingItem
+                  label='profile.accounts.shared'
+                  action={() => router.push('/profile/access/shared')}
+                />
+                <BoxListingItem
+                  label='profile.accounts.temporary'
+                  action={() => router.push('/profile/access/temporary')}
+                />
+                <BoxListingItem
+                  label='profile.accounts.application'
+                  action={() => router.push('/profile/access/application')}
+                />
+                <BoxListingItem
+                  label='profile.accounts.regular'
+                  action={() => router.push('/profile/access/regular')}
+                />
+                <BoxListingItem
+                  label='profile.accounts.adminstrative'
+                  action={() => router.push('/profile/access/adminstrative')}
+                />
+              </BoxListing>
+            </div>{' '}
           </Grid>
-          <Grid item xs={6}>
-            <MenuListing title='profile.others'>
-              <ListingItem
+          <Grid item xs={6} className='right'>
+            <BoxListing title='profile.others'>
+              <BoxListingItem
                 label='profile.accounts.roles'
                 action={() => router.push('/profile/access/roles')}
               />
-              <ListingItem
+              <BoxListingItem
                 label='profile.accounts.entitlements'
                 action={() => router.push('/profile/access/entitlements')}
               />
-            </MenuListing>
+            </BoxListing>
           </Grid>
         </Grid>
       </Grid>

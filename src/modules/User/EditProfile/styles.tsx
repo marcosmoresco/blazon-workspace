@@ -1,14 +1,8 @@
 import { createStyles, Theme } from '@material-ui/core/styles'
-import ProfileBackground from '../../../../public/profile-bg.jpg'
+import { BackgroundColor } from 'chalk'
 
 const useStyles = (theme: Theme) =>
   createStyles({
-    formControl: {
-      padding: 24,
-      '& .MuiFormControl-root': {
-        paddingTop: 16
-      }
-    },
     title: {
       fontSize: 18,
       fontWeight: 600,
@@ -24,7 +18,8 @@ const useStyles = (theme: Theme) =>
     userHeaderBg: {
       height: 151,
       backgroundImage: 'url(../profile-bg.jpg)',
-      backgroundPosition: 'left'
+      backgroundPosition: 'left',
+      textAlign: 'center'
     },
     userHeader: {
       paddingBottom: 93 + 64 // 64 is figma size
@@ -34,7 +29,42 @@ const useStyles = (theme: Theme) =>
       width: 200,
       position: 'relative',
       top: 44,
-      margin: '0 auto'
+      margin: '0 auto',
+      zIndex: 1
+    },
+    avatarAction: {
+      top: 243,
+      position: 'relative',
+      margin: '0 auto',
+      zIndex: 2
+    },
+    uploadImageTitle: {
+      fontWeight: 600,
+      fontSize: 18
+    },
+    uploadImageDescription: {
+      fontWeight: 400,
+      fontSize: 16
+    },
+    center: {
+      textAlign: 'center'
+    },
+    avatarDialog: {
+      width: 600
+    },
+    avatarContainer: {
+      paddingBottom: 32
+    },
+    avatarSelectorComponent: {
+      '& div': {
+        margin: '0 auto',
+        '& > div': {
+          backgroundColor: '#E9E8EB'
+        }
+      },
+      '& label': {
+        paddingTop: 20
+      }
     }
   })
 

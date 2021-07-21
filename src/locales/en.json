@@ -1,4 +1,6 @@
 {
+  "actions": "Actions",
+  "app.save": "Save",
   "search": "Search",
   "profile": "Profile",
   "suport.blazon": "Suport Blazon",
@@ -54,11 +56,14 @@
   "username": "Username",
   "account": "Account",
   "accountIdentifier": "Account identifier",
+  "createdAt": "Created at",
+  "expireAt": "Expire at",
   "results": "Results",
   "searchIn": "Search in",
   "viewAll.results.for": "View all results for",
   "requests": "Requests",
   "passwordVault": "Password vault",
   "requestCart": "Request cart",
-  "notifications": "Notifications"
+  "notifications": "Notifications",
+  "requiredField": "Required field"
 }

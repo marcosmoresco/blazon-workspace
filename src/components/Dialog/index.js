@@ -13,7 +13,7 @@ import Typography from '@material-ui/core/Typography'
 const styles = (theme) => ({
   root: {
     margin: 0,
-    padding: theme.spacing(2),    
+    padding: theme.spacing(2),
     backgroundColor: '#F1F1FE',
     '& .title': {
       lineHeight: '31px',
@@ -23,23 +23,27 @@ const styles = (theme) => ({
     '& .subTitle': {
       fontSize: 13,
       color: '#777779'
-    },
+    }
   },
   closeButton: {
     position: 'absolute',
     right: theme.spacing(1),
     top: theme.spacing(1),
-    color: theme.palette.grey[500],
-  }  
+    color: theme.palette.grey[500]
+  }
 })
 
 const DialogTitle = withStyles(styles)((props) => {
-  const { children, classes, onClose, ...other } = props;
+  const { children, classes, onClose, ...other } = props
   return (
     <MuiDialogTitle disableTypography className={classes.root} {...other}>
-      <Typography variant="h6">{children}</Typography>
+      <Typography variant='h6'>{children}</Typography>
       {onClose ? (
-        <IconButton aria-label="close" className={classes.closeButton} onClick={onClose}>
+        <IconButton
+          aria-label='close'
+          className={classes.closeButton}
+          onClick={onClose}
+        >
           <CloseIcon />
         </IconButton>
       ) : null}
@@ -55,17 +59,16 @@ const DialogContent = withStyles((theme) => ({
       width: '100%'
     },
     '& .MuiInputBase-formControl': {
-      width: '100%'     
+      width: '100%'
     },
     '& .Mui-error': {
       marginLeft: 0
     },
-    '& input': {     
+    '& input': {
       padding: '11.5px'
-    },
-  },
+    }
+  }
 }))(MuiDialogContent)
-
 
 const stylesActions = (theme) => ({
   root: {
@@ -73,13 +76,13 @@ const stylesActions = (theme) => ({
     padding: theme.spacing(1),
     '& button': {
       right: 10,
-      bottom: 10      
+      bottom: 10
     }
-  },  
+  }
 })
 
 const DialogActions = withStyles(stylesActions)((props) => {
-  const { children, classes, ...other } = props;
+  const { children, classes, ...other } = props
   return (
     <MuiDialogActions className={classes.root} {...other}>
       {children}
@@ -88,21 +91,21 @@ const DialogActions = withStyles(stylesActions)((props) => {
 })
 
 export default function CustomizedDialogs(props) {
-  
   const {
-    title, 
-    subTitle, 
-    saveLabel, 
-    open, 
-    onSave, 
-    onClose, 
-    isValid, 
-    header, 
-    noActions, 
+    title,
+    subTitle,
+    saveLabel,
+    open,
+    onSave,
+    onClose,
+    isValid,
+    header,
+    noActions,
     maxWidth,
     isLoading,
+    fullWidth,
     ...other
-  } = props 
+  } = props
 
   const handleClose = () => {
     onClose()
@@ -113,44 +116,44 @@ export default function CustomizedDialogs(props) {
   }
 
   return (
-    <div>      
-      <Dialog 
+    <div>
+      <Dialog
         {...other}
-        onClose={handleClose} 
-        aria-labelledby="customized-dialog-title" 
-        open={open} 
-        maxWidth={(maxWidth && maxWidth) || "md"} 
-        fullWidth={true}>
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+        onClose={handleClose}
+        aria-labelledby='customized-dialog-title'
+        open={open}
+        maxWidth={(maxWidth && maxWidth) || 'md'}
+        fullWidth={fullWidth}
+      >
+        <DialogTitle id='customized-dialog-title' onClose={handleClose}>
           {header ? (
             header
           ) : (
             <React.Fragment>
-              <div className="title">
-                {title}
-              </div>
-              <div className="subTitle">
-                {subTitle}
-              </div>
+              <div className='title'>{title}</div>
+              <div className='subTitle'>{subTitle}</div>
             </React.Fragment>
-          )}                                    
+          )}
         </DialogTitle>
-        <DialogContent dividers>          
-          {props.children}                    
-        </DialogContent>
+        <DialogContent dividers>{props.children}</DialogContent>
         {!noActions ? (
           <DialogActions>
-            <Button 
-              variant="contained" 
-              onClick={save} 
-              className="buttonSave" 
+            <Button
+              variant='contained'
+              onClick={save}
+              className='buttonSave'
               disabled={!isValid}
-              isLoading={isLoading ? 1 : 0}>
-              {(saveLabel && saveLabel) || <FormattedMessage id="app.save"/>}  
-            </Button>          
+              isLoading={isLoading ? 1 : 0}
+            >
+              {(saveLabel && saveLabel) || <FormattedMessage id='app.save' />}
+            </Button>
           </DialogActions>
-        ) : null}        
+        ) : null}
       </Dialog>
     </div>
   )
+}
+
+CustomizedDialogs.defaultProps = {
+  fullWidth: true
 }

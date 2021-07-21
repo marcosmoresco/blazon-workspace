@@ -1,3 +1,4 @@
+import Loading from '@components/Loading'
 import ScreenHeader from '@components/ScreenHeader'
 import TitlePage from '@components/TitlePage'
 import User from '@icons/User'
@@ -33,6 +34,7 @@ type CardScreenProps = {
   subTitle?: string
   actions?: React.ReactNode
   icon: React.ReactNode
+  loading?: boolean
 }
 
 const CardScreen: FC<CardScreenProps> = ({
@@ -41,7 +43,8 @@ const CardScreen: FC<CardScreenProps> = ({
   onBack,
   icon,
   title,
-  subTitle
+  subTitle,
+  loading
 }) => {
   const classes = useStyles()
 
@@ -53,12 +56,20 @@ const CardScreen: FC<CardScreenProps> = ({
         icon={icon}
         subTitle={subTitle}
       />
-      <div className={classes.root}>
-        <div className={classes.content}>{children}</div>
-        {actions && <div className={classes.actions}>{actions}</div>}
-      </div>
+      {loading ? (
+        <Loading type='blue' container={true} />
+      ) : (
+        <div className={classes.root}>
+          <div className={classes.content}>{children}</div>
+          {actions && <div className={classes.actions}>{actions}</div>}
+        </div>
+      )}
     </>
   )
+}
+
+CardScreen.defaultProps = {
+  loading: false
 }
 
 export default injectIntl(CardScreen)

@@ -2,6 +2,7 @@ import React, { FC, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { injectIntl } from "react-intl";
 import { useRouter } from "next/router";
+
 import Image from "next/image";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
@@ -16,6 +17,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Button from "@material-ui/core/Button";
 import Switch from "@material-ui/core/Switch";
 import Logo from "../../logo.svg";
+
 import PaperPlaneTiltIcon from "@icons/PaperPlaneTilt";
 import KeyIcon from "@icons/Key";
 import ShoppingCartSimpleIcon from "@icons/ShoppingCartSimple";
@@ -28,6 +30,7 @@ import InfoIcon from "@icons/Info";
 import SignOutIcon from "@icons/SignOut";
 import Message from "../Message";
 import Tooltip from "@components/Tooltip";
+
 import { useUser } from "@hooks";
 import { useTheme, themes } from "../../theme";
 import type { HeaderProps } from "./types";
@@ -77,6 +80,10 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
               <Image src={Logo} alt="Logo" />
             </div>
             <HeaderAutocomplete classes={classes}/>            
+
+
+
+
           </div>
           <div className={classes.menuOptionsContent}>
             <div className={classes.menuOptions}>
@@ -99,6 +106,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
               </Tooltip>
               <Tooltip title={intl.formatMessage({id: "passwordVault"})} placement="bottom">
                 <div className={classes.optionImage}>
+
                   <KeyIcon
                     width={21}
                     height={21}

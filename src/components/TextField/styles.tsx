@@ -7,4 +7,5 @@ export const Label = styled.label`
   line-height: 14px;
   letter-spacing: 0em;
   text-transform: uppercase;
+  padding-bottom: 8px;
 `

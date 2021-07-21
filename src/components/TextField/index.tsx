@@ -5,7 +5,8 @@ import {
   FormControl,
   FormHelperText,
   Input,
-  InputProps
+  InputProps,
+  TextField as MuiTextField
 } from '@material-ui/core'
 import { FormikProps } from 'formik'
 import { Label } from './styles'
@@ -16,34 +17,51 @@ export interface TextFieldProps extends InputProps {
   label?: string
   form: FormikProps<any>
   classes?: any
+  hideLabel?: boolean
 }
 
 const TextField: FC<TextFieldProps> = ({
   label,
   form,
   classes,
+  hideLabel,
+  className,
   ...inputProps
 }) => {
   const intl = useIntl()
   const { setFieldValue, values, errors } = form
   const { name, fullWidth } = inputProps
+
+  const labelText = hideLabel
+    ? ''
+    : intl.formatMessage({ id: label || name.toLowerCase() })
+
   if (!inputProps.placeholder) {
-    inputProps.placeholder = intl.formatMessage({
-      id: `${name}.placeholder`.toLowerCase()
-    })
+    inputProps.placeholder = `${name}.placeholder`.toLowerCase()
   }
 
+  inputProps.placeholder = intl.formatMessage(
+    {
+      id: inputProps.placeholder
+    },
+    { labelText }
+  )
+
   return (
-    <FormControl className={classes?.root} fullWidth={fullWidth}>
-      <Label htmlFor={name}>
-        {intl.formatMessage({ id: label || name.toLowerCase() })}
+    <FormControl
+      className={`${classes?.root} ${className || ''} `}
+      fullWidth={fullWidth}
+    >
+      <Label htmlFor={name} hidden={hideLabel}>
+        {labelText}
       </Label>
-      <Input
-        {...inputProps}
+      <MuiTextField
         value={get(values, name)}
-        onChange={({ target }: ChangeEvent<HTMLInputElement>) =>
+        onChange={({ target }: ChangeEvent<HTMLInputElement>) => {
           setFieldValue(name, target.value)
-        }
+        }}
+        InputProps={inputProps}
+        variant='outlined'
       />
       <FormHelperText error={true}>{get(errors, name)}</FormHelperText>
     </FormControl>
@@ -52,7 +70,8 @@ const TextField: FC<TextFieldProps> = ({
 
 TextField.defaultProps = {
   fullWidth: true,
-  type: 'text'
+  type: 'text',
+  hideLabel: false
 }
 
 export default TextField

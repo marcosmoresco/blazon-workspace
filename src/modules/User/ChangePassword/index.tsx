@@ -2,7 +2,7 @@ import React, { FC } from 'react'
 import { withStyles } from '@material-ui/core/styles'
 import { injectIntl, IntlShape } from 'react-intl'
 import useStyles from './styles'
-import { Form, Formik } from 'formik'
+import { Formik } from 'formik'
 import * as Yup from 'yup'
 import PasswordField from '@components/PasswordField'
 import CardScreen from '@components/CardScreen'
@@ -10,6 +10,7 @@ import Button from '@components/Button'
 import { Divider } from '@material-ui/core'
 import User from '@icons/User'
 import { useRouter } from 'next/router'
+import { StyledForm } from '../EditProfile'
 
 type ChangePasswordScreenProps = {
   intl: IntlShape
@@ -81,18 +82,11 @@ const ChangePassword: FC<ChangePasswordScreenProps> = ({ classes, intl }) => {
           </div>
           <Divider />
 
-          <Form className={classes.form}>
+          <StyledForm className={classes.form}>
             <PasswordField form={form} name='changePassword.currentPassword' />
-            <div className={classes.forgetPassword}>
-              <a href='#'>
-                {intl.formatMessage({
-                  id: 'changepassword.forget.password'
-                })}
-              </a>
-            </div>
             <PasswordField form={form} name='changePassword.newPassword' />
             <PasswordField form={form} name='changePassword.repeatPassword' />
-          </Form>
+          </StyledForm>
         </CardScreen>
       )}
     />

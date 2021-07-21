@@ -12,7 +12,7 @@ type ListingProps = {
 
 const Listing: FC<ListingProps> = ({ intl, classes, children, title }) => {
   return (
-    <div className={classes.root}>
+    <div className={`${classes.root} listing`}>
       <div className={classes.title}>
         {intl.formatMessage({
           id: title

@@ -1,4 +1,5 @@
-{  
+{
+  "changepasswordform.dialog.title": "Nova senha",
   "passwordVault.tutorial.title": "Como gerenciar as suas senhas",
   "passwordVault.tutorial.text": "Acompanhe esse mini tutorial e acabe com suas dúvidas.",
   "passwordVault.no.password": "Nenhuma senha",

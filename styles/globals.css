@@ -1,5 +1,5 @@
 html,
-body { 
+body {
   padding: 0;
   margin: 0;
   font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
@@ -15,13 +15,13 @@ a {
   box-sizing: border-box;
 }
 
-label {  
+label {
   font-style: normal;
   font-weight: normal;
   font-size: 14px;
   line-height: 24px;
   /* identical to box height, or 171% */
-  color: #514D65;
+  color: #514d65;
 }
 
 .Default-content {
@@ -29,51 +29,85 @@ label {
 }
 
 .Default-header-filter {
-	display: flex;
+  display: flex;
   justify-content: space-between;
   padding: 24px 24px 0px 24px;
-	margin-bottom: 20px;	
+  margin-bottom: 20px;
 }
 
 .flex {
-	display: flex;
+  display: flex;
 }
 
 .pointer {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 .pre-wrap {
-	white-space: pre-wrap;
+  white-space: pre-wrap;
 }
 
 .word-break {
-	word-break: break-all;
+  word-break: break-all;
 }
 
 .flex-align-center {
-	display: flex;
-	align-items: center;
+  display: flex;
+  align-items: center;
 }
 
 .flex-justify-center {
-	display: flex;	
-	justify-content: center;
+  display: flex;
+  justify-content: center;
 }
 
 .flex-align-justify-center {
-	display: flex;
-	align-items: center;
-	justify-content: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .flex-align-center-justify-space-between {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 @keyframes spin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.modal .modal-section {
+  font-weight: 600;
+  font-size: 18px;
+  color: #676378;
+}
+
+.modal .modal-description {
+  font-weight: 400;
+  font-size: 16px;
+  color: #a8a6b2;
+}
+
+.pt48 {
+  padding-top: 48px;
+}
+
+.pt22 {
+  padding-top: 22px;
+}
+
+.modal label {
+  font-size: 14px;
+  font-style: normal;
+  font-weight: 600;
+  line-height: 14px;
+  letter-spacing: 0em;
+  text-transform: uppercase;
+  padding-bottom: 8px;
 }

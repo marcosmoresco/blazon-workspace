@@ -25,7 +25,7 @@ const ListingItem: FC<ListingItemProps> = ({
   action
 }) => {
   return (
-    <div className={classes.accountsContent} onClick={action}>
+    <div className={`${classes.listingRow} hover-effect`} onClick={action}>
       <div className={classes.accountsContentInfo}>
         <div
           className={classes.accountsContentInfoIcon}

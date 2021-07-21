@@ -1,125 +1,122 @@
-import {
-  createStyles,
-  Theme
-} from "@material-ui/core/styles";
+import { createStyles, Theme } from '@material-ui/core/styles'
 
 export const useStyles = (theme: Theme) =>
   createStyles({
     root: {
-      backgroundColor: theme.palette.type === "light" ? "#FFFFFF" : "#0D0C13",
+      backgroundColor: theme.palette.type === 'light' ? '#FFFFFF' : '#0D0C13'
     },
     toolBar: {
       minHeight: 93,
       marginLeft: 65,
-      display: "flex",
-      justifyContent: "space-between",
+      display: 'flex',
+      justifyContent: 'space-between'
     },
     logoSearchInput: {
-      display: "flex",
-      alignItems: "center",
+      display: 'flex',
+      alignItems: 'center'
     },
     searchInput: {
       height: 48,
       marginLeft: 42,
       width: 600,
       borderRadius: 8,
-      backgroundColor: "#FFFFFF",
+      backgroundColor: '#FFFFFF',
       '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]': {
-        padding: "2px 9px",
-        borderRadius: 8,
-      },
+        padding: '2px 9px',
+        borderRadius: 8
+      }
     },
     menuOptionsContent: {
-      display: "flex",
-      alignItems: "center",
+      display: 'flex',
+      alignItems: 'center'
     },
     menuOptions: {
-      display: "flex",
+      display: 'flex'
     },
     optionImage: {
       marginRight: 20,
-      cursor: "pointer",
+      cursor: 'pointer',
       width: 32,
       height: 32,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      backgroundColor: "#FFFFFF",
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: '#FFFFFF',
       borderRadius: 4,
-      "&.Active::after": {
+      '&.Active::after': {
         content: '"*"',
-        display: "block",
+        display: 'block',
         height: 4,
         width: 38,
         marginTop: 90,
-        position: "absolute",
-        backgroundColor: "#0E46D7",
+        position: 'absolute',
+        backgroundColor: '#0E46D7'
       },
-      "&:hover": {
-        background: "#F4F4F5",
-      },
+      '&:hover': {
+        background: '#F4F4F5'
+      }
     },
     menuList: {
       marginTop: 10,
       marginRight: 20,
       width: 300,
-      boxShadow: "0px 4px 74px rgba(0, 0, 0, 0.16)",
+      boxShadow: '0px 4px 74px rgba(0, 0, 0, 0.16)',
       borderRadius: 8,
-      "& .MuiMenuItem-root": {
-        marginBottom: 10,
+      '& .MuiMenuItem-root': {
+        marginBottom: 10
       },
-      "& .MuiDivider-root": {
-        marginBottom: 10,
-      },
+      '& .MuiDivider-root': {
+        marginBottom: 10
+      }
     },
     menuItem: {
-      display: "flex",
-      alignItems: "center",
-      fontSize: 16,
+      display: 'flex',
+      alignItems: 'center',
+      fontSize: 16
     },
     menuImage: {
-      "&.blue": {
-        backgroundColor: "#0E46D7",
+      '&.blue': {
+        backgroundColor: '#0E46D7'
       },
-      "&.red": {
-        backgroundColor: "#FF134A  ",
+      '&.red': {
+        backgroundColor: '#FF134A  '
       },
-      "&.yellow": {
-        backgroundColor: "#FBB13C",
+      '&.yellow': {
+        backgroundColor: '#FBB13C'
       },
       width: 32,
       height: 32,
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
       borderRadius: 4,
-      marginRight: 12,
+      marginRight: 12
     },
     caretRight: {
-      position: "absolute",
-      right: 15,
+      position: 'absolute',
+      right: 15
     },
     darkMode: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      backgroundColor: "#1B202A",
-      color: "#FFFFFF",
-      width: "100%",
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      backgroundColor: '#1B202A',
+      color: '#FFFFFF',
+      width: '100%',
       borderRadius: 4,
-      height: 52,
+      height: 52
     },
     darkModeText: {
-      backgroundColor: "#1B202A",
-      paddingLeft: 15,
+      backgroundColor: '#1B202A',
+      paddingLeft: 15
     },
     darkModeSwitch: {
-      backgroundColor: "#323740",
+      backgroundColor: '#323740',
       height: 52,
-      display: "flex",
-      alignItems: "center",
-      "& .MuiSwitch-track": {
-        backgroundColor: "#76797F",
-      },
-    },
-  });
+      display: 'flex',
+      alignItems: 'center',
+      '& .MuiSwitch-track': {
+        backgroundColor: '#76797F'
+      }
+    }
+  })

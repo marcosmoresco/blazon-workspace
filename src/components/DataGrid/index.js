@@ -11,7 +11,7 @@ import TableRow from '@material-ui/core/TableRow'
 import Snackbar from '../Snackbar'
 import { getQueryParam, replaceQueryParam } from '@utils/queryParam'
 import { connect } from 'react-redux'
-import apolloClient from '@utils/apollo-client';
+import apolloClient from '@utils/apollo-client'
 import axios from 'axios'
 import CustomNoRowsOverlay from './components/CustomNoRowsOverlay'
 import Head from './components/Head'
@@ -20,76 +20,70 @@ import { SortableContainer, SortableItem } from './components/Sortable'
 import { getComparator, stableSort, styles } from './constants'
 
 class DataGridBlazon extends React.Component {
-  
   constructor(props) {
     super(props)
-    
-    const { 
-      size, 
-      type, 
-      rowsPerPageList, 
-      isFetching, 
+
+    const {
+      size,
+      type,
+      rowsPerPageList,
+      isFetching,
       links,
       list,
       selecteds,
-      bindId 
+      bindId
     } = props
 
-    this.state = {           
+    this.state = {
       open: (selecteds || []).length,
       transition: undefined,
-      rows: (list || []).map((u) => ({...u, id: (bindId && bindId(u)) || u.identifier})),
+      rows: (list || []).map((u) => ({
+        ...u,
+        id: (bindId && bindId(u)) || u.identifier
+      })),
       order: 'asc',
       orderBy: null,
       selected: selecteds || [],
       page: 0,
-      rowsPerPage: size || ((type === "pagination" && rowsPerPageList[0]) || 0),
+      rowsPerPage: size || (type === 'pagination' && rowsPerPageList[0]) || 0,
       isFetching,
       gridLinks: links,
-      expanded: [],
+      expanded: []
     }
   }
 
   componentDidMount() {
-    const {      
-      fetching
-    } = this.props
+    const { fetching } = this.props
 
     this.setState({
       isFetching: fetching
     })
   }
-  
-  componentDidUpdate(prevProps) {
 
+  componentDidUpdate(prevProps) {
     const {
       size,
-      rowsPerPageList, 
+      rowsPerPageList,
       list,
-      fetching, 
-      links, 
-      type, 
-      selecteds, 
+      fetching,
+      links,
+      type,
+      selecteds,
       bindId,
       defaultOrderBy,
       expandAll
     } = this.props
 
-    const { 
-      open, 
-      isFetching,
-      internalFetching,
-      selected 
-    } = this.state
+    const { open, isFetching, internalFetching, selected } = this.state
 
-    if(!!list) {
-      if(!open && fetching !== isFetching && !internalFetching) {
+    if (!!list) {
+      if (!open && fetching !== isFetching && !internalFetching) {
         this.setState({
           gridLinks: links,
           isFetching: fetching,
           page: 0
-        })        
-        if(type === 'pagination') {        
+        })
+        if (type === 'pagination') {
           this.setState({
             rowsPerPage: size || rowsPerPageList[0]
           })
@@ -98,61 +92,63 @@ class DataGridBlazon extends React.Component {
             rowsPerPage: 10000
           })
         }
-        if(selecteds && selecteds.length) {
+        if (selecteds && selecteds.length) {
           this.setState({
             open: true,
             selected: selecteds || []
           })
-        }  
-        if(defaultOrderBy) {
-          const _defaultOrder = defaultOrderBy.split(":")
-          if(_defaultOrder.length === 2) {
+        }
+        if (defaultOrderBy) {
+          const _defaultOrder = defaultOrderBy.split(':')
+          if (_defaultOrder.length === 2) {
             this.setState({
               order: _defaultOrder[1],
               orderBy: _defaultOrder[0]
             })
           }
         } else {
-          this.setState({            
+          this.setState({
             orderBy: null
           })
-        }   
-        this.setState({            
-          rows: list.map((u) => ({...u, id: (bindId && bindId(u)) || u.identifier}))
-        })                        
-      } else {       
-        if(selecteds && !selecteds.length && selected.length) {
-          this.setState({            
+        }
+        this.setState({
+          rows: list.map((u) => ({
+            ...u,
+            id: (bindId && bindId(u)) || u.identifier
+          }))
+        })
+      } else {
+        if (selecteds && !selecteds.length && selected.length) {
+          this.setState({
             selected: [],
             open: false
           })
         }
-        if(prevProps.expandAll && !expandAll) {
+        if (prevProps.expandAll && !expandAll) {
           this.setState({
             expanded: []
           })
         }
-      }                
-    } 
+      }
+    }
   }
 
   render() {
-    
     const {
-      columns, 
-      rowsPerPageList, 
+      columns,
+      rowsPerPageList,
       method,
       body,
-      links, 
+      links,
       query,
-      type, 
-      height, 
-      expand, 
+      type,
+      height,
+      expand,
       expandAll,
       beforeExpand,
-      handleClick, 
-      actions, 
-      handleSortable, 
+      handleClick,
+      actions,
+      handleSortable,
       handleSelected,
       bindId,
       disabled,
@@ -178,74 +174,80 @@ class DataGridBlazon extends React.Component {
       transition
     } = this.state
 
-    const sortable = handleSortable && typeof handleSortable === "function"  
+    const sortable = handleSortable && typeof handleSortable === 'function'
 
     const handleRequestSort = (event, property) => {
-      const isAsc = orderBy === property && order === 'asc';    
-      const orderChanged = (property + ':' + (isAsc ? 'desc' : 'asc'))
+      const isAsc = orderBy === property && order === 'asc'
+      const orderChanged = property + ':' + (isAsc ? 'desc' : 'asc')
 
       let link = verifyPageLink('self')
 
-      if(link) {
-
+      if (link) {
         link = link.replace(/{.*?}/g, '')
 
-        if(query) {
-
-          const size = Number(getQueryParam("size", link));
-          const page = 0;
-          const ord = orderChanged;
+        if (query) {
+          const size = Number(getQueryParam('size', link))
+          const page = 0
+          const ord = orderChanged
 
           apolloClient
-            .query({ 
-              query, 
+            .query({
+              query,
               variables: {
                 page,
                 size,
-                ord 
+                ord
               }
             })
-            .then(({ data }) => this.setState({
-              isFetching: false,
-              internalFetching: false,
-              gridLinks: data?.getRequests?.links || [],
-              rows: (data?.getRequests?.requests || []).map((u) => ({...u, id: (bindId && bindId(u)) || u.identifier})),
-              page: 0,
-              order: isAsc ? 'desc' : 'asc',
-              orderBy: property
-            }));   
-
+            .then(({ data }) =>
+              this.setState({
+                isFetching: false,
+                internalFetching: false,
+                gridLinks: data?.getRequests?.links || [],
+                rows: (data?.getRequests?.requests || []).map((u) => ({
+                  ...u,
+                  id: (bindId && bindId(u)) || u.identifier
+                })),
+                page: 0,
+                order: isAsc ? 'desc' : 'asc',
+                orderBy: property
+              })
+            )
         } else {
-          
           let url = replaceQueryParam(link, 'page', '0')
-          url = replaceQueryParam(url, 'ord', orderChanged)    
+          url = replaceQueryParam(url, 'ord', orderChanged)
 
-          this.setState({isFetching: true, internalFetching: true})
+          this.setState({ isFetching: true, internalFetching: true })
 
           axios
-          .request({
-            url,
-            method: method || 'POST',
-            data: body || {}
-          })
-          .then(({ data }) => {
-
-            this.setState({
-              isFetching: false,
-              internalFetching: false,
-              gridLinks: data.links,
-              rows: (data.representation || []).map((u) => ({...u, id: (bindId && bindId(u)) || u.identifier})),
-              page: 0,
-              order: isAsc ? 'desc' : 'asc',
-              orderBy: property
-            })                
-          }) 
-
-        }                
-      } else {            
-        rows.sort((a, b) => isAsc ? (("" + a[property]) || "").localeCompare(b[property]) : (("" + b[property]) || "").localeCompare(a[property]))     
+            .request({
+              url,
+              method: method || 'POST',
+              data: body || {}
+            })
+            .then(({ data }) => {
+              this.setState({
+                isFetching: false,
+                internalFetching: false,
+                gridLinks: data.links,
+                rows: (data.representation || []).map((u) => ({
+                  ...u,
+                  id: (bindId && bindId(u)) || u.identifier
+                })),
+                page: 0,
+                order: isAsc ? 'desc' : 'asc',
+                orderBy: property
+              })
+            })
+        }
+      } else {
+        rows.sort((a, b) =>
+          isAsc
+            ? ('' + a[property] || '').localeCompare(b[property])
+            : ('' + b[property] || '').localeCompare(a[property])
+        )
         this.setState({
-          rows,          
+          rows,
           order: isAsc ? 'desc' : 'asc',
           orderBy: property
         })
@@ -255,27 +257,25 @@ class DataGridBlazon extends React.Component {
     const clearSelected = {
       execute: () => {
         this.setState({
-          open: false,        
+          open: false,
           selected: []
         })
       }
     }
 
     const handleSelectedAll = (newSelected) => {
-      
-      if(handleSelected && newSelected) {      
+      if (handleSelected && newSelected) {
         handleSelected(newSelected, clearSelected, () => {
-          if(newSelected.length) {
+          if (newSelected.length) {
             return rows.filter((r) => newSelected.indexOf(r.id) > -1)
-          }                
+          }
           return []
         })
       }
     }
 
     const handleSelectAllClick = (checked) => {
-
-      if(getRows().length === 0) {
+      if (getRows().length === 0) {
         return
       }
 
@@ -283,23 +283,24 @@ class DataGridBlazon extends React.Component {
 
       if (checked) {
         newSelected = getRows()
-          .filter((r) => (selected || []).indexOf(r.id) === -1) 
+          .filter((r) => (selected || []).indexOf(r.id) === -1)
           .map((n) => n.id)
 
         this.setState({
           selected: [...selected, ...newSelected],
-          open: true,          
-        })         
-        handleSelectedAll([...selected, ...newSelected])     
+          open: true
+        })
+        handleSelectedAll([...selected, ...newSelected])
       } else {
-        newSelected = (selected || []) 
-          .filter((id) => !getRows().filter((r) => r.id === id).length)
-        
+        newSelected = (selected || []).filter(
+          (id) => !getRows().filter((r) => r.id === id).length
+        )
+
         this.setState({
           selected: newSelected
         })
 
-        if(!newSelected.length) {
+        if (!newSelected.length) {
           this.setState({
             open: false
           })
@@ -310,7 +311,6 @@ class DataGridBlazon extends React.Component {
     }
 
     const handleSelectedClick = (event, id, row) => {
-
       event.stopPropagation()
 
       const selectedIndex = selected.indexOf(id)
@@ -325,7 +325,7 @@ class DataGridBlazon extends React.Component {
       } else if (selectedIndex > 0) {
         newSelected = newSelected.concat(
           selected.slice(0, selectedIndex),
-          selected.slice(selectedIndex + 1),
+          selected.slice(selectedIndex + 1)
         )
       }
 
@@ -335,7 +335,7 @@ class DataGridBlazon extends React.Component {
 
       handleSelectedAll(newSelected)
 
-      if(newSelected.length) {
+      if (newSelected.length) {
         this.setState({
           open: true
         })
@@ -359,100 +359,104 @@ class DataGridBlazon extends React.Component {
         page: 0
       })
 
-      let link = verifyPageLink('self')   
-      
-      if(link) {
+      let link = verifyPageLink('self')
 
+      if (link) {
         link = link.replace(/{.*?}/g, '')
 
         let url = replaceQueryParam(link, 'page', '0')
         url = replaceQueryParam(url, 'size', '' + size)
-          
+
         axios
-        .request({
-          url,
-          method: method || 'POST',
-          data: {}
-        })
-        .then(({ data }) => {
-          this.setState({
-            gridLinks: data.links,
-            rows: data.representation.map((u) => ({...u, id: (bindId && bindId(u)) || u.identifier})),
-            page: 0
-          })          
-        })
-      }         
+          .request({
+            url,
+            method: method || 'POST',
+            data: {}
+          })
+          .then(({ data }) => {
+            this.setState({
+              gridLinks: data.links,
+              rows: data.representation.map((u) => ({
+                ...u,
+                id: (bindId && bindId(u)) || u.identifier
+              })),
+              page: 0
+            })
+          })
+      }
     }
 
     const handlePaginationClick = (type) => {
-      
       let link = verifyPageLink(type)
-         
-      if(link) {
 
+      if (link) {
         link = link.replace(/{.*?}/g, '')
 
         this.setState({
           isFetching: true,
           internalFetching: true
-        }) 
-        
-        if(query) {
+        })
 
-          const size = Number(getQueryParam("size", link));
-          const page = Number(getQueryParam("page", link));
-          const ord = getQueryParam("ord", link);
+        if (query) {
+          const size = Number(getQueryParam('size', link))
+          const page = Number(getQueryParam('page', link))
+          const ord = getQueryParam('ord', link)
 
           apolloClient
-            .query({ 
-              query, 
+            .query({
+              query,
               variables: {
                 page,
                 size,
-                ord 
+                ord
               }
             })
-            .then(({ data }) => this.setState({
-              isFetching: false,
-              internalFetching: false,
-              gridLinks: data?.getRequests?.links || [],
-              rows: (data?.getRequests?.requests || []).map((u) => ({...u, id: (bindId && bindId(u)) || u.identifier}))
-            }));   
-
+            .then(({ data }) =>
+              this.setState({
+                isFetching: false,
+                internalFetching: false,
+                gridLinks: data?.getRequests?.links || [],
+                rows: (data?.getRequests?.requests || []).map((u) => ({
+                  ...u,
+                  id: (bindId && bindId(u)) || u.identifier
+                }))
+              })
+            )
         } else {
-
           axios
-          .request({
-            url: link,
-            method: method || 'POST',
-            data: body || {}
-          })
-          .then(({ data }) => {
-            this.setState({
-              isFetching: false,
-              internalFetching: false,
-              gridLinks: data.links,
-              rows: data.representation.map((u) => ({...u, id: (bindId && bindId(u)) || u.identifier}))
+            .request({
+              url: link,
+              method: method || 'POST',
+              data: body || {}
             })
-          })   
-        }                           
-      }       
+            .then(({ data }) => {
+              this.setState({
+                isFetching: false,
+                internalFetching: false,
+                gridLinks: data.links,
+                rows: data.representation.map((u) => ({
+                  ...u,
+                  id: (bindId && bindId(u)) || u.identifier
+                }))
+              })
+            })
+        }
+      }
     }
 
     const handleExpand = (row, isOpen) => {
-
-      if(isOpen) {
-        if(expanded.indexOf(row.id) === -1) {
-          expanded.push(row.id)  
+      if (isOpen) {
+        if (expanded.indexOf(row.id) === -1) {
+          expanded.push(row.id)
           this.setState({
             expanded
-          })      
+          })
         }
       } else {
         this.setState({
           expanded: expanded.filter((e) => e !== row.id)
         })
-      }     
+      }
     }
 
     const isSelected = (id) => {
@@ -460,11 +464,10 @@ class DataGridBlazon extends React.Component {
     }
 
     const verifyPageLink = (type) => {
+      if (gridLinks) {
+        let nextLinks = gridLinks.filter((l) => l.rel === (type || 'next'))
 
-      if(gridLinks) {
-        let nextLinks = gridLinks.filter((l) => l.rel === (type || "next"))
-
-        if(nextLinks.length) {
+        if (nextLinks.length) {
           return nextLinks[0].href
         }
       }
@@ -472,49 +475,69 @@ class DataGridBlazon extends React.Component {
       return null
     }
 
-    const onSortEnd = ({oldIndex, newIndex}) => {
-      if(handleSortable) {
+    const onSortEnd = ({ oldIndex, newIndex }) => {
+      if (handleSortable) {
         handleSortable(arrayMove(rows, oldIndex, newIndex))
       }
     }
 
-    let extraColumns = 0;
+    let extraColumns = 0
 
-    if(this.props.expand) {
+    if (this.props.expand) {
       extraColumns++
     }
 
-    if(this.props.selectable) {
+    if (this.props.selectable) {
       extraColumns++
     }
 
     const getRows = () => {
-
-      return stableSort(rows, getComparator(order, orderBy), this.props.default, filter, filterOptions)
-        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+      return stableSort(
+        rows,
+        getComparator(order, orderBy),
+        this.props.default,
+        filter,
+        filterOptions
+      ).slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
     }
 
-    const isNext = () => {  
-         
-      return (stableSort(rows, getComparator(order, orderBy), this.props.default, filter, filterOptions)
-        .slice((page + 1) * rowsPerPage, (page + 1) * rowsPerPage + rowsPerPage)).length
+    const isNext = () => {
+      return stableSort(
+        rows,
+        getComparator(order, orderBy),
+        this.props.default,
+        filter,
+        filterOptions
+      ).slice((page + 1) * rowsPerPage, (page + 1) * rowsPerPage + rowsPerPage)
+        .length
     }
 
     const _rows = getRows()
 
-    return(
-   
-      <div className={`${classes.root} ${this.props.default ? classes.default : ''}`}>                 
-        <div style={{width: '100%'}}>
-        <TableContainer style={ height > 0 ? {minHeight: height + 'px', maxHeight: height + 'px'} : null}>
-            {isFetching ? (<div className={classes.loading}>
-              <CircularProgress color="primary" />
-            </div>) : null}
+    return (
+      <div
+        className={`${classes.root} ${
+          this.props.default ? classes.default : ''
+        }`}
+      >
+        <div style={{ width: '100%' }}>
+          <TableContainer
+            style={
+              height > 0
+                ? { minHeight: height + 'px', maxHeight: height + 'px' }
+                : null
+            }
+          >
+            {isFetching ? (
+              <div className={classes.loading}>
+                <CircularProgress color='primary' />
+              </div>
+            ) : null}
             <Table
               className={classes.table}
-              aria-labelledby="tableTitle"
+              aria-labelledby='tableTitle'
               size={'medium'}
-              aria-label="Data Table"
+              aria-label='Data Table'
               stickyHeader
             >
               <Head
@@ -533,52 +556,71 @@ class DataGridBlazon extends React.Component {
                 isFetching={isFetching}
               />
               <SortableContainer onSortEnd={onSortEnd} useDragHandle>
-                <TableBody>                           
-                  {_rows                 
-                    .map((row, index) => {
-                      const isItemSelected = isSelected(row.id)
-                      const labelId = `enhanced-table-checkbox-${index}`
-                      const child = (
-                        <Row 
-                          key={labelId} 
-                          columns={columns} 
-                          row={row} 
-                          isSelected={isItemSelected} 
-                          labelId={labelId} 
-                          handleClick={handleClick} 
-                          handleSelectedClick={handleSelectedClick} 
-                          handleExpand={handleExpand} 
-                          expanded={expanded}
-                          expand={expand} 
-                          expandAll={expandAll}
-                          beforeExpand={beforeExpand}
-                          selectable={this.props.selectable}                        
-                          sortable={sortable} 
-                          colspan={columns.length + extraColumns}
-                          disabled={disabled}
-                          noHover={noHover}
-                          defaultMargin={this.props.defaultMargin}/>
-                      )                      
-                      return (
-                        sortable ? <SortableItem key={labelId} index={index} component={child} collection={_rows.length + new Date().getTime()}/> : child                              
-                      )
-                    })}                                                                           
-                  {(( _rows.length > 0 && !isFetching && ((!links && !isNext()) || (links && !verifyPageLink())) ) || (!isFetching && _rows.length === 0)) && (
-                    <TableRow style={{height: (height && _rows.length === 0 ? height - 100 : 0) + 'px'}}>
+                <TableBody>
+                  {_rows.map((row, index) => {
+                    const isItemSelected = isSelected(row.id)
+                    const labelId = `enhanced-table-checkbox-${index}`
+                    const child = (
+                      <Row
+                        key={labelId}
+                        columns={columns}
+                        row={row}
+                        isSelected={isItemSelected}
+                        labelId={labelId}
+                        handleClick={handleClick}
+                        handleSelectedClick={handleSelectedClick}
+                        handleExpand={handleExpand}
+                        expanded={expanded}
+                        expand={expand}
+                        expandAll={expandAll}
+                        beforeExpand={beforeExpand}
+                        selectable={this.props.selectable}
+                        sortable={sortable}
+                        colspan={columns.length + extraColumns}
+                        disabled={disabled}
+                        noHover={noHover}
+                        defaultMargin={this.props.defaultMargin}
+                      />
+                    )
+                    return sortable ? (
+                      <SortableItem
+                        key={labelId}
+                        index={index}
+                        component={child}
+                        collection={_rows.length + new Date().getTime()}
+                      />
+                    ) : (
+                      child
+                    )
+                  })}
+                  {((_rows.length > 0 &&
+                    !isFetching &&
+                    ((!links && !isNext()) || (links && !verifyPageLink()))) ||
+                    (!isFetching && _rows.length === 0)) && (
+                    <TableRow
+                      style={{
+                        height:
+                          (height && _rows.length === 0 ? height - 100 : 0) +
+                          'px'
+                      }}
+                    >
                       <TableCell colSpan={columns.length + extraColumns}>
-                        <CustomNoRowsOverlay isEmpty={_rows.length === 0} template={template}/>
-                      </TableCell>  
+                        <CustomNoRowsOverlay
+                          isEmpty={_rows.length === 0}
+                          template={template}
+                        />
+                      </TableCell>
                     </TableRow>
                   )}
                 </TableBody>
               </SortableContainer>
             </Table>
           </TableContainer>
-          {type === 'pagination' && !sortable && links && _rows.length ? 
-            (<TablePagination
-              className={classes.tablePagination} 
+          {type === 'pagination' && !sortable && links && _rows.length ? (
+            <TablePagination
+              className={classes.tablePagination}
               rowsPerPageOptions={[]}
-              component="div"
+              component='div'
               count={rows.length}
               rowsPerPage={rowsPerPage}
               page={page}
@@ -588,43 +630,43 @@ class DataGridBlazon extends React.Component {
               labelRowsPerPage=''
               backIconButtonProps={{
                 'aria-label': 'Previous Page',
-                'onClick': () => handlePaginationClick('prev'),
-                'disabled': !verifyPageLink('prev')
+                onClick: () => handlePaginationClick('prev'),
+                disabled: !verifyPageLink('prev')
               }}
               nextIconButtonProps={{
                 'aria-label': 'Next Page',
-                'onClick': () => handlePaginationClick('next'),
-                'disabled': !verifyPageLink()
-             }}
-            />) : null}     
-          {type === 'pagination' && !links ? 
-            (<TablePagination
+                onClick: () => handlePaginationClick('next'),
+                disabled: !verifyPageLink()
+              }}
+            />
+          ) : null}
+          {type === 'pagination' && !links ? (
+            <TablePagination
               rowsPerPageOptions={rowsPerPageList}
-              component="div"
+              component='div'
               count={rows.length}
               rowsPerPage={rowsPerPage}
               page={page}
               onChangePage={handleChangePage}
               onChangeRowsPerPage={handleChangeRowsPerPage}
-            />) : null}     
-        </div>      
+            />
+          ) : null}
+        </div>
         <Snackbar
-          open={open}                       
+          open={open}
           total={selected.length}
           key={transition ? transition.name : ''}
           className={classes.snackbar}
           align={align}
           action={
-            <div className={classes.buttonSelectedContent}>
-              {actions}
-            </div>          
+            <div className={classes.buttonSelectedContent}>{actions}</div>
           }
-        />                                                
-      </div>    
+        />
+      </div>
     )
   }
 }
 
-const mapStateToProps = store => ({})
+const mapStateToProps = (store) => ({})
 
 export default connect(mapStateToProps)(withStyles(styles)(DataGridBlazon))
