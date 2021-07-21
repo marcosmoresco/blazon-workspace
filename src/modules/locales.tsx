@@ -19,12 +19,32 @@ import RequestsDatailingEn from './Requests/Detail/locales/en.json'
 import UserPt from './User/locales/pt.json'
 import UserEn from './User/locales/en.json'
 
+//Checkout
+import CheckoutPt from "./Checkout/Locales/pt.json";
+import CheckoutEn from "./Checkout/Locales/en.json";
+
+//CheckoutEmpty
+import CheckoutEmptyPt from "./CheckoutEmpty/Locales/pt.json";
+import CheckoutEmptyEn from "./CheckoutEmpty/Locales/en.json";
+
+//CheckoutFinishing
+import CheckoutFinishingPt from "./CheckoutFinishing/Locales/pt.json";
+import CheckoutFinishingEn from "./CheckoutFinishing/Locales/en.json";
+
+//CheckoutRequested
+import CheckoutRequestedPt from "./CheckoutRequested/Locales/pt.json";
+import CheckoutRequestedEn from "./CheckoutRequested/Locales/en.json";
+
 export const ModulesLocalesPt: LocalesType = {
   ...TaskPt,
   ...PasswordVaultPt,
   ...RequestsPt,
   ...RequestsDatailingPt,
-  ...UserPt
+  ...UserPt,
+  ...CheckoutPt,
+  ...CheckoutEmptyPt,
+  ...CheckoutFinishingPt,
+  ...CheckoutRequestedPt,
 }
 
 export const ModulesLocalesEn: LocalesType = {
@@ -32,7 +52,11 @@ export const ModulesLocalesEn: LocalesType = {
   ...PasswordVaultEn,
   ...RequestsEn,
   ...RequestsDatailingEn,
-  ...UserEn
+  ...UserEn,
+  ...CheckoutEn,
+  ...CheckoutEmptyEn,
+  ...CheckoutFinishingEn,
+  ...CheckoutRequestedEn,
 }
 
 const Locales = {

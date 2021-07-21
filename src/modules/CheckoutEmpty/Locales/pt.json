@@ -1,0 +1,21 @@
+{
+  "checkout.checkout": "Checkout",
+  "checkout.information": "Informação",
+  "checkout.FinishingRequest": "Finalizando",
+  "checkout.requested": "Solicitado",
+  "checkout.RequestInformation": "Informações da Solicitação",
+  "checkout.continue": "Continuar",
+  "checkout.entitlement": "Aprovações pré-estabelecidas",
+  "checkout.OnlyMe": "Somente eu",
+  "checkout.MeAndSomeoneElse": "Eu e outra pessoa",
+  "checkout.AnotherPerson": "Outra pessoa",
+  "checkout.AccessRequest": "Pedido de acesso",
+  "checkout.AddAUser": "Adicionar um usuario",
+  "checkout.DeleteItem": "Excluir item",
+  "checkout.save": "Salvar",
+  "checkout.SelectedItems": "Itens selecionados",
+  "checkout.AddAnItemToContinue": "Adicione um item para continuar",
+  "checkout.NoResults": "Nenhum Resultado",
+  "checkout.AddItems": "Adicione itens ao carrinho para prosseguir.",
+  "checkout.SearchItem": "Buscar item "
+}
