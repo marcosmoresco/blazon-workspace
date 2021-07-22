@@ -65,5 +65,8 @@
   "passwordVault": "Cofre de senhas",
   "requestCart": "Carrinho de solicitações",
   "notifications": "Notificações",
-  "requiredField": "Campo obrigatório"
+  "requiredField": "Campo obrigatório",
+  "loadMore": "Carregar mais",
+  "no.result": "Nenhum resultado",
+  "search.no.result": "Não encontramos resultados para sua busca."
 }

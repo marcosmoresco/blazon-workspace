@@ -1,0 +1,28 @@
+import axios from "axios";
+import { config } from "../utils";
+
+export const SelfServiceMutations = {
+  deleteSelfServiceCartItem: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.delete(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/selfservice/cart/item/${args?.id}`,
+        { ...config(context) }
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  addSelfServiceCartItem: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/selfservice/cart/item`,
+        { catalogItemId: args.id },
+        { ...config(context) },       
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+};

@@ -20,7 +20,6 @@ import Logo from "../../logo.svg";
 
 import PaperPlaneTiltIcon from "@icons/PaperPlaneTilt";
 import KeyIcon from "@icons/Key";
-import ShoppingCartSimpleIcon from "@icons/ShoppingCartSimple";
 import NoteBlankIcon from "@icons/NoteBlank";
 import BellSimpleIcon from "@icons/BellSimple";
 import CaretDownIcon from "@icons/CaretDown";
@@ -28,13 +27,15 @@ import CaretRightIcon from "@icons/CaretRight";
 import UserIcon from "@icons/User";
 import InfoIcon from "@icons/Info";
 import SignOutIcon from "@icons/SignOut";
-import Message from "../Message";
+import Message from "@portal/Message/index";
+import Cart from "@portal/Cart/index";
 import Tooltip from "@components/Tooltip";
 
 import { useUser } from "@hooks";
 import { useTheme, themes } from "../../theme";
 import type { HeaderProps } from "./types";
 import HeaderAutocomplete from "./components/HeaderAutocomplete";
+import HeaderRequestCart from "./components/HeaderRequestCart";
 import {
   useStyles,
   HeaderProfileBox, 
@@ -42,6 +43,7 @@ import {
 } from "./styles";
 
 const Header: FC<HeaderProps> = ({ classes, intl }) => {
+   
   const router = useRouter();
   const [anchorEl, setAnchorEl] = useState(null);
   const [openProfile, setOpenProfile] = useState(false);
@@ -74,6 +76,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
 
   return (
     <div>
+      <Cart />
       <Message />
       <AppBar position="static" className={classes.root}>
         <Toolbar className={classes.toolBar}>
@@ -112,15 +115,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                   />
                 </div>
               </Tooltip>
-              <Tooltip title={intl.formatMessage({id: "requestCart"})} placement="bottom">
-                <div className={classes.optionImage}>
-                  <ShoppingCartSimpleIcon
-                    width={21}
-                    height={21}
-                    color={currentTheme.overrides.MuiIcon.root.color}
-                  />
-                </div>
-              </Tooltip>
+              <HeaderRequestCart currentTheme={currentTheme} classes={classes}/>
               <Tooltip title={intl.formatMessage({id: "tasks"})} placement="bottom">
                 <div
                   className={`${classes.optionImage} ${

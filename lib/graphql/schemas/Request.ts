@@ -57,3 +57,10 @@ export const Request = `
     detail: String
   }
 `;
+
+export const Queries = `
+  getRequest(id: Int): Request
+  getCancelRequest(id: Int): Boolean
+  getRequestTransitionStates(id: Int): [RequestTransitionState]
+  getRequests(page: Int, size: Int, ord: String, filters: String): RequestRepresentation    
+`;

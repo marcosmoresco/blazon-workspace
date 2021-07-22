@@ -1,29 +1,4 @@
-import { IntlShape } from "react-intl";
-
-export type HeaderProps = {
-  intl: IntlShape;
-  classes: {
-    root: string;
-    toolBar: string;
-    logoSearchInput: string;
-    searchInput: string;
-    menuOptionsContent: string;
-    menuOptions: string;
-    optionImage: string;
-    menuList: string;
-    menuItem: string;
-    menuImage: string;
-    caretRight: string;
-    darkMode: string;
-    darkModeText: string;
-    darkModeSwitch: string;
-  };
-};
-
-type Link = {
-  href: string;
-  rel: string;
-};
+import { Link } from "@types";
 
 export type SelfServiceCartItemInstanceValidation = {
   status: boolean;
@@ -61,4 +36,13 @@ export type SelfServiceCart = {
   userId: String;
   allowedAssignTypes: [String];
   items: [SelfServiceCartItem];
+};
+
+export type RequestCartState = {
+  cart: SelfServiceCart | null;
+  setCart(cart: SelfServiceCart): void;
+};
+
+export type RequestCartContextProps = {
+  children: React.ReactNode;
 };

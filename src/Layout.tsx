@@ -1,5 +1,6 @@
 import React, { FC } from "react";
 import { ThemeStateProvider } from "./theme";
+import { RequestCartStateProvider } from "./requestCart";
 import App from "./App";
 
 export type LayoutProps = {
@@ -9,7 +10,9 @@ export type LayoutProps = {
 const Layout: FC<LayoutProps> = ({ children }) => {
   return (
     <ThemeStateProvider>
-      <App>{children}</App>
+      <RequestCartStateProvider>
+        <App>{children}</App>
+      </RequestCartStateProvider>      
     </ThemeStateProvider>
   );
 };

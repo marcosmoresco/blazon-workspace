@@ -6,3 +6,7 @@ export const User = `
     links: [Link]
   }
 `;
+
+export const Queries = `
+  getUserFullText(q: String, size: Int): [User]
+`;

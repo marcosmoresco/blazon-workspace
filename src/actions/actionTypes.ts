@@ -1,3 +1,7 @@
 //Message
-export const ADD_MESSAGE = 'ADD_MESSAGE'
-export const REMOVE_MESSAGE = 'REMOVE_MESSAGE'
+export const ADD_MESSAGE = "ADD_MESSAGE";
+export const REMOVE_MESSAGE = "REMOVE_MESSAGE";
+
+//Cart Message
+export const ADD_CART_ITEM_MESSAGE = "ADD_CART_ITEM_MESSAGE";
+export const REMOVE_CART_ITEM_MESSAGE = "REMOVE_CART_ITEM_MESSAGE";

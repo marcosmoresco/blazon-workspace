@@ -9,3 +9,7 @@ export const Resume = `
     links: [Link]
   }
 `;
+
+export const Queries = `
+  getResume: Resume
+`;

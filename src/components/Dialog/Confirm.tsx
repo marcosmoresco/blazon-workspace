@@ -26,7 +26,7 @@ const styles = (theme: Theme) => ({
   root: {
     margin: 0,
     padding: theme.spacing(2),
-    backgroundColor: "#F4F4F5",    
+    backgroundColor: "#F4F4F5",
   },
   closeButton: {
     position: "absolute",
@@ -63,13 +63,14 @@ const stylesContent = () => ({
     "& .Icon": {
       display: "flex",
       justifyContent: "center",
+      marginBottom: 24,
     },
     "& .Title": {
       fontWeight: 600,
       fontSize: 24,
       lineHeight: "100%",
       textAlign: "center",
-      color: "#26213F"
+      color: "#26213F",
     },
     "& .SubTitle": {
       fontStyle: "normal",
@@ -85,23 +86,13 @@ const stylesContent = () => ({
 
 const DialogContent = withStyles(stylesContent)(
   injectIntl((props: any) => {
-    const { title, text, template, classes, onClose, icon, intl, ...other } = props;
+    const { title, text, template, classes, onClose, icon, intl, ...other } =
+      props;
     return (
       <MuiDialogContent className={classes.root} {...other}>
-        {icon && (
-        <div className="Icon">
-          {icon}
-        </div>)}
-        {title && (
-        <div className="Title">
-          {title}
-        </div>
-        )}
-        {text && (
-        <div className="SubTitle">
-          {text}
-        </div>
-        )}
+        {icon && <div className="Icon">{icon}</div>}
+        {title && <div className="Title">{title}</div>}
+        {text && <div className="SubTitle">{text}</div>}
         {template}
       </MuiDialogContent>
     );
@@ -110,7 +101,7 @@ const DialogContent = withStyles(stylesContent)(
 
 const stylesActions = () => ({
   root: {
-    justifyContent: "space-between",   
+    justifyContent: "space-between",
     paddingTop: 30,
     paddingBottom: 20,
     paddingLeft: 24,
@@ -129,8 +120,8 @@ const stylesActions = () => ({
     },
     "& .MuiButton-containedPrimary": {
       background: "#0E46D7",
-      minWidth: 179
-    }
+      minWidth: 179,
+    },
   },
 });
 
@@ -158,6 +149,7 @@ const DialogActions = withStyles(stylesActions)(
 export type ConfirmPropsType = {
   title: string;
   text: string;
+  icon: React.ReactNode;
   template?: any;
   resolve: any;
   reject?: any;
@@ -169,7 +161,13 @@ export type ConfirmStateType = {
   template?: any;
 };
 
-const Confirm: FC<ConfirmPropsType> = ({ title, text, template, resolve }) => {
+const Confirm: FC<ConfirmPropsType> = ({
+  title,
+  text,
+  icon,
+  template,
+  resolve,
+}) => {
   const [isOpen, setIsOpen] = useState(true);
 
   const handleCancel = () => {
@@ -197,7 +195,12 @@ const Confirm: FC<ConfirmPropsType> = ({ title, text, template, resolve }) => {
           id="customized-confirm-dialog-title"
           onClose={handleCancel}
         ></DialogTitle>
-        <DialogContent title={title} text={text} template={template} />
+        <DialogContent
+          title={title}
+          text={text}
+          icon={icon}
+          template={template}
+        />
         <DialogActions
           handleCancel={handleCancel}
           handleConfirm={handleConfirm}

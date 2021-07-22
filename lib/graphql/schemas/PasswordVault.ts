@@ -10,3 +10,7 @@ export const PasswordVault = `
     links: [Link]
   }
 `;
+
+export const Queries = `
+  getPasswordVaultEntries: [PasswordVault] 
+`;

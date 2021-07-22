@@ -2,6 +2,17 @@ import axios from "axios";
 import { config } from "../utils";
 
 export const SelfServiceQueries = {
+  getSelfServiceCart: async (parent: any, args: any, context: any) => {
+    try {
+      const item = await axios.get(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/selfservice/cart`,
+        { ...config(context) }
+      );
+      return item.data;
+    } catch (error) {
+      throw error;
+    }
+  },  
   getSelfServiceFilters: async (parent: any, args: any, context: any) => {
     try {
       const items = await axios.get(
@@ -58,5 +69,5 @@ export const SelfServiceQueries = {
     } catch (error) {
       throw error;
     }
-  },
+  },   
 };

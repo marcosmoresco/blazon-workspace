@@ -58,3 +58,12 @@ export const Directory = `
     representation: [RoleDirectoryRight]
   }
 `;
+
+export const Queries = `
+  getDirectoryResource(id: Int): ResourceDirectory
+  getDirectoryResourceEntitlements(id: Int, page: Int, size: Int, ord: String): EntitlementDirectoryRepresentation
+  getDirectoryEntitlement(id: Int): EntitlementDirectory
+  getDirectoryRole(id: Int): RoleDirectory
+  getDirectoryRoleRights(id: Int, page: Int, size: Int, ord: String): RoleDirectoryRightRepresentation
+  getDirectoryRoleRightEntitlements(id: Int, rightId: Int, page: Int, size: Int, ord: String): EntitlementDirectoryRepresentation
+`;
