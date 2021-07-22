@@ -73,6 +73,7 @@ const Checkout: React.FC = () => {
         </Button>
       </PageInfoStyle>
       <CheckoutItem />
+      <CheckoutItem />
       <Line />
       <PageInfoStyle>
         <div>

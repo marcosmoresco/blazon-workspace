@@ -94,59 +94,14 @@ export const DescriptionTitle = styled.div`
 export const ButtonArea = styled.div`
   display: flex;
   align-items: center;
-  justify-content: center;
+  justify-content: flex-end;
   padding: 32px 24px 0;
   gap: 32px;
-`;
-export const ButtonBlue = styled.button`
-  height: 42px;
-  border: none;
-  border-radius: 8px;
-  background: #0e46d7;
-  color: #ffff;
-  min-width: 156px;
-  padding: 6px 16px;
-  min-width: "auto";
-  font-size: 16px;
-  font-weight: 500;
-  padding: "6px 16px";
-  cursor: pointer;
 
-  :hover {
-    box-shadow: 0px 5px 41px rgba(49, 116, 246, 0.26);
-    background: #3174f6;
-  }
-  :active {
-    background: #0f38a1;
+  Button {
+    min-width: 156px;
   }
 `;
-export const ButtonTransparent = styled.button`
-  height: 42px;
-  border: 1px solid #0e46d7;
-  border-radius: 8px;
-  background: transparent;
-  color: #0e46d7;
-  min-width: 156px;
-  padding: 6px 16px;
-  min-width: "auto";
-  font-size: 16px;
-  font-weight: 500;
-  padding: "6px 16px";
-  cursor: pointer;
-  box-sizing: border-box;
-
-  :hover {
-    border: 1px solid #3174f6;
-    filter: drop-shadow(0px 0px 20px rgba(49, 116, 246, 0.26));
-    text-shadow: 0px 0px 14px rgba(49, 116, 246, 0.6);
-  }
-  :active {
-    background: rgba(15, 56, 161, 0.1);
-    border: 1px solid #0f38a1;
-    color: #0f38a1;
-  }
-`;
-
 export const TextArea = styled.div`
   justify-content: center;
 
