@@ -10,6 +10,7 @@ import InfoIcon from "@icons/Info/index 2";
 import FilePlusIcon from "@icons/FilePlus";
 import CheckCircleIcon from "@icons/CheckCircle";
 import CheckCircle from "./essets/CheckCircle.svg";
+import Button from "@components/Button";
 
 // styles
 import {
@@ -24,8 +25,6 @@ import {
   ItemArea,
   ImageArea,
   ButtonArea,
-  ButtonBlue,
-  ButtonTransparent,
   TextArea,
 } from "./styles";
 
@@ -81,13 +80,20 @@ const CheckoutRequested: React.FC = () => {
 
           <Line />
           <ButtonArea>
-            <ButtonTransparent onClick={() => router.push("/requests")}>
-              <FormattedMessage id="checkout.requests" />
-            </ButtonTransparent>
-
-            <ButtonBlue onClick={() => router.push("/checkout-empty")}>
-              <FormattedMessage id="checkout.start" />
-            </ButtonBlue>
+          <Button
+              variant="contained"
+              color="default-primary"
+              onClick={() => router.push("/checkout-finishing")}
+              > 
+              <FormattedMessage id="checkout.cancel" />
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => router.push("/checkout-finishing")}
+              > 
+              <FormattedMessage id="checkout.save" />
+            </Button>
           </ButtonArea>
         </ItemArea>
       </FinishingArea>

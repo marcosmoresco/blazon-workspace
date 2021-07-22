@@ -29,9 +29,7 @@ import { ItemText } from "@modules/CheckoutRequested/styles";
 
 const CheckoutItem: React.FC = () => {
   const router = useRouter();
-
   const types = ["Only me", "Me and someone else", "Another person"];
-
   const users = ["Jhon Part J. Lucr", "Pattric Joseph", "Juan K. Beatenk"];
   const [sel, setSel] = useState("Only me");
   const [user, setUser] = useState("");
@@ -69,7 +67,6 @@ const CheckoutItem: React.FC = () => {
             options={types}
             value={sel}
           />
-
           {sel === "Only me" ? (
             <></>
           ) : sel === "Somente eu" ? (

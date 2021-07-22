@@ -11,6 +11,12 @@ export const PageInfoStyle = styled.div`
   justify-content: space-between;
   padding: 56px 64px 52px;
 
+  Button {
+
+    min-width: 156px;
+
+  }
+
   div {
     display: flex;
     align-items: center;

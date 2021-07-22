@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 
 export const Line = styled.div`
   width: 100%;
@@ -54,13 +54,13 @@ export const ItemArea = styled.div`
   width: 100%;
   padding: 42px 24px 32px;
 
-  div {
+  /* div {
     display: flex;
-  }
-  span {
+  } */
+  /* span {
     width: 500px;
     padding-top: 50px;
-  }
+  } */
 `;
 export const ImageArea = styled.div`
   width: 280px;
@@ -68,41 +68,43 @@ export const ImageArea = styled.div`
   padding-left: 40px;
   margin-right: 50px;
 `;
-export const EffetiveDate = styled.div`
+export const TextArea = styled.div`
+  display: flex;
+  
+`;
+export const Span = styled.span`
+  margin: 36px 56px 0 0;
+  flex: 1 ;
+  font-size: 14px;
+  font-weight: 400;
+  color: #0F141D;
+
+`;
+export const EffetiveDate = styled.span`
+display: flex;
   align-items: center;
   justify-content: flex-start;
   margin-top: 16px;
   width: 100%;
-  height: max-content;
-  border: 3px solid #e9e8eb;
-  border-radius: 4px;
-  font-weight: 400;
-  padding: 4px 8px;
-  font-size: 16px;
+  border: 1px solid #E9E8EB;
+  border-radius: 8px;
+  padding: 12px 12px 10px;
   gap: 8px;
 
   span {
-    padding-top: 4px;
     font-size: 16px;
     font-weight: 400;
     color: #26213f;
   }
 `;
 export const Description = styled.div`
-  align-items: center;
-  justify-content: flex-start;
   margin-bottom: 48px;
   width: 100%;
-  height: max-content;
-  border: 3px solid #e9e8eb;
-  border-radius: 4px;
-  font-weight: 400;
-  padding: 4px 8px;
-  font-size: 16px;
-  gap: 8px;
+  border: 1px solid #e9e8eb;
+  border-radius: 8px;
+  padding: 22px 16px;
 
   span {
-    padding: 22px 16px;
     font-size: 16px;
     font-weight: 400;
     color: #26213f;
@@ -121,52 +123,8 @@ export const ButtonArea = styled.div`
   justify-content: flex-end;
   padding: 32px 24px 0;
   gap: 32px;
-`;
-export const ButtonBlue = styled.button`
-  height: 42px;
-  border: none;
-  border-radius: 8px;
-  background: #0e46d7;
-  color: #ffff;
-  min-width: 156px;
-  padding: 6px 16px;
-  min-width: "auto";
-  font-size: 16px;
-  font-weight: 500;
-  padding: "6px 16px";
-  cursor: pointer;
 
-  :hover {
-    box-shadow: 0px 5px 41px rgba(49, 116, 246, 0.26);
-    background: #3174f6;
-  }
-  :active {
-    background: #0f38a1;
-  }
-`;
-export const ButtonTransparent = styled.button`
-  height: 42px;
-  border: 1px solid #0e46d7;
-  border-radius: 8px;
-  background: transparent;
-  color: #0e46d7;
-  min-width: 156px;
-  padding: 6px 16px;
-  min-width: "auto";
-  font-size: 16px;
-  font-weight: 500;
-  padding: "6px 16px";
-  cursor: pointer;
-  box-sizing: border-box;
-
-  :hover {
-    border: 1px solid #3174f6;
-    filter: drop-shadow(0px 0px 20px rgba(49, 116, 246, 0.26));
-    text-shadow: 0px 0px 14px rgba(49, 116, 246, 0.6);
-  }
-  :active {
-    background: rgba(15, 56, 161, 0.1);
-    border: 1px solid #0f38a1;
-    color: #0f38a1;
+  Button {
+    min-width: 156px;
   }
 `;

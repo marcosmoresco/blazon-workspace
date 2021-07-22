@@ -11,6 +11,7 @@ import FilePlusIcon from "@icons/FilePlus";
 import CheckCircleIcon from "@icons/CheckCircle";
 import Finishing from "./essets/Finishing.svg";
 import Calendar from "@icons/Calendar";
+import Button from "@components/Button";
 
 // styles
 import {
@@ -23,13 +24,13 @@ import {
   ItemText,
   FinishingArea,
   ItemArea,
+  TextArea,
+  Span,
   ImageArea,
   EffetiveDate,
   Description,
   DescriptionTitle,
   ButtonArea,
-  ButtonBlue,
-  ButtonTransparent,
 } from "./styles";
 
 const CheckoutFinishing: React.FC = () => {
@@ -67,23 +68,25 @@ const CheckoutFinishing: React.FC = () => {
 
       <FinishingArea>
         <ItemArea>
-          <div>
+          <TextArea>
             <ImageArea>
               <Image src={Finishing} alt="FinishingIcon" />
             </ImageArea>
 
-            <span>
+            <Span>
               Fill in the data below to finalize your access request. In the
               effective date field, you can request that this request be
               processed at a future date, and on the date of expiration til a
-              data limit date to that your stored is exactly up to it. After
-              yoursubmission, your request can be controlled bu an approval
+              data limit date to that your stored is exactly up to it. <br/><br/>
+  
+            After yoursubmission, your request can be controlled bu an approval
               process, you can track its proghress without any request icon that
               is just above this page.
-            </span>
-          </div>
-          <EffetiveDate>
-            <Calendar />
+            </Span>
+          </TextArea>
+          
+          <EffetiveDate placeholder="Effective date">
+            <Calendar width={32} height={32}  />
             <span>Effetive Date</span>
           </EffetiveDate>
           <DescriptionTitle>
@@ -98,13 +101,24 @@ const CheckoutFinishing: React.FC = () => {
           </Description>
           <Line />
           <ButtonArea>
-            <ButtonTransparent onClick={() => router.push("/checkout")}>
+          
+            <Button
+              variant="contained"
+              color="default-primary"
+              onClick={() => router.push("/checkout-finishing")}
+              > 
               <FormattedMessage id="checkout.cancel" />
-            </ButtonTransparent>
-            <ButtonBlue onClick={() => router.push("/checkout-requested")}>
+            </Button>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => router.push("/checkout-finishing")}
+              > 
               <FormattedMessage id="checkout.save" />
-            </ButtonBlue>
-          </ButtonArea>
+            </Button>
+            
+            
+              </ButtonArea>
         </ItemArea>
       </FinishingArea>
     </>

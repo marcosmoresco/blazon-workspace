@@ -116,4 +116,8 @@ export const UserBottomArea = styled.div`
   align-content: center;
   justify-content: flex-end;
   padding: 24px;
+
+  Button {
+    min-width: 156px;
+  }
 `;

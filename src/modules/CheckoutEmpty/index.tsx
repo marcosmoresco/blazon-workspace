@@ -10,6 +10,7 @@ import InfoIcon from "@icons/Info/index 2";
 import FilePlusIcon from "@icons/FilePlus";
 import CheckCircleIcon from "@icons/CheckCircle";
 import Empty from "./essets/Empty.svg";
+import Button from "@components/Button";
 
 // styles
 import {
@@ -21,7 +22,7 @@ import {
   SymbolStyle,
   TitlesStyle,
   ItemText,
-  Button,
+  // Button,
   EmptyArea,
 } from "./styles";
 
@@ -64,9 +65,12 @@ const CheckoutEmpty: React.FC = () => {
             <FormattedMessage id="checkout.AddAnItemToContinue" />
           </span>
         </div>
-        <Button onClick={() => router.push("/checkout")}>
-          <FormattedMessage id="checkout.continue" />
-        </Button>
+        <Button 
+              variant="contained"
+              color="disabled"
+              > 
+              <FormattedMessage id="checkout.continue" />
+            </Button>
       </PageInfoStyle>
       <EmptyArea>
         <Image src={Empty} alt="EmptyIcon" />
