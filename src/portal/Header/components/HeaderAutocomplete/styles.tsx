@@ -12,6 +12,15 @@ export const BoxAutocomplete = styled.div`
   display: flex;
   align-items: center;
   width: 100%;
+  &:hover {
+    .Autocomplete-cart {
+      background: #3174f6;
+      & svg {
+        filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(276deg)
+          brightness(103%) contrast(101%);
+      }
+    }
+  }
 `;
 
 export const BoxAutocompleteContent = styled.div`
@@ -22,6 +31,16 @@ export const BoxAutocompleteContent = styled.div`
 
 export const BoxAutocompleteContentInfo = styled.div`
   margin-left: 15px;
+`;
+
+export const BoxAutocompleteContentCart = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #F4F4F5;
+  border-radius: 5.53846px;
+  width: 36px;
+  height: 36px;
 `;
 
 export const BoxAutocompleteTitle = styled.div`
@@ -100,6 +119,14 @@ export const Autocomplete = styled(Paper)({
   boxShadow: "0px 24px 71px 5px rgb(0 0 0 / 25%)",
   borderRadius: 8,
   marginTop: 15,
+  "& li[data-focus=\"true\"]": {
+    "& .Autocomplete-cart": {
+      background: "#3174f6",
+      "& svg": {
+        filter: "invert(100%) sepia(0%) saturate(0%) hue-rotate(276deg) brightness(103%) contrast(101%)"
+      }
+    }
+  }
 });
 
 export const AutocompletePaper = ({

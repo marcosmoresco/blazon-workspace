@@ -23,7 +23,9 @@ import SearchIcon from "@icons/Search";
 import SquaresFourIcon from "@icons/SquaresFour";
 import ListBulletsIcon from "@icons/ListBullets";
 import EmptyStateSearchIcon from "@icons/EmptyStateSearch";
+import CheckCircleIcon from "@icons/CheckCircle";
 import Filters from "./components/Filters";
+import { useCart } from "@requestCart/index";
 import { addCartItemMessage } from "@actions/index";
 import {
   ADD_SELF_SERVICE_CART_ITEM,
@@ -31,9 +33,6 @@ import {
 import {
   GET_SELF_SERVICE_CART
 } from "@requestCart/queries";
-import { 
-  SelfServiceCartItem 
-} from "@requestCart/types";
 import { paginate, getSelfServiceAttributeValue } from "@utils/index";
 import type { SearchProps, SelfService } from "./types";
 import {
@@ -53,9 +52,9 @@ import {
   ItemTitleParent,
 } from "./styles";
 import { GET_SELF_SERVICE, GET_SELF_SERVICE_ADVANCED } from "./queries";
-import { SelfServiceCartItemMessage } from "@portal/Cart/types";
 
 const Search: FC<SearchProps> = ({ intl, classes }) => {
+  const { cart } = useCart();
   const router = useRouter();
   const dispatch = useDispatch();
   const [active, setActive] = useState("ALL");
@@ -66,18 +65,33 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
   const [total, setTotal] = useState(10);
   const [filteredTotal, setTotalFiltered] = useState(0);
   const [listAdvanced, setListAdvanced] = useState(null);
+  const [addedItems, setAddedItems] = useState<string[]>([]); 
+
+  useEffect(() => {
+    if(cart && (cart.items || []).length) {
+      const cartItems: string[] = [];
+      cart.items.map((item) => cartItems.push(item.catalogItemId));
+      if(JSON.stringify(cartItems) !== JSON.stringify(addedItems)) {
+        setAddedItems(cartItems);
+      }     
+    } 
+  }, [    
+    cart,
+    addedItems,
+    setAddedItems  
+  ]);
 
   const [
-    addSelfServiceCartItem,
-    { loading: loadingAdd, error: errorAdd, data: dataAdd },
+    addSelfServiceCartItem, { },
   ] = useMutation(ADD_SELF_SERVICE_CART_ITEM, {
     refetchQueries: [
       {
         query: GET_SELF_SERVICE_CART,
       },
     ],
-    onCompleted: (data) => {
-      dispatch(addCartItemMessage({name: "Teste", messageType: "add"}));      
+    onCompleted: (data) => {   
+      setAddedItems([...addedItems, data?.addSelfServiceCartItem.catalogItemId]);
+      dispatch(addCartItemMessage({...data?.addSelfServiceCartItem, messageType: "add"}));      
     }
   });  
 
@@ -281,20 +295,32 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                       </Tooltip>
                       <Divider />
                       <div className={classes.searchCartContent}>
-                        <div
-                          onClick={(e) => {
-                            e.stopPropagation();
-                            e.nativeEvent.stopImmediatePropagation();                            
-                            addSelfServiceCartItem({
-                              variables: { id: item.identifier },
-                            });
-                          }}
-                        >
-                          <div className="Icon-content">
-                            <ShoppingCartIcon width={25} height={25} />
+                        {addedItems.indexOf(item.identifier) === -1 && (
+                          <div
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.nativeEvent.stopImmediatePropagation();                                                     
+                              addSelfServiceCartItem({
+                                variables: {
+                                  id: item.identifier                                  
+                                },
+                              });
+                            }}
+                          >
+                            <div className="Icon-content">
+                              <ShoppingCartIcon width={25} height={25} />
+                            </div>
+                            {intl.formatMessage({id: "cart.add"})}
                           </div>
-                          {intl.formatMessage({id: "cart.add"})}
-                        </div>
+                        )}   
+                        {addedItems.indexOf(item.identifier) > -1 && (
+                          <div>
+                            <div className="Icon-content">
+                              <CheckCircleIcon width={25} height={25} color="#26213F"/>
+                            </div>
+                            {intl.formatMessage({id: "search.selfService.added"})}
+                          </div>
+                        )}                        
                       </div>
                     </div>
                   </div>
@@ -344,6 +370,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                     </ListItemText>
                   </Tooltip>
                 </ListItemContent>
+                {addedItems.indexOf(item.identifier) === -1 && (
                 <ListItemIconContent
                   className="Selectable"
                   onClick={(e) => {
@@ -355,7 +382,11 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                   }}
                 >
                   <ShoppingCartIcon width={21} />
-                </ListItemIconContent>
+                </ListItemIconContent>)}
+                {addedItems.indexOf(item.identifier) > -1 && (
+                <ListItemIconContent>
+                  <CheckCircleIcon width={21} color="#26213F"/>
+                </ListItemIconContent>)}
               </ListItemBox>
             ))}
           </>

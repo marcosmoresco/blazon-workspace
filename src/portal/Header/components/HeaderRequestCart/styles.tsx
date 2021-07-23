@@ -89,6 +89,7 @@ export const BoxContainerTitleTagContent = styled.div`
   height: 48px;
   padding: 12px;
   border-radius: 8px;
+  cursor: pointer;
 `;
 
 export const BoxContainerTitleTag = styled.div`
@@ -96,7 +97,7 @@ export const BoxContainerTitleTag = styled.div`
   font-size: 16px;
   line-height: 100%;
   color: #26213F;
-  margin-right: 42px;
+  margin-right: 22px;
 `;
 
 export const ItemsDivider = styledMui(MuiDivider)({

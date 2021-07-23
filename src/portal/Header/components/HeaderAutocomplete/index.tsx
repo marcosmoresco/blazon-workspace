@@ -1,7 +1,8 @@
-import React, { FC, useState } from "react";
+import React, { FC, useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { injectIntl } from "react-intl";
 import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { GET_SELF_SERVICE } from "@portal/Search/queries";
 import { SelfService } from "@portal/Search/types";
 import Autocomplete from "@material-ui/lab/Autocomplete";
@@ -12,24 +13,65 @@ import PuzzlePieceIcon from "@icons/PuzzlePiece";
 import ArticleIcon from "@icons/Article";
 import UserGearIcon from "@icons/UserGear";
 import NewspaperClippingIcon from "@icons/NewspaperClipping";
-import CaretRightIcon from "@icons/CaretRight";
+import ShoppingCart from "@icons/ShoppingCart";
+import CheckCircleIcon from "@icons/CheckCircle";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import { useCart } from "@requestCart/index";
 import { getSelfServiceAttributeValue } from "@utils/index";
 import type { HeaderAutocompleteProps } from "./types";
+import { addCartItemMessage } from "@actions/index";
+import {
+  ADD_SELF_SERVICE_CART_ITEM,
+} from "@requestCart/mutations";
+import {
+  GET_SELF_SERVICE_CART
+} from "@requestCart/queries";
 import {
   AutocompletePaper,
   BoxAutocomplete,
   BoxAutocompleteContent,
   BoxAutocompleteContentInfo,
+  BoxAutocompleteContentCart,
   BoxAutocompleteTitle,
   BoxAutocompleteTitleParent,
   BoxAutocompleteText,
 } from "./styles";
 
 const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
+  const { cart } = useCart();
   const router = useRouter();
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);  
   const [filter, setFilter] = React.useState("");
+  const [addedItems, setAddedItems] = useState<string[]>([]); 
+
+  useEffect(() => {
+    if(cart && (cart.items || []).length) {
+      const cartItems: string[] = [];
+      cart.items.map((item) => cartItems.push(item.catalogItemId));
+      if(JSON.stringify(cartItems) !== JSON.stringify(addedItems)) {
+        setAddedItems(cartItems);
+      }     
+    } 
+  }, [    
+    cart,
+    addedItems,
+    setAddedItems  
+  ]);
+
+  const [
+    addSelfServiceCartItem, { },
+  ] = useMutation(ADD_SELF_SERVICE_CART_ITEM, {
+    refetchQueries: [
+      {
+        query: GET_SELF_SERVICE_CART,
+      },
+    ],
+    onCompleted: (data) => {   
+      setAddedItems([...addedItems, data?.addSelfServiceCartItem.catalogItemId]);
+      dispatch(addCartItemMessage({...data?.addSelfServiceCartItem, messageType: "add"}));      
+    }
+  });  
 
   const { loading, error, data, refetch } = useQuery<{
     getSelfService: SelfService[];
@@ -108,8 +150,32 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
                   <BoxAutocompleteText>
                     {option.description || " - "}
                   </BoxAutocompleteText>
-                </BoxAutocompleteContentInfo>                
-                <CaretRightIcon width={21} />
+                </BoxAutocompleteContentInfo> 
+                {addedItems.indexOf(option.identifier as string) === -1 && (
+                  <BoxAutocompleteContentCart 
+                    className="Autocomplete-cart" 
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      event.nativeEvent.stopImmediatePropagation();
+                      addSelfServiceCartItem({
+                        variables: {
+                          id: option.identifier                                  
+                        },                      
+                      })
+                    }}>
+                    <ShoppingCart width={21} />
+                  </BoxAutocompleteContentCart> 
+                )}
+                {addedItems.indexOf(option.identifier as string) > -1 && (
+                  <BoxAutocompleteContentCart 
+                    className="Autocomplete-cart"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      event.nativeEvent.stopImmediatePropagation();                      
+                    }}>
+                    <CheckCircleIcon width={21} />
+                  </BoxAutocompleteContentCart>
+                )}                                              
               </BoxAutocompleteContent>
             </BoxAutocomplete>
           </>
