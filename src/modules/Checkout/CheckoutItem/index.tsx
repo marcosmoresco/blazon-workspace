@@ -8,7 +8,6 @@ import ArticleIcon from "@icons/Article";
 import Button from "@components/Button";
 import Select from "@components/Select";
 import UserCard from "./UserCard";
-import MagnifyingGlassIcon from "@icons/MagnifyingGlass";
 
 // styles
 import {
@@ -25,7 +24,6 @@ import {
   Input,
   BottomArea,
 } from "./styles";
-import { ItemText } from "@modules/CheckoutRequested/styles";
 
 const CheckoutItem: React.FC = () => {
   const router = useRouter();

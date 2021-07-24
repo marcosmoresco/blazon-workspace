@@ -1,5 +1,5 @@
 // vendors
-import React, { useState } from "react";
+import React from "react";
 import { FormattedMessage } from "react-intl";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -65,12 +65,9 @@ const CheckoutEmpty: React.FC = () => {
             <FormattedMessage id="checkout.AddAnItemToContinue" />
           </span>
         </div>
-        <Button 
-              variant="contained"
-              color="disabled"
-              > 
-              <FormattedMessage id="checkout.continue" />
-            </Button>
+        <Button variant="contained" color="disabled">
+          <FormattedMessage id="checkout.continue" />
+        </Button>
       </PageInfoStyle>
       <EmptyArea>
         <Image src={Empty} alt="EmptyIcon" />

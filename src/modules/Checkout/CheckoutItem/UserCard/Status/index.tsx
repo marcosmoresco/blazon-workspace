@@ -1,6 +1,5 @@
 // vendors
 import React from "react";
-import { FormattedMessage } from "react-intl";
 
 // types
 import { StatusProps } from "./types";

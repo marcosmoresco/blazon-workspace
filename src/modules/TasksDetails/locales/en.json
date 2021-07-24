@@ -1,0 +1,22 @@
+{
+  "tasks": "Tasks",
+  "tasks.certify": "Certify",
+  "tasks.revoke": "Revogar",
+  "tasks.historyStates": "History",
+  "tasks.comments": "Comments",
+  "tasks.AssignedFrom": "Assigned From",
+  "tasks.AssignedTo": "Assigned To",
+  "tasks.date": "Date",
+  "tasks.ResourceInformations": "Resource Informations",
+  "tasks.RoleRights": "Role Rights",
+  "tasks.AdditionalInformation": "Additional Information",
+  "tasks.AccesClassification": "Acces classification",
+  "tasks.observations": "Observations",
+  "tasks.DataLevels": "Data levels",
+  "tasks.LegalBases": "Legal bases",
+  "tasks.DefaultLegalbase": "Default Legalbase",
+  "tasks.ConfidentialityLevel": "Confidentiality Level",
+  "tasks.IntegrityLevel": "Integrity Level",
+  "tasks.AvailabilityLevel": "Availability Level",
+  "tasks.justification": "Justification"
+}

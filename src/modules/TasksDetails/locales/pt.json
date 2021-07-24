@@ -1,0 +1,22 @@
+{
+  "tasks": "Tarefas",
+  "tasks.certify": "Validar",
+  "tasks.revoke": "Revogar",
+  "tasks.historyStates": "Histórico",
+  "tasks.comments": "Comentários",
+  "tasks.AssignedFrom": "Atribuído de",
+  "tasks.AssignedTo": "Designado para",
+  "tasks.date": "Data",
+  "tasks.ResourceInformations": "Informações sobre recursos",
+  "tasks.RoleRights": "Direitos da função",
+  "tasks.AdditionalInformation": "Informações adicionais",
+  "tasks.AccesClassification": "Classificação de acesso",
+  "tasks.observations": "Observações",
+  "tasks.DataLevels": "Níveis de dados",
+  "tasks.LegalBases": "Bases legais",
+  "tasks.DefaultLegalbase": "Default Legalbase",
+  "tasks.ConfidentialityLevel": "Nível de Confidencialidade",
+  "tasks.IntegrityLevel": "Nível de Integridade",
+  "tasks.AvailabilityLevel": "Nível de disponibilidade",
+  "tasks.justification": "Justificativa"
+}
