@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import classNames from 'classnames'
 import TableCell from '@material-ui/core/TableCell'
 import TableRow from '@material-ui/core/TableRow'
@@ -10,170 +10,134 @@ import Collapse from '@material-ui/core/Collapse'
 import Checkbox from '@components/Checkbox'
 import { DragHandle } from './Sortable'
 
-class Row extends React.Component {
-  
-  constructor(props) {
-    super(props)
-    
-    this.state = {           
-      open: false,
-      disabled: false,
-      row: props.row,
-      expandedAll: false     
-    }
-  }  
+function Row(props) {
+  const { 
+    columns,     
+    expand,
+    beforeExpand,
+    isSelected, 
+    labelId, 
+    colspan, 
+    handleSelectedClick, 
+    handleClick, 
+    selectable, 
+    sortable, 
+    expandAll,   
+    noHover,  
+    expanded,   
+    handleExpand
+  } = props
+  const [open, setOpen] = React.useState(expanded.indexOf(props.row.id) > -1 || false)
+  const [disabled, setDisabled] = React.useState(props.disabled || false) 
+  const [row, setRow] = React.useState(props.row)
+  const [expandedAll, setExpandedAll] = React.useState(expandAll)
 
-  componentDidUpdate() {
-    
-    const { expanded, expandAll, beforeExpand, handleExpand } = this.props
-    const { open, disabled, expandedAll, row } = this.state
-
-    if(expanded.indexOf(this.props.row.id) > -1 && !open) {
-      this.setState({open: true})
-    }
-
-    if(this.props.disabled !== disabled) {
-      this.setState({disabled: this.props.disabled})
-    }
-
-    if (expandAll !== null && expandAll !== undefined && expandAll !== expandedAll) {
-      if (expandAll) {
-        if (beforeExpand) {
+  useEffect(() => {   
+    if(expandAll !== null && expandAll !== undefined && expandAll !== expandedAll) {
+      if(expandAll) {
+        if(beforeExpand) {
           beforeExpand(row, (newRow) => {
-            this.setState({
-              row: newRow,
-              open: expandAll,
-              expandedAll: expandAll
-            })           
-            handleExpand(row, expandAll)            
+            setRow(newRow)
+            setOpen(expandAll)  
+            handleExpand(row, expandAll)  
+            setExpandedAll(expandAll)      
           })
         } else {
-          this.setState({
-            row: row,
-            open: expandAll,
-            expandedAll: expandAll
-          })           
-          handleExpand(row, expandAll)         
-        }
+          setOpen(expandAll)
+          setRow(props.row)        
+          handleExpand(row, expandAll) 
+          setExpandedAll(expandAll)
+        }      
       } else {
-        if (open !== expandAll) {
+        if(open !== expandAll) {
+          setRow(props.row) 
+          setOpen(expandAll)     
+          handleExpand(row, expandAll) 
+          setExpandedAll(expandAll)
+        }     
+      } 
+      setDisabled(props.disabled)    
+    } else if(row.id !== props.row.id) {
+      setRow(props.row)
+    }                
+  }, [expandAll, beforeExpand, handleExpand, expandedAll, row, open, props])
 
-          this.setState({
-            row: row,
-            open: expandAll,
-            expandedAll: expandAll
-          })           
-          handleExpand(row, expandAll)          
-        }
-      }          
-    } else if (row.id !== this.props.row.id) {
-      this.setState({
-        row: this.props.row,
-      })
-    }
+  const onExpand = (isOpen) => {
+
+    if(isOpen) {
+      if(beforeExpand) {
+        beforeExpand(row, () => {
+          setOpen(isOpen)  
+          handleExpand(row, isOpen)                          
+        })
+      } else {
+        setOpen(isOpen)        
+        handleExpand(row, isOpen)  
+      }      
+    } else {
+      setOpen(isOpen)      
+      handleExpand(row, isOpen)
+    }      
   }
 
-  render() {
+  return (
+    <React.Fragment>
+      <TableRow        
+        hover
+        onClick={(event) => handleClick ? handleClick(row) : ((expand ? onExpand(!open) : selectable ? handleSelectedClick(event, row.id) : null))}
+        role="checkbox"
+        aria-checked={isSelected}
+        tabIndex={-1}
+        key={row.id}
+        selected={isSelected}
+        className={`${noHover ? "No-hover" : ""}`}
+      >        
+        {selectable ? 
+        <TableCell 
+          padding="checkbox"
+          className={classNames({'Disabled': disabled, 'Default-margin': props.defaultMargin})}>
+          <Checkbox
+            disabled={disabled}
+            checked={isSelected}
+            inputProps={{ 'aria-labelledby': labelId }}
+            onClick={(event) => handleSelectedClick(event, row.id, row)}
+          />
+        </TableCell> : null}        
+         
+        {columns.map((column, index) => {                   
+          return (
+          <TableCell 
+            key={column.field} align="left"
+            className={classNames({'Default-margin-no-checkbox': !selectable && props.defaultMargin})}>
+            <div className="flex">
+              {index === 0 && sortable ? <DragHandle/> : null}
+              {column.renderCell ? column.renderCell(row) : (row[column.field] || ' - ')}
+            </div>
+          </TableCell>)
+        })}  
 
-    const {
-      columns,
-      expand,
-      beforeExpand,
-      isSelected,
-      labelId,
-      colspan,
-      handleSelectedClick,
-      handleClick,
-      selectable,
-      sortable,
-      noHover,
-      handleExpand,
-      defaultMargin
-    } = this.props  
-    
-    const { 
-      open,
-      row,
-      disabled 
-    } = this.state
+        {expand ?            
+        (<TableCell className="Expanded-row">
+          <IconButton aria-label="expand row" size="small" onClick={(e) => { e.stopPropagation(); setOpen(!open)}}>
+            {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+          </IconButton>
+        </TableCell>) : null}
+                           
+      </TableRow>
+          
+      {expand ?    
+      (<TableRow className={classNames({'Expanded-row-content': true, 'Expanded': open})}>
+        <TableCell colSpan={colspan}>
+          <Collapse in={open} timeout="auto" unmountOnExit>
+            <Box margin={1}>
+              {open ? expand(row) : null}
+            </Box>
+          </Collapse>
+        </TableCell>
+      </TableRow>) : null}
 
-    const onExpand = (isOpen) => {
-
-      if (isOpen) {
-        if (beforeExpand) {
-          beforeExpand(row, () => {
-            this.setState({open: isOpen})           
-            handleExpand(row, isOpen)
-          })
-        } else {
-          this.setState({open: isOpen})         
-          handleExpand(row, isOpen)
-        }
-      } else {
-        this.setState({open: isOpen})       
-        handleExpand(row, isOpen)
-      }
-    }
-
-    return (
-      <React.Fragment>
-        <TableRow
-          hover
-          onClick={(event) => handleClick ? handleClick(row) : ((expand ? onExpand(!open) : selectable ? handleSelectedClick(event, row.id) : null))}
-          role="checkbox"
-          aria-checked={isSelected}
-          tabIndex={-1}
-          key={row.id}
-          selected={isSelected}
-          className={`${noHover ? "No-hover" : ""}`}
-        >
-          {selectable ?
-            <TableCell
-              padding="checkbox"
-              className={classNames({ 'Disabled': disabled, 'Default-margin': defaultMargin })}>
-              <Checkbox
-                disabled={disabled}
-                value={isSelected}
-                inputProps={{ 'aria-labelledby': labelId }}
-                onClick={(event) => handleSelectedClick(event, row.id, row)}
-              />
-            </TableCell> : null}
-
-          {columns.map((column, index) => {
-            return (
-              <TableCell
-                key={column.field} align="left"
-                className={classNames({ 'Default-margin-no-checkbox': !selectable && defaultMargin })}>
-                <div className="flex">
-                  {index === 0 && sortable ? <DragHandle /> : null}
-                  {column.renderCell ? column.renderCell(row) : (row[column.field] || ' - ')}
-                </div>
-              </TableCell>)
-          })}
-
-          {expand ?
-            (<TableCell className="Expanded-row">
-              <IconButton aria-label="expand row" size="small" onClick={(e) => { e.stopPropagation(); this.setState({open: !open})}}>
-                {open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
-              </IconButton>
-            </TableCell>) : null}
-
-        </TableRow>
-
-        {expand ?
-          (<TableRow className={classNames({ 'Expanded-row-content': true, 'Expanded': open })}>
-            <TableCell colSpan={colspan}>
-              <Collapse in={open} timeout="auto" unmountOnExit>
-                <Box margin={1}>
-                  {open ? expand(row) : null}
-                </Box>
-              </Collapse>
-            </TableCell>
-          </TableRow>) : null}
-
-      </React.Fragment>
-    )
-  }
+    </React.Fragment>
+  );
 }
 
-export default Row
+export default Row;

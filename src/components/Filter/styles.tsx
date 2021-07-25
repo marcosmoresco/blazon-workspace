@@ -1,6 +1,7 @@
 import { createStyles, Theme } from "@material-ui/core/styles";
 import { styled as styledMui } from "@material-ui/core/styles";
 import MuiTextField from "@material-ui/core/TextField";
+import MuiBadge from "@material-ui/core/Badge";
 
 export const useStyles = (theme: Theme) =>
   createStyles({
@@ -129,3 +130,20 @@ export const TextField = styledMui(MuiTextField)({
     padding: "11.5px 14px"
   }
 }); 
+
+export const TextFieldFilter = styledMui(MuiTextField)({  
+  height: 48,
+  width: "100%",
+  "& .MuiOutlinedInput-input": {
+    padding: "11.5px 14px",
+  }  
+}); 
+
+export const Badge = styledMui(MuiBadge)({
+  "& .MuiBadge-badge": {
+    width: 20,
+    height: 20,
+    fontSize: 12,
+    borderRadius: 10,
+  }
+});

@@ -16,7 +16,7 @@ import closeIcon from "./images/x.svg";
 import addIcon from "./images/add.svg";
 import { connect } from "react-redux";
 import { deepCopyFunction } from "@utils/index";
-import { useStyles, TextField } from "./styles";
+import { useStyles, TextField, TextFieldFilter, Badge } from "./styles";
 import type { FilterPropsType, FilterStateType, FilterType } from "./types";
 
 class Filter extends Component<FilterPropsType, FilterStateType> {
@@ -63,11 +63,11 @@ class Filter extends Component<FilterPropsType, FilterStateType> {
         if (f.label && f.label.type && f.label.props) {
           f.label = intl.formatMessage({ id: f.label.props.id });
         }
-        if(f.type === "list" && f.values) {
+        if (f.type === "list" && f.values) {
           f.values.forEach((o: any) => {
-            if(o.label && o.label.type && o.label.props) {
+            if (o.label && o.label.type && o.label.props) {
               o.label = intl.formatMessage({ id: o.label.props.id });
-            }            
+            }
           });
         }
       });
@@ -286,7 +286,7 @@ class Filter extends Component<FilterPropsType, FilterStateType> {
   };
 
   getFilterComponent() {
-    const { classes, dispatch, isLoading } = this.props;
+    const { classes, dispatch, isLoading, intl } = this.props;
     const { filters, selectedIndex, selectedFilter } = this.state;
 
     let filter =
@@ -298,7 +298,7 @@ class Filter extends Component<FilterPropsType, FilterStateType> {
         component = (
           <div>
             <label>{filter.label}</label>
-            <TextField
+            <TextFieldFilter
               id={`filter-${filter.name}`}
               variant="outlined"
               label=""
@@ -307,11 +307,11 @@ class Filter extends Component<FilterPropsType, FilterStateType> {
               onChange={(event: any) =>
                 this.handleChangeComponent(event.target.value)
               }
-              placeholder={
-                filter.type === "text" ? "Enter the text" : "Enter the number"
-              }
+              placeholder={intl.formatMessage({
+                id: (filter.type === "text" && "enter.text") || "enter.number",
+              })}
             />
-          </div>          
+          </div>
         );
       } else if (filter.type === "list") {
         if (filter.values && filter.values.length) {
@@ -535,41 +535,43 @@ class Filter extends Component<FilterPropsType, FilterStateType> {
             onClickAway={() => this.setState({ ...this.state, open: false })}
           >
             <div>
-              <OutlinedInput
-                className={classes.input}
-                placeholder={
-                  filtered && filtered.length
-                    ? `${filtered.length} ${intl.formatMessage({
-                        id: filtered.length === 1 ? "filter" : "filters",
-                      })}`
-                    : intl.formatMessage({ id: "search.filters" })
-                }
-                value={filterText || ""}
-                onChange={(event) =>
-                  this.setState({
-                    ...this.state,
-                    filterText: event.target.value,
-                  })
-                }
-                onClick={this.handleClick}
-                startAdornment={
-                  <div className={classes.inputFilterIcon}>
-                    <InputAdornment position="start">
-                      <FilterIcon width={20} height={20} />
+              <Badge
+                badgeContent={(filtered || []).length}
+                color="primary"
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
+              >
+                <OutlinedInput
+                  className={classes.input}                  
+                  value={filterText || ""}
+                  onChange={(event) =>
+                    this.setState({
+                      ...this.state,
+                      filterText: event.target.value,
+                    })
+                  }
+                  onClick={this.handleClick}
+                  startAdornment={
+                    <div className={classes.inputFilterIcon}>
+                      <InputAdornment position="start">
+                        <FilterIcon width={20} height={20} />
+                      </InputAdornment>
+                    </div>
+                  }
+                  endAdornment={
+                    <InputAdornment position="end">
+                      {open ? (
+                        <CaretUpIcon width={25} />
+                      ) : (
+                        <CaretDownIcon width={25} />
+                      )}
                     </InputAdornment>
-                  </div>
-                }
-                endAdornment={
-                  <InputAdornment position="end">
-                    {open ? (
-                      <CaretUpIcon width={25} />
-                    ) : (
-                      <CaretDownIcon width={25} />
-                    )}
-                  </InputAdornment>
-                }
-                labelWidth={0}
-              />
+                  }
+                  labelWidth={0}
+                />
+              </Badge>
               {open ? (
                 <div className={classes.content}>
                   {filtered && filtered.length ? (

@@ -64,7 +64,7 @@ const RoleAccess: FC<ListProps> = () => {
       <div>
         <DataGrid
           query={GET_DIRECTORY_ROLE_RIGHTS}
-          params={{ id: Number(id) }}
+          queryFilters={{ id: Number(id) }}
           height={600}
           list={rights}
           links={links}
@@ -87,7 +87,7 @@ const RoleAccess: FC<ListProps> = () => {
         <EntitlementsDialog>
           <DataGrid
             query={GET_DIRECTORY_ROLE_RIGHT_ENTITLEMENTS}
-            params={{ id: Number(id), rightId: current?.identifier }}
+            queryFilters={{ id: Number(id), rightId: current?.identifier }}
             height={600}
             list={entitlements}
             links={entitlementsLinks}

@@ -1,6 +1,9 @@
-import { createStyles, Theme } from '@material-ui/core/styles'
+import { styled as styledMui, createStyles, Theme } from '@material-ui/core/styles';
+import styled from "styled-components";
+import Autocomplete from "@material-ui/lab/Autocomplete";
+import Paper from "@material-ui/core/Paper";
 
-const useStyles = (theme: Theme) =>
+export const useStyles = (theme: Theme) =>
   createStyles({
     actionIcon: {
       backgroundColor: '#F4F4F5',
@@ -50,8 +53,62 @@ const useStyles = (theme: Theme) =>
     },
     divider: {
       marginTop: 32,
-      marginBottom: 32
+      marginBottom: 12
     }
-  })
+  });
 
-export default useStyles
+export const BoxUserThumb = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px; 
+`;
+
+export const BoxAction = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+`;
+export const AutocompleteUsers = styledMui(Autocomplete)({
+  border: "1px solid #BBBDC0",
+  borderRadius: 8,
+  background: "#FFFFFF",
+  width: "100%", 
+  marginTop: 20,
+  "& .MuiAutocomplete-listbox": {
+    backgroundColor: "white",
+  }
+});
+
+export const BoxAutocompleteOption = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+`;
+
+export const BoxAutocomplete = styled(Paper)({
+  backgroundColor: "#FFFFFF !important", 
+  borderRadius: 8,
+  marginTop: 15,  
+  "& .MuiAutocomplete-option[data-focus=\"true\"]": {
+    "& .Shared-action-icon": {
+      background: "#3174f6" 
+    },
+    "& svg": {
+      filter: "invert(100%) sepia(0%) saturate(0%) hue-rotate(276deg) brightness(103%) contrast(101%)"
+    }
+  }
+});
+
+export const AutocompletePaper = ({
+  children,
+}: {
+  children: any;
+}) => {
+
+  return (
+    <BoxAutocomplete>
+      {children}
+    </BoxAutocomplete>
+  );
+};

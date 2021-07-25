@@ -6,18 +6,20 @@ import Upload from '@icons/Upload'
 import Image from 'next/image'
 import dynamic from 'next/dynamic'
 import { Grid } from '@material-ui/core'
-import Button from '@components/Button'
 
 // https://github.com/kirill3333/react-avatar/issues/72
 const AvatarNoSSR = dynamic(() => import('react-avatar-edit'), { ssr: false })
 
 type EditAvatarProps = {
   intl: IntlShape
-  classes: any
+  classes: any,
+  onCrop(thumb: string): void 
 }
 
-const EditAvatar: FC<EditAvatarProps> = ({ classes, intl }) => {
-  const [image, setImage] = useState(undefined)
+const EditAvatar: FC<EditAvatarProps> = ({ classes, intl, onCrop }) => {
+    
+  const [image, setImage] = useState("")    
+
   return (
     <div className={classes.center}>
       <Grid container className={classes.avatarContainer}>
@@ -29,7 +31,10 @@ const EditAvatar: FC<EditAvatarProps> = ({ classes, intl }) => {
               label={<Upload height={64} width={64} color='#92909F' />}
               src={image}
               onClose={() => setImage(null)}
-              onCrop={(preview) => setImage(preview)}
+              onCrop={(preview) => {
+                setImage(preview); 
+                onCrop(preview);              
+              }}
             />
           </div>
         </Grid>

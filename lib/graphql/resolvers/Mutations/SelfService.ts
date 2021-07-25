@@ -2,10 +2,10 @@ import axios from "axios";
 import { config } from "../utils";
 
 export const SelfServiceMutations = {
-  deleteSelfServiceCartItem: async (parent: any, args: any, context: any) => {
+  deleteSelfServiceCart: async (parent: any, args: any, context: any) => {
     try {
       await axios.delete(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/selfservice/cart/item/${args?.id}`,
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/selfservice/cart/`,
         { ...config(context) }
       );
       return true;
@@ -13,14 +13,29 @@ export const SelfServiceMutations = {
       throw error;
     }
   },
+  deleteSelfServiceCartItem: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.delete(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/selfservice/cart/item/${args?.identifier}`,
+        { ...config(context) }
+      );
+      return {
+        identifier: args?.identifier,
+        name: args?.name,
+        targetType: args?.targetType
+      };
+    } catch (error) {
+      throw error;
+    }
+  },
   addSelfServiceCartItem: async (parent: any, args: any, context: any) => {
     try {
-      await axios.post(
+      const result = await axios.post(
         `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/selfservice/cart/item`,
         { catalogItemId: args.id },
         { ...config(context) },       
       );
-      return true;
+      return result.data;
     } catch (error) {
       throw error;
     }

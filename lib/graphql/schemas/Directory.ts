@@ -18,12 +18,17 @@ export const Directory = `
     visibleToSelfService: Boolean
     links: [Link]
   }
+  
+  type AccountDirectory {   
+    accountIdentifier: String    
+  }
 
   type EntitlementDirectory {
     identifier: Int
     name: String
     description: String
-    resource: ResourceDirectory    
+    resource: ResourceDirectory
+    account: AccountDirectory
     createdAt: Int
     risk: String   
     visibleToSelfService: Boolean

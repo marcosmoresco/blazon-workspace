@@ -5,12 +5,16 @@
   "shareddialog.grid.read": "Leitura",
   "shareddialog.grid.write": "Escrita",
   "shareddialog.grid.share": "Compartilhamento",
+  "shareddialog.share.success": "Compartilhamento adicionado com sucesso!",
+  "shareddialog.unshare.success": "Compartilhamento removido com sucesso!",
+  "shareddialog.unshare.warning": "Deseja realmente remover esse compartilhamento?",
 
-  "applicationdialog.dialog.title": "Nome da Seção",
+  "applicationdialog.dialog.title": "Requisiar credenciais",
   "applicationdialog.dialog.description": "Insira a data de efetivação e uma justificativa para continuar.",
   "applicationdialog.dialog.effectiveDate": "Data de efetivação",
   "applicationdialog.justification": "Data de efetivação",
   "applicationdialog.justification.placeholder": "Insira a justificativa",
+  "applicationdialog.justification.required": "Justificativa é obrigatória",
 
   "administrativedialog.dialog.title": "Nome da Seção",
   "administrativedialog.dialog.description": "Insira a data de efetivação e uma justificativa para continuar.",
@@ -21,6 +25,7 @@
   "profile.edit.avatar.dialog": "Nova foto",
   "profile.edit.avatar.dialog.title": "Trocar foto do perfil",
   "profile.edit.avatar.dialog.description": "Clique acima para fazer upload de uma imagem png ou jpg.",
+  "profile.edit.avatar.success": "Imagem do usuário alterada com sucesso!",
 
   "profile.edit": "Editar informações",
   "profileeditform.risk": "Risco",
@@ -46,6 +51,13 @@
   "changepassword.forget.password": "Esqueci minha senha",
   "changepassword.header.title": "Nova Senha",
   "changepassword.header.breadcrumb": "Perfil",
+  "changepassword.currentPassword.required": "Senha atual é obrigatória",
+  "changepassword.newPassword.required": "Nova senha é obrigatória",
+  "changepassword.repeatPassword.required": "Senha repetida é obrigatória",
+  "changepassword.password.chars": "Deve ter 15 caracteres ou menos",
+  "changepassword.repeatPassword.invalid": "As senhas devem corresponder",
+  "changepassword.success": "Senha alterada com sucesso!",
+
   "save": "Salvar",
   "profileedit.header.breadcrumb": "Perfil",
   "profileedit.title": "Informações Pessoais",
@@ -65,5 +77,7 @@
   "profile.accounts.adminstrative": "Adminstrative",
   "profile.accounts.roles": "Roles",
   "profile.accounts.entitlements": "Entitlements",
-  "profile.others": "Outros"
+  "profile.others": "Outros",
+  "profile.accounts.application.requestCredentials": "Solicitar credenciais",
+  "profile.accounts.application.requestCredentials.success": "Solicitação das credenciais feita com sucesso!"
 }

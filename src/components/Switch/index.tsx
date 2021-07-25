@@ -8,19 +8,25 @@ import Loading from '../Loading'
 
 const useStyles = makeStyles((theme) => ({    
     root: {
+      '& .MuiSwitch-root': {
+        margin: 0,
+      },     
       '& .MuiSwitch-colorPrimary.Mui-checked': {
         color: '#0992CC'
       }, 
       '& .MuiSwitch-colorPrimary.Mui-checked + .MuiSwitch-track': {
         backgroundColor: '#00659B'
-      }      
+      },
+      '& label': {
+        paddingTop: 0
+      },         
     },
     loading: {
       marginRight: 10,
     }
   }))
 
-const CustomizedSwitch = (props) => {
+const CustomizedSwitch = (props: any) => {
     
     const classes = useStyles()
     const { label, value, onChange, height, isLoading, intl, ...other } = props   
@@ -42,7 +48,7 @@ const CustomizedSwitch = (props) => {
     
     return (
       
-      <FormGroup row style={{minHeight: height || 67}} className={classes.root}>
+      <FormGroup row style={{minHeight: height || 0}} className={classes.root}>
             <FormControlLabel
               control={
               isLoading ? (

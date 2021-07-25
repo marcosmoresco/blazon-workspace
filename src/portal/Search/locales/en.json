@@ -2,5 +2,6 @@
   "search.tutorial.title": "Filter your search using the tags below.",
   "search.tutorial.text": "Use the tags below to filter your search and save time.",
   "search.filters.clear.all": "Clear all",
-  "search.filters.clear": "Clear filters"
+  "search.filters.clear": "Clear filters",
+  "search.selfService.added": "added"
 }

@@ -34,7 +34,7 @@ const TextField: FC<TextFieldProps> = ({
 
   const labelText = hideLabel
     ? ''
-    : intl.formatMessage({ id: label || name.toLowerCase() })
+    : label || intl.formatMessage({ id: name.toLowerCase() })
 
   if (!inputProps.placeholder) {
     inputProps.placeholder = `${name}.placeholder`.toLowerCase()

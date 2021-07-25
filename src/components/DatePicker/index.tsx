@@ -21,7 +21,15 @@ const useStyles = makeStyles(() => ({
       '& .MuiOutlinedInput-adornedStart': {
         paddingLeft: 0
       }
-    }
+    },
+    '& label': {
+      fontSize: 14,
+      fontStyle: "normal",
+      fontWeight: "600",
+      lineHeight: "14px",
+      textTransform: "uppercase",
+      paddingBottom: 8,
+    }   
   }
 }));
 

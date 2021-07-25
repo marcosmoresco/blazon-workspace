@@ -52,7 +52,7 @@ export const light = createMuiTheme({
         borderRadius: 20,
         fontSize: 16,
       }
-    }
+    },   
   },
   palette: {
     type: "light",

@@ -68,5 +68,8 @@
   "requiredField": "Required field",
   "loadMore": "Load more",
   "no.result": "No results",
-  "search.no.result": "We didn't find any results for your search."
+  "search.no.result": "We didn't find any results for your search.",
+  "enter.text": "Enter the text",
+  "enter.number": "Enter the number",
+  "revoked": "Revoked"
 }

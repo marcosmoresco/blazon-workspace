@@ -1,127 +1,180 @@
-import React, { FC, useEffect, useState } from 'react'
-import { withStyles } from '@material-ui/core/styles'
-import { injectIntl, IntlShape } from 'react-intl'
-import { Form, Formik } from 'formik'
-import useStyles from './styles'
-import CardScreen from '@components/CardScreen'
-import Button from '@components/Button'
-import { PersonOutline } from '@material-ui/icons'
-import { Avatar, Divider } from '@material-ui/core'
-import TextField from '@components/TextField'
-import { useRouter } from 'next/router'
-import CameraIcon from '@icons/Camera'
-import { forOwn, get } from 'lodash'
-import useMockRequest from '../../../utils/mockRequest'
-import { useUser } from '@hooks'
-import Dialog from '@components/Dialog'
-import EditAvatar from './EditAvatar'
+import React, { FC, useEffect, useState } from "react";
+import { withStyles } from "@material-ui/core/styles";
+import { injectIntl, IntlShape, useIntl, FormattedMessage } from "react-intl";
+import { Form, Formik, withFormik, useFormikContext } from "formik";
+import { useQuery, useMutation } from "@apollo/client";
+import { parse, format } from "date-fns";
+import useStyles from "./styles";
+import CardScreen from "@components/CardScreen";
+import Button from "@components/Button";
+import DatePicker from "@components/DatePicker";
+import Switch from "@components/Switch";
+import { PersonOutline } from "@material-ui/icons";
+import { Avatar, Divider, Box } from "@material-ui/core";
+import TextField from "@components/TextField";
+import { useRouter } from "next/router";
+import CameraIcon from "@icons/Camera";
+import { forOwn, get } from "lodash";
+import { useUser } from "@hooks";
+import Dialog from "@components/Dialog";
+import * as Yup from 'yup'
+import EditAvatar from "./EditAvatar";
+import { GET_FORM_DATAS } from "@modules/User/queries";
+import { useDispatch } from "react-redux";
+import { addMessage } from "@actions/index";
+import {
+ CHANGE_USER_THUMB
+} from "@modules/User/mutations";
 
 type EditProfileProps = {
-  intl: IntlShape
-  classes: any
-}
-
-const mockData = {
-  identifier: 1,
-  createdAt: '04/08/2020 17:11:26',
-  modifiedAt: '01/06/2021 08:46:30',
-  certificatedAt: '24/08/2020 08:27:28',
-  risk: 'LOW',
-  username: 'teste',
-  firstName: 'Marcos',
-  middleName: 'Alberto',
-  lastName: 'Lopes',
-  lastAccess: '14/07/2021 09:51:24',
-  status: 'ACTIVE',
-  email: 'malopes21@gmail.com',
-  personalEmail: 'malopes21@gmail.com',
-  displayName: 'MARCOS LOPES',
-  primaryPhone: '998780925',
-  locked: false,
-  links: [
-    {
-      rel: 'thumb',
-      href: 'http://localhost:8087/blazon-workspace-backend/public/workspace/images/defaultUserThumb'
-    },
-    {
-      rel: 'photo',
-      href: 'http://localhost:8087/blazon-workspace-backend/public/workspace/images/defaultUserPhoto'
-    },
-    {
-      rel: 'self',
-      href: 'http://localhost:8087/blazon-workspace-backend/workspace/directory/users/1?expand=false'
-    },
-    {
-      rel: 'changepassword',
-      href: 'http://localhost:8087/blazon-workspace-backend/workspace/directory/users/changepassword'
-    },
-    {
-      rel: 'accounts',
-      href: 'http://localhost:8087/blazon-workspace-backend/workspace/directory/accounts/user{?page,size,expand,ord}'
-    },
-    {
-      rel: 'roles',
-      href: 'http://localhost:8087/blazon-workspace-backend/workspace/directory/roles/user{?page,size,expand,q,ord}'
-    }
-  ]
-}
+  intl: IntlShape;
+  classes: any;
+};
 
 export const StyledForm = withStyles(() => ({
   root: {
-    padding: 24,
-    '& label': {
-      paddingTop: 24
+    padding: 24,    
+  },
+}))((props: any) => <Form {...props} className={props.classes.root} />);
+
+export const StyledFormElement = withStyles(() => ({
+  root: {
+    marginTop: 24,    
+  },
+}))((props: any) => <Box className={props.classes.root}>{props.children}</Box>);
+
+const validationSchema = Yup.object({
+  applicationDialog: Yup.object({
+    effectiveDate: Yup.string(),
+    justification: Yup.string().required(<FormattedMessage id="applicationdialog.justification.required" />)
+  })
+})
+
+const formik = {
+  initialValues: {
+    applicationDialog: {
+      effectiveDate: undefined,
+      justification: ''
     }
-  }
-}))((props: any) => <Form {...props} className={props.classes.root} />)
+  },
+  validationSchema,
+  enableReinitialize: true,
+  isInitialValid: false
+}
+
+const CreateRequestDialog = () => {
+  const form = useFormikContext()
+  const intl = useIntl()
+  return (
+    <div className='modal'>
+      <div className='modal-section'>
+        {intl.formatMessage({ id: 'profile.edit' })}
+      </div>
+      <div className='modal-description'>
+        {intl.formatMessage({ id: 'applicationdialog.dialog.description' })}
+      </div>
+      <div className='pt48'></div>
+      <DatePicker
+        label={intl.formatMessage({
+          id: 'applicationdialog.dialog.effectiveDate'
+        })}
+        name='applicationDialog.effectiveDate'
+        onChange={(value) => {
+          form.setFieldValue('applicationDialog.effectiveDate', value)
+        }}
+      />
+      <div className='pt22'></div>
+      <TextField
+        form={form}
+        name='applicationDialog.justification'
+        multiline
+        rows={3}
+        rowsMax={4}
+      />
+    </div>
+  )
+}
 
 const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
+
+  const dispatch = useDispatch();
+
+  const form = useFormikContext();
+
   const fields = [] as {
-    name: string
-    value: any
-    type: string
-  }[]
-  const { loading, data: profileEditForm } = useMockRequest(mockData)
-  const [modalOpen, setModalOpen] = useState(false)
+    name: string;
+    value: any;
+    type: string;
+  }[];
 
-  const [, thumb] = useUser()
-  const router = useRouter()
-
-  const formik = {
-    initialValues: { profileEditForm },
-    validationSchema: {},
-    onSubmit: (values: any) => {
-      console.log(values)
+  const [changeUserThumb, {}] = useMutation(CHANGE_USER_THUMB, {   
+    onCompleted: ({changeUserThumb}) => {   
+      if(changeUserThumb) {
+        dispatch(
+          addMessage(
+            intl.formatMessage({id: "profile.edit.avatar.success"})
+          )
+        );  
+        setThumbUpdated(thumbChanged);                   
+        setModalOpen(false);
+      }        
     },
-    enableReinitialize: true
+  });
+
+  const { loading, error, data, refetch } = useQuery(GET_FORM_DATAS, {
+    variables: {
+      entryId: 1,
+      schema: "USER",
+    },
+  });
+
+  if (!loading && !error) {
+    const formData = JSON.parse(data?.getModifyEntry);
+    console.log(formData);
   }
 
-  if (profileEditForm) {
-    forOwn(profileEditForm, function (value, key) {
-      if (
-        [
-          'links',
-          'identifier',
-          'createdat',
-          'modifiedat',
-          'certificatedat',
-          'lastaccess',
-          'locked'
-        ].includes(key.toLowerCase())
-      )
-        return
+  const [modalOpen, setModalOpen] = useState(false);
+  const [modalOpenUpdate, setModalOpenUpdate] = useState(false);
+  const [thumbChanged, setThumbChanged] = useState("");
+  const [thumbUpdated, setThumbUpdated] = useState("");
 
-      fields.push({
-        name: `profileEditForm.${key}`,
-        value,
-        type:
-          typeof value === 'string'
-            ? 'text'
-            : typeof value === 'string'
-            ? 'number'
-            : 'text'
-      })
-    })
+  const [user, thumb] = useUser();
+  const router = useRouter();
+
+  const formik = {
+    initialValues: { user },
+    validationSchema: {},
+    onSubmit: (values: any) => {
+      console.log(values);
+    },
+    enableReinitialize: true,
+  };
+
+  const categorizedFields = {} as any;
+
+  if (!loading && !error) {
+    const formData = JSON.parse(data?.getModifyEntry);
+
+    forOwn(formData?.attributes, function (categoryValue, categoryKey) {
+      categorizedFields[categoryKey] = [] as any;
+
+      forOwn(categoryValue, function (value, key) {
+        if (["STRING", "NUMBER", "DATE", "CHECKBOX"].includes(value.displayType)) {                           
+          categorizedFields[categoryKey].push({
+            name: `profileeditform.${key}`,
+            label: value.label,
+            defaultValue:
+              value.displayType === "DATE" && value.value 
+                ? format(parse(value.value.replace(/BRST |BRT /, "").substring(4), "MMM dd HH:mm:ss yyyy", new Date()), "dd/MM/yyyy")
+                : value.value,
+            required: value.required,
+            disabled: !value.writable,
+            value,
+            type: value.displayType === "STRING" ? "text" : value.displayType === "NUMBER" ? "number" : "text",
+          });
+        }
+      });
+    });
   }
 
   return (
@@ -131,29 +184,45 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
         fullWidth={false}
         isValid={true}
         open={modalOpen}
-        title={intl.formatMessage({ id: 'profile.edit.avatar.dialog' })}
-        onSave={() => {}}
+        title={intl.formatMessage({ id: "profile.edit.avatar.dialog" })}
+        onSave={() => {
+          changeUserThumb({
+            variables: {
+            thumb: thumbChanged || thumb
+          }})
+        }}
       >
-        <EditAvatar />
+        <EditAvatar onCrop={(t: string) => setThumbChanged(t)}/>
+      </Dialog>
+      <Dialog
+        open={modalOpenUpdate}
+        onClose={() => setModalOpen(false)}
+        title={intl.formatMessage({ id: 'user' })}
+        onSave={() => {         
+         
+        }}
+        isValid={form?.isValid}
+      >
+        <CreateRequestDialog />
       </Dialog>
       <Formik
         {...formik}
         render={(form) => {
           return (
             <CardScreen
-              loading={loading}
-              title='profile'
-              subTitle='profileedit.title'
+              loading={!user}
+              title="profile"
+              subTitle="profileedit.title"
               icon={<PersonOutline />}
-              onBack={() => router.push('/profile')}
+              onBack={() => router.push("/profile")}
               actions={
                 <div>
                   <Button
-                    onClick={form.submitForm}
-                    color='primary'
-                    variant='contained'
+                    onClick={() => setModalOpenUpdate(true)}
+                    color="primary"
+                    variant="contained"
                   >
-                    {intl.formatMessage({ id: 'save' })}
+                    {intl.formatMessage({ id: "save" })}
                   </Button>
                 </div>
               }
@@ -176,30 +245,66 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
                   >
                     <CameraIcon />
                   </div>
-                  <Avatar src={thumb} className={classes.avatar}></Avatar>
+                  <Avatar src={thumbUpdated || thumb} className={classes.avatar}></Avatar>
                 </div>
               </div>
 
               <StyledForm className={classes.formControl}>
-                {fields.map((field, key) => {
-                  const fieldValue = get(form.values, field.name)
-                  return (
-                    <TextField
-                      form={form}
-                      {...field}
-                      value={fieldValue}
-                      key={key}
-                      placeholder='profileeditform.field.placeholder'
-                    />
-                  )
-                })}
+                {Object.keys(categorizedFields).map((key, index) => (
+                  <>
+                    <div
+                      className={`${classes.category} ${
+                        (index > 0 && "Top") || ""
+                      }`}
+                    >
+                      {key}
+                    </div>
+                    {categorizedFields[key].map((field: any, key: any) => {
+                      const fieldValue = get(form.values, field.name);                           
+                       if (field.value.displayType === "DATE") {
+                        return (
+                          <StyledFormElement>
+                            <DatePicker
+                              {...field}
+                              key={key}
+                              value={fieldValue || field.defaultValue}
+                              onChange={(value: string) => console.log(value)}
+                            />
+                          </StyledFormElement>                          
+                        );
+                      } else if(field.value.displayType === "CHECKBOX") {
+                        return (
+                        <StyledFormElement>
+                          <Switch  
+                            {...field}  
+                            key={key}                                          
+                            value={fieldValue || field.defaultValue}                                   
+                          />
+                        </StyledFormElement>                        
+                        );
+                      } else {
+                        return (
+                          <StyledFormElement>
+                            <TextField
+                              form={form}
+                              {...field}
+                              value={fieldValue}
+                              key={key}
+                              placeholder="profileeditform.field.placeholder"
+                            />
+                          </StyledFormElement>                          
+                        );
+                      }                                     
+                    })}
+                  </>
+                ))}
               </StyledForm>
             </CardScreen>
-          )
+          );
         }}
       />
     </>
-  )
-}
+  );
+};
 
-export default withStyles(useStyles)(injectIntl(EditProfile))
+export default withStyles(useStyles)(withFormik(formik)(injectIntl(EditProfile)));

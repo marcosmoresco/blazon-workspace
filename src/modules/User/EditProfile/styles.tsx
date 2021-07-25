@@ -65,6 +65,15 @@ const useStyles = (theme: Theme) =>
       '& label': {
         paddingTop: 20
       }
+    },
+    category: {
+      fontWeight: 600,
+      fontSize: 18,
+      lineHeight: "100%",
+      color: "#1B202A",
+      "&.Top": {
+        marginTop: 24,
+      }
     }
   })
 

@@ -1,0 +1,11 @@
+{  
+  "clear.cart": "Limpar carrinho",
+  "checkout": "Checkout",
+  "cart.items.added": "itens adicionados no carrinho",
+  "cart.items.removed.message": "Itens removidos do carrinho!!!",
+  "cart": "Carrinho",
+  "cart.remove.item": "Excluir item?",
+  "cart.remove.item.confirm": "Tem certeza que deseja excluir esse item do carrinho?",
+  "cart.remove.items": "Excluir todos os itens?",
+  "cart.remove.items.confirm": "Tem certeza que deseja excluir todos os itens do carrinho?"
+}

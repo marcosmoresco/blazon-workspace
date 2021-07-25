@@ -57,5 +57,8 @@ export const BoxCart = styled.div`
   gap: 10px;
   height: 84px;
   border-top: 1px solid #E9E9EA;
-  padding-right: 37px;
+  padding-right: 37px;  
+  &.Added {
+    cursor: pointer;
+  }
 `;

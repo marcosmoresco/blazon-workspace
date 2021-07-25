@@ -36,7 +36,7 @@ const ResourceEntitlements: FC<ListProps> = ({ dispatch }) => {
       <div>
         <DataGrid
           query={GET_DIRECTORY_RESOURCE_ENTITLEMENTS}
-          params={{id: Number(id)}}
+          queryFilters={{id: Number(id)}}
           height={600}
           list={entitlements}
           links={links}

@@ -41,6 +41,10 @@ export type SelfService = {
   attributes: SelfServiceAttribute[]
 };
 
+export type AccountDirectory = {
+  accountIdentifier: string;
+};
+
 export type ResourceDirectory = {
   identifier: number;
   name: string;
@@ -52,6 +56,7 @@ export type EntitlementDirectory = {
   name: string;
   description: string;
   resource: ResourceDirectory;
+  account: AccountDirectory;
 };
 
 export type RoleDirectory = {

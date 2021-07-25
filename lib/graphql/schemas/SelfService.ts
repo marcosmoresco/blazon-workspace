@@ -80,6 +80,7 @@ export const Queries = `
 `;
 
 export const Mutations = `
-  deleteSelfServiceCartItem(id: Int): Boolean
-  addSelfServiceCartItem(id: String): Boolean
+  deleteSelfServiceCart: Boolean
+  deleteSelfServiceCartItem(identifier: Int, name: String, targetType: String): SelfServiceCartItem
+  addSelfServiceCartItem(id: String): SelfServiceCartItem
 `;

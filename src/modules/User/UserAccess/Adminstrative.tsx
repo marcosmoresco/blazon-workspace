@@ -15,44 +15,7 @@ import { useFormikContext, withFormik } from 'formik'
 import Dialog from '@components/Dialog'
 import DatePicker from '@components/DatePicker'
 import TextField from '@components/TextField'
-
-const mockData = [
-  {
-    resource: 'anim',
-    account: 'amet nisi officia ea',
-    accountIdentifier: 'qui tempor dolore',
-    createdAt: 'aliqua ut',
-    status: 'enim tempor non Ut'
-  },
-  {
-    resource: 'dolore cupidatat',
-    account: 'amet enim consectetur sit',
-    accountIdentifier: 'Duis dolor laborum adipisicing voluptate',
-    createdAt: 'Excepteur',
-    status: 'cillum voluptate'
-  },
-  {
-    resource: 'dolor aliqua magna mollit',
-    account: 'proident enim esse consectetur',
-    accountIdentifier: 'commodo exercitation esse amet et',
-    createdAt: 'incididunt amet',
-    status: 'sint in esse'
-  },
-  {
-    resource: 'cillum reprehenderit quis ut enim',
-    account: 'ullamco Ut',
-    accountIdentifier: 'labore',
-    createdAt: 'Excepteur',
-    status: 'ut'
-  },
-  {
-    resource: 'in nostrud pariatur do enim',
-    account: 'sunt laboris sint mollit in',
-    accountIdentifier: 'qui mollit',
-    createdAt: 'nostrud id ex est exercitation',
-    status: 'culpa veniam Ut non'
-  }
-]
+import { GET_USER_ACCOUNTS } from "@modules/User/queries";
 
 const columns = ({ classes }) => [
   {
@@ -96,31 +59,38 @@ const columns = ({ classes }) => [
 
 const filters = [
   {
-    name: 'resource',
-    label: <FormattedMessage id='resource' />,
-    type: 'string'
+    name: "resourceName",
+    label: <FormattedMessage id="resource" />,
+    type: "text",
   },
   {
-    name: 'account',
-    label: <FormattedMessage id='account' />,
-    type: 'string'
+    name: "accountIdentifier",
+    label: <FormattedMessage id="accountIdentifier" />,
+    type: "text",
   },
   {
-    name: 'accountIdentifier',
-    label: <FormattedMessage id='accountIdentifier' />,
-    type: 'string'
+    name: "status",
+    label: <FormattedMessage id="status" />,
+    type: "list",
+    values: [
+      {
+        label: <FormattedMessage id="active" />,
+        value: "ACTIVE",
+      },
+      {
+        label: <FormattedMessage id="revoked" />,
+        value: "REVOKED",
+      },
+    ],
+    bind: "value",
+    view: "label",
   },
   {
-    name: 'createdAt',
-    label: <FormattedMessage id='createdAt' />,
-    type: 'date'
+    name: "createdAt",
+    label: <FormattedMessage id="createdAt" />,
+    type: "date",
   },
-  {
-    name: 'status',
-    label: <FormattedMessage id='status' />,
-    type: 'string'
-  }
-]
+];
 
 const validationSchema = Yup.object({
   administrativeDialog: Yup.object({
@@ -182,21 +152,36 @@ const Administrative = ({ classes }) => {
   const form = useFormikContext()
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [currentSelected, setCurrentSelected] = useState<any>(undefined)
-  const { loading, data: gridData } = useMockRequest(mockData, 500)
+
+  const [queryFilters, setQueryFilters] = useState({
+    page: 0,
+    size: 100,
+    filters: JSON.stringify({
+      resourceType: "ADMIN",
+    })
+  });
+
+  const search = (filters?: any) => {
+    setQueryFilters({
+      page: 0,
+      size: 100,
+      filters: JSON.stringify({
+        resourceType: "ADMIN",
+        ...filters
+      }),
+    });
+  };
 
   const handleClickRow = (row: any) => {
     setModalOpen(true)
     setCurrentSelected(row)
-  }
-
-  const search = (filters?: any) => {
-    console.log(filters)
-  }
+  }  
 
   return (
     <CardScreen
-      loading={loading}
+      loading={false}
       title='profile'
+      subTitle="profile.accounts.adminstrative"
       icon={<User height={24} width={24} />}
       onBack={() => router.push('/profile')}
     >
@@ -216,18 +201,15 @@ const Administrative = ({ classes }) => {
         <Filter
           filters={filters}
           onChange={(filters: any) => search(filters)}
-        />
-        <div className='Card-actions'>
-          <Button color='primary' variant='contained'>
-            <FormattedMessage id={`profile.accounts.temporary`} />
-          </Button>
-        </div>
+        />        
       </div>
       <div>
         <DataGrid
-          height={600}
-          list={gridData}
-          links={[]}
+          query={GET_USER_ACCOUNTS}
+          queryFilters={queryFilters}
+          getResponseLinks={(data: any) => data?.getUserAccounts?.links}
+          getResponse={(data: any) => data?.getUserAccounts?.accounts}
+          height={600}         
           columns={columns({ classes })}
           page={1}
           size={25}
