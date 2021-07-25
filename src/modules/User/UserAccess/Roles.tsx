@@ -1,80 +1,65 @@
-import React from 'react'
-import { FormattedMessage } from 'react-intl'
-import { useRouter } from 'next/router'
-import Button from '@components/Button'
-import CardScreen from '@components/CardScreen'
-import User from '@icons/User'
-import DataGrid from '@components/DataGrid'
-import useMockRequest from '@utils/mockRequest'
-import Filter from '@components/Filter'
-import useStyles from './styles'
-import { withStyles } from '@material-ui/core/styles'
-
-const mockData = [
-  {
-    name: 'Teste 1'
-  },
-  {
-    name: 'Teste 2'
-  },
-  {
-    name: 'Teste 3'
-  },
-  {
-    name: 'Teste 4'
-  },
-  {
-    name: 'Teste 5'
-  }
-]
+import React, { useState } from "react";
+import { FormattedMessage } from "react-intl";
+import { useRouter } from "next/router";
+import { useQuery } from "@apollo/client";
+import CardScreen from "@components/CardScreen";
+import User from "@icons/User";
+import DataGrid from "@components/DataGrid";
+import { useStyles } from "./styles";
+import { withStyles } from "@material-ui/core/styles";
+import { RoleDirectory } from "@portal/Search/types";
+import { GET_USER_ROLES } from "@modules/User/queries";
 
 const columns = () => [
   {
-    field: 'name',
-    headerName: <FormattedMessage id='name' />,
-    sortable: false
-  }
-]
+    field: "name",
+    headerName: <FormattedMessage id="name" />,
+    sortable: false,
+  },
+];
 
 const filters = [
   {
-    name: 'name',
-    label: <FormattedMessage id='name' />,
-    type: 'string'
-  }
-]
+    name: "name",
+    label: <FormattedMessage id="name" />,
+    type: "string",
+  },
+];
 
 const Roles = ({ classes }) => {
-  const router = useRouter()
-  const { loading, data: gridData } = useMockRequest(mockData, 500)
+  
+  const router = useRouter();  
+  const [queryFilters, setQueryFilters] = useState({
+    page: 0,
+    size: 100,      
+    filters: ""
+  });
 
   const search = (filters?: any) => {
-    console.log(filters)
-  }
+    setQueryFilters({
+      page: 0,
+      size: 100,
+      filters: JSON.stringify({        
+        ...filters
+      }),
+    });
+  };
 
   return (
     <CardScreen
-      loading={loading}
-      title='profile'
+      loading={false}
+      title="profile"
+      subTitle="roles"
       icon={<User height={24} width={24} />}
-      onBack={() => router.push('/profile')}
-    >
-      <div className='Default-header-filter'>
-        <Filter
-          filters={filters}
-          onChange={(filters: any) => search(filters)}
-        />
-        <div className='Card-actions'>
-          <Button color='primary' variant='contained'>
-            <FormattedMessage id={`profile.accounts.roles`} />
-          </Button>
-        </div>
-      </div>
+      onBack={() => router.push("/profile")}
+    >      
       <div>
         <DataGrid
-          height={600}
-          list={gridData}
-          links={[]}
+          query={GET_USER_ROLES}
+          queryFilters={queryFilters}
+          getResponseLinks={(data: any) => data?.getRepresentation?.links}
+          getResponse={(data: any) => data?.getRepresentation?.roles}
+          height={600}          
           columns={columns({ classes })}
           page={1}
           size={25}
@@ -83,7 +68,7 @@ const Roles = ({ classes }) => {
         />
       </div>
     </CardScreen>
-  )
-}
+  );
+};
 
-export default withStyles(useStyles)(Roles)
+export default withStyles(useStyles)(Roles);

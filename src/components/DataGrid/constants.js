@@ -1,4 +1,6 @@
 
+import apolloClient from '@utils/apollo-client';
+
 export const descendingComparator = (a, b, orderBy) => {
   if (b[orderBy] < a[orderBy]) {
     return -1
@@ -67,6 +69,24 @@ const customCheckbox = () => ({
     pointerEvents: 'none',
   }
 })
+
+export const executeQuery = ({ setIsFetching, setGridLinks, setRows, getResponseLinks, getResponse, query, queryFilters, bindId}) => {  
+
+  setIsFetching(true);
+
+  apolloClient
+    .query({
+      query,
+      variables: {
+        ...queryFilters
+      }
+    })
+    .then(({ data }) => {
+      setIsFetching(false);
+      setGridLinks((getResponseLinks && getResponseLinks(data)) || (data?.getRepresentation?.links || []));
+      setRows(((getResponse && getResponse(data)) || (data?.getRepresentation?.representation || [])).map((u) => ({...u, id: (bindId && bindId(u)) || u.identifier})));
+    })
+};
 
 export const styles = (theme) => ({
   root: {

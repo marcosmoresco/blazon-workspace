@@ -5,6 +5,7 @@ import { RequestQueries } from "./Request";
 import { SelfServiceQueries } from "./SelfService";
 import { UserQueries } from "./User";
 import { DirectoryQueries } from "./Directory";
+import { FormDatasQueries } from "./FormDatas";
 
 export const Queries = {
   getResume: async (parent: any, args: any, context: any) => {
@@ -22,5 +23,6 @@ export const Queries = {
   ...RequestQueries,
   ...SelfServiceQueries,
   ...UserQueries,
-  ...DirectoryQueries
+  ...DirectoryQueries,
+  ...FormDatasQueries
 };

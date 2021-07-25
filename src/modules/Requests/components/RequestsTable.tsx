@@ -41,41 +41,25 @@ import { columns, filters } from "./constants";
 
 const Tasks: FC<RequestsTableProps> = ({ intl }) => {
   const router = useRouter();
-  const { loading, error, data } = useQuery<{
-    getRequests: { requests: Request[]; links: [] };
-  }>(GET_REQUESTS, {
-    variables: {
-      page: 0,
-      size: 100,
-    },
+  const [queryFilters, setQueryFilters] = useState({
+    page: 0,
+    size: 100,      
+    filters: ""
   });
 
-  const requests = data?.getRequests.requests;
-  const links = data?.getRequests.links;
+  const search = (filters?: any) => {
+    setQueryFilters({
+      page: 0,
+      size: 100,
+      filters: JSON.stringify({        
+        ...filters
+      }),
+    });
+  };
 
-  const [isFetching, setIsFetching] = useState(false);
   const [callbackClear, setCallbackClear] = useState({ execute: () => {} });
   const [selecteds, setSelecteds] = useState([]);
-  const [expandAll, setExpandAll] = useState(false);
-  const [requestsFiltered, setRequestsFiltered] = useState(requests);
-
-  const search = (filters?: any) => {
-    setIsFetching(true);
-    apolloClient
-      .query({
-        query: GET_REQUESTS,
-        variables: {
-          page: 0,
-          size: 20,
-          filters: JSON.stringify(filters),
-        },
-      })
-      .then(({ data }) => {
-        setRequestsFiltered(data?.getRequests.requests);
-        //links = data?.getRequests.links;
-        setIsFetching(false);
-      });
-  };
+  const [expandAll, setExpandAll] = useState(false); 
 
   const handleSelected = (selecteds: any, callbackClear: any) => {
     setCallbackClear(callbackClear);
@@ -128,20 +112,17 @@ const Tasks: FC<RequestsTableProps> = ({ intl }) => {
           </div>
         </div>
         <div>
-          <DataGrid
-            height={600}
-            list={requestsFiltered || requests}
-            links={links || []}
+          <DataGrid                     
             query={GET_REQUESTS}
+            queryFilters={queryFilters}
+            height={600} 
             getResponseLinks={(data: any) => data?.getRequests?.links}
-            getResponse={(data: any) => data?.getRequests?.requests}
-            fetching={loading || isFetching}
+            getResponse={(data: any) => data?.getRequests?.requests}           
             columns={columns}
             page={1}
-            size={25}
+            size={100}
             rowsPerPageList={[25, 50, 75, 100]}
-            handleSelected={handleSelected}
-            actions={[]}
+            handleSelected={handleSelected}           
             expand={expandContent}
             expandOnClick
             expandAll={expandAll}

@@ -1,6 +1,8 @@
 import React, { useState } from 'react'
 import { FormattedMessage, useIntl } from 'react-intl'
 import { useRouter } from 'next/router'
+import { useMutation } from "@apollo/client";
+import { useDispatch } from "react-redux";
 import Button from '@components/Button'
 import * as Yup from 'yup'
 import CardScreen from '@components/CardScreen'
@@ -8,67 +10,37 @@ import User from '@icons/User'
 import DataGrid from '@components/DataGrid'
 import useMockRequest from '@utils/mockRequest'
 import Filter from '@components/Filter'
-import useStyles from './styles'
+import { useStyles } from './styles'
 import { withStyles } from '@material-ui/core/styles'
 import ShareIcon from '@icons/Share'
 import { useFormikContext, withFormik } from 'formik'
 import Dialog from '@components/Dialog'
 import DatePicker from '@components/DatePicker'
 import TextField from '@components/TextField'
-
-const mockData = [
-  {
-    resource: 'sint',
-    accountIdentifier: 'irure occaecat est dolore',
-    createdAt: 'dolore Ut sit',
-    status: 'cillum nostrud deserunt'
-  },
-  {
-    resource: 'Ut elit eu et',
-    accountIdentifier: 'sunt ipsum non',
-    createdAt: 'et do officia minim sint',
-    status: 'mollit in dolor commodo Excepteur'
-  },
-  {
-    resource: 'sunt aliqua in',
-    accountIdentifier: 'Excepteur sed',
-    createdAt: 'quis culpa velit et sint',
-    status: 'Duis est Ut ipsum elit'
-  },
-  {
-    resource: 'sint ut officia Ut',
-    accountIdentifier: 'tempor occaecat aliquip nulla nisi',
-    createdAt: 'aliquip in qui',
-    status: 'dolor magna'
-  },
-  {
-    resource: 'sunt veniam Ut velit esse',
-    accountIdentifier: 'anim',
-    createdAt: 'laborum Lorem dolore',
-    status: 'aliqua aliquip do laboris ut'
-  }
-]
+import { addMessage } from "@actions/index";
+import { GET_USER_ACCOUNTS } from "@modules/User/queries";
+import { REQUEST_CREDENTIALS_USER_APPLICATION_ACCOUNT } from "@modules/User/mutations";
 
 const columns = ({ classes }) => [
   {
-    field: 'resource',
-    headerName: <FormattedMessage id='resource' />,
-    sortable: false
+    field: "resourceName",
+    headerName: <FormattedMessage id="resource" />,
+    sortable: false,
   },
   {
-    field: 'accountIdentifier',
-    headerName: <FormattedMessage id='accountIdentifier' />,
-    sortable: false
+    field: "accountIdentifier",
+    headerName: <FormattedMessage id="accountIdentifier" />,
+    sortable: false,
   },
   {
-    field: 'createdAt',
-    headerName: <FormattedMessage id='createdAt' />,
-    sortable: false
+    field: "createdAt",
+    headerName: <FormattedMessage id="createdAt" />,
+    sortable: false,
   },
   {
-    field: 'status',
-    headerName: <FormattedMessage id='status' />,
-    sortable: false
+    field: "status",
+    headerName: <FormattedMessage id="status" />,
+    sortable: false,
   },
   {
     field: 'action',
@@ -76,9 +48,9 @@ const columns = ({ classes }) => [
     sortable: false,
     renderCell: () => {
       return (
-        <div className={classes.actionIcon}>
-          <ShareIcon height={28} width={28} />
-        </div>
+        <Button color="primary" variant="contained">
+          <FormattedMessage id="profile.accounts.application.requestCredentials" />
+        </Button>
       )
     }
   }
@@ -86,31 +58,43 @@ const columns = ({ classes }) => [
 
 const filters = [
   {
-    name: 'resource',
-    label: <FormattedMessage id='resource' />,
-    type: 'string'
+    name: "resourceName",
+    label: <FormattedMessage id="resource" />,
+    type: "text",
   },
   {
-    name: 'accountIdentifier',
-    label: <FormattedMessage id='accountIdentifier' />,
-    type: 'string'
+    name: "accountIdentifier",
+    label: <FormattedMessage id="accountIdentifier" />,
+    type: "text",
   },
   {
-    name: 'createdAt',
-    label: <FormattedMessage id='createdAt' />,
-    type: 'date'
+    name: "status",
+    label: <FormattedMessage id="status" />,
+    type: "list",
+    values: [
+      {
+        label: <FormattedMessage id="active" />,
+        value: "ACTIVE",
+      },
+      {
+        label: <FormattedMessage id="revoked" />,
+        value: "REVOKED",
+      },
+    ],
+    bind: "value",
+    view: "label",
   },
   {
-    name: 'status',
-    label: <FormattedMessage id='status' />,
-    type: 'string'
-  }
-]
+    name: "createdAt",
+    label: <FormattedMessage id="createdAt" />,
+    type: "date",
+  },
+];
 
 const validationSchema = Yup.object({
   applicationDialog: Yup.object({
-    effectiveDate: Yup.string().required('requiredField'),
-    justification: Yup.string().required('requiredField')
+    effectiveDate: Yup.string(),
+    justification: Yup.string().required(<FormattedMessage id="applicationdialog.justification.required" />)
   })
 })
 
@@ -122,10 +106,8 @@ const formik = {
     }
   },
   validationSchema,
-  onSubmit: (values: any) => {
-    alert(JSON.stringify(values, null, 2))
-  },
-  enableReinitialize: true
+  enableReinitialize: true,
+  isInitialValid: false
 }
 
 const ApplicationDialog = () => {
@@ -163,25 +145,55 @@ const ApplicationDialog = () => {
 
 const Application = ({ classes }) => {
   const router = useRouter()
+  const dispatch = useDispatch();
   const intl = useIntl()
   const form = useFormikContext()
   const [modalOpen, setModalOpen] = useState<boolean>(false)
   const [currentSelected, setCurrentSelected] = useState<any>(undefined)
-  const { loading, data: gridData } = useMockRequest(mockData, 500)
+  
+  const [queryFilters, setQueryFilters] = useState({
+    page: 0,
+    size: 100,
+    filters: JSON.stringify({
+      resourceType: "APPLICATION",
+    })
+  });
+
+  const search = (filters?: any) => {
+    setQueryFilters({
+      page: 0,
+      size: 100,
+      filters: JSON.stringify({
+        resourceType: "APPLICATION",
+        ...filters
+      }),
+    });
+  };
 
   const handleClickRow = (row: any) => {
     setModalOpen(true)
     setCurrentSelected(row)
   }
 
-  const search = (filters?: any) => {
-    console.log(filters)
-  }
+  const [credentialsUserApplicationAccount, {}] = useMutation(REQUEST_CREDENTIALS_USER_APPLICATION_ACCOUNT, {    
+    onCompleted: ({credentialsUserApplicationAccount}) => {   
+      if(credentialsUserApplicationAccount) {
+        dispatch(
+          addMessage(
+            <FormattedMessage id="profile.accounts.application.requestCredentials.success" />
+          )
+        );
+        form.resetForm();
+        setModalOpen(false);
+      }        
+    },
+  });
 
   return (
     <CardScreen
-      loading={loading}
+      loading={false}
       title='profile'
+      subTitle="profile.accounts.application"
       icon={<User height={24} width={24} />}
       onBack={() => router.push('/profile')}
     >
@@ -189,9 +201,13 @@ const Application = ({ classes }) => {
         open={modalOpen}
         onClose={() => setModalOpen(false)}
         title={intl.formatMessage({ id: 'profile.accounts.application' })}
-        onSave={() => {
-          form.submitForm()
-          console.log(form.values)
+        onSave={() => {         
+          credentialsUserApplicationAccount({
+            variables: {
+              accountId: Number(currentSelected?.identifier),
+              ...form?.values?.applicationDialog
+            },
+          });
         }}
         isValid={form.isValid}
       >
@@ -201,23 +217,20 @@ const Application = ({ classes }) => {
         <Filter
           filters={filters}
           onChange={(filters: any) => search(filters)}
-        />
-        <div className='Card-actions'>
-          <Button color='primary' variant='contained'>
-            <FormattedMessage id={`profile.accounts.temporary`} />
-          </Button>
-        </div>
+        />        
       </div>
       <div>
         <DataGrid
-          height={600}
-          list={gridData}
-          links={[]}
+          query={GET_USER_ACCOUNTS}
+          queryFilters={queryFilters}
+          getResponseLinks={(data: any) => data?.getUserAccounts?.links}
+          getResponse={(data: any) => data?.getUserAccounts?.accounts}
+          height={600}          
           columns={columns({ classes })}
           page={1}
-          size={25}
-          rowsPerPageList={[25, 50, 75, 100]}
+          size={100}
           handleClick={handleClickRow}
+          type="pagination"
         />
       </div>
     </CardScreen>

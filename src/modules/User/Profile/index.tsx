@@ -13,6 +13,7 @@ import InfoIcon from '@icons/Info'
 import SignOutIcon from '@icons/SignOut'
 import Divider from '@components/Divider'
 import PencilIcon from '@icons/Pencil'
+import { useUser } from "@hooks";
 
 type ProfileProps = {
   intl: IntlShape
@@ -40,7 +41,9 @@ const BoxListingItem = withStyles(() => ({
 }))(ListingItem)
 
 const Profile: FC<ProfileProps> = ({ classes, intl }) => {
-  const router = useRouter()
+  
+  const [user, thumb] = useUser();
+  const router = useRouter();
   return (
     <CardScreen title='profile' icon={<User height={24} width={24} />}>
       <Grid container>
@@ -54,14 +57,14 @@ const Profile: FC<ProfileProps> = ({ classes, intl }) => {
               className={classes.userInfo}
             >
               <Grid item xs={4}>
-                <Avatar src='/Avatar.svg' className={classes.avatar}></Avatar>
+                <Avatar src={thumb} className={classes.avatar}></Avatar>
               </Grid>
               <Grid item xs={8}>
                 <Typography noWrap className={classes.userTitle}>
-                  Design
+                  {user?.username}
                 </Typography>
                 <Typography noWrap className={classes.userName}>
-                  Mateus David
+                  {user?.displayName}
                 </Typography>
                 <Typography
                   noWrap

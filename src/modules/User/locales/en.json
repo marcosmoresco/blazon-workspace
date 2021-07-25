@@ -1,7 +1,32 @@
 {
+  
+  "shareddialog.information": "Informations",
+  "shareddialog.searchfield.placeholder": "Search the user by name, email or username",
+  "shareddialog.grid.user": "User",
+  "shareddialog.grid.read": "Read",
+  "shareddialog.grid.write": "Write",
+  "shareddialog.grid.share": "Share",
+  "shareddialog.share.success": "Share successfully added!",
+  "shareddialog.unshare.success": "Share successfully removed!",
+  "shareddialog.unshare.warning": "Do you really want to remove this share?",
+
+  "applicationdialog.dialog.title": "Request credentials",
+  "applicationdialog.dialog.description": "Enter the effective date and a justification for continuing.",
+  "applicationdialog.dialog.effectiveDate": "Effective date",
+  "applicationdialog.justification": "Justification",
+  "applicationdialog.justification.placeholder": "Enter the justification",
+  "applicationdialog.justification.required": "Justification is required",
+
+  "administrativedialog.dialog.title": "Section Name",
+  "administrativedialog.dialog.description": "Enter the effective date and a justification for continuing.",
+  "administrativedialog.dialog.effectiveDate": "Effective date",
+  "administrativedialog.justification": "Justification",
+  "administrativedialog.justification.placeholder": "Enter the justification",
+
   "profile.edit.avatar.dialog": "New picture",
   "profile.edit.avatar.dialog.title": "Change profile picture",
   "profile.edit.avatar.dialog.description": "Click above to upload a png or jpg image.",
+  "profile.edit.avatar.success": "User image changed successfully!",
 
   "profile.edit": "Edit information",
   "profileeditform.risk": "Risk",
@@ -22,11 +47,18 @@
   "changepassword.currentpassword.placeholder": "Enter your current password",
   "changepassword.newpassword": "New Password",
   "changepassword.newpassword.placeholder": "Enter your new password",
-  "changepassword.repeatpassword": "Repeat your password",
-  "changepassword.repeatpassword.placeholder": "Repeat your password new password",
+  "changepassword.newpasswordconfirm": "Repeat your password",
+  "changepassword.newpasswordconfirm.placeholder": "Repeat your password new password",
   "changepassword.forget.password": "I forgot my password",
   "changepassword.header.title": "New Password",
   "changepassword.header.breadcrumb": "Profile",
+  "changepassword.currentPassword.required": "Current password is required",
+  "changepassword.newPassword.required": "New password is required",
+  "changepassword.repeatPassword.required": "Repeat password is required",
+  "changepassword.password.chars": "Must be 15 characters or less",
+  "changepassword.repeatPassword.invalid": "Passwords must match",
+  "changepassword.success": "Change password successfully!",
+
   "save": "Save",
   "profileedit.header.breadcrumb": "Profile",
   "profileedit.title": "Personal Information",
@@ -46,5 +78,7 @@
   "profile.accounts.adminstrative": "Adminstrative",
   "profile.accounts.roles": "Roles",
   "profile.accounts.entitlements": "Entitlements",
-  "profile.others": "Others"
+  "profile.others": "Others",
+  "profile.accounts.application.requestCredentials": "Request credentials",
+  "profile.accounts.application.requestCredentials.success": "Request credentials successfully!"
 }

@@ -1,119 +1,102 @@
-import React from 'react'
-import { FormattedMessage } from 'react-intl'
-import { useRouter } from 'next/router'
-import Button from '@components/Button'
-import CardScreen from '@components/CardScreen'
-import User from '@icons/User'
-import DataGrid from '@components/DataGrid'
-import useMockRequest from '@utils/mockRequest'
-import Filter from '@components/Filter'
-import useStyles from './styles'
-import { withStyles } from '@material-ui/core/styles'
-
-const mockData = [
-  {
-    resource: 'sint et',
-    entitlement: 'non dolor velit enim sit',
-    accountIdentifier: 'id consectetur'
-  },
-  {
-    resource: 'ea esse ullamco mollit',
-    entitlement: 'in consequat reprehenderit aute',
-    accountIdentifier: 'quis officia eiusmod ex irure'
-  },
-  {
-    resource: 'magna deserunt est esse',
-    entitlement: 'ut',
-    accountIdentifier: 'veniam'
-  },
-  {
-    resource: 'Lorem',
-    entitlement: 'occaecat proident dolor',
-    accountIdentifier: 'laborum in magna'
-  },
-  {
-    resource: 'qui aliquip nulla',
-    entitlement: 'elit',
-    accountIdentifier: 'do dolor consequat laborum'
-  }
-]
+import React, { useState } from "react";
+import { FormattedMessage } from "react-intl";
+import { useRouter } from "next/router";
+import { useQuery } from "@apollo/client";
+import CardScreen from "@components/CardScreen";
+import User from "@icons/User";
+import DataGrid from "@components/DataGrid";
+import Filter from "@components/Filter";
+import { useStyles } from "./styles";
+import { withStyles } from "@material-ui/core/styles";
+import { EntitlementDirectory } from "@portal/Search/types";
+import { GET_USER_ENTITLEMENTS } from "@modules/User/queries";
 
 const columns = () => [
   {
-    field: 'resource',
-    headerName: <FormattedMessage id='resource' />,
-    sortable: false
+    field: "resource",
+    headerName: <FormattedMessage id="resource" />,
+    sortable: false,
+    renderCell: (row: EntitlementDirectory) => row.resource?.name || " - ",
   },
   {
-    field: 'entitlement',
-    headerName: <FormattedMessage id='entitlement' />,
-    sortable: false
+    field: "name",
+    headerName: <FormattedMessage id="entitlement" />,
+    sortable: false,
   },
   {
-    field: 'accountIdentifier',
-    headerName: <FormattedMessage id='accountIdentifier' />,
-    sortable: false
-  }
-]
+    field: "accountIdentifier",
+    headerName: <FormattedMessage id="accountIdentifier" />,
+    sortable: false,
+    renderCell: (row: EntitlementDirectory) => row.account?.accountIdentifier || " - ",
+  },
+];
 
 const filters = [
   {
-    name: 'entitlement',
-    label: <FormattedMessage id='entitlement' />,
-    type: 'string'
+    name: "entitlementName",
+    label: <FormattedMessage id="entitlement" />,
+    type: "text",
   },
   {
-    name: 'entitlement',
-    label: <FormattedMessage id='entitlement' />,
-    type: 'string'
+    name: "resourceName",
+    label: <FormattedMessage id="resource" />,
+    type: "text",
   },
   {
-    name: 'accountIdentifier',
-    label: <FormattedMessage id='accountIdentifier' />,
-    type: 'string'
-  }
-]
+    name: "accountIdentifier",
+    label: <FormattedMessage id="accountIdentifier" />,
+    type: "text",
+  },
+];
 
 const Entitlement = ({ classes }) => {
-  const router = useRouter()
-  const { loading, data: gridData } = useMockRequest(mockData, 500)
+
+  const router = useRouter();
+  const [queryFilters, setQueryFilters] = useState({
+    page: 0,
+    size: 100,      
+    filters: ""
+  });
 
   const search = (filters?: any) => {
-    console.log(filters)
-  }
+    setQueryFilters({
+      page: 0,
+      size: 100,
+      filters: JSON.stringify({        
+        ...filters
+      }),
+    });
+  };
 
   return (
     <CardScreen
-      loading={loading}
-      title='profile'
+      loading={false}
+      title="profile"
+      subTitle="entitlements"
       icon={<User height={24} width={24} />}
-      onBack={() => router.push('/profile')}
+      onBack={() => router.push("/profile")}
     >
-      <div className='Default-header-filter'>
+      <div className="Default-header-filter">
         <Filter
           filters={filters}
           onChange={(filters: any) => search(filters)}
-        />
-        <div className='Card-actions'>
-          <Button color='primary' variant='contained'>
-            <FormattedMessage id={`profile.accounts.entitlements`} />
-          </Button>
-        </div>
+        />        
       </div>
       <div>
         <DataGrid
-          height={600}
-          list={gridData}
-          links={[]}
+          query={GET_USER_ENTITLEMENTS}
+          queryFilters={queryFilters}
+          height={600}          
           columns={columns({ classes })}
           page={1}
-          size={25}
+          size={100}
           rowsPerPageList={[25, 50, 75, 100]}
           handleClick={() => {}}
+          type="pagination"
         />
       </div>
     </CardScreen>
-  )
-}
+  );
+};
 
-export default withStyles(useStyles)(Entitlement)
+export default withStyles(useStyles)(Entitlement);

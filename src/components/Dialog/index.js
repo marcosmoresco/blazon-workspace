@@ -73,10 +73,12 @@ const DialogContent = withStyles((theme) => ({
 const stylesActions = (theme) => ({
   root: {
     margin: 0,
+    height: 90,
     padding: theme.spacing(1),
+    background: "#E9E8EB",
+    boxShadow: "0px 4px 74px rgba(0, 0, 0, 0.25)",
     '& button': {
-      right: 10,
-      bottom: 10
+      right: 24      
     }
   }
 })
@@ -140,6 +142,7 @@ export default function CustomizedDialogs(props) {
           <DialogActions>
             <Button
               variant='contained'
+              color="primary"
               onClick={save}
               className='buttonSave'
               disabled={!isValid}

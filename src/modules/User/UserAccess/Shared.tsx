@@ -1,286 +1,387 @@
-import React, { useState } from 'react'
-import ShareIcon from '@icons/Share'
-import { FormattedMessage, useIntl } from 'react-intl'
-import { useRouter } from 'next/router'
-import Button from '@components/Button'
-import CardScreen from '@components/CardScreen'
-import User from '@icons/User'
-import Dialog from '@components/Dialog'
-import DataGrid from '@components/DataGrid'
-import useMockRequest from '@utils/mockRequest'
-import Filter from '@components/Filter'
-import { Form, Formik, useFormikContext } from 'formik'
-import useStyles from './styles'
-import { withStyles } from '@material-ui/core/styles'
-import Loading from '@components/Loading'
-import NotebookIcon from '@icons/Notebook'
-import Grid from '@material-ui/core/Grid'
-import TextField from '@components/TextField'
-import Divider from '@components/Divider'
-import MagnifyingGlassIcon from '@icons/MagnifyingGlass'
-import Checkbox from '@components/Checkbox'
-import { Beneficiary } from '@modules/Requests/components/constants'
-
-const mockData = [
-  {
-    resource: 'sint',
-    accountIdentifier: 'irure occaecat est dolore',
-    createdAt: 'dolore Ut sit',
-    status: 'cillum nostrud deserunt'
-  },
-  {
-    resource: 'Ut elit eu et',
-    accountIdentifier: 'sunt ipsum non',
-    createdAt: 'et do officia minim sint',
-    status: 'mollit in dolor commodo Excepteur'
-  },
-  {
-    resource: 'sunt aliqua in',
-    accountIdentifier: 'Excepteur sed',
-    createdAt: 'quis culpa velit et sint',
-    status: 'Duis est Ut ipsum elit'
-  },
-  {
-    resource: 'sint ut officia Ut',
-    accountIdentifier: 'tempor occaecat aliquip nulla nisi',
-    createdAt: 'aliquip in qui',
-    status: 'dolor magna'
-  },
-  {
-    resource: 'sunt veniam Ut velit esse',
-    accountIdentifier: 'anim',
-    createdAt: 'laborum Lorem dolore',
-    status: 'aliqua aliquip do laboris ut'
-  }
-]
+import React, { useState } from "react";
+import { useDispatch } from "react-redux";
+import ShareIcon from "@icons/Share";
+import { FormattedMessage, useIntl } from "react-intl";
+import { useRouter } from "next/router";
+import { useQuery, useMutation } from "@apollo/client";
+import Button from "@components/Button";
+import CardScreen from "@components/CardScreen";
+import UserIcon from "@icons/User";
+import Dialog from "@components/Dialog";
+import DataGrid from "@components/DataGrid";
+import Filter from "@components/Filter";
+import { Form, Formik, useFormikContext } from "formik";
+import {
+  useStyles,
+  BoxAction,
+  BoxAutocompleteOption,
+  AutocompleteUsers,
+  BoxUserThumb,
+  AutocompletePaper,
+} from "./styles";
+import { withStyles } from "@material-ui/core/styles";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import Loading from "@components/Loading";
+import NotebookIcon from "@icons/Notebook";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
+import Divider from "@components/Divider";
+import MagnifyingGlassIcon from "@icons/MagnifyingGlass";
+import UserThumb from "@components/UserThumb";
+import { confirm } from "@components/Dialog/actions";
+import { addMessage } from "@actions/index";
+import {
+  GET_USER_FULL_TEXT,
+  GET_USER_ACCOUNTS,
+  GET_USER_SHARED_ACCOUNT_MEMBERS,
+} from "@modules/User/queries";
+import {
+  SHARE_USER_SHARED_ACCOUNT,
+  UNSHARE_USER_SHARED_ACCOUNT,
+} from "@modules/User/mutations";
+import { User } from "@types";
+import { getLink } from "@utils/index";
 
 const filters = [
   {
-    name: 'resource',
-    label: <FormattedMessage id='resource' />,
-    type: 'string'
+    name: "resourceName",
+    label: <FormattedMessage id="resource" />,
+    type: "text",
   },
   {
-    name: 'accountIdentifier',
-    label: <FormattedMessage id='accountIdentifier' />,
-    type: 'string'
+    name: "accountIdentifier",
+    label: <FormattedMessage id="accountIdentifier" />,
+    type: "text",
   },
   {
-    name: 'createdAt',
-    label: <FormattedMessage id='createdAt' />,
-    type: 'date'
+    name: "status",
+    label: <FormattedMessage id="status" />,
+    type: "list",
+    values: [
+      {
+        label: <FormattedMessage id="active" />,
+        value: "ACTIVE",
+      },
+      {
+        label: <FormattedMessage id="revoked" />,
+        value: "REVOKED",
+      },
+    ],
+    bind: "value",
+    view: "label",
   },
   {
-    name: 'status',
-    label: <FormattedMessage id='status' />,
-    type: 'string'
-  }
-]
+    name: "createdAt",
+    label: <FormattedMessage id="createdAt" />,
+    type: "date",
+  },
+];
 
 const columns = ({ classes }) => [
   {
-    field: 'resource',
-    headerName: <FormattedMessage id='resource' />,
-    sortable: false
+    field: "resourceName",
+    headerName: <FormattedMessage id="resource" />,
+    sortable: false,
   },
   {
-    field: 'accountIdentifier',
-    headerName: <FormattedMessage id='accountIdentifier' />,
-    sortable: false
+    field: "accountIdentifier",
+    headerName: <FormattedMessage id="accountIdentifier" />,
+    sortable: false,
   },
   {
-    field: 'createdAt',
-    headerName: <FormattedMessage id='createdAt' />,
-    sortable: false
+    field: "createdAt",
+    headerName: <FormattedMessage id="createdAt" />,
+    sortable: false,
   },
   {
-    field: 'status',
-    headerName: <FormattedMessage id='status' />,
-    sortable: false
+    field: "status",
+    headerName: <FormattedMessage id="status" />,
+    sortable: false,
   },
   {
-    field: 'action',
-    headerName: <FormattedMessage id='actions' />,
+    field: "action",
+    headerName: <FormattedMessage id="actions" />,
     sortable: false,
     renderCell: () => {
       return (
         <div className={classes.actionIcon}>
           <ShareIcon height={28} width={28} />
         </div>
-      )
-    }
-  }
-]
+      );
+    },
+  },
+];
 
 const mockSharedDialog = [
   {
-    user: 'Eduardo Cesario dos Santos',
-    thumb: '/Avatar.svg',
+    user: "Eduardo Cesario dos Santos",
+    thumb: "/Avatar.svg",
     read: false,
     write: true,
-    share: false
+    share: false,
   },
   {
-    user: 'Eduardo Cesario dos Santos',
-    thumb: '/Avatar.svg',
+    user: "Eduardo Cesario dos Santos",
+    thumb: "/Avatar.svg",
     read: false,
     write: true,
-    share: false
+    share: false,
   },
   {
-    user: 'Eduardo Cesario dos Santos',
-    thumb: '/Avatar.svg',
+    user: "Eduardo Cesario dos Santos",
+    thumb: "/Avatar.svg",
     read: false,
     write: true,
-    share: false
-  }
-]
+    share: false,
+  },
+];
 
 const SharedDialogContent = ({ current, classes }) => {
-  const intl = useIntl()
-  const { resource, accountIdentifier, createdAt, status } = current
-  const form = useFormikContext()
+  const intl = useIntl();
+  const dispatch = useDispatch();
+  const { resourceName, accountIdentifier, identifier } = current;
+  const form = useFormikContext();
+  const [open, setOpen] = useState(false);
+
+  const { loading, error, data, refetch } = useQuery<{
+    getUserFullText: User[];
+  }>(GET_USER_FULL_TEXT, {
+    variables: {
+      q: "",
+      size: 10,
+    },
+  });
+
+  const users = data?.getUserFullText || [];
+
+  const [shareUserSharedAccount, {}] = useMutation(SHARE_USER_SHARED_ACCOUNT, {
+    refetchQueries: [
+      {
+        query: GET_USER_SHARED_ACCOUNT_MEMBERS,
+        variables: {
+          id: identifier,
+        },
+      },
+    ],
+    onCompleted: ({shareUserSharedAccount}) => {   
+      if(shareUserSharedAccount) {
+        dispatch(
+          addMessage(
+            <FormattedMessage id="shareddialog.share.success" />
+          )
+        );
+        setOpen(false);
+      }        
+    },
+  });
+
+  const [unshareUserSharedAccount, {}] = useMutation(UNSHARE_USER_SHARED_ACCOUNT, {
+    refetchQueries: [
+      {
+        query: GET_USER_SHARED_ACCOUNT_MEMBERS,
+        variables: {
+          id: identifier,
+        },
+      },
+    ],
+    onCompleted: ({unshareUserSharedAccount}) => {   
+      if(unshareUserSharedAccount) {
+        dispatch(
+          addMessage(
+            <FormattedMessage id="shareddialog.unshare.success" />
+          )
+        );
+        setOpen(false);
+      }        
+    },
+  });
+
+  const share = (e: any, option: any) => {    
+    e.stopPropagation();
+    shareUserSharedAccount({
+      variables: {
+        userId: Number(option.identifier),
+        accountId: Number(identifier)
+      },
+    })  
+  };
+
+  const unShare = async (e: any, option: any) => {    
+    e.stopPropagation();
+    const result = await confirm(
+      intl.formatMessage({
+        id: "shareddialog.grid.share",
+      }),
+      intl.formatMessage({
+        id: "shareddialog.unshare.warning",
+      })
+    );
+
+    if (result) { 
+      unshareUserSharedAccount({
+        variables: {
+          userId: Number(option.identifier),
+          accountId: Number(identifier)
+        },
+      })  
+    }   
+  };
 
   return (
     <Form>
       <Grid container className={classes.dialogIconDetail}>
-        <Grid item className='iconBg'>
-          <div className='iconCell'>
+        <Grid item className="iconBg">
+          <div className="iconCell">
             <NotebookIcon height={42} width={42} />
           </div>
         </Grid>
-        <Grid item className='detailContent'>
-          <div className='title'>{resource}</div>
-          <div className='description'>{accountIdentifier}</div>
+        <Grid item className="detailContent">
+          <div className="title">{resourceName}</div>
+          <div className="description">{accountIdentifier || " - "}</div>
         </Grid>
       </Grid>
       <Grid className={classes.searchSection}>
-        <div className='title'>
-          {intl.formatMessage({ id: 'shareddialog.information' })}
+        <div className="title">
+          {intl.formatMessage({ id: "shareddialog.information" })}
         </div>
-        <TextField
-          startAdornment={<MagnifyingGlassIcon />}
-          form={form}
-          name='shareddialog.searchField'
-          hideLabel={true}
+        <AutocompleteUsers
+          loading={loading}
+          open={open}
+          onOpen={() => {
+            setOpen(true);
+          }}
+          onClose={() => {
+            setOpen(false);
+          }}
+          PaperComponent={AutocompletePaper}
+          getOptionSelected={(option: any, value: any) =>
+            option.identifier === value.identifier
+          }
+          getOptionLabel={(option: any) => option.displayName}
+          options={users}
+          renderOption={(option: any) => (
+            <BoxAutocompleteOption>
+              <BoxUserThumb>
+                <UserThumb image={getLink("thumb", option?.links || [])} />
+                <div>{option?.displayName || " - "}</div>
+              </BoxUserThumb>
+              <div className={`${classes.actionIcon} Shared-action-icon`} onClick={(e: any) => share(e, option)}>
+                <ShareIcon height={28} width={28} />
+              </div>
+            </BoxAutocompleteOption>
+          )}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label=""
+              variant="outlined"
+              onChange={(event: any) => {
+                const value = event?.target?.value;
+                const variables = {
+                  size: 10,
+                  q: "",
+                };
+
+                if (value) {
+                  variables.q = value;
+                }
+
+                refetch(variables);
+              }}
+              InputProps={{
+                ...params.InputProps,
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <MagnifyingGlassIcon />
+                  </InputAdornment>
+                ),
+                endAdornment: (
+                  <React.Fragment>
+                    {loading ? (
+                      <CircularProgress color="inherit" size={20} />
+                    ) : null}
+                    {params.InputProps.endAdornment}
+                  </React.Fragment>
+                ),
+              }}
+            />
+          )}
         />
       </Grid>
       <Divider className={classes.divider} />
       <DataGrid
         links={[]}
         page={1}
-        size={25}
+        size={10000}
         rowsPerPageList={[25, 50, 75, 100]}
         list={form.values.shareddialog.permissions}
         columns={[
           {
-            field: 'user',
-            headerName: <FormattedMessage id='shareddialog.grid.user' />,
+            field: "user",
+            headerName: <FormattedMessage id="shareddialog.grid.user" />,
             sortable: false,
             renderCell: (row: any) => {
-              return row?.user ? (
-                <Beneficiary name={row?.user} image={row?.thumb} />
+              return row?.links ? (
+                <UserThumb
+                  isSmall
+                  displayName={row?.displayName}
+                  image={getLink("thumb", row?.links || [])}
+                />
               ) : (
-                ' - '
-              )
-            }
+                " - "
+              );
+            },
           },
           {
-            field: 'read',
-            headerName: <FormattedMessage id='shareddialog.grid.read' />,
+            field: "remove",
+            headerName: "",
             sortable: false,
             renderCell: (row: any) => {
               return (
-                <>
-                  <Checkbox
-                    value={form.values.shareddialog.permissions[row.index].read}
-                    onChange={(value) => {
-                      form.setFieldValue(
-                        `shareddialog.permissions[${row.index}].read`,
-                        value
-                      )
-                    }}
-                  />
-                </>
-              )
-            }
+                <BoxAction>
+                  <Button color="primary" variant="contained" onClick={(e: any) => unShare(e, row)}>
+                    <FormattedMessage id="remove" />
+                  </Button>
+                </BoxAction>
+              );
+            },
           },
-          {
-            field: 'write',
-            headerName: <FormattedMessage id='shareddialog.grid.write' />,
-            sortable: false,
-            renderCell: (row: any) => {
-              return (
-                <>
-                  <Checkbox
-                    value={
-                      form.values.shareddialog.permissions[row.index].write
-                    }
-                    onChange={(value) => {
-                      form.setFieldValue(
-                        `shareddialog.permissions[${row.index}].write`,
-                        value
-                      )
-                    }}
-                  />
-                </>
-              )
-            }
-          },
-          {
-            field: 'share',
-            headerName: <FormattedMessage id='shareddialog.grid.share' />,
-            sortable: false,
-            renderCell: (row: any) => {
-              return (
-                <>
-                  <Checkbox
-                    value={
-                      form.values.shareddialog.permissions[row.index].share
-                    }
-                    onChange={(value) => {
-                      form.setFieldValue(
-                        `shareddialog.permissions[${row.index}].share`,
-                        value
-                      )
-                    }}
-                  />
-                </>
-              )
-            }
-          }
         ]}
       />
     </Form>
-  )
-}
+  );
+};
 
 const ShareDialog = ({ modalOpen, setModalOpen, currentSelected, classes }) => {
-  const intl = useIntl()
-  const { loading, data: permissionsWithoutIndex } = useMockRequest(
-    mockSharedDialog,
-    500
-  )
-  const permissions = permissionsWithoutIndex?.map?.((a, index) => {
-    return { ...a, index }
-  })
+  const intl = useIntl();
 
-  if (loading) {
-    return <Loading type='blue' container={true} />
-  }
+  const { loading, error, data, refetch } = useQuery<{
+    getUserSharedAccountMembers: User[];
+  }>(GET_USER_SHARED_ACCOUNT_MEMBERS, {
+    variables: {
+      id: currentSelected?.identifier,
+    },
+  });
+
+  const permissionsWithoutIndex = data?.getUserSharedAccountMembers || [];
+
+  const permissions = permissionsWithoutIndex?.map?.((a, index) => {
+    return { ...a, index };
+  });
 
   const formik = {
     initialValues: {
       shareddialog: {
         current: currentSelected,
-        permissions
-      }
+        permissions,
+      },
     },
     onSubmit: (values: any) => {
-      alert(JSON.stringify(values, null, 2))
+      alert(JSON.stringify(values, null, 2));
     },
-    enableReinitialize: true
-  }
+    enableReinitialize: true,
+  };
 
   return (
     <Formik
@@ -288,47 +389,61 @@ const ShareDialog = ({ modalOpen, setModalOpen, currentSelected, classes }) => {
       render={(form) => (
         <Dialog
           open={modalOpen}
-          title={intl.formatMessage({ id: 'profile.accounts.shared' })}
+          title={intl.formatMessage({ id: "profile.accounts.shared" })}
+          saveLabel={intl.formatMessage({ id: "shareddialog.grid.share" })}
           onClose={() => setModalOpen(false)}
-          onSave={() => {
-            console.log(form.values)
-            setModalOpen(false)
-          }}
           isValid={true}
+          noActions
         >
           <SharedDialogContent current={currentSelected} classes={classes} />
         </Dialog>
       )}
     />
-  )
-}
+  );
+};
 
 const Shared = ({ classes }) => {
-  const intl = useIntl()
-  const router = useRouter()
-  const screen = {}
-  const [modalOpen, setModalOpen] = useState<boolean>(false)
-  const [currentSelected, setCurrentSelected] = useState<any>(undefined)
-  const { loading, data: gridData } = useMockRequest(mockData, 500)
+  const intl = useIntl();
+  const router = useRouter();
+  const screen = {};
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [currentSelected, setCurrentSelected] = useState<any>(undefined);
+
+  const [queryFilters, setQueryFilters] = useState({
+    page: 0,
+    size: 100,
+    filters: JSON.stringify({
+      resourceType: "SHARED",
+    }),
+  });
+
   const search = (filters?: any) => {
-    console.log(filters)
-  }
+    setQueryFilters({
+      page: 0,
+      size: 100,
+      filters: JSON.stringify({
+        resourceType: "SHARED",
+        ...filters,
+      }),
+    });
+  };
 
   const handleClickRow = (row: any) => {
-    setModalOpen(true)
-    setCurrentSelected(row)
-  }
+    setModalOpen(true);
+    setCurrentSelected(row);
+  };
 
   const onSave = () => {
-    setModalOpen(false)
-  }
+    setModalOpen(false);
+  };
 
   return (
     <CardScreen
-      loading={loading}
-      title='profile'
-      icon={<User height={24} width={24} />}
-      onBack={() => router.push('/profile')}
+      loading={false}
+      title="profile"
+      subTitle="profile.accounts.shared"
+      icon={<UserIcon height={24} width={24} />}
+      onBack={() => router.push("/profile")}
     >
       <ShareDialog
         modalOpen={modalOpen}
@@ -336,33 +451,28 @@ const Shared = ({ classes }) => {
         currentSelected={currentSelected}
         classes={classes}
       />
-      <div className='Default-header-filter'>
+      <div className="Default-header-filter">
         <Filter
           filters={filters}
           onChange={(filters: any) => search(filters)}
         />
-        <div className='Card-actions'>
-          <Button color='primary' variant='contained'>
-            <FormattedMessage id={`profile.accounts.shared`} />
-          </Button>
-        </div>
       </div>
       <div>
         <DataGrid
+          query={GET_USER_ACCOUNTS}
+          queryFilters={queryFilters}
+          getResponseLinks={(data: any) => data?.getUserAccounts?.links}
+          getResponse={(data: any) => data?.getUserAccounts?.accounts}
           height={600}
-          list={gridData}
-          links={[]}
-          // fetching={isFetching}
           columns={columns({ classes })}
           page={1}
-          size={25}
-          rowsPerPageList={[25, 50, 75, 100]}
+          size={100}
           handleClick={handleClickRow}
-          // handleSelected={handleSelected}
+          type="pagination"
         />
       </div>
     </CardScreen>
-  )
-}
+  );
+};
 
-export default withStyles(useStyles)(Shared)
+export default withStyles(useStyles)(Shared);
