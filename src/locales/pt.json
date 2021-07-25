@@ -1,6 +1,12 @@
 {
+  "dates.today": "Hoje",
+  "dates.tomorrow": "Amanhã",
+  "success.message": "Sucesso.",
+  "error.message": "Ops, algo deu errado.",
   "actions": "Ações",
   "app.save": "Salvar",
+  "app.share": "Compartilhar",
+  "app.cancel": "Cancelar",
   "search": "Busca",
   "profile": "Perfil",
   "suport.blazon": "Suporte Blazon",

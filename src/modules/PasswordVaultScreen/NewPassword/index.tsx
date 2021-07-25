@@ -1,11 +1,17 @@
+import Dialog from '@components/Dialog'
+import Divider from '@components/Divider'
 import PasswordField from '@components/PasswordField'
 import TextField from '@components/TextField'
 import { Form, Formik } from 'formik'
 import React, { FC } from 'react'
-import { injectIntl, useIntl } from 'react-intl'
+import { useIntl } from 'react-intl'
 import * as Yup from 'yup'
 
-type NewPasswordProps = {}
+type NewPasswordProps = {
+  open: boolean
+  onClose(): void
+  onSave(sucess: boolean): void
+}
 
 const initialValues = {
   changePassword: {
@@ -37,7 +43,7 @@ const validationSchema = Yup.object({
   }).required('Required')
 })
 
-const NewPassword: FC<NewPasswordProps> = () => {
+const NewPassword: FC<NewPasswordProps> = ({ open, onClose, onSave }) => {
   const intl = useIntl()
 
   const formik = {
@@ -52,16 +58,64 @@ const NewPassword: FC<NewPasswordProps> = () => {
     <Formik
       {...formik}
       render={(form) => (
-        <Form>
-          <TextField form={form} name='changePasswordForm.name' />
-          <TextField form={form} name='changePasswordForm.description' />
-          <TextField form={form} name='changePasswordForm.uri' />
-          <TextField form={form} name='changePasswordForm.user' />
-          <PasswordField form={form} name='changePasswordForm.password' />
-        </Form>
+        <Dialog
+          cancelButton={true}
+          open={open}
+          title={intl.formatMessage({
+            id: 'changepasswordform.dialog.title'
+          })}
+          isValid={true}
+          onSave={() => {
+            onClose()
+            onSave?.(true)
+          }}
+          onClose={onClose}
+        >
+          <Form className='modal'>
+            <div>
+              <div className='modal-section'>
+                {intl.formatMessage({
+                  id: 'passwordVault.newpassword.info.title'
+                })}
+              </div>
+              <div className='modal-description'>
+                {intl.formatMessage({
+                  id: 'passwordVault.newpassword.info.description'
+                })}
+              </div>
+              <div className='pt32'></div>
+            </div>
+
+            <TextField form={form} name='changePasswordForm.name' />
+            <div className='pt18'></div>
+            <TextField form={form} name='changePasswordForm.description' />
+            <div className='pt18'></div>
+            <TextField form={form} name='changePasswordForm.uri' />
+            <div className='pb32 pt32'>
+              <Divider />
+            </div>
+
+            <div>
+              <div className='modal-section'>
+                {intl.formatMessage({
+                  id: 'passwordVault.newpassword.access.title'
+                })}
+              </div>
+              <div className='modal-description'>
+                {intl.formatMessage({
+                  id: 'passwordVault.newpassword.access.description'
+                })}
+              </div>
+              <div className='pt32'></div>
+            </div>
+            <TextField form={form} name='changePasswordForm.user' />
+            <div className='pt18'></div>
+            <PasswordField form={form} name='changePasswordForm.password' />
+          </Form>
+        </Dialog>
       )}
     />
   )
 }
 
-export default injectIntl(NewPassword)
+export default NewPassword

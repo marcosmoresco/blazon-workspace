@@ -1,24 +1,24 @@
-import React, { FC, useState } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { injectIntl } from "react-intl";
-import { useRouter } from "next/router";
-import Image from "next/image";
-import Button from "@components/Button";
-import CaretRightIcon from "@icons/CaretRight";
-import KeyIcon from "@icons/Key";
-import ShareIcon from "@icons/Share";
-import Grid from "@material-ui/core/Grid";
-import PasswordVault from "@modules/PasswordVault/components";
-import Progress from "@components/Progress";
-import Tooltip from "@components/Tooltip";
-import HeaderImg from "./images/header.svg";
-import EmptyState from "./components/EmptyState";
-import { gql, useQuery } from "@apollo/client";
-import { RESUME } from "./queries";
-import { GET_ENTRIES } from "@modules/PasswordVault/queries";
-import { GET_REQUESTS } from "@modules/Requests/queries";
-import { Request } from "@modules/Requests/types";
-import type { HomeProps } from "./types";
+import React, { FC, useState } from 'react'
+import { withStyles } from '@material-ui/core/styles'
+import { injectIntl } from 'react-intl'
+import { useRouter } from 'next/router'
+import Image from 'next/image'
+import Button from '@components/Button'
+import CaretRightIcon from '@icons/CaretRight'
+import KeyIcon from '@icons/Key'
+import ShareIcon from '@icons/Share'
+import Grid from '@material-ui/core/Grid'
+import PasswordVault from '@modules/PasswordVaultItem/components'
+import Progress from '@components/Progress'
+import Tooltip from '@components/Tooltip'
+import HeaderImg from './images/header.svg'
+import EmptyState from './components/EmptyState'
+import { gql, useQuery } from '@apollo/client'
+import { RESUME } from './queries'
+import { GET_ENTRIES } from '@modules/PasswordVaultItem/queries'
+import { GET_REQUESTS } from '@modules/Requests/queries'
+import { Request } from '@modules/Requests/types'
+import type { HomeProps } from './types'
 import {
   useStyles,
   BoxCard,
@@ -28,33 +28,33 @@ import {
   BoxRequestHeaderDate,
   BoxRequestHeaderTitle,
   BoxRequestHeaderType,
-  BoxRequestDescription,
-} from "./styles";
+  BoxRequestDescription
+} from './styles'
 
 const Home: FC<HomeProps> = ({ classes, intl }) => {
-  const router = useRouter();
-  const [open, setOpen] = useState(false);
-  const [passwordVault, setPasswordVault] = useState({});
+  const router = useRouter()
+  const [open, setOpen] = useState(false)
+  const [passwordVault, setPasswordVault] = useState({})
 
-  const { data: dataResume } = useQuery(RESUME);
+  const { data: dataResume } = useQuery(RESUME)
   const {
     loading: loadingEntries,
     error: errorEntries,
-    data: dataEntries,
-  } = useQuery(GET_ENTRIES);
+    data: dataEntries
+  } = useQuery(GET_ENTRIES)
 
   const {
     loading: loadingRequests,
     error: errorRequests,
-    data: dataRequests,
+    data: dataRequests
   } = useQuery<{
-    getRequests: { requests: Request[]; links: [] };
+    getRequests: { requests: Request[]; links: [] }
   }>(GET_REQUESTS, {
     variables: {
       page: 0,
-      size: 4,
-    },
-  });
+      size: 4
+    }
+  })
 
   return (
     <div className={classes.root}>
@@ -63,10 +63,10 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
           <div className={classes.headerWelcomeText}>
             {intl.formatMessage(
               {
-                id: "home.welcome",
+                id: 'home.welcome'
               },
               {
-                user: "Mateus",
+                user: 'Mateus'
               }
             )}
           </div>
@@ -74,21 +74,21 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
             {intl.formatMessage({
               id:
                 dataResume?.getResume?.totalOpenTasks > 0
-                  ? "home.welcome.text.new"
-                  : "home.welcome.text",
+                  ? 'home.welcome.text.new'
+                  : 'home.welcome.text'
             })}
           </div>
           <Button
-            variant="contained"
-            color="primary"
-            onClick={() => router.push("/tasks")}
+            variant='contained'
+            color='primary'
+            onClick={() => router.push('/tasks')}
           >
             {intl.formatMessage({
-              id: "home.welcome.open.tasks",
+              id: 'home.welcome.open.tasks'
             })}
           </Button>
           <div className={classes.headerWelcomeImg}>
-            <Image src={HeaderImg} alt="Header image" />
+            <Image src={HeaderImg} alt='Header image' />
           </div>
         </div>
       </div>
@@ -98,12 +98,15 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
             <div className={classes.defaultTitleContent}>
               <div className={classes.defaultTitle}>
                 {intl.formatMessage({
-                  id: "home.recent.passwords",
+                  id: 'home.recent.passwords'
                 })}
               </div>
-              <div className={classes.showAll}>
+              <div
+                className={classes.showAll}
+                onClick={() => router.push('/password-vault')}
+              >
                 {intl.formatMessage({
-                  id: "home.recent.passwords.see.all",
+                  id: 'home.recent.passwords.see.all'
                 })}
                 <CaretRightIcon width={20} height={20} />
               </div>
@@ -121,8 +124,8 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                             xs={6}
                             key={`recenter-password-${r.identifier}`}
                             onClick={() => {
-                              setOpen(true);
-                              setPasswordVault(r);
+                              setOpen(true)
+                              setPasswordVault(r)
                             }}
                           >
                             <div className={classes.recentPasswordCard}>
@@ -142,7 +145,7 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                                     <KeyIcon
                                       width={30}
                                       height={30}
-                                      color="#3174F6"
+                                      color='#3174F6'
                                     />
                                   </div>
                                   <div>
@@ -176,8 +179,8 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                     </Grid>
                   )) || (
                   <EmptyState
-                    title="passwordVault.no.password"
-                    text="passwordVault.no.password.text"
+                    title='passwordVault.no.password'
+                    text='passwordVault.no.password.text'
                   />
                 ))) || <Progress />}
             </div>
@@ -188,68 +191,91 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
             <div className={classes.defaultTitleContent}>
               <div className={classes.defaultTitle}>
                 {intl.formatMessage({
-                  id: "home.accounts",
+                  id: 'home.accounts'
                 })}
               </div>
-              <div className={classes.showAll} onClick={() => router.push("/profile")}>
+              <div
+                className={classes.showAll}
+                onClick={() => router.push('/profile')}
+              >
                 {intl.formatMessage({
-                  id: "home.accounts.see.all",
-                })}              
+                  id: 'home.accounts.see.all'
+                })}
                 <CaretRightIcon width={21} height={21} />
               </div>
             </div>
             <div className={classes.accounts}>
-              <div className={classes.accountsContent} onClick={() => router.push("/profile/access/shared")}>
+              <div
+                className={classes.accountsContent}
+                onClick={() => router.push('/profile/access/shared')}
+              >
                 <div className={classes.accountsContentInfo}>
-                  <div className={`${classes.accountsContentInfoIcon} contentInfoIcon`}>
-                    <ShareIcon width={21} height={21} color="#FFFFFF" />
+                  <div
+                    className={`${classes.accountsContentInfoIcon} contentInfoIcon`}
+                  >
+                    <ShareIcon width={21} height={21} color='#FFFFFF' />
                   </div>
                   {intl.formatMessage({
-                    id: "account.shared",
+                    id: 'account.shared'
                   })}
                 </div>
-                <div className="caretRight-icon">
+                <div className='caretRight-icon'>
                   <CaretRightIcon width={21} height={21} />
-                </div>                
+                </div>
               </div>
-              <div className={classes.accountsContent} onClick={() => router.push("/profile/access/application")}>
+              <div
+                className={classes.accountsContent}
+                onClick={() => router.push('/profile/access/application')}
+              >
                 <div className={classes.accountsContentInfo}>
-                  <div className={`${classes.accountsContentInfoIcon} contentInfoIcon`}>
-                    <ShareIcon width={21} height={21} color="#FFFFFF" />
+                  <div
+                    className={`${classes.accountsContentInfoIcon} contentInfoIcon`}
+                  >
+                    <ShareIcon width={21} height={21} color='#FFFFFF' />
                   </div>
                   {intl.formatMessage({
-                    id: "account.application",
+                    id: 'account.application'
                   })}
                 </div>
-                <div className="caretRight-icon">
+                <div className='caretRight-icon'>
                   <CaretRightIcon width={21} height={21} />
-                </div>                
+                </div>
               </div>
-              <div className={classes.accountsContent} onClick={() => router.push("/profile/access/regular")}>
+              <div
+                className={classes.accountsContent}
+                onClick={() => router.push('/profile/access/regular')}
+              >
                 <div className={classes.accountsContentInfo}>
-                  <div className={`${classes.accountsContentInfoIcon} contentInfoIcon`}>
-                    <ShareIcon width={21} height={21} color="#FFFFFF" />
+                  <div
+                    className={`${classes.accountsContentInfoIcon} contentInfoIcon`}
+                  >
+                    <ShareIcon width={21} height={21} color='#FFFFFF' />
                   </div>
                   {intl.formatMessage({
-                    id: "account.regular",
+                    id: 'account.regular'
                   })}
                 </div>
-                <div className="caretRight-icon">
+                <div className='caretRight-icon'>
                   <CaretRightIcon width={21} height={21} />
-                </div>                
+                </div>
               </div>
-              <div className={classes.accountsContent} onClick={() => router.push("/profile/access/adminstrative")}>
+              <div
+                className={classes.accountsContent}
+                onClick={() => router.push('/profile/access/adminstrative')}
+              >
                 <div className={classes.accountsContentInfo}>
-                  <div className={`${classes.accountsContentInfoIcon} contentInfoIcon`}>
-                    <ShareIcon width={21} height={21} color="#FFFFFF" />
+                  <div
+                    className={`${classes.accountsContentInfoIcon} contentInfoIcon`}
+                  >
+                    <ShareIcon width={21} height={21} color='#FFFFFF' />
                   </div>
                   {intl.formatMessage({
-                    id: "account.administrative",
+                    id: 'account.administrative'
                   })}
                 </div>
-                <div className="caretRight-icon">
+                <div className='caretRight-icon'>
                   <CaretRightIcon width={21} height={21} />
-                </div>                
+                </div>
               </div>
             </div>
           </div>
@@ -259,15 +285,15 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
             <div className={classes.defaultTitleContent}>
               <div className={classes.defaultTitle}>
                 {intl.formatMessage({
-                  id: "home.requests.in.progress",
+                  id: 'home.requests.in.progress'
                 })}
               </div>
               <div
                 className={classes.showAll}
-                onClick={() => router.push("/requests")}
+                onClick={() => router.push('/requests')}
               >
                 {intl.formatMessage({
-                  id: "home.recent.passwords.see.all",
+                  id: 'home.recent.passwords.see.all'
                 })}
                 <CaretRightIcon width={20} height={20} />
               </div>
@@ -280,19 +306,21 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                       <Grid container spacing={3}>
                         {(dataRequests?.getRequests?.requests || []).map(
                           (request: Request, index: number) => {
-
-                            const itemName = request?.entitlement?.name ||
-                            request?.resource?.name ||
-                            request?.role?.name ||
-                            request?.user?.displayName ||
-                            request?.beneficiary?.displayName ||
-                            " - ";
+                            const itemName =
+                              request?.entitlement?.name ||
+                              request?.resource?.name ||
+                              request?.role?.name ||
+                              request?.user?.displayName ||
+                              request?.beneficiary?.displayName ||
+                              ' - '
 
                             return (
                               <Grid item xs={6} key={`home-request=${index}`}>
                                 <BoxCard
                                   onClick={() =>
-                                    router.push(`/requests/${request.identifier}`)
+                                    router.push(
+                                      `/requests/${request.identifier}`
+                                    )
                                   }
                                 >
                                   <BoxRequestHeader>
@@ -304,31 +332,37 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                                     </BoxRequestHeaderDate>
                                   </BoxRequestHeader>
                                   <BoxRequestHeader>
-                                    <Tooltip title={itemName} placement="bottom">
+                                    <Tooltip
+                                      title={itemName}
+                                      placement='bottom'
+                                    >
                                       <BoxRequestHeaderTitle>
                                         {itemName}
                                       </BoxRequestHeaderTitle>
-                                    </Tooltip>                                    
+                                    </Tooltip>
                                     <BoxRequestHeaderType>
-                                      {request?.type || " - "}
+                                      {request?.type || ' - '}
                                     </BoxRequestHeaderType>
                                   </BoxRequestHeader>
-                                  <Tooltip title={request?.justification} placement="bottom">
+                                  <Tooltip
+                                    title={request?.justification}
+                                    placement='bottom'
+                                  >
                                     <BoxRequestDescription>
                                       {request?.justification}
                                     </BoxRequestDescription>
-                                  </Tooltip>                                  
+                                  </Tooltip>
                                 </BoxCard>
                               </Grid>
-                          )
-                        }
+                            )
+                          }
                         )}
                       </Grid>
                     </>
                   )) || (
                   <EmptyState
-                    title="home.no.request"
-                    text="home.no.request.text"
+                    title='home.no.request'
+                    text='home.no.request.text'
                   />
                 ))) || <Progress />}
             </BoxRequest>
@@ -341,7 +375,7 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
         passwordVault={passwordVault}
       />
     </div>
-  );
-};
+  )
+}
 
-export default withStyles(useStyles)(injectIntl(Home));
+export default withStyles(useStyles)(injectIntl(Home))

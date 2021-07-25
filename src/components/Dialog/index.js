@@ -74,12 +74,11 @@ const stylesActions = (theme) => ({
   root: {
     margin: 0,
     height: 90,
-    padding: theme.spacing(1),
-    background: "#E9E8EB",
-    boxShadow: "0px 4px 74px rgba(0, 0, 0, 0.25)",
-    '& button': {
-      right: 24      
-    }
+    paddingRight: 40,
+    background: '#E9E8EB',
+    boxShadow: '0px 4px 74px rgba(0, 0, 0, 0.25)',
+    paddingLeft: 40,
+    paddingRight: 40
   }
 })
 
@@ -106,6 +105,8 @@ export default function CustomizedDialogs(props) {
     maxWidth,
     isLoading,
     fullWidth,
+    cancelButton,
+    hideTitle,
     ...other
   } = props
 
@@ -127,22 +128,35 @@ export default function CustomizedDialogs(props) {
         maxWidth={(maxWidth && maxWidth) || 'md'}
         fullWidth={fullWidth}
       >
-        <DialogTitle id='customized-dialog-title' onClose={handleClose}>
-          {header ? (
-            header
-          ) : (
-            <React.Fragment>
-              <div className='title'>{title}</div>
-              <div className='subTitle'>{subTitle}</div>
-            </React.Fragment>
-          )}
-        </DialogTitle>
+        {!hideTitle && (
+          <DialogTitle id='customized-dialog-title' onClose={handleClose}>
+            {header ? (
+              header
+            ) : (
+              <React.Fragment>
+                <div className='title'>{title}</div>
+                <div className='subTitle'>{subTitle}</div>
+              </React.Fragment>
+            )}
+          </DialogTitle>
+        )}
         <DialogContent dividers>{props.children}</DialogContent>
         {!noActions ? (
           <DialogActions>
+            {cancelButton && (
+              <Button
+                variant='contained'
+                onClick={onClose}
+                className='buttonCancel'
+                isLoading={isLoading ? 1 : 0}
+              >
+                <FormattedMessage id='app.cancel' />
+              </Button>
+            )}
+            <div style={{ flex: '1 0 0' }} />
             <Button
               variant='contained'
-              color="primary"
+              color='primary'
               onClick={save}
               className='buttonSave'
               disabled={!isValid}
@@ -158,5 +172,7 @@ export default function CustomizedDialogs(props) {
 }
 
 CustomizedDialogs.defaultProps = {
-  fullWidth: true
+  fullWidth: true,
+  cancelButton: false,
+  hideTitle: false
 }

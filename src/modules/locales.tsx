@@ -9,8 +9,8 @@ import TasksDetailsPt from './TasksDetails/locales/pt.json'
 import TasksDetailsEn from './TasksDetails/locales/en.json'
 
 //PasswordVault
-import PasswordVaultPt from './PasswordVault/locales/pt.json'
-import PasswordVaultEn from './PasswordVault/locales/en.json'
+import PasswordVaultPt from './PasswordVaultItem/locales/pt.json'
+import PasswordVaultEn from './PasswordVaultItem/locales/en.json'
 
 //Requests
 import RequestsPt from './Requests/locales/pt.json'
@@ -25,20 +25,20 @@ import UserPt from './User/locales/pt.json'
 import UserEn from './User/locales/en.json'
 
 //Checkout
-import CheckoutPt from "./Checkout/Locales/pt.json";
-import CheckoutEn from "./Checkout/Locales/en.json";
+import CheckoutPt from './Checkout/Locales/pt.json'
+import CheckoutEn from './Checkout/Locales/en.json'
 
 //CheckoutEmpty
-import CheckoutEmptyPt from "./CheckoutEmpty/Locales/pt.json";
-import CheckoutEmptyEn from "./CheckoutEmpty/Locales/en.json";
+import CheckoutEmptyPt from './CheckoutEmpty/Locales/pt.json'
+import CheckoutEmptyEn from './CheckoutEmpty/Locales/en.json'
 
 //CheckoutFinishing
-import CheckoutFinishingPt from "./CheckoutFinishing/Locales/pt.json";
-import CheckoutFinishingEn from "./CheckoutFinishing/Locales/en.json";
+import CheckoutFinishingPt from './CheckoutFinishing/Locales/pt.json'
+import CheckoutFinishingEn from './CheckoutFinishing/Locales/en.json'
 
 //CheckoutRequested
-import CheckoutRequestedPt from "./CheckoutRequested/Locales/pt.json";
-import CheckoutRequestedEn from "./CheckoutRequested/Locales/en.json";
+import CheckoutRequestedPt from './CheckoutRequested/Locales/pt.json'
+import CheckoutRequestedEn from './CheckoutRequested/Locales/en.json'
 
 export const ModulesLocalesPt: LocalesType = {
   ...TaskPt,
@@ -50,7 +50,7 @@ export const ModulesLocalesPt: LocalesType = {
   ...CheckoutPt,
   ...CheckoutEmptyPt,
   ...CheckoutFinishingPt,
-  ...CheckoutRequestedPt,
+  ...CheckoutRequestedPt
 }
 
 export const ModulesLocalesEn: LocalesType = {
@@ -63,7 +63,7 @@ export const ModulesLocalesEn: LocalesType = {
   ...CheckoutEn,
   ...CheckoutEmptyEn,
   ...CheckoutFinishingEn,
-  ...CheckoutRequestedEn,
+  ...CheckoutRequestedEn
 }
 
 const Locales = {

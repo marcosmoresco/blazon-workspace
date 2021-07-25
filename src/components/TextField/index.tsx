@@ -4,21 +4,27 @@ import { useIntl } from 'react-intl'
 import {
   FormControl,
   FormHelperText,
-  Input,
   InputProps,
-  TextField as MuiTextField
+  TextField as MuiTextField,
+  withStyles
 } from '@material-ui/core'
-import { FormikProps } from 'formik'
+import { FormikProps, useFormikContext } from 'formik'
 import { Label } from './styles'
 import { get } from 'lodash'
 
 export interface TextFieldProps extends InputProps {
   name: string
   label?: string
-  form: FormikProps<any>
+  form?: FormikProps<any>
   classes?: any
   hideLabel?: boolean
 }
+
+export const WhiteMuiTextField = withStyles(() => ({
+  root: {
+    backgroundColor: '#FFFFFF'
+  }
+}))(MuiTextField)
 
 const TextField: FC<TextFieldProps> = ({
   label,
@@ -29,7 +35,9 @@ const TextField: FC<TextFieldProps> = ({
   ...inputProps
 }) => {
   const intl = useIntl()
-  const { setFieldValue, values, errors } = form
+  const formHook = useFormikContext()
+  const finalForm = form || formHook
+  const { setFieldValue, values, errors, touched } = finalForm
   const { name, fullWidth } = inputProps
 
   const labelText = hideLabel
@@ -55,7 +63,7 @@ const TextField: FC<TextFieldProps> = ({
       <Label htmlFor={name} hidden={hideLabel}>
         {labelText}
       </Label>
-      <MuiTextField
+      <WhiteMuiTextField
         value={get(values, name)}
         onChange={({ target }: ChangeEvent<HTMLInputElement>) => {
           setFieldValue(name, target.value)
