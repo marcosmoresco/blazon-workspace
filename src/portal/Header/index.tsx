@@ -1,113 +1,120 @@
-import React, { FC, useState } from "react";
-import { withStyles } from "@material-ui/core/styles";
-import { injectIntl } from "react-intl";
-import { useRouter } from "next/router";
+import React, { FC, useState } from 'react'
+import { withStyles } from '@material-ui/core/styles'
+import { injectIntl } from 'react-intl'
+import { useRouter } from 'next/router'
 
-import Image from "next/image";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Divider from "@material-ui/core/Divider";
-import MenuList from "@material-ui/core/MenuList";
-import MenuItem from "@material-ui/core/MenuItem";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
-import Grow from "@material-ui/core/Grow";
-import Paper from "@material-ui/core/Paper";
-import Popper from "@material-ui/core/Popper";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@material-ui/core/Button";
-import Switch from "@material-ui/core/Switch";
-import Logo from "../../logo.svg";
+import Image from 'next/image'
+import AppBar from '@material-ui/core/AppBar'
+import Toolbar from '@material-ui/core/Toolbar'
+import Divider from '@material-ui/core/Divider'
+import MenuList from '@material-ui/core/MenuList'
+import MenuItem from '@material-ui/core/MenuItem'
+import ClickAwayListener from '@material-ui/core/ClickAwayListener'
+import Grow from '@material-ui/core/Grow'
+import Paper from '@material-ui/core/Paper'
+import Popper from '@material-ui/core/Popper'
+import Avatar from '@material-ui/core/Avatar'
+import Button from '@material-ui/core/Button'
+import Switch from '@material-ui/core/Switch'
+import Logo from '../../logo.svg'
 
-import PaperPlaneTiltIcon from "@icons/PaperPlaneTilt";
-import KeyIcon from "@icons/Key";
-import NoteBlankIcon from "@icons/NoteBlank";
-import BellSimpleIcon from "@icons/BellSimple";
-import CaretDownIcon from "@icons/CaretDown";
-import CaretRightIcon from "@icons/CaretRight";
-import UserIcon from "@icons/User";
-import InfoIcon from "@icons/Info";
-import SignOutIcon from "@icons/SignOut";
-import Message from "@portal/Message/index";
-import Cart from "@portal/Cart/index";
-import Tooltip from "@components/Tooltip";
+import PaperPlaneTiltIcon from '@icons/PaperPlaneTilt'
+import KeyIcon from '@icons/Key'
+import NoteBlankIcon from '@icons/NoteBlank'
+import CaretDownIcon from '@icons/CaretDown'
+import CaretRightIcon from '@icons/CaretRight'
+import UserIcon from '@icons/User'
+import InfoIcon from '@icons/Info'
+import SignOutIcon from '@icons/SignOut'
+import Message from '@portal/Message/index'
+import Cart from '@portal/Cart/index'
+import Tooltip from '@components/Tooltip'
 
-import { useUser } from "@hooks";
-import { useTheme, themes } from "../../theme";
-import type { HeaderProps } from "./types";
-import HeaderAutocomplete from "./components/HeaderAutocomplete";
-import HeaderRequestCart from "./components/HeaderRequestCart";
-import {
-  useStyles,
-  HeaderProfileBox, 
-  HeaderProfileBoxInfo
-} from "./styles";
+import { useUser } from '@hooks'
+import { useTheme, themes } from '../../theme'
+import type { HeaderProps } from './types'
+import HeaderAutocomplete from './components/HeaderAutocomplete'
+import HeaderRequestCart from './components/HeaderRequestCart'
+import HeaderNotifications from './components/HeaderNotifications'
+import { useStyles, HeaderProfileBox, HeaderProfileBoxInfo } from './styles'
 
 const Header: FC<HeaderProps> = ({ classes, intl }) => {
-   
-  const router = useRouter();
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [openProfile, setOpenProfile] = useState(false);
-  const [darkMode, setDarkMode] = useState(false);
+  const router = useRouter()
+  const [anchorEl, setAnchorEl] = useState(null)
+  const [openProfile, setOpenProfile] = useState(false)
+  const [darkMode, setDarkMode] = useState(false)
 
-  const [user, thumb] = useUser();
-  const { theme, setTheme } = useTheme();
-  const currentTheme = themes[theme];
-  if (typeof window !== "undefined") {
-    const body = window.document.querySelector("body");
+  const [user, thumb] = useUser()
+  const { theme, setTheme } = useTheme()
+  const currentTheme = themes[theme]
+  if (typeof window !== 'undefined') {
+    const body = window.document.querySelector('body')
     if (body) {
-      body.style.backgroundColor = currentTheme.palette.background.default;
+      body.style.backgroundColor = currentTheme.palette.background.default
     }
   }
 
   const handleClick = (event: any) => {
-    setAnchorEl(event.currentTarget);
-    setOpenProfile(!openProfile);
-  };
+    setAnchorEl(event.currentTarget)
+    setOpenProfile(!openProfile)
+  }
 
   const handleClose = () => {
-    setAnchorEl(null);
-    setOpenProfile(false);
-  };
+    setAnchorEl(null)
+    setOpenProfile(false)
+  }
 
   const changeTheme = (event: any) => {
-    setDarkMode(event.target.checked);
-    setTheme((event.target.checked && "dark") || "light");
-  };
+    setDarkMode(event.target.checked)
+    setTheme((event.target.checked && 'dark') || 'light')
+  }
 
   return (
     <div>
       <Cart />
       <Message />
-      <AppBar position="static" className={classes.root}>
+      <AppBar position='static' className={classes.root}>
         <Toolbar className={classes.toolBar}>
           <div className={classes.logoSearchInput}>
-            <div className="pointer" onClick={() => router.push("/")}>
-              <Image src={Logo} alt="Logo" />
+            <div className='pointer' onClick={() => router.push('/')}>
+              <Image src={Logo} alt='Logo' />
             </div>
-            {router.pathname !== "/search" && <HeaderAutocomplete classes={classes}/>}
+            {router.pathname !== '/search' && (
+              <HeaderAutocomplete classes={classes} />
+            )}
           </div>
           <div className={classes.menuOptionsContent}>
             <div className={classes.menuOptions}>
-              <Tooltip title={intl.formatMessage({id: "requests"})} placement="bottom">
+              <Tooltip
+                title={intl.formatMessage({ id: 'requests' })}
+                placement='bottom'
+              >
                 <div
                   className={`${classes.optionImage} ${
-                    router.pathname === "/requests" && "Active"
+                    router.pathname === '/requests' && 'Active'
                   }`}
-                  onClick={() => router.push("/requests")}
+                  onClick={() => router.push('/requests')}
                 >
                   <PaperPlaneTiltIcon
                     width={21}
                     height={21}
                     color={
-                      (router.pathname === "/requests" && "#0E46D7") ||
+                      (router.pathname === '/requests' && '#0E46D7') ||
                       currentTheme.overrides.MuiIcon.root.color
                     }
                   />
                 </div>
               </Tooltip>
-              <Tooltip title={intl.formatMessage({id: "passwordVault"})} placement="bottom">
-                <div className={classes.optionImage}>
-
+              <Tooltip
+                title={intl.formatMessage({ id: 'passwordVault' })}
+                placement='bottom'
+              >
+                <div
+                  className={`${classes.optionImage} ${
+                    router.pathname === '/password-vault' && 'Active'
+                  }`}
+                  onClick={() => router.push('/password-vault')}
+                >
                   <KeyIcon
                     width={21}
                     height={21}
@@ -115,48 +122,49 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                   />
                 </div>
               </Tooltip>
-              <HeaderRequestCart currentTheme={currentTheme} classes={classes}/>
-              <Tooltip title={intl.formatMessage({id: "tasks"})} placement="bottom">
+              <HeaderRequestCart
+                currentTheme={currentTheme}
+                classes={classes}
+              />
+              <Tooltip
+                title={intl.formatMessage({ id: 'tasks' })}
+                placement='bottom'
+              >
                 <div
                   className={`${classes.optionImage} ${
-                    router.pathname === "/tasks" && "Active"
+                    router.pathname === '/tasks' && 'Active'
                   }`}
-                  onClick={() => router.push("/tasks")}
+                  onClick={() => router.push('/tasks')}
                 >
                   <NoteBlankIcon
                     width={21}
                     height={21}
                     color={
-                      (router.pathname === "/tasks" && "#0E46D7") ||
+                      (router.pathname === '/tasks' && '#0E46D7') ||
                       currentTheme.overrides.MuiIcon.root.color
                     }
                   />
                 </div>
               </Tooltip>
-              <Tooltip title={intl.formatMessage({id: "notifications"})} placement="bottom">
-                <div className={classes.optionImage}>
-                  <BellSimpleIcon
-                    width={21}
-                    height={21}
-                    color={currentTheme.overrides.MuiIcon.root.color}
-                  />
-                </div>
-              </Tooltip>
+              <HeaderNotifications
+                currentTheme={currentTheme}
+                classes={classes}
+              />
             </div>
             <Button
-              className="Button-avatar"
+              className='Button-avatar'
               onClick={handleClick}
               endIcon={<CaretDownIcon width={20} height={20} />}
-              aria-controls={openProfile ? "menu-list-grow" : undefined}
-              aria-haspopup="true"
+              aria-controls={openProfile ? 'menu-list-grow' : undefined}
+              aria-haspopup='true'
             >
               <HeaderProfileBox>
                 <Avatar src={thumb} />
                 <HeaderProfileBoxInfo>
-                  <div className="Username">{user?.username}</div>
-                  <div className="FirstName">{user?.firstName}</div>
-                </HeaderProfileBoxInfo>               
-              </HeaderProfileBox>              
+                  <div className='Username'>{user?.username}</div>
+                  <div className='FirstName'>{user?.firstName}</div>
+                </HeaderProfileBoxInfo>
+              </HeaderProfileBox>
             </Button>
           </div>
         </Toolbar>
@@ -174,23 +182,23 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
             {...TransitionProps}
             style={{
               transformOrigin:
-                placement === "bottom" ? "center top" : "center bottom",
+                placement === 'bottom' ? 'center top' : 'center bottom'
             }}
           >
             <Paper className={classes.menuList}>
               <ClickAwayListener onClickAway={handleClose}>
-                <MenuList autoFocusItem={openProfile} id="menu-list-grow">
+                <MenuList autoFocusItem={openProfile} id='menu-list-grow'>
                   <MenuItem
                     onClick={() => {
-                      router.push("/profile");
-                      return true;
+                      router.push('/profile')
+                      return true
                     }}
                   >
                     <div className={classes.menuItem}>
                       <div className={`${classes.menuImage} blue`}>
-                        <UserIcon width={20} height={20} color="#FFFFFF" />
+                        <UserIcon width={20} height={20} color='#FFFFFF' />
                       </div>
-                      {intl.formatMessage({ id: "profile" })}
+                      {intl.formatMessage({ id: 'profile' })}
                     </div>
                     <div className={classes.caretRight}>
                       <CaretRightIcon width={20} />
@@ -199,14 +207,14 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                   <Divider />
                   <MenuItem
                     onClick={() =>
-                      window.open(`https://docs.blazon.im/`, "__blank")
+                      window.open(`https://docs.blazon.im/`, '__blank')
                     }
                   >
                     <div className={classes.menuItem}>
                       <div className={`${classes.menuImage} yellow`}>
-                        <InfoIcon width={20} height={20} color="#FFFFFF" />
+                        <InfoIcon width={20} height={20} color='#FFFFFF' />
                       </div>
-                      {intl.formatMessage({ id: "suport.blazon" })}
+                      {intl.formatMessage({ id: 'suport.blazon' })}
                     </div>
                     <div className={classes.caretRight}>
                       <CaretRightIcon width={20} />
@@ -215,9 +223,9 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                   <MenuItem>
                     <div className={classes.menuItem}>
                       <div className={`${classes.menuImage} red`}>
-                        <SignOutIcon width={20} height={20} color="#FFFFFF" />
+                        <SignOutIcon width={20} height={20} color='#FFFFFF' />
                       </div>
-                      {intl.formatMessage({ id: "logout" })}
+                      {intl.formatMessage({ id: 'logout' })}
                     </div>
                     <div className={classes.caretRight}>
                       <CaretRightIcon width={20} />
@@ -226,14 +234,14 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                   <MenuItem>
                     <div className={classes.darkMode}>
                       <div className={classes.darkModeText}>
-                        {intl.formatMessage({ id: "darkMode" })}
+                        {intl.formatMessage({ id: 'darkMode' })}
                       </div>
                       <div className={classes.darkModeSwitch}>
                         <Switch
-                          color="primary"
+                          color='primary'
                           checked={darkMode}
                           onChange={changeTheme}
-                          name="checkedA"
+                          name='checkedA'
                         />
                       </div>
                     </div>
@@ -245,7 +253,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
         )}
       </Popper>
     </div>
-  );
-};
+  )
+}
 
-export default withStyles(useStyles)(injectIntl(Header));
+export default withStyles(useStyles)(injectIntl(Header))

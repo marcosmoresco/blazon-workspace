@@ -331,7 +331,9 @@ const SharedDialogContent = ({ current, classes }) => {
               ) : (
                 " - "
               );
+
             },
+
           },
           {
             field: "remove",
@@ -346,7 +348,9 @@ const SharedDialogContent = ({ current, classes }) => {
                 </BoxAction>
               );
             },
+
           },
+
         ]}
       />
     </Form>
@@ -355,6 +359,7 @@ const SharedDialogContent = ({ current, classes }) => {
 
 const ShareDialog = ({ modalOpen, setModalOpen, currentSelected, classes }) => {
   const intl = useIntl();
+
 
   const { loading, error, data, refetch } = useQuery<{
     getUserSharedAccountMembers: User[];
@@ -392,6 +397,7 @@ const ShareDialog = ({ modalOpen, setModalOpen, currentSelected, classes }) => {
           title={intl.formatMessage({ id: "profile.accounts.shared" })}
           saveLabel={intl.formatMessage({ id: "shareddialog.grid.share" })}
           onClose={() => setModalOpen(false)}
+
           isValid={true}
           noActions
         >
@@ -456,6 +462,7 @@ const Shared = ({ classes }) => {
           filters={filters}
           onChange={(filters: any) => search(filters)}
         />
+
       </div>
       <div>
         <DataGrid
@@ -464,6 +471,7 @@ const Shared = ({ classes }) => {
           getResponseLinks={(data: any) => data?.getUserAccounts?.links}
           getResponse={(data: any) => data?.getUserAccounts?.accounts}
           height={600}
+
           columns={columns({ classes })}
           page={1}
           size={100}

@@ -1,0 +1,39 @@
+{
+  "passwordVault.sucessSave": "Your password has been successfully changed!",
+  "passwordVault.errorSave": "Your password has not been changed.",
+  "passwordVault.emptyState.title": "End of results",
+  "passwordVault.emptyState.description": "Click below to view your resolution history.",
+  "passwordVault.title": "Password vault",
+  "passwordVault.itens": "{amount} items",
+  "passwordVault.newPassword": "New password",
+
+  "changepasswordform.dialog.title": "New password",
+  "passwordVault.tutorial.title": "How to manage your passwords",
+  "passwordVault.tutorial.text": "Watch this mini tutorial and end your doubts.",
+  "passwordVault.no.password": "No password",
+  "passwordVault.no.password.text": "There are no accesses added to your account.",
+
+  "passwordvault.modal.info.title": "Sharing",
+  "passwordvault.modal.info.description": "Below you can find the login information for this account.",
+  "passwordvaultform.email": "Email",
+  "passwordvaultform.email.placeholder": "Enter your email",
+  "passwordvaultform.password": "Password",
+  "passwordvaultform.password.placeholder": "Enter your password",
+
+  "passwordVault.newpassword.access.title": "Login",
+  "passwordVault.newpassword.access.description": "Enter the user login details.",
+
+  "passwordVault.newpassword.info.title": "Information",
+  "passwordVault.newpassword.info.description": "Insert information about this access.",
+
+  "changepasswordform.name": "Asset",
+  "changepasswordform.name.placeholder": "Asset Name",
+  "changepasswordform.description": "Description",
+  "changepasswordform.description.placeholder": "Asset Description",
+  "changepasswordform.uri": "URL",
+  "changepasswordform.uri.placeholder": "http://......",
+  "changepasswordform.user": "Username",
+  "changepasswordform.user.placeholder": "Username",
+  "changepasswordform.password": "Password",
+  "changepasswordform.password.placeholder": "Password"
+}

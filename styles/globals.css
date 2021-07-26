@@ -98,8 +98,28 @@ label {
   padding-top: 48px;
 }
 
+.pt18 {
+  padding-top: 18px;
+}
+
+.pt32 {
+  padding-top: 32px;
+}
+
+.pt24 {
+  padding-top: 24px;
+}
+
+.pb32 {
+  padding-bottom: 32px;
+}
+
 .pt22 {
   padding-top: 22px;
+}
+
+.text-center {
+  text-align: 'center';
 }
 
 .modal label {

@@ -1,0 +1,39 @@
+{
+  "passwordVault.sucessSave": "Sua senha foi alterada com sucesso!",
+  "passwordVault.errorSave": "Sua senha não foi alterada.",
+  "passwordVault.emptyState.title": "Fim dos resultados",
+  "passwordVault.emptyState.description": "Clique abaixo para ver seu histórico de resoluções.",
+  "passwordVault.title": "Cofre de senhas",
+  "passwordVault.itens": "{amount} itens",
+  "passwordVault.newPassword": "Nova senha",
+
+  "changepasswordform.dialog.title": "Nova senha",
+  "passwordVault.tutorial.title": "Como gerenciar as suas senhas",
+  "passwordVault.tutorial.text": "Acompanhe esse mini tutorial e acabe com suas dúvidas.",
+  "passwordVault.no.password": "Nenhuma senha",
+  "passwordVault.no.password.text": "Não existem acessos adicionados a sua conta.",
+
+  "passwordvault.modal.info.title": "Compartilhamento",
+  "passwordvault.modal.info.description": "Abaixo você pode encontrar as informações de acesso dessa conta.",
+  "passwordvaultform.email": "Email",
+  "passwordvaultform.email.placeholder": "Digite seu e-mail",
+  "passwordvaultform.password": "Senha",
+  "passwordvaultform.password.placeholder": "Digite sua senha",
+
+  "passwordVault.newpassword.access.title": "Acesso",
+  "passwordVault.newpassword.access.description": "Insira os dados para acesso do usuario.",
+
+  "passwordVault.newpassword.info.title": "Informações",
+  "passwordVault.newpassword.info.description": "Insira as informações sobre este acesso.",
+
+  "changepasswordform.name": "Ativo",
+  "changepasswordform.name.placeholder": "Nome do ativo",
+  "changepasswordform.description": "Descrição",
+  "changepasswordform.description.placeholder": "Descrição do ativo",
+  "changepasswordform.uri": "URL",
+  "changepasswordform.uri.placeholder": "http://......",
+  "changepasswordform.user": "Usuário",
+  "changepasswordform.user.placeholder": "Nome de usuário",
+  "changepasswordform.password": "Senha",
+  "changepasswordform.password.placeholder": "Senha"
+}
