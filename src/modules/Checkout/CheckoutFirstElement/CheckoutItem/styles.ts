@@ -29,6 +29,26 @@ export const ItemStyle = styled.div`
     color: #1b202a;
   }
 `;
+export const PageInfoStyle = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 56px 64px 52px;
+
+  Button {
+    min-width: 156px;
+  }
+  div {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+
+    span {
+      font-size: 21px;
+      color: #26213f;
+    }
+  }
+`;
 export const CheckBox = styled.input.attrs({ type: "checkbox" })`
   width: 24px;
   height: 24px;
@@ -102,7 +122,7 @@ export const BottomArea = styled.div`
   align-content: center;
   justify-content: flex-end;
   padding: 24px 24px 0;
-  
+
   Button {
     min-width: 156px;
   }

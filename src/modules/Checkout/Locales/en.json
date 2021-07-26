@@ -1,7 +1,7 @@
 {
   "checkout.checkout": "Checkout",
   "checkout.information": "Information",
-  "checkout.FinishingRequest": "Finishing",
+  "checkout.FinishingRequest": "Finishing Request",
   "checkout.requested": "Requested",
   "checkout.RequestInformation": "Request Information",
   "checkout.continue": "Continue",
@@ -14,5 +14,19 @@
   "checkout.DeleteItem": "Delete item",
   "checkout.save": "To save",
   "checkout.SelectedItems": "Selected items",
-  "checkout.description": "Description"
+  "checkout.description": "Description",
+
+  "checkout.AddAnItemToContinue": "Add an item to continue",
+  "checkout.NoResults": "No Results",
+  "checkout.AddItems": "Add items to cart to proceed.",
+  "checkout.SearchItem": "Search item",
+
+  "checkout.Finishing": "Finishing",
+  "checkout.cancel": "Cancel",
+
+  "checkout.start": "Start",
+  "checkout.requests": "Requests",
+  "checkout.requestedOk": "Successfully requested",
+  "checkout.sendOk": "Successful submission of your request!",
+  "checkout.RequestCompleted": "Request completed"
 }

@@ -13,19 +13,28 @@ function CheckCircleIcon(props: IconProps) {
     <svg
       width={width}
       height={height}
-      viewBox={`0 0 32 32`}
+      viewBox={`0 0 ${width} ${height}`}
       fill="none"
       xmlns="http://www.w3.org/2000/svg"
     >
-      <path d="M21.5 13L14.1666 20L10.5 16.5" stroke={color} />
       <path
-        d="M16 28C22.6274 28 28 22.6274 28 16C28 9.37258 22.6274 4 16 4C9.37258 4 4 9.37258 4 16C4 22.6274 9.37258 28 16 28Z"
+        d="M32.25 19.5L21.2499 30L15.75 24.75"
         stroke={color}
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+      />
+      <path
+        d="M24 42C33.9411 42 42 33.9411 42 24C42 14.0589 33.9411 6 24 6C14.0589 6 6 14.0589 6 24C6 33.9411 14.0589 42 24 42Z"
+        stroke={color}
+        stroke-width="3"
+        stroke-linecap="round"
+        stroke-linejoin="round"
       />
     </svg>
   );
 }
 
-CheckCircleIcon.defaultProps = { width: 32, height: 32, color: "#BDBCC5" };
+CheckCircleIcon.defaultProps = { width: 48, height: 48, color: "#BDBCC5" };
 
 export default CheckCircleIcon;

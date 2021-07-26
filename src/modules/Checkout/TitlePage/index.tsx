@@ -1,6 +1,6 @@
 // vendors
 import React from "react";
-import { injectIntl } from "react-intl";
+import { FormattedMessage } from "react-intl";
 import ShoppingCartSimpleIcon from "@icons/ShoppingCartSimple";
 import ArrowLeft from "@icons/ArrowLeft";
 import Link from "next/link";
@@ -11,7 +11,7 @@ import { TitleProps } from "./types";
 // styles
 import { TitleBox, TitleText, Line, Header, InfoText } from "./styles";
 
-const TitlePage: React.FC<TitleProps> = ({ intl, onBack }) => {
+const TitlePage: React.FC<TitleProps> = ({ onBack, currentIndex }) => {
   return (
     <>
       <Header>
@@ -28,12 +28,20 @@ const TitlePage: React.FC<TitleProps> = ({ intl, onBack }) => {
           <TitleBox>
             <ShoppingCartSimpleIcon width={24} height={24} />
             <TitleText>
-              {intl.formatMessage({ id: "checkout.checkout" })}
+              <FormattedMessage id="checkout.checkout" />
             </TitleText>
           </TitleBox>
         </div>
         <InfoText>
-          {intl.formatMessage({ id: "checkout.RequestInformation" })}
+          {currentIndex == 0 ? (
+            <FormattedMessage id="checkout.RequestInformation" />
+          ) : currentIndex == 1 ? (
+            <FormattedMessage id="checkout.FinishingRequest" />
+          ) : currentIndex == 2 ? (
+            <FormattedMessage id="checkout.requested" />
+          ) : (
+            <></>
+          )}
         </InfoText>
       </Header>
       <Line />
@@ -41,4 +49,4 @@ const TitlePage: React.FC<TitleProps> = ({ intl, onBack }) => {
   );
 };
 
-export default injectIntl(TitlePage);
+export default TitlePage;

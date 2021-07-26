@@ -1,7 +1,7 @@
 {
   "checkout.checkout": "Checkout",
   "checkout.information": "Informação",
-  "checkout.FinishingRequest": "Finalizando",
+  "checkout.FinishingRequest": "Finalizando a solicitação",
   "checkout.requested": "Solicitado",
   "checkout.RequestInformation": "Informações da Solicitação",
   "checkout.continue": "Continuar",
@@ -14,5 +14,19 @@
   "checkout.DeleteItem": "Excluir item",
   "checkout.save": "Salvar",
   "checkout.SelectedItems": "Itens selecionados",
-  "checkout.description": "Descrição"
+  "checkout.description": "Descrição",
+
+  "checkout.AddAnItemToContinue": "Adicione um item para continuar",
+  "checkout.NoResults": "Nenhum Resultado",
+  "checkout.AddItems": "Adicione itens ao carrinho para prosseguir.",
+  "checkout.SearchItem": "Buscar item ",
+
+  "checkout.Finishing": "Finalizando",
+  "checkout.cancel": "Cancelar",
+
+  "checkout.start": "Inicio",
+  "checkout.requests": "Solicitações",
+  "checkout.requestedOk": "Solicitado com sucesso",
+  "checkout.sendOk": "Sua solicitação foi enviada com sucesso!",
+  "checkout.RequestCompleted": "Solicitação finalizada"
 }

@@ -5,5 +5,5 @@ import React from "react";
 import Checkout from "../../src/modules/Checkout";
 
 export default function CheckoutPage() {
-  return <Checkout />;
+  return <Checkout empty={true} />;
 }

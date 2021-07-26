@@ -30,7 +30,7 @@ export const CheckBox = styled.input.attrs({ type: "checkbox" })`
   height: 24px;
   border-radius: 4px;
 `;
-export const StatusCheckoutStyle = styled.div`
+export const Nav = styled.div`
   justify-content: center;
   align-items: center;
 `;
