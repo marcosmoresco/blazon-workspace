@@ -120,7 +120,7 @@ export const useStyles = (theme: Theme) =>
         backgroundColor: '#76797F'
       }
     }
-  })
+  });
 
 export const HeaderProfileBox = styled.div`
   display: flex;

@@ -256,4 +256,4 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
   )
 }
 
-export default withStyles(useStyles)(injectIntl(Header))
+export default withStyles(useStyles, { name: "MuiCustomHeader" })(injectIntl(Header))

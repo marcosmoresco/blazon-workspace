@@ -1,11 +1,13 @@
-import React, { FC, useState, useEffect } from 'react'
-import { FormattedMessage, injectIntl } from 'react-intl'
-import Drawer from '@material-ui/core/Drawer'
-import Tooltip from '@components/Tooltip'
-import BellSimpleIcon from '@icons/BellSimple'
-import XIcon from '@icons/X'
-import type { HeaderNotificationsProps } from './types'
-import moment from 'moment'
+import React, { FC, useState } from "react";
+import { FormattedMessage, injectIntl } from "react-intl";
+import Drawer from "@material-ui/core/Drawer";
+import Button from "@components/Button";
+import Tooltip from "@components/Tooltip";
+import BellSimpleIcon from "@icons/BellSimple";
+import XIcon from "@icons/X";
+import type { HeaderNotificationsProps } from "./types";
+import moment from "moment";
+import apolloClient from "@utils/apollo-client";
 import {
   Badge,
   NotificationsBox,
@@ -14,131 +16,111 @@ import {
   HeaderTitle,
   HeaderDivider,
   CloseHeader,
-  NotificationGroup
-} from './styles'
-import useMockRequest from '@utils/mockRequest'
-import Loading from '@components/Loading'
-import NotificationItem from './NotificationItem'
+  NotificationGroup,
+  LoadMoreContent,
+} from "./styles";
+import Loading from "@components/Loading";
+import NotificationItem from "./NotificationItem";
+import { getQueryParam } from "@utils/queryParam";
 
-const mockData = [
-  {
-    content: '<b>Peter Parker</b> aprovou seu acesso a <b>VPNSS</b>',
-    read: false,
-    user: {
-      username: 'Peter Parker'
-    },
-    ocurrence: moment(new Date()).subtract(2, 'minutes').toDate()
-  },
-  {
-    content: '<b>Lucas Henrique</b> reprovou seu acesso a <b>Facebook</b>...',
-    read: true,
-    user: {
-      username: 'Lucas Sousa'
-    },
-    ocurrence: moment(new Date()).subtract(30, 'minutes').toDate()
-  },
-  {
-    content: '<b>Lucas Henrique</b> reprovou seu acesso a <b>Facebook</b>...',
-    read: false,
-    user: {
-      username: 'Lucas Sousa'
-    },
-    ocurrence: moment(new Date()).subtract(1, 'hours').toDate()
-  },
-  {
-    content: '<b>Peter Parker</b> aprovou seu acesso a <b>VPNSS</b>',
-    read: false,
-    user: {
-      username: 'Peter Parker'
-    },
-    ocurrence: moment(new Date()).subtract(2, 'hours').toDate()
-  },
-  {
-    content: '<b>Peter Parker</b> aprovou seu acesso a <b>VPNSS</b>',
-    read: true,
-    user: {
-      username: 'Peter Parker'
-    },
-    ocurrence: moment(new Date()).subtract(1, 'day').toDate()
-  },
-  {
-    content: '<b>Peter Parker</b> aprovou seu acesso a <b>VPNSS</b>',
-    read: false,
-    user: {
-      username: 'Peter Parker'
-    },
-    ocurrence: moment(new Date()).subtract(1, 'day').toDate()
-  },
-  ,
-  {
-    content: '<b>Peter Parker</b> aprovou seu acesso a <b>VPNSS</b>',
-    read: false,
-    user: {
-      username: 'Peter Parker'
-    },
-    ocurrence: moment(new Date()).subtract(2, 'day').toDate()
-  },
-  {
-    content: '<b>Peter Parker</b> aprovou seu acesso a <b>VPNSS</b>',
-    read: true,
-    user: {
-      username: 'Peter Parker'
-    },
-    ocurrence: moment(new Date()).subtract(2, 'day').toDate()
-  }
-]
+//types
+import { NotificationRepresentation, Notification, Link } from "@types";
+
+//queries
+import { GET_NOTIFICATIONS } from "@portal/Header/queries";
 
 const HeaderNotifications: FC<HeaderNotificationsProps> = ({
   intl,
   classes,
-  currentTheme
+  currentTheme,
 }) => {
-  const { loading, data } = useMockRequest(mockData)
 
-  const [open, setOpen] = useState(false)
+  const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [groups, setGroups] = useState<{[key: string]: any}>({});
+  const [next, setNext] = useState<string>("");
+  
+  const getNextPage = (links: Link[]): string => {
 
-  let groups = {}
-
-  if (data) {
-    const today = moment().startOf('day')
-    const tomorrow = moment().add(-1, 'day').startOf('day')
-
-    data.map((notification: any) => {
-      const ocurrence = moment(notification.ocurrence)
-      let group
-      if (ocurrence.isAfter(today)) {
-        group = intl.formatMessage({ id: 'dates.today' })
-      } else if (ocurrence.isAfter(tomorrow)) {
-        group = intl.formatMessage({ id: 'dates.tomorrow' })
-      } else {
-        group = intl.formatDate(ocurrence.toDate(), {
-          weekday: 'short',
-          day: '2-digit',
-          month: 'short',
-          year: '2-digit'
-        })
+    if(links) {
+      let nextLinks = links.filter((l: any) => l.rel === "next");
+      if(nextLinks.length) {
+        return nextLinks[0].href;
       }
-      if (!groups[group]) {
-        groups[group] = []
-      }
-      groups[group].push(notification)
-    })
-  }
+    }
+
+    return "";
+  };
+
+  const find = (page: number) => {
+    setLoading(true);   
+    apolloClient
+      .query({
+        query: GET_NOTIFICATIONS,
+        variables: {
+          page,
+          size: 10,
+          ord: "id:desc",
+        },
+        fetchPolicy: "no-cache"
+      })
+      .then(({ data }) => {
+        if (data.getNotifications) {
+          const today = moment().startOf("day");
+          const tomorrow = moment().add(-1, "day").startOf("day");
+          const _newGroups: {[key: string]: any} = page > 0 ? groups : {};
+          data?.getNotifications?.notifications.map((notification: Notification) => {
+            const ocurrence = moment(notification.date, ["DD/MM/YYYY HH:mm:ss"]);
+            let group;
+            if (ocurrence.isAfter(today)) {
+              group = intl.formatMessage({ id: "dates.today" });
+            } else if (ocurrence.isAfter(tomorrow)) {
+              group = intl.formatMessage({ id: "dates.tomorrow" });
+            } else {
+              group = intl.formatDate(ocurrence.toDate(), {
+                weekday: "short",
+                day: "2-digit",
+                month: "short",
+                year: "2-digit",
+              });
+            }
+            if (!_newGroups[group]) {
+              _newGroups[group] = [];
+            }
+            _newGroups[group].push(notification);
+          });
+          setNext(getNextPage(data?.getNotifications?.links));
+          setGroups(_newGroups);
+        }
+        setLoading(false);
+      });
+  };
+
+  const handleOpen = () => {
+    setOpen(true);
+    find(0);
+  };
+
+  const handleNext = () => {    
+    const _next = next.replace(/{.*?}/g, "");
+    const page = Number(getQueryParam("page", _next));
+    find(page);
+  };
 
   return (
     <>
       <Tooltip
-        title={intl.formatMessage({ id: 'notifications' })}
-        placement='bottom'
+        title={intl.formatMessage({ id: "notifications" })}
+        placement="bottom"
       >
         <Badge
-          color='primary'
+          color="primary"
           anchorOrigin={{
-            vertical: 'top',
-            horizontal: 'left'
+            vertical: "top",
+            horizontal: "left",
           }}
         >
-          <div className={classes.optionImage} onClick={() => setOpen(true)}>
+          <div className={classes.optionImage} onClick={handleOpen}>
             <BellSimpleIcon
               width={21}
               height={21}
@@ -147,12 +129,12 @@ const HeaderNotifications: FC<HeaderNotificationsProps> = ({
           </div>
         </Badge>
       </Tooltip>
-      <Drawer anchor='right' open={open} onClose={() => setOpen(false)}>
+      <Drawer anchor="right" open={open} onClose={() => setOpen(false)}>
         <NotificationsBox>
           <NotificationsHeader>
             <Header>
               <HeaderTitle>
-                <FormattedMessage id='notifications' />
+                <FormattedMessage id="notifications" />
               </HeaderTitle>
               <CloseHeader onClick={() => setOpen(false)}>
                 <XIcon />
@@ -166,23 +148,34 @@ const HeaderNotifications: FC<HeaderNotificationsProps> = ({
         ) : (
           <div>
             {Object.keys(groups).map((key, index) => {
-              const group = groups[key]
+              const group = groups[key];
               return (
                 <div key={index}>
                   <NotificationGroup>{key}</NotificationGroup>
                   <div>
-                    {group.map((notification, key) => (
+                    {group.map((notification: Notification, key: number) => (
                       <NotificationItem notification={notification} key={key} />
                     ))}
                   </div>
                 </div>
-              )
+              );
             })}
+            {next && (
+              <LoadMoreContent>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => handleNext()}
+                >
+                  <FormattedMessage id="loadMore" />
+                </Button>
+              </LoadMoreContent>
+            )}
           </div>
         )}
       </Drawer>
     </>
-  )
-}
+  );
+};
 
-export default injectIntl(HeaderNotifications)
+export default injectIntl(HeaderNotifications);

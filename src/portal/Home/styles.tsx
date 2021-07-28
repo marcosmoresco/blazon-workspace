@@ -1,154 +1,161 @@
-import { createStyles, Theme } from "@material-ui/core/styles";
 import styled from "styled-components";
 
-export const useStyles = (theme: Theme) =>
-  createStyles({
-    root: {
-      margin: "42px 64px",
-    },
-    header: {
-      background: "linear-gradient(262.19deg, #1B202A 43.97%, #020407 66.35%)",
-      borderRadius: 8,
-      padding: 42,
-      position: "relative",
-      marginTop: 36,
-      minHeight: 214,
-      marginBottom: 48,
-    },
-    headerWelcomeText: {
-      fontWeight: 600,
-      fontSize: 24,
-      lineHeight: "36px",
-      color: "#FFFFFF",
-    },
-    headerWelcomeSubText: {
-      fontWeight: "normal",
-      fontSize: 16,
-      lineHeight: "24px",
-      color: "#F4F4F5",
-      marginBottom: 25,
-    },
-    headerWelcomeImg: {
-      position: "absolute",
-      top: 0,
-      right: 0,
-    },
-    close: {
-      position: "absolute",
-      right: 15,
-      top: 15,
-      cursor: "pointer",
-      "& img": {
-        filter: "brightness(0) invert(1)",
-      },
-    },
-    recentPasswords: {
-      background: "#FFFFFF",
-      borderRadius: 8,
-      minHeight: "100%",
-    },
-    defaultTitleContent: {
-      display: "flex",
-      justifyContent: "space-between",
-      padding: 24,
-      borderBottom: "1px solid #E9E8EB",
-    },
-    defaultTitle: {
-      fontWeight: 600,
-      fontSize: 24,
-      lineHeight: "36px",
-      color: "#1B202A",
-    },
-    showAll: {
-      display: "flex",
-      alignItems: "center",
-      fontSize: 16,
-      color: "#1B202A",
-      cursor: "pointer",
-      "& svg": {
-        marginLeft: 5,
-      },
-    },
-    recentPasswordsContent: {
-      padding: 24,
-    },
-    recentPasswordCard: {
-      background: "#FFFFFF",
-      border: "1px solid #D4D3D9",
-      boxSizing: "border-box",
-      boxShadow: "0px 0px 24px rgba(39, 36, 52, 0.12)",
-      borderRadius: 8,
-      cursor: "pointer",
-    },
-    recentPasswordCardContent: {
-      margin: 14,
-    },
-    recentPasswordCardContentHeader: {
-      display: "flex",
-    },
-    recentPasswordCardContentHeaderImage: {
-      background: "#E9E8EB",
-      borderRadius: 6,
-      display: "flex",
-      justifyContent: "center",
-      alignItems: "center",
-      width: 48,
-      height: 48,
-      marginRight: 8,
-    },
-    recentPasswordCardContentHeaderTitle: {
-      fontWeight: 600,
-      fontSize: 16,
-      lineHeight: "24px",
-      color: "#26213F",
-    },
-    recentPasswordCardContentHeaderUsername: {
-      fontWeight: "normal",
-      fontSize: 14,
-      color: "#BDBCC5",
-    },
-    recentPasswordCardContentHeaderText: {
-      fontWeight: "normal",
-      fontSize: 14,
-      lineHeight: "21px",
-      color: "#676378",
-      marginTop: 8,
-    },
-    accounts: {
-      marginTop: 24,
-    },
-    accountsContent: {
-      display: "flex",
-      justifyContent: "space-between",
-      alignItems: "center",
-      marginBottom: 12,
-      cursor: "pointer",
-      padding: "5px 24px",
-      "&:hover": {
-        background: "#E9E8EB",
-        "& .contentInfoIcon": {
-          background: "#514D65"
-        },
-        "& .caretRight-icon": {
-          filter: "invert(20%) sepia(94%) saturate(2990%) hue-rotate(222deg) brightness(84%) contrast(101%)"
-        }
-      }
-    },
-    accountsContentInfo: {
-      display: "flex",
-      alignItems: "center",
-    },
-    accountsContentInfoIcon: {
-      display: "flex",
-      alignItems: "center",
-      justifyContent: "center",
-      background: "#1A202B",
-      borderRadius: 4,
-      marginRight: 12,
-      width: 32,
-      height: 32,      
-    },
-  });
+export const BoxRoot = styled.div`
+  margin: 42px 64px;
+`;
+
+export const BoxAccounts = styled.div`
+  margin-top: 24px;
+`;
+
+export const AccountsContentInfo = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+export const AccountsContentInfoIcon = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1A202B;
+  border-radius: 4px;
+  margin-right: 12px;
+  width: 32px;
+  height: 32px;     
+`;
+
+export const AccountsContent = styled.div` 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+  cursor: pointer;
+  padding: 5px 24px;
+  &:hover {
+    background: #E9E8EB;
+    ${AccountsContentInfoIcon} {
+      background: #514D65;
+    }
+    > .caretRight-icon {
+      filter: invert(20%) sepia(94%) saturate(2990%) hue-rotate(222deg) brightness(84%) contrast(101%);
+    }
+  }
+`;
+
+export const RecentPasswordCard = styled.div`
+  background: #FFFFFF;
+  border: 1px solid #D4D3D9;
+  box-sizing: border-box;
+  box-shadow: 0px 0px 24px rgba(39, 36, 52, 0.12);
+  border-radius: 8px;
+  cursor: pointer;
+`;
+
+export const RecentPasswordCardContent = styled.div`
+  margin: 14px;
+`;
+
+export const RecentPasswordCardContentHeader = styled.div`
+  display: flex;
+`;
+
+export const RecentPasswordCardContentHeaderImage = styled.div`
+  background: #E9E8EB;
+  border-radius: 6px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 48px;
+  height: 48px;
+  margin-right: 8px;
+`;
+
+export const RecentPasswordCardContentHeaderTitle = styled.div`
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 24px;
+  color: #26213F;
+`;
+
+export const RecentPasswordCardContentHeaderUsername = styled.div`
+  font-weight: normal;
+  font-size: 14px;
+  color: #BDBCC5;
+`;
+
+export const RecentPasswordCardContentHeaderText = styled.div`
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 21px;
+  color: #676378;
+  margin-top: 8px;
+`;
+
+export const BoxRecentPasswordsContent = styled.div`
+  padding: 24px;
+`;
+
+export const ShowAll = styled.div`
+  display: flex;
+  align-Items: center;
+  font-size: 16px;
+  color: #1B202A;
+  cursor: pointer;
+  & svg {
+    margin-left: 5px;
+  }
+`;
+
+export const BoxRecentPasswords = styled.div`
+  background: #FFFFFF;
+  border-radius: 8px;
+  min-height: 100%;
+`;
+
+export const DefaultTitleContent = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 24px;
+  border-bottom: 1px solid #E9E8EB;
+`;
+
+export const DefaultTitle = styled.div`
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 36px;
+  color: #1B202A;
+`;
+
+export const BoxHeader = styled.div`
+  background: linear-gradient(262.19deg, #1B202A 43.97%, #020407 66.35%);
+  border-radius: 8px;
+  padding: 42px;
+  position: relative;
+  margin-top: 36px;
+  min-height: 214px;
+  margin-bottom: 48px;
+`;
+
+export const HeaderWelcomeText = styled.div`
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 36px;
+  color: #FFFFFF;
+`;
+
+export const HeaderWelcomeSubText = styled.div`
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: #F4F4F5;
+  margin-bottom: 25px;
+`;
+
+export const HeaderWelcomeImg = styled.div`
+  position: absolute;
+  top: 0;
+  right: 0;
+`;
 
 export const BoxCard = styled.div`
   cursor: pointer;

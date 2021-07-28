@@ -16,6 +16,7 @@ import {
 } from "./SelfService";
 import { Directory, Queries as DirectoryQueries } from "./Directory";
 import { Queries as FormDatasQueries } from "./FormDatas";
+import { Notification, Queries as NotificatonQueries } from "./Notification";
 
 export const typeDefs = gql`
   ${Link}
@@ -27,6 +28,7 @@ export const typeDefs = gql`
   ${Request}
   ${SelfService}
   ${Directory}
+  ${Notification}
 
   type Query {
     ${ResumeQueries}      
@@ -36,6 +38,7 @@ export const typeDefs = gql`
     ${DirectoryQueries}
     ${SelfServiceQueries}
     ${FormDatasQueries}
+    ${NotificatonQueries}
   }
 
   type Mutation {

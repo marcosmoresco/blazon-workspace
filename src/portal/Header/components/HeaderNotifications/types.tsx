@@ -1,12 +1,13 @@
-import { IntlShape } from 'react-intl'
+import { IntlShape } from "react-intl";
+import { Notification } from "@types";
 
 export type HeaderNotificationsProps = {
-  intl: IntlShape
-  currentTheme: any
+  intl: IntlShape;
+  currentTheme: any;
   classes: {
-    optionImage: any
-  }
-}
+    optionImage: any;
+  };
+};
 export type NotificationItemProps = {
-  notification: any
-}
+  notification: Notification;
+};

@@ -1,5 +1,4 @@
 import React, { FC, useState } from 'react'
-import { withStyles } from '@material-ui/core/styles'
 import { injectIntl } from 'react-intl'
 import { useRouter } from 'next/router'
 import Image from 'next/image'
@@ -13,14 +12,13 @@ import Progress from '@components/Progress'
 import Tooltip from '@components/Tooltip'
 import HeaderImg from './images/header.svg'
 import EmptyState from './components/EmptyState'
-import { gql, useQuery } from '@apollo/client'
+import { useQuery } from '@apollo/client'
 import { RESUME } from './queries'
 import { GET_ENTRIES } from '@modules/PasswordVaultItem/queries'
 import { GET_REQUESTS } from '@modules/Requests/queries'
 import { Request } from '@modules/Requests/types'
 import type { HomeProps } from './types'
 import {
-  useStyles,
   BoxCard,
   BoxRequest,
   BoxRequestHeader,
@@ -28,7 +26,28 @@ import {
   BoxRequestHeaderDate,
   BoxRequestHeaderTitle,
   BoxRequestHeaderType,
-  BoxRequestDescription
+  BoxRequestDescription,
+  BoxRoot,
+  BoxHeader,
+  HeaderWelcomeText,
+  HeaderWelcomeSubText,
+  HeaderWelcomeImg,
+  BoxRecentPasswords,
+  BoxRecentPasswordsContent,
+  DefaultTitleContent,
+  DefaultTitle,
+  ShowAll,
+  RecentPasswordCard,
+  RecentPasswordCardContent,
+  RecentPasswordCardContentHeader,
+  RecentPasswordCardContentHeaderImage,
+  RecentPasswordCardContentHeaderTitle,
+  RecentPasswordCardContentHeaderUsername,
+  RecentPasswordCardContentHeaderText,
+  BoxAccounts,
+  AccountsContent,
+  AccountsContentInfo,
+  AccountsContentInfoIcon,
 } from './styles'
 
 const Home: FC<HomeProps> = ({ classes, intl }) => {
@@ -57,10 +76,10 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
   })
 
   return (
-    <div className={classes.root}>
-      <div className={classes.header}>
+    <BoxRoot>
+      <BoxHeader>
         <div>
-          <div className={classes.headerWelcomeText}>
+          <HeaderWelcomeText>
             {intl.formatMessage(
               {
                 id: 'home.welcome'
@@ -69,15 +88,15 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                 user: 'Mateus'
               }
             )}
-          </div>
-          <div className={classes.headerWelcomeSubText}>
+          </HeaderWelcomeText>
+          <HeaderWelcomeSubText>
             {intl.formatMessage({
               id:
                 dataResume?.getResume?.totalOpenTasks > 0
                   ? 'home.welcome.text.new'
                   : 'home.welcome.text'
             })}
-          </div>
+          </HeaderWelcomeSubText>
           <Button
             variant='contained'
             color='primary'
@@ -87,31 +106,30 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
               id: 'home.welcome.open.tasks'
             })}
           </Button>
-          <div className={classes.headerWelcomeImg}>
+          <HeaderWelcomeImg>
             <Image src={HeaderImg} alt='Header image' />
-          </div>
+          </HeaderWelcomeImg>
         </div>
-      </div>
+      </BoxHeader>
       <Grid container spacing={3}>
         <Grid item xs={6}>
-          <div className={classes.recentPasswords}>
-            <div className={classes.defaultTitleContent}>
-              <div className={classes.defaultTitle}>
+          <BoxRecentPasswords>
+            <DefaultTitleContent>
+              <DefaultTitle>
                 {intl.formatMessage({
                   id: 'home.recent.passwords'
                 })}
-              </div>
-              <div
-                className={classes.showAll}
+              </DefaultTitle>
+              <ShowAll
                 onClick={() => router.push('/password-vault')}
               >
                 {intl.formatMessage({
                   id: 'home.recent.passwords.see.all'
                 })}
                 <CaretRightIcon width={20} height={20} />
-              </div>
-            </div>
-            <div className={classes.recentPasswordsContent}>
+              </ShowAll>
+            </DefaultTitleContent>
+            <BoxRecentPasswordsContent>
               {(!loadingEntries &&
                 ((!errorEntries &&
                   (dataEntries?.getPasswordVaultEntries || []).length && (
@@ -128,52 +146,30 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                               setPasswordVault(r)
                             }}
                           >
-                            <div className={classes.recentPasswordCard}>
-                              <div
-                                className={classes.recentPasswordCardContent}
-                              >
-                                <div
-                                  className={
-                                    classes.recentPasswordCardContentHeader
-                                  }
-                                >
-                                  <div
-                                    className={
-                                      classes.recentPasswordCardContentHeaderImage
-                                    }
-                                  >
+                            <RecentPasswordCard>
+                              <RecentPasswordCardContent>
+                                <RecentPasswordCardContentHeader>
+                                  <RecentPasswordCardContentHeaderImage>
                                     <KeyIcon
                                       width={30}
                                       height={30}
                                       color='#3174F6'
                                     />
-                                  </div>
+                                  </RecentPasswordCardContentHeaderImage>
                                   <div>
-                                    <div
-                                      className={
-                                        classes.recentPasswordCardContentHeaderTitle
-                                      }
-                                    >
+                                    <RecentPasswordCardContentHeaderTitle>
                                       {r.name}
-                                    </div>
-                                    <div
-                                      className={
-                                        classes.recentPasswordCardContentHeaderUsername
-                                      }
-                                    >
+                                    </RecentPasswordCardContentHeaderTitle>
+                                    <RecentPasswordCardContentHeaderUsername>
                                       {r.username}
-                                    </div>
+                                    </RecentPasswordCardContentHeaderUsername>
                                   </div>
-                                </div>
-                                <div
-                                  className={
-                                    classes.recentPasswordCardContentHeaderText
-                                  }
-                                >
+                                </RecentPasswordCardContentHeader>
+                                <RecentPasswordCardContentHeaderText>
                                   {r.description}
-                                </div>
-                              </div>
-                            </div>
+                                </RecentPasswordCardContentHeaderText>
+                              </RecentPasswordCardContent>
+                            </RecentPasswordCard>
                           </Grid>
                         ))}
                     </Grid>
@@ -183,121 +179,107 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                     text='passwordVault.no.password.text'
                   />
                 ))) || <Progress />}
-            </div>
-          </div>
+            </BoxRecentPasswordsContent>
+          </BoxRecentPasswords>
         </Grid>
         <Grid item xs={6}>
-          <div className={classes.recentPasswords}>
-            <div className={classes.defaultTitleContent}>
-              <div className={classes.defaultTitle}>
+          <BoxRecentPasswords>
+            <DefaultTitleContent>
+              <DefaultTitle>
                 {intl.formatMessage({
                   id: 'home.accounts'
                 })}
-              </div>
-              <div
-                className={classes.showAll}
+              </DefaultTitle>
+              <ShowAll
                 onClick={() => router.push('/profile')}
               >
                 {intl.formatMessage({
                   id: 'home.accounts.see.all'
                 })}
                 <CaretRightIcon width={21} height={21} />
-              </div>
-            </div>
-            <div className={classes.accounts}>
-              <div
-                className={classes.accountsContent}
+              </ShowAll>
+            </DefaultTitleContent>
+            <BoxAccounts>
+              <AccountsContent
                 onClick={() => router.push('/profile/access/shared')}
               >
-                <div className={classes.accountsContentInfo}>
-                  <div
-                    className={`${classes.accountsContentInfoIcon} contentInfoIcon`}
-                  >
+                <AccountsContentInfo>
+                  <AccountsContentInfoIcon>
                     <ShareIcon width={21} height={21} color='#FFFFFF' />
-                  </div>
+                  </AccountsContentInfoIcon>
                   {intl.formatMessage({
                     id: 'account.shared'
                   })}
-                </div>
+                </AccountsContentInfo>
                 <div className='caretRight-icon'>
                   <CaretRightIcon width={21} height={21} />
                 </div>
-              </div>
-              <div
-                className={classes.accountsContent}
+              </AccountsContent>
+              <AccountsContent
                 onClick={() => router.push('/profile/access/application')}
               >
-                <div className={classes.accountsContentInfo}>
-                  <div
-                    className={`${classes.accountsContentInfoIcon} contentInfoIcon`}
-                  >
+                <AccountsContentInfo>
+                  <AccountsContentInfoIcon>
                     <ShareIcon width={21} height={21} color='#FFFFFF' />
-                  </div>
+                  </AccountsContentInfoIcon>
                   {intl.formatMessage({
                     id: 'account.application'
                   })}
-                </div>
+                </AccountsContentInfo>
                 <div className='caretRight-icon'>
                   <CaretRightIcon width={21} height={21} />
                 </div>
-              </div>
-              <div
-                className={classes.accountsContent}
+              </AccountsContent>
+              <AccountsContent
                 onClick={() => router.push('/profile/access/regular')}
               >
-                <div className={classes.accountsContentInfo}>
-                  <div
-                    className={`${classes.accountsContentInfoIcon} contentInfoIcon`}
-                  >
+                <AccountsContentInfo>
+                  <AccountsContentInfoIcon>
                     <ShareIcon width={21} height={21} color='#FFFFFF' />
-                  </div>
+                  </AccountsContentInfoIcon>
                   {intl.formatMessage({
                     id: 'account.regular'
                   })}
-                </div>
+                </AccountsContentInfo>
                 <div className='caretRight-icon'>
                   <CaretRightIcon width={21} height={21} />
                 </div>
-              </div>
-              <div
-                className={classes.accountsContent}
+              </AccountsContent>
+              <AccountsContent
                 onClick={() => router.push('/profile/access/adminstrative')}
               >
-                <div className={classes.accountsContentInfo}>
-                  <div
-                    className={`${classes.accountsContentInfoIcon} contentInfoIcon`}
-                  >
+                <AccountsContentInfo>
+                  <AccountsContentInfoIcon>
                     <ShareIcon width={21} height={21} color='#FFFFFF' />
-                  </div>
+                  </AccountsContentInfoIcon>
                   {intl.formatMessage({
                     id: 'account.administrative'
                   })}
-                </div>
+                </AccountsContentInfo>
                 <div className='caretRight-icon'>
                   <CaretRightIcon width={21} height={21} />
                 </div>
-              </div>
-            </div>
-          </div>
+              </AccountsContent>
+            </BoxAccounts>
+          </BoxRecentPasswords>
         </Grid>
         <Grid item xs={12}>
-          <div className={classes.recentPasswords}>
-            <div className={classes.defaultTitleContent}>
-              <div className={classes.defaultTitle}>
+          <BoxRecentPasswords>
+            <DefaultTitleContent>
+              <DefaultTitle>
                 {intl.formatMessage({
                   id: 'home.requests.in.progress'
                 })}
-              </div>
-              <div
-                className={classes.showAll}
+              </DefaultTitle>
+              <ShowAll
                 onClick={() => router.push('/requests')}
               >
                 {intl.formatMessage({
                   id: 'home.recent.passwords.see.all'
                 })}
                 <CaretRightIcon width={20} height={20} />
-              </div>
-            </div>
+              </ShowAll>
+            </DefaultTitleContent>
             <BoxRequest>
               {(!loadingRequests &&
                 ((!errorRequests &&
@@ -366,16 +348,11 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                   />
                 ))) || <Progress />}
             </BoxRequest>
-          </div>
+          </BoxRecentPasswords>
         </Grid>
-      </Grid>
-      <PasswordVault
-        onClose={() => setOpen(false)}
-        open={open || false}
-        passwordVault={passwordVault}
-      />
-    </div>
+      </Grid>     
+    </BoxRoot>
   )
 }
 
-export default withStyles(useStyles)(injectIntl(Home))
+export default injectIntl(Home);
