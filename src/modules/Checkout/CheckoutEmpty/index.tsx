@@ -22,7 +22,7 @@ const CheckoutEmpty: React.FC = () => {
             <FormattedMessage id="checkout.AddAnItemToContinue" />
           </span>
         </div>
-        <Button variant="contained" color="disabled">
+        <Button variant="contained" disabled>
           <FormattedMessage id="checkout.continue" />
         </Button>
       </PageInfoStyle>

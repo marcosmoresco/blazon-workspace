@@ -22,7 +22,6 @@ import {
 import { withStyles } from "@material-ui/core/styles";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Loading from "@components/Loading";
 import NotebookIcon from "@icons/Notebook";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
@@ -110,30 +109,6 @@ const columns = ({ classes }) => [
         </div>
       );
     },
-  },
-];
-
-const mockSharedDialog = [
-  {
-    user: "Eduardo Cesario dos Santos",
-    thumb: "/Avatar.svg",
-    read: false,
-    write: true,
-    share: false,
-  },
-  {
-    user: "Eduardo Cesario dos Santos",
-    thumb: "/Avatar.svg",
-    read: false,
-    write: true,
-    share: false,
-  },
-  {
-    user: "Eduardo Cesario dos Santos",
-    thumb: "/Avatar.svg",
-    read: false,
-    write: true,
-    share: false,
   },
 ];
 

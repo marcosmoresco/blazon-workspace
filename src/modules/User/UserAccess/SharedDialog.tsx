@@ -12,9 +12,9 @@ import Divider from '@components/Divider'
 import MagnifyingGlassIcon from '@icons/MagnifyingGlass'
 import Checkbox from '@components/Checkbox'
 import { Beneficiary } from '@modules/Requests/components/constants'
-import { mockSharedDialog } from './Shared'
+import mockSharedDialog from './Shared'
 import { withStyles } from '@material-ui/core'
-import useStyles from './styles'
+import { useStyles } from './styles'
 
 const SharedDialogContent = ({ current, classes }) => {
   const intl = useIntl()

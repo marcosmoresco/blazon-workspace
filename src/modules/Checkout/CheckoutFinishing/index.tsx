@@ -83,7 +83,7 @@ const CheckoutFinishing: React.FC<ItemProps> = ({ nextStep }) => {
   const router = useRouter();
   const intl = useIntl();
   const dispatch = useDispatch();
-  const { cart } = useCart(); 
+  const { cart } = useCart();
 
   const [submitSelfServiceCart, {}] = useMutation(SUBMIT_SELF_SERVICE_CART, { 
     refetchQueries: [
@@ -122,6 +122,12 @@ const CheckoutFinishing: React.FC<ItemProps> = ({ nextStep }) => {
     },
     validationSchema,
     onSubmit: (values: any) => {
+      if(!cart?.items?.length) {
+        dispatch(addMessage(intl.formatMessage({
+          id: "checkout.AddItems"
+        }), "warning"));
+        return;     
+      }
       if(!isValidCart(cart)) {
         dispatch(addMessage(intl.formatMessage({
           id: "checkout.invalid.items"

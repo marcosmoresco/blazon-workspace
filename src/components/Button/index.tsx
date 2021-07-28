@@ -52,7 +52,7 @@ class Button extends Component<ButtonPropsType> {
 
   render() {
 
-    const { classes, children, variant, color, isLoading, startIcon, ...other } = this.props
+    const { classes, children, variant, color, isLoading, startIcon, disabled, ...other } = this.props
 
     const _color = color?.replace("default-", "");
 
@@ -64,7 +64,7 @@ class Button extends Component<ButtonPropsType> {
             'Red': color === 'secondary',
             'Default-contained-red': variant === 'contained' && color === 'secondary',
             'Default-contained-blue': variant === 'contained' && color === 'default-primary',
-            'Default-contained-disabled': variant === 'contained' && color === 'disabled'
+            'Default-contained-disabled': variant === 'contained' && disabled
           })}       
           startIcon={isLoading === 1 ? <Loading/> : startIcon} 
           color={_color}

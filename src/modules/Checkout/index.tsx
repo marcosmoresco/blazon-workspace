@@ -14,7 +14,7 @@ import InfoIcon from "@icons/Info/index";
 import FilePlusIcon from "@icons/FilePlus";
 import CheckCircleIcon from "@icons/CheckCircle";
 import { useCart } from "@requestCart/index";
-import CheckoutEmpty from "@modules/Checkout/CheckoutFirstElement/CheckoutEmpty";
+import CheckoutEmpty from "@modules/Checkout/CheckoutEmpty";
 
 // styles
 import {
