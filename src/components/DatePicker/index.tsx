@@ -1,44 +1,20 @@
 import React, { useEffect } from 'react'
 import 'date-fns'
 import { injectIntl } from 'react-intl'
-import { makeStyles } from '@material-ui/core/styles'
+import { withStyles, createStyles } from '@material-ui/core/styles'
 import CalendarIcon from '@icons/Calendar'
 import DateFnsUtils from '@date-io/date-fns'
 import { parse, format } from 'date-fns'
 import { MuiPickersUtilsProvider, KeyboardDatePicker, KeyboardDateTimePicker } from '@material-ui/pickers'
 
-//const dateFns = new DateFnsUtils()
-
-const useStyles = makeStyles(() => ({
-  root: {
-    '& .MuiFormControl-marginNormal': {
-      marginTop: 0,
-      marginBottom: 0,
-      width: '100%',
-      '& input': {
-        padding: '11.5px 11.5px 11.5px 0'
-      },
-      '& .MuiOutlinedInput-adornedStart': {
-        paddingLeft: 0
-      }
-    },
-    '& label': {
-      fontSize: 14,
-      fontStyle: "normal",
-      fontWeight: "600",
-      lineHeight: "14px",
-      textTransform: "uppercase",
-      paddingBottom: 8,
-    }   
-  }
-}));
+import { Box } from "./styles";
 
 const formatDate = (isTime:any, value:any) => {
 
   let formatedDate = null
   if(value) {
     const date = parse(value, (isTime && 'dd/MM/yyyy HH:mm:ss') || 'dd/MM/yyyy', new Date())     
-    if (date !== 'Invalid Date') {
+    if (date !== "Invalid Date") {
       formatedDate = date
     }
   }  
@@ -47,7 +23,7 @@ const formatDate = (isTime:any, value:any) => {
 
 const DatePicker = (props:any) => {
 
-  const classes = useStyles()
+  const classes = { props };
 
   const { isTime, onChange, value, label, required, intl, ...other } = props
 
@@ -84,7 +60,7 @@ const DatePicker = (props:any) => {
 
   return (
 
-    <div className={classes.root}>
+    <Box>
       <label>{(required && inputLabel + '*') || inputLabel}</label>
       <MuiPickersUtilsProvider utils={DateFnsUtils}>
         <Picker
@@ -93,8 +69,8 @@ const DatePicker = (props:any) => {
           onChange={handleDateChange}
           onBlur={handleDateBlur}
           autoOk={true}
-          disableToolbar
           variant="inline"
+          orientation="landscape"
           inputVariant="outlined"
           format={isTime ? 'dd/MM/yyyy HH:mm' : 'dd/MM/yyyy'}
           margin="normal"
@@ -104,9 +80,9 @@ const DatePicker = (props:any) => {
           keyboardIcon={<CalendarIcon/>}
         />
       </MuiPickersUtilsProvider>
-    </div>
+    </Box>
 
   );
 }
 
-export default injectIntl(DatePicker)
+export default injectIntl(DatePicker);

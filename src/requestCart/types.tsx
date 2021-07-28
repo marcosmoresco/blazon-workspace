@@ -2,12 +2,15 @@ import { Link } from "@types";
 
 export type SelfServiceCartItemInstanceValidation = {
   status: boolean;
+  relatedCatalogItemName: string;
+  relatedCatalogItemId: string;
 };
 
 export type SelfServiceCartItemInstance = {
   identifier: number;
   displayName: string;
   userId: string;
+  payload: string;
   accessAlreadyExistError: SelfServiceCartItemInstanceValidation;
   adminAccountLockedError: SelfServiceCartItemInstanceValidation;
   alreadyRequestInProgressError: SelfServiceCartItemInstanceValidation;

@@ -19,7 +19,12 @@ const useStyles = makeStyles((theme) => ({
       },
       '& label': {
         paddingTop: 0
-      },         
+      },
+      '& .MuiFormControlLabel-label': {
+        textTransform: "uppercase",
+        color: "#514d65",
+        fontWeight: 600,
+      }
     },
     loading: {
       marginRight: 10,

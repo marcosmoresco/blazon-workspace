@@ -7,6 +7,10 @@ import Image from "next/image";
 // components
 import CheckCircle from "./essets/CheckCircle.svg";
 import Button from "@components/Button";
+import TitlePage from "@components/TitlePage";
+import InfoIcon from "@icons/Info/index";
+import FilePlusIcon from "@icons/FilePlus";
+import CheckCircleIcon from "@icons/CheckCircle";
 
 // types
 import { ItemProps } from "./type";
@@ -21,10 +25,47 @@ import {
   TextArea,
 } from "./styles";
 
+import {  
+  StatusCheckoutStyle,
+  CircleStyle,
+  LineStatusStyle,
+  SymbolStyle,
+  TitlesStyle,
+  ItemText,  
+} from "@modules/Checkout/styles";
+
 const CheckoutRequested: React.FC<ItemProps> = ({ nextStep }) => {
   const router = useRouter();
   return (
     <>
+      <TitlePage title="checkout" subTitle="checkout.requested"/>
+      <StatusCheckoutStyle>
+        <SymbolStyle>
+          <CircleStyle>
+            <InfoIcon width={48} height={48} color="#3174F6" stroke={2}/>
+          </CircleStyle>
+          <LineStatusStyle style={{ background: "#3174F6" }} />
+          <CircleStyle>
+            <FilePlusIcon color="#3174F6" stroke={2}/>
+          </CircleStyle>
+          <LineStatusStyle style={{ background: "#3174F6" }} />
+          <CircleStyle>
+            <CheckCircleIcon width={48} height={48} color="#3174F6" stroke={2}/>
+          </CircleStyle>
+        </SymbolStyle>
+        <TitlesStyle>
+          <ItemText style={{ color: "#BDBCC5" }}>
+            <FormattedMessage id="checkout.information" />
+          </ItemText>
+          <ItemText style={{ color: "#BDBCC5" }}>
+            <FormattedMessage id="checkout.FinishingRequest" />
+          </ItemText>
+          <ItemText style={{ color: "#514D65" }}>
+            <FormattedMessage id="checkout.requested" />
+          </ItemText>
+        </TitlesStyle>
+      </StatusCheckoutStyle>
+      <Line />
       <FinishingArea>
         <ItemArea>
           <ImageArea>
@@ -47,12 +88,12 @@ const CheckoutRequested: React.FC<ItemProps> = ({ nextStep }) => {
             <Button
               variant="contained"
               color="default-primary"
-              onClick={() => router.push("/checkout")}
+              onClick={() => router.push("/requests")}
             >
-              <FormattedMessage id="checkout.cancel" />
+              <FormattedMessage id="requests" />
             </Button>
-            <Button variant="contained" color="primary" onClick={nextStep}>
-              <FormattedMessage id="checkout.save" />
+            <Button variant="contained" color="primary" onClick={() => router.push("/")}>
+              <FormattedMessage id="home" />
             </Button>
           </ButtonArea>
         </ItemArea>

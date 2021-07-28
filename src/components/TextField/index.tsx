@@ -44,16 +44,14 @@ const TextField: FC<TextFieldProps> = ({
     ? ''
     : label || intl.formatMessage({ id: name.toLowerCase() })
 
-  if (!inputProps.placeholder) {
-    inputProps.placeholder = `${name}.placeholder`.toLowerCase()
+  if (inputProps.placeholder) {
+    inputProps.placeholder = intl.formatMessage(
+      {
+        id: inputProps.placeholder
+      },
+      { labelText }
+    )
   }
-
-  inputProps.placeholder = intl.formatMessage(
-    {
-      id: inputProps.placeholder
-    },
-    { labelText }
-  )
 
   return (
     <FormControl

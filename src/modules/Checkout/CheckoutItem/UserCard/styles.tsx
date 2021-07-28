@@ -84,7 +84,7 @@ export const TextArea = styled.div`
 export const AddDados = styled.div`
   margin-top: 16px;
   padding: 0 24px;
-  span {
+  > span {
     font-size: 14px;
     color: #26213f;
     text-transform: uppercase;
@@ -135,4 +135,8 @@ export const Category = styled.div`
   color: #1B202A;
   margin-left: 24px;
   margin-top: 24px;
+`;
+
+export const DateType = styled.div`
+  width: 300px;
 `;

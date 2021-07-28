@@ -130,6 +130,8 @@ const DataGridBlazon = (props) => {
 
         setIsFetching(true);
 
+        link = link.replace(/{.*?}/g, '');
+
         const size = Number(getQueryParam('size', link))        
         const ord = orderChanged
 

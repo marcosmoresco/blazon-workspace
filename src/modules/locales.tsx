@@ -9,13 +9,8 @@ import TasksDetailsPt from "./TasksDetails/locales/pt.json";
 import TasksDetailsEn from "./TasksDetails/locales/en.json";
 
 //PasswordVault
-<<<<<<< HEAD
-import PasswordVaultPt from "./PasswordVault/locales/pt.json";
-import PasswordVaultEn from "./PasswordVault/locales/en.json";
-=======
 import PasswordVaultPt from './PasswordVaultItem/locales/pt.json'
 import PasswordVaultEn from './PasswordVaultItem/locales/en.json'
->>>>>>> 7ca5210541397e3f97ef1df846f30ddbc0555059
 
 //Requests
 import RequestsPt from "./Requests/locales/pt.json";
@@ -33,21 +28,6 @@ import UserEn from "./User/locales/en.json";
 import CheckoutPt from './Checkout/Locales/pt.json'
 import CheckoutEn from './Checkout/Locales/en.json'
 
-<<<<<<< HEAD
-=======
-//CheckoutEmpty
-import CheckoutEmptyPt from './CheckoutEmpty/Locales/pt.json'
-import CheckoutEmptyEn from './CheckoutEmpty/Locales/en.json'
-
-//CheckoutFinishing
-import CheckoutFinishingPt from './CheckoutFinishing/Locales/pt.json'
-import CheckoutFinishingEn from './CheckoutFinishing/Locales/en.json'
-
-//CheckoutRequested
-import CheckoutRequestedPt from './CheckoutRequested/Locales/pt.json'
-import CheckoutRequestedEn from './CheckoutRequested/Locales/en.json'
-
->>>>>>> 7ca5210541397e3f97ef1df846f30ddbc0555059
 export const ModulesLocalesPt: LocalesType = {
   ...TaskPt,
   ...TasksDetailsPt,
@@ -56,14 +36,7 @@ export const ModulesLocalesPt: LocalesType = {
   ...RequestsDatailingPt,
   ...UserPt,
   ...CheckoutPt,
-<<<<<<< HEAD
-};
-=======
-  ...CheckoutEmptyPt,
-  ...CheckoutFinishingPt,
-  ...CheckoutRequestedPt
 }
->>>>>>> 7ca5210541397e3f97ef1df846f30ddbc0555059
 
 export const ModulesLocalesEn: LocalesType = {
   ...TaskEn,
@@ -73,14 +46,7 @@ export const ModulesLocalesEn: LocalesType = {
   ...RequestsDatailingEn,
   ...UserEn,
   ...CheckoutEn,
-<<<<<<< HEAD
 };
-=======
-  ...CheckoutEmptyEn,
-  ...CheckoutFinishingEn,
-  ...CheckoutRequestedEn
-}
->>>>>>> 7ca5210541397e3f97ef1df846f30ddbc0555059
 
 const Locales = {
   ModulesLocalesPt,

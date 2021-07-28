@@ -98,17 +98,7 @@ display: flex;
   }
 `;
 export const Description = styled.div`
-  margin-bottom: 48px;
-  width: 100%;
-  border: 1px solid #e9e8eb;
-  border-radius: 8px;
-  padding: 22px 16px;
-
-  span {
-    font-size: 16px;
-    font-weight: 400;
-    color: #26213f;
-  }
+  margin-bottom: 48px;  
 `;
 export const DescriptionTitle = styled.div`
   margin: 24px 0 8px;

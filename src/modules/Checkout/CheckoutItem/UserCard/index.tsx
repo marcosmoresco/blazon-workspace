@@ -9,16 +9,19 @@ import apolloClient from "@utils/apollo-client";
 import * as Yup from "yup";
 import { get } from "lodash";
 import { useDispatch } from "react-redux";
+import { useCart } from "@requestCart/index";
 
 // components
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import MinusCircleIcon from "@icons/MinusCircle";
 import Status from "./Status";
 import Button from "@components/Button";
-import Checkbox from "@components/Checkbox";
+import DatePicker from "@components/DatePicker";
+import Switch from "@components/Switch";
 import UserThumb from "@components/UserThumb";
 import TextField from "@components/TextField";
 import { addMessage } from "@actions/index";
+import { useUser } from "@hooks";
 
 // styles
 import {
@@ -33,17 +36,21 @@ import {
   TextArea,
   Text,
   AddDados,
-  TextDescription,
   UserBottomArea,
   Category,
+  DateType,
 } from "./styles";
 import { CheckOutlined } from "@material-ui/icons";
 
 //types
 import { CheckouitemIstanceProps } from "./types";
 
+//constants
+import { findItemByCatalogItemId } from "./constants";
+
 //queries
 import { GET_FORM_DATAS } from "@modules/Checkout/queries";
+import { GET_SELF_SERVICE_CART } from "@requestCart/queries";
 
 //mutations
 import { UPDATE_SELF_SERVICE_CART_ITEM_INSTANCE } from "@modules/Checkout/mutations";
@@ -52,33 +59,59 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
   instance,
   index,
   item,
+  onDelete,
+  onAdd,
+  onAddItem,
+  onDeleteItem,
+  onUpdateItem,
 }) => {
 
   const dispatch = useDispatch();
-  const intl = useIntl();
-  const router = useRouter();
+  const intl = useIntl(); 
+  const { cart } = useCart();
+  const [ user ] = useUser();
 
   const [updateSelfServiceCartItemInstance, {}] = useMutation(UPDATE_SELF_SERVICE_CART_ITEM_INSTANCE, {   
+    refetchQueries: [
+      {
+        query: GET_SELF_SERVICE_CART,
+      },
+    ],
     onCompleted: ({updateSelfServiceCartItemInstance}) => {   
       if(updateSelfServiceCartItemInstance) {
         dispatch(
           addMessage(
-            intl.formatMessage({id: "profile.edit.avatar.success"})
+            intl.formatMessage({id: "checkout.item.instance.updated.success"})
           )
         );       
       }        
     },
   });
 
+  let initialValues: {[key: string]: any} = {};
+
+  if(instance.payload) {
+    const payload = JSON.parse(instance.payload);   
+    initialValues = {
+      instance: payload?.additionalFields
+    };   
+  }
+
   const [formik, setFormik] = useState({  
     render: false,  
     validationSchema: {},
-    initialValues: {},
+    initialValues,
     enableReinitialize: true,
     isInitialValid: false,
     onSubmit: (values: any) => {
-      alert("submit")
-      console.log(values);
+      const variables = {
+        itemId: item.identifier,
+        identifier: instance.identifier,
+        payload: JSON.stringify(values?.instance || {})
+      }
+      updateSelfServiceCartItemInstance({
+        variables
+      });
     },
   });
   
@@ -94,16 +127,15 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
         },
       })
       .then(({ data }) => {
-        if(data?.getNewEntry) {
+        if(data?.getNewEntry) {        
+
           const formNewEntry = JSON.parse(data?.getNewEntry);
           const attributes = Object.keys(formNewEntry.attributes);                          
           if(attributes.length) {  
-            const schema: {[key: string]: any} = {};  
-            const initialValues: {[key: string]: any} = {};                   
+            const schema: {[key: string]: any} = {};                               
             Object.keys(formNewEntry.attributes).map((category: any, index: number) => {
-              formNewEntry.attributes[category].forEach((attribute: any) => {
-                initialValues[attribute.name] = attribute.value; 
-                if(["STRING", "DATE"].includes(attribute.displayType)) {
+              formNewEntry.attributes[category].forEach((attribute: any) => {                
+                if(["STRING", "TEXTAREA", "DATE"].includes(attribute.displayType)) {
 
                   if(attribute.required) {
                     const yupObject = Yup
@@ -139,7 +171,11 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                       .number();                     
                     schema[attribute.name] = yupObject;
                   }                  
-                }                                 
+                } else if (attribute.displayType === "CHECKBOX") {
+                  const yupObject = Yup
+                  .bool();                     
+                  schema[attribute.name] = yupObject;
+                }                                
               });
             });           
 
@@ -149,13 +185,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
               })    
             });
 
-            formik.validationSchema = validationSchema;
-            formik.initialValues = {
-              instance: {
-                ...initialValues
-              }
-            };
-            formik.render = true;
+            formik.validationSchema = validationSchema;           
+            formik.render = true;         
                  
             setFormik(formik);
             setFormDatas(formNewEntry.attributes);                   
@@ -178,11 +209,19 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
             </div>
           </div>
         </UserId>
-        <IconSpace>
+        {["TO_ME_AND_TO", "TO"].includes(item?.assignType) && Number(instance.userId) !== user?.identifier && (
+        <IconSpace onClick={onDelete}>
           <MinusCircleIcon width={24} height={24} className="classes.root" />
-        </IconSpace>
+        </IconSpace>)}
       </UserCardTitle>
       <Line />
+      {(instance.schemaValidatedError.status ||
+       instance.alreadyRequestInProgressError.status || 
+       instance.accessAlreadyExistError.status || 
+       instance.adminAccountLockedError.status || 
+       instance.needExpirationDateError.status || 
+       instance.needSelectAccountError.status || 
+       instance.relatedAccountNotFoundError.status ) && (
       <ObservationArea>
         <Observation>
           <TextArea>
@@ -225,12 +264,59 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                 <FormattedMessage id="checkout.item.invalid.needSelectAccountError" />
               </div>
             )}
+            {instance.relatedAccountNotFoundError.status && (
+              <div>
+                -{" "}
+                <FormattedMessage 
+                  id="checkout.item.invalid.relatedAccountNotFoundError" 
+                  values={{ 
+                    resourceName: instance.relatedAccountNotFoundError.relatedCatalogItemName,
+                    link: <b 
+                          className="pointer" 
+                          onClick={() => {
+                            const isLoggedUser = Number(instance.userId) === user.identifier;
+                            const currentItem = findItemByCatalogItemId(instance.relatedAccountNotFoundError.relatedCatalogItemId, cart);
+                            let updateAssignType = null;
+                            if(currentItem) {
+                              updateAssignType = isLoggedUser ? "TO_ME_AND_TO" : (currentItem.assignType === "TO_ME" ? "TO_ME_AND_TO" : "TO"); 
+                            }                            
+                            if(item.instances.length <= 1) {                              
+                              onDeleteItem();
+                              if(!currentItem) {
+                                onAddItem(instance.relatedAccountNotFoundError.relatedCatalogItemId, instance.userId, isLoggedUser);
+                              } else {
+                                onUpdateItem(item.identifier, updateAssignType);
+                                if(!isLoggedUser) {
+                                  onAdd(currentItem.identifier, instance.userId);
+                                }                                
+                              }
+                            } else {                              
+                              if( item.assignType === "TO_ME_AND_TO" && isLoggedUser ) {
+                                onUpdateItem(item.identifier, "TO");
+                              }
+                              onDelete(true);
+                              if(currentItem) {
+                                onAddItem(instance.relatedAccountNotFoundError.relatedCatalogItemId, instance.userId, isLoggedUser);
+                              } else {
+                                onUpdateItem(item.identifier, updateAssignType);
+                                if(!isLoggedUser) {
+                                  onAdd(currentItem.identifier, instance.userId);
+                                }
+                              }
+                            }
+                          }}>
+                            {intl.formatMessage({id: "checkout.item.invalid.relatedAccountNotFoundError.here"})}
+                          </b>,
+                  }}
+                />              
+              </div>
+            )}
           </TextArea>
           <Status
             notification={<FormattedMessage id="checkout.item.invalid.title" />}
           />
         </Observation>
-      </ObservationArea>
+      </ObservationArea>)}
       
       {formDatas && formik.render && (
         <Formik
@@ -240,22 +326,54 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
             <div key={`form-datas-category-${index}`}>
               <Form>
                 <Category>{category}</Category>
-                {formDatas[category].map((attribute: any) => {
+                {formDatas[category].map((attribute: any) => {                 
                   
-                  const fieldValue = get(form.values, attribute.name);                                 
+                  const fieldValue = get(form.values.instance, attribute.name);                                                      
+                  let currentError = null;
+                  if(["DATE"].includes(attribute.displayType)) {                    
+                    currentError = (!form?.values?.instance || !form?.values?.instance[attribute.name]) && form?.errors?.instance && form?.errors?.instance[attribute.name];
+                  }                  
 
                   return (
                   <div key={`form-datas-attribute-${index}-${attribute.position}`}>
                     <AddDados>                                     
+                      {["STRING", "TEXTAREA", "NUMBER"].includes(attribute.displayType) && (
                       <TextField
                         form={form}
                         label={attribute.label}
+                        type={attribute.displayType === "NUMBER" ? "number" : "text"}
                         name={"instance." + attribute.name}
                         required={attribute.required}
                         disabled={!attribute.writable}
                         value={fieldValue}
-                        key={index}                      
-                      />
+                        key={index}  
+                        multiline={"TEXTAREA" === attribute.displayType} 
+                        rows={"TEXTAREA" === attribute.displayType ? 3 : 0}                   
+                      />)}
+                      {["DATE"].includes(attribute.displayType) && (
+                        <DateType>
+                          <DatePicker
+                            label={attribute.label}
+                            key={index}
+                            helperText={currentError}
+                            error={Boolean(currentError) && !Boolean(form?.values?.instance[attribute.name])}
+                            name={"instance." + attribute.name}                            
+                            value={fieldValue}
+                            onChange={(date: string) => form.setFieldValue("instance." + attribute.name, date, false)}
+                          />
+                        </DateType>                        
+                      )}
+                      {["CHECKBOX"].includes(attribute.displayType) && (
+                        <Switch
+                          label={attribute.label}
+                          value={fieldValue}
+                          checked={fieldValue}
+                          onChange={(val: any) => form.setFieldValue("instance." + attribute.name, val, false)}
+                          name={"instance." + attribute.name}
+                          lab
+                          color="primary"
+                        />                                              
+                      )}
                     </AddDados>
                   </div>              
                 )})}     

@@ -31,6 +31,8 @@
   "search.filters": "Search filters",
   "end.of.results": "End of results",
   "remove": "Remove",
+  "cart.item.no.added": "No items added",
+  "cart.item.no.added.text": "Search for an item and add it to your cart.",
   "item.selected": "item selected",
   "items.selected": "items selected",
   "tutorial.button": "Watch tutorial",
@@ -68,6 +70,7 @@
   "searchIn": "Search in",
   "viewAll.results.for": "View all results for",
   "requests": "Requests",
+  "request": "Request",
   "passwordVault": "Password vault",
   "requestCart": "Request cart",
   "notifications": "Notifications",
@@ -77,5 +80,9 @@
   "search.no.result": "We didn't find any results for your search.",
   "enter.text": "Enter the text",
   "enter.number": "Enter the number",
-  "revoked": "Revoked"
+  "revoked": "Revoked",
+  "isRequired": "{field} is required",
+  "justification": "Justification",
+  "effectiveDate": "Effective date",
+  "home": "Home"
 }

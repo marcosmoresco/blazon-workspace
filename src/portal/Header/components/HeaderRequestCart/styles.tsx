@@ -24,8 +24,11 @@ export const BoxRequestCartHeader = styled.div`
   padding: 24px 24px 0 24px;
 `;
 
-export const HeaderDivider = styledMui(MuiDivider)({
-  margin: "15px -26px 24px -26px",
+export const HeaderDivider = styledMui(MuiDivider)({  
+  margin: "15px 0 24px 0px",
+  width: 453,
+  position: "relative",
+  left: -23
 });
 
 export const Header = styled.div`

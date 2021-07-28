@@ -34,12 +34,15 @@ export const SelfService = `
 
   type SelfServiceCartItemInstanceValidation { 
     status: Boolean
+    relatedCatalogItemName: String
+    relatedCatalogItemId: String
   }
 
   type SelfServiceCartItemInstance {    
     identifier: Int
     displayName: String
     userId: String
+    payload: String
     accessAlreadyExistError: SelfServiceCartItemInstanceValidation
     adminAccountLockedError: SelfServiceCartItemInstanceValidation
     alreadyRequestInProgressError: SelfServiceCartItemInstanceValidation
@@ -69,6 +72,10 @@ export const SelfService = `
     allowedAssignTypes: [String] 
     items: [SelfServiceCartItem]   
   }
+
+  type SelfServiceCartSubmit {    
+    requestId: Int     
+  }
 `;
 
 export const Queries = `
@@ -80,7 +87,12 @@ export const Queries = `
 `;
 
 export const Mutations = `
+  submitSelfServiceCart(effectiveDate: String, justification: String): SelfServiceCartSubmit
   deleteSelfServiceCart: Boolean
   deleteSelfServiceCartItem(identifier: Int, name: String, targetType: String): SelfServiceCartItem
-  addSelfServiceCartItem(id: String): SelfServiceCartItem
+  updateSelfServiceCartItem(identifier: Int, assignType: String): Boolean
+  addSelfServiceCartItem(id: String, assignType: String, userId: String): SelfServiceCartItem
+  updateSelfServiceCartItemInstance(itemId: Int, identifier: Int, payload: String): Boolean
+  addSelfServiceCartItemInstance(itemId: Int, userId: Int): Boolean
+  deleteSelfServiceCartItemInstance(itemId: Int, userId: Int): Boolean
 `;

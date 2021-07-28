@@ -1,104 +1,158 @@
 // vendors
-import React, { useState } from "react";
-import { useEffect } from "react";
-import { FormattedMessage } from "react-intl";
+import React from "react";
+import { FormattedMessage, useIntl } from "react-intl";
+import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import { addMessage } from "@actions/index";
+import { isValidCart } from "@utils/index";
 
 // components
-import CheckoutFirstElement from "./CheckoutFirstElement";
-import CheckoutFinishing from "./CheckoutFinishing";
-import CheckoutRequested from "./CheckoutRequested";
-import TitlePage from "./TitlePage";
-import Nav from "./Nav";
-import InfoIcon from "@icons/Info/index 2";
+import TitlePage from "@components/TitlePage";
+import CheckoutItem from "./CheckoutItem";
+import Button from "@components/Button";
+import InfoIcon from "@icons/Info/index";
 import FilePlusIcon from "@icons/FilePlus";
 import CheckCircleIcon from "@icons/CheckCircle";
-import { NavItem } from "./Nav/type";
-import { CheckoutProp } from "./type";
+import { useCart } from "@requestCart/index";
+import CheckoutEmpty from "@modules/Checkout/CheckoutFirstElement/CheckoutEmpty";
 
-// const items = [
-//   {
-//     id: 1,
-//     itemName: "Information",
-//     icon: <InfoIcon />,
-//   },
-//   {
-//     id: 2,
-//     itemName: <FormattedMessage id="checkout.FinishingRequest" />,
-//     icon: <FilePlusIcon />,
-//   },
-//   {
-//     id: 3,
-//     itemName: "Requestedff",
-//     icon: <CheckCircleIcon />,
-//   },
-// ];
+// styles
+import {
+  Line,
+  PageInfoStyle,
+  CheckBox,
+  StatusCheckoutStyle,
+  CircleStyle,
+  LineStatusStyle,
+  SymbolStyle,
+  TitlesStyle,
+  ItemText,
+  ItemsAdded,
+} from "./styles";
+import { SelfServiceCartItem } from "@requestCart/types";
 
-const Checkout: React.FC<CheckoutProp> = ({ empty }) => {
-  const [items, setItems] = useState<NavItem[]>([]);
-
-  const [currentIndex, setCurrentIndex] = useState(0);
-
-  useEffect(() => {
-    setItems([
-      {
-        id: 1,
-        itemName: <FormattedMessage id="checkout.information" />,
-        icon: (
-          <InfoIcon
-            color={
-              currentIndex > 0
-                ? "#3174F6"
-                : currentIndex === 0
-                ? "#514D65"
-                : "#7D7A8C"
-            }
-          />
-        ),
-      },
-      {
-        id: 2,
-        itemName: <FormattedMessage id="checkout.Finishing" />,
-        icon: (
-          <FilePlusIcon
-            color={
-              currentIndex > 1
-                ? "#3174F6"
-                : currentIndex === 1
-                ? "#514D65"
-                : "#7D7A8C"
-            }
-          />
-        ),
-      },
-      {
-        id: 3,
-        itemName: <FormattedMessage id="checkout.requested" />,
-        icon: (
-          <CheckCircleIcon color={currentIndex >= 2 ? "#3174F6" : "#7D7A8C"} />
-        ),
-      },
-    ]);
-  }, [currentIndex]);
-
-  const nextStep = () => {
-    setCurrentIndex((index) => index + 1);
-  };
+const Checkout: React.FC = () => {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const intl = useIntl();
+  const { cart } = useCart();
 
   return (
     <>
-      <TitlePage onBack={() => {}} currentIndex={currentIndex} />
-
-      <Nav items={items} currentIndex={currentIndex} />
-
-      {currentIndex === 0 ? (
-        <CheckoutFirstElement nextStep={nextStep} emptyPage={empty} />
-      ) : currentIndex === 1 ? (
-        <CheckoutFinishing nextStep={nextStep} />
-      ) : currentIndex === 2 ? (
-        <CheckoutRequested nextStep={nextStep} />
-      ) : (
-        <></>
-      )}
+      <TitlePage title="checkout" subTitle="checkout.RequestInformation" />
+      <StatusCheckoutStyle>
+        <SymbolStyle>
+          <CircleStyle>
+            <InfoIcon width={48} height={48} color="#514D65" stroke={2} />
+          </CircleStyle>
+          <LineStatusStyle style={{ background: "#E9E8EB" }} />
+          <CircleStyle>
+            <FilePlusIcon color="#BDBCC5" stroke={2} />
+          </CircleStyle>
+          <LineStatusStyle style={{ background: "#E9E8EB" }} />
+          <CircleStyle>
+            <CheckCircleIcon
+              width={48}
+              height={48}
+              color="#BDBCC5"
+              stroke={2}
+            />
+          </CircleStyle>
+        </SymbolStyle>
+        <TitlesStyle>
+          <ItemText style={{ color: "#514D65" }}>
+            <FormattedMessage id="checkout.information" />
+          </ItemText>
+          <ItemText style={{ color: "#BDBCC5" }}>
+            <FormattedMessage id="checkout.FinishingRequest" />
+          </ItemText>
+          <ItemText style={{ color: "#BDBCC5" }}>
+            <FormattedMessage id="checkout.requested" />
+          </ItemText>
+        </TitlesStyle>
+      </StatusCheckoutStyle>
+      <Line />
+      {!(cart?.items || []).length ? <CheckoutEmpty /> : null}
+      {(cart?.items || []).length ? (
+        <>
+          <PageInfoStyle>
+            <div>
+              <ItemsAdded>
+                <div>{(cart?.items || []).length}</div>
+                <FormattedMessage
+                  id={
+                    (cart?.items || []).length > 1
+                      ? "checkout.items.added"
+                      : "checkout.item.added"
+                  }
+                />
+              </ItemsAdded>
+            </div>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                if (!isValidCart(cart)) {
+                  dispatch(
+                    addMessage(
+                      intl.formatMessage({
+                        id: "checkout.invalid.items",
+                      }),
+                      "warning"
+                    )
+                  );
+                  return;
+                }
+                router.push("/checkout-finishing");
+              }}
+            >
+              <FormattedMessage id="checkout.continue" />
+            </Button>
+          </PageInfoStyle>
+          {(cart?.items || []).map((item: SelfServiceCartItem) => (
+            <CheckoutItem
+              key={`checkout-item-${item.identifier}`}
+              item={item}
+              allowedAssignTypes={cart?.allowedAssignTypes}
+            />
+          ))}
+          <Line />
+          <PageInfoStyle>
+            <div>
+              <ItemsAdded>
+                <div>{(cart?.items || []).length}</div>
+                <FormattedMessage
+                  id={
+                    (cart?.items || []).length > 1
+                      ? "checkout.items.added"
+                      : "checkout.item.added"
+                  }
+                />
+              </ItemsAdded>
+            </div>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={() => {
+                if (!isValidCart(cart)) {
+                  dispatch(
+                    addMessage(
+                      intl.formatMessage({
+                        id: "checkout.invalid.items",
+                      }),
+                      "warning"
+                    )
+                  );
+                  return;
+                }
+                router.push("/checkout-finishing");
+              }}
+            >
+              <FormattedMessage id="checkout.continue" />
+            </Button>
+          </PageInfoStyle>
+        </>
+      ) : null}
     </>
   );
 };

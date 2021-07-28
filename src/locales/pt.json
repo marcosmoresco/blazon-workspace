@@ -31,6 +31,8 @@
   "search.filters": "Procurar filtros",
   "end.of.results": "Fim dos resultados",
   "remove": "Remover",
+  "cart.item.no.added": "Nenhum item adicionado",
+  "cart.item.no.added.text": "Busque um item e adicione ele ao carrinho.",
   "item.selected": "item selecionado",
   "items.selected": "items selecionados",
   "tutorial.button": "Assistir tutorial",
@@ -68,6 +70,7 @@
   "searchIn": "Procurar em",
   "viewAll.results.for": "Ver todos os resultados para",
   "requests": "Requisições",
+  "request": "Requisição",
   "passwordVault": "Cofre de senhas",
   "requestCart": "Carrinho de solicitações",
   "notifications": "Notificações",
@@ -77,5 +80,9 @@
   "search.no.result": "Não encontramos resultados para sua busca.",
   "enter.text": "Entre com o texto",
   "enter.number": "Entre com o número",
-  "revoked": "Revogado" 
+  "revoked": "Revogado",
+  "isRequired": "{field} é obrigatório",
+  "justification": "Justificativa",
+  "effectiveDate": "Data de efetivação",
+  "home": "Início"
 }

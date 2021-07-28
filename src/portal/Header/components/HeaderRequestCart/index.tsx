@@ -18,6 +18,7 @@ import UserGearIcon from "@icons/UserGear";
 import TrashIcon from "@icons/Trash";
 import XIcon from "@icons/X";
 import XCircleIcon from "@icons/XCircle";
+import Empty from "./Empty";
 import { addMessage, addCartItemMessage } from "@actions/index";
 import { useCart } from "@requestCart/index";
 import { GET_SELF_SERVICE_CART } from "@requestCart/queries";
@@ -214,67 +215,74 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
               </BoxHeaderButton>
             </BoxHeader>
           </BoxRequestCartHeader>
-          <BoxContainerTitle>
-            <BoxContainerTitleText>
-              {(selfServiceCart?.items || []).length}{" "}
-              {intl.formatMessage({ id: "cart.items.added" })}
-            </BoxContainerTitleText>
-            <BoxContainerTitleTagContent onClick={handleClickFilter}>
-              <BoxContainerTitleTag>
-                <FormattedMessage id={currentFilter} />
-              </BoxContainerTitleTag>
-              <CaretDownIcon width={21} height={21} color="#676378" />
-            </BoxContainerTitleTagContent>
-            <Menu
-              id="menu-filter-cart-items"
-              anchorEl={anchorEl}
-              keepMounted
-              open={Boolean(anchorEl)}
-              onClose={handleCloseFilter}
-            >
-              <MenuItem
-                onClick={() => {
-                  setCurrentFilter("all");
-                  handleCloseFilter();
-                }}
-              >
-                <FormattedMessage id="all" />
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  setCurrentFilter("resource");
-                  handleCloseFilter();
-                }}
-              >
-                <FormattedMessage id="resource" />
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  setCurrentFilter("entitlement");
-                  handleCloseFilter();
-                }}
-              >
-                <FormattedMessage id="entitlement" />
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  setCurrentFilter("role");
-                  handleCloseFilter();
-                }}
-              >
-                <FormattedMessage id="role" />
-              </MenuItem>
-              <MenuItem
-                onClick={() => {
-                  setCurrentFilter("adminAccount");
-                  handleCloseFilter();
-                }}
-              >
-                <FormattedMessage id="adminAccount" />
-              </MenuItem>
-            </Menu>
-          </BoxContainerTitle>
-          <ItemsDivider />
+          {!(selfServiceCart?.items || []).length && (
+            <Empty />
+          )}
+          {(selfServiceCart?.items || []).length > 0 && (
+            <>
+              <BoxContainerTitle>
+                <BoxContainerTitleText>
+                  {(selfServiceCart?.items || []).length}{" "}
+                  {intl.formatMessage({ id: "cart.items.added" })}
+                </BoxContainerTitleText>
+                <BoxContainerTitleTagContent onClick={handleClickFilter}>
+                  <BoxContainerTitleTag>
+                    <FormattedMessage id={currentFilter} />
+                  </BoxContainerTitleTag>
+                  <CaretDownIcon width={21} height={21} color="#676378" />
+                </BoxContainerTitleTagContent>
+                <Menu
+                  id="menu-filter-cart-items"
+                  anchorEl={anchorEl}
+                  keepMounted
+                  open={Boolean(anchorEl)}
+                  onClose={handleCloseFilter}
+                >
+                  <MenuItem
+                    onClick={() => {
+                      setCurrentFilter("all");
+                      handleCloseFilter();
+                    }}
+                  >
+                    <FormattedMessage id="all" />
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      setCurrentFilter("resource");
+                      handleCloseFilter();
+                    }}
+                  >
+                    <FormattedMessage id="resource" />
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      setCurrentFilter("entitlement");
+                      handleCloseFilter();
+                    }}
+                  >
+                    <FormattedMessage id="entitlement" />
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      setCurrentFilter("role");
+                      handleCloseFilter();
+                    }}
+                  >
+                    <FormattedMessage id="role" />
+                  </MenuItem>
+                  <MenuItem
+                    onClick={() => {
+                      setCurrentFilter("adminAccount");
+                      handleCloseFilter();
+                    }}
+                  >
+                    <FormattedMessage id="adminAccount" />
+                  </MenuItem>
+                </Menu>
+              </BoxContainerTitle>
+              <ItemsDivider />
+            </>
+          )}                   
           {(selfServiceCart?.items || [])
             .filter(
               (item: SelfServiceCartItem) =>
@@ -302,7 +310,8 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
                 </BoxRequestCartItemTrash>
               </BoxRequestCartItem>
             ))}
-          <BoxFooter>
+           {(selfServiceCart?.items || []).length > 0 && (
+           <BoxFooter>
             <Button
               color="primary"
               onClick={(e: React.MouseEvent) => handleDeleteAll(e)}
@@ -312,11 +321,14 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
             <Button
               variant="contained"
               color="primary"
-              onClick={() => router.push("/checkout")}
+              onClick={() => {
+                setOpen(false);
+                router.push("/checkout");
+              }}
             >
               {intl.formatMessage({ id: "checkout" })}
             </Button>
-          </BoxFooter>
+          </BoxFooter>)}
         </BoxRequestCart>
       </Drawer>
     </>

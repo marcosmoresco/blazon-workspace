@@ -20,6 +20,7 @@ export const GET_SELF_SERVICE_CART = gql`
           identifier
           displayName
           userId
+          payload
           accessAlreadyExistError {
             status
           }
@@ -37,6 +38,8 @@ export const GET_SELF_SERVICE_CART = gql`
           }
           relatedAccountNotFoundError {
             status
+            relatedCatalogItemName
+            relatedCatalogItemId
           }
           schemaValidatedError {
             status

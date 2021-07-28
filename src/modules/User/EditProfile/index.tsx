@@ -1,4 +1,4 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { injectIntl, IntlShape, useIntl, FormattedMessage } from "react-intl";
 import { Form, Formik, withFormik, useFormikContext } from "formik";
@@ -129,8 +129,7 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
   });
 
   if (!loading && !error) {
-    const formData = JSON.parse(data?.getModifyEntry);
-    console.log(formData);
+    const formData = JSON.parse(data?.getModifyEntry);   
   }
 
   const [modalOpen, setModalOpen] = useState(false);

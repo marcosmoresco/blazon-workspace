@@ -46,7 +46,7 @@ export const TitlesStyle = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 152px;
+  gap: 136px;
   padding-bottom: 48px;
 `;
 
@@ -70,4 +70,20 @@ export const LineStatusStyle = styled.div`
   width: 160px;
   height: 4px;
   background: #e9e8eb;
+`;
+
+export const StatusCheckoutStyle = styled.div`
+  justify-content: center;
+  align-items: center;
+`;
+
+export const ItemsAdded = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 5px;
+  font-weight: 500;
+  font-size: 21px;
+  line-height: 130%;
+  color: #26213F;
 `;

@@ -13,4 +13,15 @@ export const FormDatasQueries = {
       throw error;
     }
   },
+  getNewEntry: async (parent: any, args: any, context: any) => {
+    try {
+      const entries = await axios.get(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/directory/formdatas/newentry?resourceid=${args?.resourceId}&schema=${args?.schema}`,
+        { ...config(context) }
+      );
+      return JSON.stringify(entries.data);
+    } catch (error) {
+      throw error;
+    }
+  },
 };

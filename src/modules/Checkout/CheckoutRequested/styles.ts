@@ -97,6 +97,7 @@ export const ButtonArea = styled.div`
   justify-content: flex-end;
   padding: 32px 24px 0;
   gap: 32px;
+  justify-content: center;
 
   Button {
     min-width: 156px;
