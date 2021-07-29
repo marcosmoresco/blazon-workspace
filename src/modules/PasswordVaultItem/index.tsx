@@ -1,52 +1,65 @@
-import KeyIcon from '@icons/Key'
-import { Grid } from '@material-ui/core'
-import React, { FC } from 'react'
-import { useStyles } from './../../portal/Home/styles'
-import { withStyles } from '@material-ui/core/styles'
+import KeyIcon from "@icons/Key";
+import Tooltip from "@components/Tooltip";
+import React, { FC } from "react";
+import {
+  RecentPasswordCard,
+  RecentPasswordCardContent,
+  RecentPasswordCardContentHeader,
+  RecentPasswordCardContentHeaderImage,
+  RecentPasswordCardContentHeaderTitle,
+  RecentPasswordCardContentHeaderUsername,
+  RecentPasswordCardContentHeaderText,
+  RecentPasswordCardContentHeaderBox,
+} from "./../../portal/Home/styles";
 
 type PasswordVaultItemProps = {
-  classes: any
-  setOpen(open: boolean): void
-  setPasswordVault(item: any): void
-  r: any
-}
+  classes: any;
+  setOpen(open: boolean): void;
+  setPasswordVault(item: any): void;
+  r: any;
+};
 
 const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
   classes,
   setOpen,
   setPasswordVault,
-  r
-}) => {
+  r,
+}) => {  
   return (
     <div
-      className={classes?.valtItem || ''}
       onClick={() => {
-        setOpen(true)
-        setPasswordVault(r)
+        setOpen(true);
+        setPasswordVault(r);
       }}
     >
-      <div className={classes.recentPasswordCard}>
-        <div className={classes.recentPasswordCardContent}>
-          <div className={classes.recentPasswordCardContentHeader}>
-            <div className={classes.recentPasswordCardContentHeaderImage}>
-              <KeyIcon width={30} height={30} color='#3174F6' />
-            </div>
-            <div>
-              <div className={classes.recentPasswordCardContentHeaderTitle}>
-                {r.name}
-              </div>
-              <div className={classes.recentPasswordCardContentHeaderUsername}>
-                {r.username}
-              </div>
-            </div>
-          </div>
-          <div className={classes.recentPasswordCardContentHeaderText}>
-            {r.description}
-          </div>
-        </div>
-      </div>
+      <RecentPasswordCard>
+        <RecentPasswordCardContent>
+          <RecentPasswordCardContentHeader>
+            <RecentPasswordCardContentHeaderImage>
+              <KeyIcon width={30} height={30} color="#3174F6" />
+            </RecentPasswordCardContentHeaderImage>
+            <RecentPasswordCardContentHeaderBox>
+              <Tooltip title={r.name} placement="bottom">
+                <RecentPasswordCardContentHeaderTitle>                
+                  {r.name}               
+                </RecentPasswordCardContentHeaderTitle>
+              </Tooltip>
+              <Tooltip title={r.username} placement="bottom">
+                <RecentPasswordCardContentHeaderUsername>
+                  {r.username}
+                </RecentPasswordCardContentHeaderUsername>
+              </Tooltip>             
+            </RecentPasswordCardContentHeaderBox>
+          </RecentPasswordCardContentHeader>
+          <Tooltip title={r.description} placement="bottom">
+            <RecentPasswordCardContentHeaderText>           
+              {r.description}                        
+            </RecentPasswordCardContentHeaderText>
+          </Tooltip>
+        </RecentPasswordCardContent>
+      </RecentPasswordCard>
     </div>
-  )
-}
+  );
+};
 
-export default withStyles(useStyles)(PasswordVaultItem)
+export default PasswordVaultItem;

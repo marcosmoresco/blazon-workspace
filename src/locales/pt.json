@@ -84,5 +84,9 @@
   "isRequired": "{field} é obrigatório",
   "justification": "Justificativa",
   "effectiveDate": "Data de efetivação",
-  "home": "Início"
+  "home": "Início",
+  "password": "Senha",
+  "read": "Leitura",
+  "modify": "Modificação",
+  "share": "Compartilhar"
 }

@@ -10,6 +10,7 @@ const useStyles = makeStyles((theme) => ({
     alignItems: "center",
     background: "#F0F0F1",
     borderRadius: 64,
+    width: "fit-content",
     "&.Box": {
       padding: 5,
     },
@@ -25,6 +26,9 @@ const useStyles = makeStyles((theme) => ({
   username: {
     fontSize: 14,
     color: "#514D65",
+  },
+  displayName: {
+    marginRight: 8
   },
 }));
 
@@ -50,7 +54,7 @@ export default function UserThumb(props) {
         />
         <div>
           {username ? <div className={classes.username}>{username}</div> : null}
-          {displayName ? <div>{displayName}</div> : null}
+          {displayName ? <div className={classes.displayName}>{displayName}</div> : null}
         </div>
       </React.Fragment>
     </div>

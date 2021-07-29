@@ -1,11 +1,16 @@
 import { gql } from "apollo-server-express";
 import { Link } from "./Link";
-import { User, Queries as UserQueries, Mutations as UserMutations } from "./User";
+import {
+  User,
+  Queries as UserQueries,
+  Mutations as UserMutations,
+} from "./User";
 import { Resume, Queries as ResumeQueries } from "./Resume";
 import { Permission } from "./Permission";
 import {
   PasswordVault,
   Queries as PasswordVaultQueries,
+  Mutations as PasswordVaultMutations,
 } from "./PasswordVault";
 import { ApprovalDetails } from "./ApprovalDetails";
 import { Request, Queries as RequestQueries } from "./Request";
@@ -44,5 +49,6 @@ export const typeDefs = gql`
   type Mutation {
     ${SelfServiceMutations}
     ${UserMutations}
+    ${PasswordVaultMutations}
   }
 `;

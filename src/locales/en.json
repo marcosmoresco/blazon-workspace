@@ -84,5 +84,9 @@
   "isRequired": "{field} is required",
   "justification": "Justification",
   "effectiveDate": "Effective date",
-  "home": "Home"
+  "home": "Home",
+  "password": "Password",
+  "read": "Read",
+  "modify": "Modify",
+  "share": "Share"
 }

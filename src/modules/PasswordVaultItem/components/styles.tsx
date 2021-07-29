@@ -20,6 +20,15 @@ const useStyles = (theme: Theme) =>
       justifyContent: "center",
       padding: 12,
     },
+    passwordVaultCardContentHeaderIcon: {
+      background: "#F4F4F5",
+      borderRadius: 8,
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      width: 64,
+      height: 64,
+    },
     passwordVaultCardContentHeaderTitle: {
       fontWeight: 600,
       fontSize: 16,

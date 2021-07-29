@@ -70,17 +70,27 @@ export const RecentPasswordCardContentHeaderImage = styled.div`
   margin-right: 8px;
 `;
 
+export const RecentPasswordCardContentHeaderBox = styled.div`
+  max-width: 86%;
+`;
+
 export const RecentPasswordCardContentHeaderTitle = styled.div`
   font-weight: 600;
   font-size: 16px;
   line-height: 24px;
   color: #26213F;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 export const RecentPasswordCardContentHeaderUsername = styled.div`
   font-weight: normal;
   font-size: 14px;
   color: #BDBCC5;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 export const RecentPasswordCardContentHeaderText = styled.div`
@@ -89,6 +99,9 @@ export const RecentPasswordCardContentHeaderText = styled.div`
   line-height: 21px;
   color: #676378;
   margin-top: 8px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 export const BoxRecentPasswordsContent = styled.div`

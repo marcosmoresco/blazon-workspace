@@ -44,6 +44,7 @@ import {
   RecentPasswordCardContentHeaderTitle,
   RecentPasswordCardContentHeaderUsername,
   RecentPasswordCardContentHeaderText,
+  RecentPasswordCardContentHeaderBox,
   BoxAccounts,
   AccountsContent,
   AccountsContentInfo,
@@ -156,18 +157,24 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                                       color='#3174F6'
                                     />
                                   </RecentPasswordCardContentHeaderImage>
-                                  <div>
-                                    <RecentPasswordCardContentHeaderTitle>
-                                      {r.name}
-                                    </RecentPasswordCardContentHeaderTitle>
-                                    <RecentPasswordCardContentHeaderUsername>
-                                      {r.username}
-                                    </RecentPasswordCardContentHeaderUsername>
-                                  </div>
+                                  <RecentPasswordCardContentHeaderBox>
+                                    <Tooltip title={r.name} placement="bottom">
+                                      <RecentPasswordCardContentHeaderTitle>
+                                        {r.name}
+                                      </RecentPasswordCardContentHeaderTitle>
+                                    </Tooltip>  
+                                    <Tooltip title={r.username} placement="bottom">
+                                      <RecentPasswordCardContentHeaderUsername>
+                                        {r.username}
+                                      </RecentPasswordCardContentHeaderUsername>
+                                    </Tooltip>                                                                    
+                                  </RecentPasswordCardContentHeaderBox>
                                 </RecentPasswordCardContentHeader>
-                                <RecentPasswordCardContentHeaderText>
-                                  {r.description}
-                                </RecentPasswordCardContentHeaderText>
+                                <Tooltip title={r.description} placement="bottom">
+                                  <RecentPasswordCardContentHeaderText>
+                                    {r.description}
+                                  </RecentPasswordCardContentHeaderText>
+                                </Tooltip>                                
                               </RecentPasswordCardContent>
                             </RecentPasswordCard>
                           </Grid>

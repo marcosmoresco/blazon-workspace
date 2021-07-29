@@ -8,6 +8,19 @@ export const GET_ENTRIES = gql`
       description
       username
       password
+      permissions {
+        modify
+        read
+        share
+        user {
+          identifier
+          displayName
+          links {
+            rel
+            href
+          }
+        }
+      }
     }
   }
 `;

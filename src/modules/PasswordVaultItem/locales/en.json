@@ -13,10 +13,10 @@
   "passwordVault.no.password": "No password",
   "passwordVault.no.password.text": "There are no accesses added to your account.",
 
-  "passwordvault.modal.info.title": "Sharing",
+  "passwordvault.modal.info.title": "Account",
   "passwordvault.modal.info.description": "Below you can find the login information for this account.",
-  "passwordvaultform.email": "Email",
-  "passwordvaultform.email.placeholder": "Enter your email",
+  "passwordvaultform.username": "Username",
+  "passwordvaultform.uername.placeholder": "Enter your username",
   "passwordvaultform.password": "Password",
   "passwordvaultform.password.placeholder": "Enter your password",
 
@@ -26,14 +26,18 @@
   "passwordVault.newpassword.info.title": "Information",
   "passwordVault.newpassword.info.description": "Insert information about this access.",
 
-  "changepasswordform.name": "Asset",
-  "changepasswordform.name.placeholder": "Asset Name",
+  "changepasswordform.name": "Name",
   "changepasswordform.description": "Description",
   "changepasswordform.description.placeholder": "Asset Description",
   "changepasswordform.uri": "URL",
   "changepasswordform.uri.placeholder": "http://......",
-  "changepasswordform.user": "Username",
-  "changepasswordform.user.placeholder": "Username",
+  "changepasswordform.username": "Username",
+  "changepasswordform.username.placeholder": "Username",
   "changepasswordform.password": "Password",
-  "changepasswordform.password.placeholder": "Password"
+  "changepasswordform.password.placeholder": "Password",
+
+  "passwordVault.sharing": "Sharing",
+  "passwordVault.sharing.informations": "Informations",
+  "passwordVault.permission.revoked.success": "Permission revoked successfully!",
+  "passwordVault.permission.granted.success": "Permission granted successfully!"
 }

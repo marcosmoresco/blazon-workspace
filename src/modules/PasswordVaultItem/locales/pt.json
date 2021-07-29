@@ -13,10 +13,10 @@
   "passwordVault.no.password": "Nenhuma senha",
   "passwordVault.no.password.text": "Não existem acessos adicionados a sua conta.",
 
-  "passwordvault.modal.info.title": "Compartilhamento",
+  "passwordvault.modal.info.title": "Conta",
   "passwordvault.modal.info.description": "Abaixo você pode encontrar as informações de acesso dessa conta.",
-  "passwordvaultform.email": "Email",
-  "passwordvaultform.email.placeholder": "Digite seu e-mail",
+  "passwordvaultform.username": "Nome de usuário",
+  "passwordvaultform.username.placeholder": "Digite seu nome de usuário",
   "passwordvaultform.password": "Senha",
   "passwordvaultform.password.placeholder": "Digite sua senha",
 
@@ -26,14 +26,18 @@
   "passwordVault.newpassword.info.title": "Informações",
   "passwordVault.newpassword.info.description": "Insira as informações sobre este acesso.",
 
-  "changepasswordform.name": "Ativo",
-  "changepasswordform.name.placeholder": "Nome do ativo",
+  "changepasswordform.name": "Nome",
   "changepasswordform.description": "Descrição",
   "changepasswordform.description.placeholder": "Descrição do ativo",
   "changepasswordform.uri": "URL",
   "changepasswordform.uri.placeholder": "http://......",
-  "changepasswordform.user": "Usuário",
-  "changepasswordform.user.placeholder": "Nome de usuário",
+  "changepasswordform.username": "Usuário",
+  "changepasswordform.username.placeholder": "Nome de usuário",
   "changepasswordform.password": "Senha",
-  "changepasswordform.password.placeholder": "Senha"
+  "changepasswordform.password.placeholder": "Senha",
+
+  "passwordVault.sharing": "Compartilhamento",
+  "passwordVault.sharing.informations": "Informações",
+  "passwordVault.permission.revoked.success": "Permissão revogada com sucesso!",
+  "passwordVault.permission.granted.success": "Permissão concedida com sucesso!"
 }
