@@ -13,4 +13,15 @@ export const PasswordVaultQueries = {
       throw error;
     }
   },
+  getPasswordVaultEntry: async (parent: any, args: any, context: any) => {
+    try {
+      const result = await axios.get(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/passwordvault/entries/${args.id}`,        
+        { ...config(context) }
+      );
+      return result.data;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

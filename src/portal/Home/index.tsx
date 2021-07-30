@@ -7,7 +7,7 @@ import CaretRightIcon from '@icons/CaretRight'
 import KeyIcon from '@icons/Key'
 import ShareIcon from '@icons/Share'
 import Grid from '@material-ui/core/Grid'
-import PasswordVault from '@modules/PasswordVaultItem/components'
+import PasswordVaultItem from "@modules/PasswordVaultItem";
 import Progress from '@components/Progress'
 import Tooltip from '@components/Tooltip'
 import HeaderImg from './images/header.svg'
@@ -147,36 +147,7 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                               setPasswordVault(r)
                             }}
                           >
-                            <RecentPasswordCard>
-                              <RecentPasswordCardContent>
-                                <RecentPasswordCardContentHeader>
-                                  <RecentPasswordCardContentHeaderImage>
-                                    <KeyIcon
-                                      width={30}
-                                      height={30}
-                                      color='#3174F6'
-                                    />
-                                  </RecentPasswordCardContentHeaderImage>
-                                  <RecentPasswordCardContentHeaderBox>
-                                    <Tooltip title={r.name} placement="bottom">
-                                      <RecentPasswordCardContentHeaderTitle>
-                                        {r.name}
-                                      </RecentPasswordCardContentHeaderTitle>
-                                    </Tooltip>  
-                                    <Tooltip title={r.username} placement="bottom">
-                                      <RecentPasswordCardContentHeaderUsername>
-                                        {r.username}
-                                      </RecentPasswordCardContentHeaderUsername>
-                                    </Tooltip>                                                                    
-                                  </RecentPasswordCardContentHeaderBox>
-                                </RecentPasswordCardContentHeader>
-                                <Tooltip title={r.description} placement="bottom">
-                                  <RecentPasswordCardContentHeaderText>
-                                    {r.description}
-                                  </RecentPasswordCardContentHeaderText>
-                                </Tooltip>                                
-                              </RecentPasswordCardContent>
-                            </RecentPasswordCard>
+                            <PasswordVaultItem r={r} classes={classes}/>
                           </Grid>
                         ))}
                     </Grid>

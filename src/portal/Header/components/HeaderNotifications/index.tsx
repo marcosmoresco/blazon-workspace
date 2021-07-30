@@ -19,7 +19,9 @@ import {
   NotificationGroup,
   LoadMoreContent,
 } from "./styles";
+import EmptyStateMailBoxIcon from "@icons/EmptyStateMailBox";
 import Loading from "@components/Loading";
+import EmptyState from "@components/EmptyState";
 import NotificationItem from "./NotificationItem";
 import { getQueryParam } from "@utils/queryParam";
 
@@ -147,6 +149,9 @@ const HeaderNotifications: FC<HeaderNotificationsProps> = ({
           <Loading container={true} />
         ) : (
           <div>
+            {!Object.keys(groups).length && (
+              <EmptyState icon={<EmptyStateMailBoxIcon />} title="notifications.empty.title" text="notifications.empty.subTitle"/>
+            )}
             {Object.keys(groups).map((key, index) => {
               const group = groups[key];
               return (

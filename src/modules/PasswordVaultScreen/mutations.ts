@@ -37,3 +37,9 @@ export const GRANT_PASSWORD_VAULT_ENTRY = gql`
     grantPasswordVaultEntry(id: $id, permission: $permission, userId: $userId)
   }
 `;
+
+export const DELETE_PASSWORD_VAULT_ENTRY = gql`
+  mutation deletePasswordVaultEntry($id: Int) {
+    deletePasswordVaultEntry(id: $id)
+  }
+`;

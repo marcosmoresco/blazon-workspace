@@ -49,10 +49,17 @@ export const RecentPasswordCard = styled.div`
   box-shadow: 0px 0px 24px rgba(39, 36, 52, 0.12);
   border-radius: 8px;
   cursor: pointer;
+  position: relative;
 `;
 
 export const RecentPasswordCardContent = styled.div`
   margin: 14px;
+`;
+
+export const RecentPasswordCardActions = styled.div`
+  position: absolute;
+  right: 10px;
+  bottom: 10px;
 `;
 
 export const RecentPasswordCardContentHeader = styled.div`
@@ -102,6 +109,7 @@ export const RecentPasswordCardContentHeaderText = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+  margin-right: 25px;
 `;
 
 export const BoxRecentPasswordsContent = styled.div`

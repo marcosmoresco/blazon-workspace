@@ -38,4 +38,15 @@ export const PasswordVaultMutations = {
       throw error;
     }
   },
-};
+  deletePasswordVaultEntry: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.delete(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/passwordvault/entries/${args.id}`,        
+        { ...config(context) }
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+}

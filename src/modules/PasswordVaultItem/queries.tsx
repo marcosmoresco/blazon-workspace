@@ -24,3 +24,15 @@ export const GET_ENTRIES = gql`
     }
   }
 `;
+
+export const GET_PASSWORD_VAULT_ENTRY = gql`
+  query getPasswordVaultEntry($id: Int) {
+    getPasswordVaultEntry(id: $id) {
+      identifier
+      name
+      description
+      username
+      password
+    }
+  }
+`;

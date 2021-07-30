@@ -39,5 +39,8 @@
   "passwordVault.sharing": "Sharing",
   "passwordVault.sharing.informations": "Informations",
   "passwordVault.permission.revoked.success": "Permission revoked successfully!",
-  "passwordVault.permission.granted.success": "Permission granted successfully!"
+  "passwordVault.permission.granted.success": "Permission granted successfully!",
+  "passwordVault.remove.confirm": "Remove item",
+  "passwordVault.remove.confirm.text": "Do you really want to remove this item from the password vault?",
+  "passwordVault.remove.success": "Item removed successfully!"
 }

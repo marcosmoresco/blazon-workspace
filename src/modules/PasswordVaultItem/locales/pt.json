@@ -39,5 +39,8 @@
   "passwordVault.sharing": "Compartilhamento",
   "passwordVault.sharing.informations": "Informações",
   "passwordVault.permission.revoked.success": "Permissão revogada com sucesso!",
-  "passwordVault.permission.granted.success": "Permissão concedida com sucesso!"
+  "passwordVault.permission.granted.success": "Permissão concedida com sucesso!",
+  "passwordVault.remove.confirm": "Remover item",
+  "passwordVault.remove.confirm.text": "Deseja realmente remover esse item do cofre de senhas?",
+  "passwordVault.remove.success": "Item removido com sucesso!"
 }

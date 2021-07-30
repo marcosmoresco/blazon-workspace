@@ -39,10 +39,6 @@ const PasswordVaultScreen: FC<PasswordVaultScreenProps> = ({
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(9);
 
-  const [openPasswordVault, setOpenPasswordVault] = useState<boolean>(false);
-  const [currPasswordVault, setCurrPasswordVault] = useState<boolean>(false);
-  const [sharedModalOpen, setSharedModalOpen] = useState<boolean>(false);
-
   const [savePasswordStatus, setSavePasswordStatus] =
     useState<boolean | undefined>(undefined);
   const [showSavePasswordStatusModal, setShowSavePasswordStatusModal] =
@@ -79,18 +75,7 @@ const PasswordVaultScreen: FC<PasswordVaultScreenProps> = ({
               ? "passwordVault.sucessSave"
               : "passwordVault.errorSave"
           }
-        />
-        {currPasswordVault && (
-          <PasswordVault
-            onClose={() => setOpenPasswordVault(false)}
-            open={openPasswordVault || false}
-            passwordVault={currPasswordVault}            
-            onSave={() => {
-              setOpenPasswordVault(false);
-              setShowShareDialogModal(true);
-            }}
-          />
-        )}
+        />       
 
         <NewPassword
           open={newPasswordModalOpen}
@@ -101,16 +86,7 @@ const PasswordVaultScreen: FC<PasswordVaultScreenProps> = ({
             setShowSavePasswordStatusModal(true);
             setSavePasswordStatus(success);
           }}
-        />  
-        {currPasswordVault && (
-          <SharedDialog
-            modalOpen={sharedModalOpen}
-            setModalOpen={setSharedModalOpen}
-            currentSelected={currPasswordVault}
-            setCurrPasswordVault={setCurrPasswordVault}
-            classes={classes}
-          /> 
-        )}    
+        />            
 
         <div className="title">
           {intl.formatMessage({ id: "passwordVault.title" })}
@@ -134,12 +110,10 @@ const PasswordVaultScreen: FC<PasswordVaultScreenProps> = ({
           </Button>
         </div>
         <Grid container className="pt24" spacing={3}>
-          {dataToRender.map((item, i) => (
+          {(dataToRender || []).map((item, i) => (
             <Grid item key={i} xs={3}>
               <StyledPasswordVaultItem
-                r={item}
-                setOpen={setOpenPasswordVault}
-                setPasswordVault={setCurrPasswordVault}
+                r={item}               
               />
             </Grid>
           ))}

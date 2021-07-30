@@ -51,7 +51,6 @@ import {
 import { User } from "@types";
 import { getLink } from "@utils/index";
 import { ShareDialogProps, SharedDialogContentProps } from "./types";
-import { columns } from "./constants";
 
 const SharedDialogContent: React.FC<SharedDialogContentProps> = ({ current, setCurrPasswordVault }) => {
   const intl = useIntl();
@@ -181,7 +180,6 @@ const SharedDialogContent: React.FC<SharedDialogContentProps> = ({ current, setC
       permissions: _permissions
     };    
 
-    console.log(_changed);
     setCurrPasswordVault(_changed);
   };
 
