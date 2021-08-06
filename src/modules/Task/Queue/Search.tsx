@@ -11,8 +11,14 @@ import type { Link } from "@types";
 import Tasks from "@modules/Task/components";
 import { addMessage } from "@actions/index";
 import { useIntl, FormattedMessage } from "react-intl";
+import { getLink } from "@utils/index";
 import ForwardUser from "@modules/Task/components/ForwardUser";
 import ForwardQueue from "@modules/Task/components/ForwardQueue";
+
+//styles
+import {
+  LoadMoreContent
+} from "@modules/Task/styles";
 
 //constants
 import {
@@ -45,7 +51,8 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
   const [queueId, setQueueId] = useState<number>();
   const [openForwardUser, setOpenForwardUser] = useState(false);
   const [openForwardQueue, setOpenForwardQueue] = useState(false);
-  const [checkedAll, setCheckedAll] = useState(checkAll);
+  const [checkedAll, setCheckedAll] = useState(checkAll); 
+  const [size, setSize] = useState<number>(10);
 
   const { loading, error, data, refetch } = useQuery<{
     getTaskQueueTasks: { links: Link[], representation: Task[] };
@@ -56,7 +63,7 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
       size: 10,
       ord: "createdDate:desc",
       filters: filteredString
-    },
+    },    
   });
 
   const { loading: loadingAssignActions, data: dataAssignActions, refetch: refetchAssignActions } = useQuery<{
@@ -337,10 +344,31 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
   return (   
     <>
       {(data?.getTaskQueueTasks?.representation || []).length > 0 && (
-        <Tasks list={data?.getTaskQueueTasks.representation || []} type={type} isQueue={true} checked={checked} onCheck={handleCheck}/>
+        <Tasks list={data?.getTaskQueueTasks.representation || []} type={type} isQueue={true}  id={id} checked={checked} onCheck={handleCheck} subType="queue"/>
       )}
       {(data?.getTaskQueueTasks?.representation || []).length === 0 && (
         <EmptyState icon={<EmptyStateSearchIcon />} title="task.empty" text="task.empty.text" bgColor="#FFFFFF"/>
+      )}
+      {getLink("next", data?.getTaskQueueTasks?.links || []) && (
+        <LoadMoreContent>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => {
+              setCheckAll(false);
+              setSize(size + 10);
+              refetch({
+                id,
+                page: 0,
+                size: size + 10,
+                ord: "createdDate:desc",
+                filters: filteredString
+              });
+            }}
+          >
+            <FormattedMessage id="loadMore" />
+          </Button>
+        </LoadMoreContent>
       )}
       <ForwardUser 
         modalOpen={openForwardUser}

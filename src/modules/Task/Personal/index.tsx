@@ -196,22 +196,22 @@ const PersonalTasks: FC<ListProps> = ({ dispatch }) => {
         </HeaderFilters>
       </Header>
       {type === "ALL" && (
-        <PersonalTasksAll filtered={filtered} checkAll={checkAll}/>
+        <PersonalTasksAll filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll}/>
       )}
       {type === "APPROVAL" && (
-        <PersonalTasksApproval filtered={filtered} checkAll={checkAll}/>
+        <PersonalTasksApproval filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll}/>
       )}
       {type === "CERTIFICATION" && (
-        <PersonalTasksCertification checkAll={checkAll}/>
+        <PersonalTasksCertification checkAll={checkAll} setCheckAll={setCheckAll}/>
       )}
       {type === "PROVISIONING" && (
-        <PersonalTasksProvisioning checkAll={checkAll}/>
+        <PersonalTasksProvisioning checkAll={checkAll} setCheckAll={setCheckAll}/>
       )}
       {type === "ROLE_RIGHT" && (
-        <PersonalTasksRoleRight checkAll={checkAll}/>
+        <PersonalTasksRoleRight checkAll={checkAll} setCheckAll={setCheckAll}/>
       )}
        {type === "SOD" && (
-        <PersonalTasksSoD checkAll={checkAll}/>
+        <PersonalTasksSoD checkAll={checkAll} setCheckAll={setCheckAll}/>
       )}      
       <StyledMenu        
         anchorEl={anchorElCategory}

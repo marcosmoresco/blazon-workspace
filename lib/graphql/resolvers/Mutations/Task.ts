@@ -405,7 +405,7 @@ export const TaskMutations = {
   assignToMeProvisioningTask: async (parent: any, args: any, context: any) => {
     try {
       await axios.post(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/rolerights/tasks/assigntasktome`,
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/provisioning/tasks/assigntasktome`,
          JSON.parse(args?.payload),
          { ...config(context) }
       );

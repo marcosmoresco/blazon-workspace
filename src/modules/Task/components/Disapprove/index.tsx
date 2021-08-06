@@ -26,7 +26,7 @@ const DisapproveDialogContent: React.FC<DisapproveDialogContentProps> = ({ form 
   );
 };
 
-const Disapprove: React.FC<DisapproveDialogProps> = ({ modalOpen, setModalOpen, task, execute }) => {
+const Disapprove: React.FC<DisapproveDialogProps> = ({ modalOpen, setModalOpen, task = {}, execute }) => {
   const intl = useIntl();
 
   const validationSchema = Yup.object({

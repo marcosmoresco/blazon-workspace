@@ -6,7 +6,8 @@ export type DetailUserProps = {
 };
 
 export type UserContentProps = {
-  user: any | undefined;   
+  user: any | undefined; 
+  close(): void; 
 };
 
 

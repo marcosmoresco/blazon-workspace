@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { withStyles } from "@material-ui/core/styles";
+import Drawer from '@material-ui/core/Drawer';
 
 export const Header = styled.div`
   background: #1B202A;
@@ -41,6 +43,7 @@ export const InformationsText = styled.div`
   line-height: 100%;
   color: #26213F;
   margin-top: 32px;
+  margin-bottom: 88px;
 `;
 
 export const InformationContent = styled.div`
@@ -53,6 +56,7 @@ export const InformationContent = styled.div`
   display: flex;
   align-items: center;
   padding-left: 20px;
+  overflow-y: auto;  
 `;
 
 export const InformationLabel = styled.div`
@@ -71,3 +75,30 @@ export const InformationText = styled.div`
   line-height: 100%;
   color: #A8A6B2;
 `;
+
+export const Actions = styled.div`
+  background: #E9E8EB;
+  box-shadow: 0px 4px 74px rgba(0, 0, 0, 0.25);
+  position: fixed;
+  bottom: 0;
+  height: 90px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 655px;
+  right: 0;
+  & button {
+    min-width: 179px;
+  }
+`;
+
+export const DrawerDetailUser = withStyles({
+  paper: {    
+    minWidth: 655,
+    padding: "20px 40px 20px 30px",    
+  },
+})((props: any) => (
+  <Drawer        
+    {...props}
+  />
+));

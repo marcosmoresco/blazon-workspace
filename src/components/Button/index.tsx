@@ -25,7 +25,7 @@ const useStyles = () => createStyles({
       color: '#A8A6B2',
       cursor: 'default',
       boxShadow: 'none',
-    },
+    },   
     '& .Default-rounded': {
       minWidth: 'auto',
       borderRadius: '20px',
@@ -33,6 +33,13 @@ const useStyles = () => createStyles({
       padding: '6px 16px',
       color: '#FFFFFF',
       backgroundColor: '#0E46D7',
+      '&.Blue': {
+        backgroundColor: '#FFFFFF',     
+        color: '#0E46D7',       
+        '&.MuiButton-root:hover': {
+          backgroundColor: '#FFFFFF',
+        }
+      },
       '&.Green': {
         backgroundColor: '#06AD5D',            
         '&.MuiButton-root:hover': {
@@ -63,8 +70,9 @@ class Button extends Component<ButtonPropsType> {
           className={classNames({          
             'Default-rounded': variant === 'rounded',
             'Red': color === 'secondary',
+            'Blue': variant === 'rounded' && color === 'default-primary',
             'Default-contained-red': variant === 'contained' && color === 'secondary',
-            'Default-contained-blue': variant === 'contained' && color === 'default-primary',
+            'Default-contained-blue': variant === 'contained' && color === 'default-primary',          
             'Default-contained-disabled': variant === 'contained' && disabled
           })}       
           startIcon={isLoading === 1 ? <Loading/> : startIcon} 

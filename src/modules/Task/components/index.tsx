@@ -50,6 +50,7 @@ import XIcon from "@icons/X";
 import ForwardUser from "@modules/Task/components/ForwardUser";
 import ForwardQueue from "@modules/Task/components/ForwardQueue";
 import Disapprove from "@modules/Task/components/Disapprove";
+import DetailUser from "@modules/Task/components/DetailUser";
 
 import {
   Box,
@@ -96,9 +97,9 @@ import {
 import type { ListProps, Task } from "@modules/Task/types";
 
 //queries
-import { GET_ASSIGN_ACTIONS } from "@modules/Task/queries";
+import { GET_ASSIGN_ACTIONS, GET_TASK_QUEUES } from "@modules/Task/queries";
 
-const Tasks: FC<ListProps> = ({ list = [], type, checked = [], onCheck, subType = "any", size = 10, filteredString = "{}"}) => {
+const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subType = "any", size = 10, filteredString = "{}"}) => {
 
   const router = useRouter();
   const intl = useIntl();
@@ -149,7 +150,7 @@ const Tasks: FC<ListProps> = ({ list = [], type, checked = [], onCheck, subType 
 
   const { loading: loadingActions, data: dataActions } = useQuery<{
     getActions: string[]
-  }>(getAvailableActionsByType((subType !== "any" && subType) || "approval"), {
+  }>(getAvailableActionsByType((subType !== "any" && subType !== "queue" && subType) || "approval"), {
     variables: {
       status: `["${current?.headers?.status || "TODO"}"]`
     },  
@@ -160,12 +161,15 @@ const Tasks: FC<ListProps> = ({ list = [], type, checked = [], onCheck, subType 
       {
         query: getQueryListByType(subType || "any"),
         variables: {
+          id,
           page: 0,
           size: size,
           ord: "createdDate:desc",
           filters: filteredString          
         },
-      },
+      }, {
+        query: GET_TASK_QUEUES
+      }
     ],  
     onCompleted: ({ assignToMe }) => {        
       if(assignToMe) {
@@ -184,12 +188,15 @@ const Tasks: FC<ListProps> = ({ list = [], type, checked = [], onCheck, subType 
       {
         query: getQueryListByType(subType || "any"),
         variables: {
+          id,
           page: 0,
           size: size,
           ord: "createdDate:desc",
           filters: filteredString          
         }
-      },
+      }, {
+        query: GET_TASK_QUEUES
+      }
     ],  
     onCompleted: ({ unassign }) => {        
       if(unassign) {
@@ -208,12 +215,15 @@ const Tasks: FC<ListProps> = ({ list = [], type, checked = [], onCheck, subType 
       {
         query: getQueryListByType(subType || "any"),
         variables: {
+          id,
           page: 0,
           size: size,
           ord: "createdDate:desc",
           filters: filteredString          
         }
-      },
+      }, {
+        query: GET_TASK_QUEUES
+      }
     ],  
     onCompleted: ({ forwardToUser }) => {        
       if(forwardToUser) {
@@ -233,9 +243,15 @@ const Tasks: FC<ListProps> = ({ list = [], type, checked = [], onCheck, subType 
       {
         query: getQueryListByType(subType || "any"),
         variables: {
-          id: Number(current?.identifier)
+          id,
+          page: 0,
+          size: size,
+          ord: "createdDate:desc",
+          filters: filteredString          
         }
-      },
+      }, {
+        query: GET_TASK_QUEUES
+      }
     ],  
     onCompleted: ({ forwardToQueue }) => {
       if(forwardToQueue) {
@@ -245,7 +261,7 @@ const Tasks: FC<ListProps> = ({ list = [], type, checked = [], onCheck, subType 
           )
         ); 
         setOpenForwardQueue(false); 
-        setAnchorEl(null);        
+        setAnchorEl(null);           
       }     
     },
   });
@@ -255,12 +271,15 @@ const Tasks: FC<ListProps> = ({ list = [], type, checked = [], onCheck, subType 
       {
         query: getQueryListByType(subType || "any"),
         variables: {
+          id,
           page: 0,
           size: size,
           ord: "createdDate:desc",
           filters: filteredString          
         }
-      },
+      }, {
+        query: GET_TASK_QUEUES
+      }
     ],
     onCompleted: ({ resolve }) => {
       if(resolve) {
@@ -386,21 +405,7 @@ const Tasks: FC<ListProps> = ({ list = [], type, checked = [], onCheck, subType 
               </BoxCardText>
               <BoxCardFooter>
                 <BoxCardFooterInfo>
-                  <BoxRequester>
-                    <Info>
-                      <BoxRequesterAvatar>
-                        <Avatar src={getLink("thumb", task?.headers?.from?.links || [])} />
-                      </BoxRequesterAvatar>                     
-                      <BoxRequesterContent>
-                        <BoxRequesterTitle>
-                          <FormattedMessage id="task.requester" />
-                        </BoxRequesterTitle>
-                        <BoxRequesterDisplayName>
-                          {task?.headers?.from?.displayName || " - "}
-                        </BoxRequesterDisplayName>
-                      </BoxRequesterContent>                      
-                    </Info>                    
-                  </BoxRequester>
+                  <DetailUser task={task}/>                  
                   <BoxPriority>
                     <FormattedMessage id="task.priority"/>
                     {priorityToElement[task.headers?.priority || "LOW"]}                      

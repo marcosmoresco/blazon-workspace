@@ -10,7 +10,6 @@ import Loading from "@components/Loading";
 import Filter from "@components/Filter";
 import Section from "@components/Section";
 import Select from "@components/Select";
-import Snackbar from "@components/Snackbar";
 import EmptyState from "@components/EmptyState";
 import EmptyStateSearchIcon from "@icons/EmptyStateSearch";
 import ArrowsOutIcon from "@icons/ArrowsOut";
@@ -22,21 +21,28 @@ import DotsThreeIcon from "@icons/DotsThree";
 import UserGearIcon from "@icons/UserGear";
 import { connect } from "react-redux";
 import { addMessage } from "@actions/index";
-import { sections, types, filters } from "@modules/Task/constants";
 import type { ListProps, Task } from "@modules/Task/types";
 import type { Link } from "@types";
 import { getLink } from "@utils/index";
 import {
   LoadMoreContent
 } from "@modules/Task/styles";
+import Snackbar from "@components/Snackbar";
 import Tasks from "@modules/Task/components";
 import ForwardUser from "@modules/Task/components/ForwardUser";
 import ForwardQueue from "@modules/Task/components/ForwardQueue";
+
+//constants
+import {
+  unassign as unassignTask,
+  assignToMe as assignToMeTask 
+} from "@modules/Task/constants";
 
 //queries
 import { 
   GET_TASKS, 
   GET_ASSIGN_ACTIONS,
+  GET_TASK_QUEUES
 } from "@modules/Task/queries";
 
 //mutations
@@ -47,7 +53,7 @@ import {
   FORWARD_TO_QUEUE_TASK,  
 } from "@modules/Task/mutations";
 
-const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = false }) => {
+const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = false, setCheckAll }) => {
 
   const intl = useIntl();
 
@@ -87,7 +93,9 @@ const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
           ord: "createdDate:desc",
           filters: filteredString
         }
-      },
+      }, {
+        query: GET_TASK_QUEUES
+      }
     ],  
     onCompleted: ({ assignToMe }) => {        
       if(assignToMe) {
@@ -95,7 +103,9 @@ const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
           addMessage(
             intl.formatMessage({id: "task.assignToMe.success"})
           )
-        );               
+        );   
+        setChecked([]); 
+        setCheckAll(false);             
       }     
     },
   });
@@ -110,7 +120,9 @@ const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
           ord: "createdDate:desc",
           filters: filteredString
         }
-      },
+      }, {
+        query: GET_TASK_QUEUES
+      }
     ],  
     onCompleted: ({ unassign }) => {        
       if(unassign) {
@@ -118,7 +130,9 @@ const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
           addMessage(
             intl.formatMessage({id: "task.unassigned.success"})
           )
-        );                     
+        );  
+        setChecked([]); 
+        setCheckAll(false);                   
       }     
     },
   });
@@ -133,7 +147,9 @@ const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
           ord: "createdDate:desc",
           filters: filteredString
         }
-      },
+      }, {
+        query: GET_TASK_QUEUES
+      }
     ],  
     onCompleted: ({ forwardToUser }) => {        
       if(forwardToUser) {
@@ -143,7 +159,8 @@ const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
           )
         );    
         setOpenForwardUser(false);  
-        setChecked([]);          
+        setChecked([]);        
+        setCheckAll(false);         
       }     
     },
   });
@@ -158,7 +175,9 @@ const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
           ord: "createdDate:desc",
           filters: filteredString
         }
-      },
+      }, {
+        query: GET_TASK_QUEUES
+      }
     ],  
     onCompleted: ({ forwardToQueue }) => {
       if(forwardToQueue) {
@@ -168,7 +187,8 @@ const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
           )
         ); 
         setOpenForwardQueue(false); 
-        setChecked([]);             
+        setChecked([]); 
+        setCheckAll(false);            
       }     
     },
   });
@@ -275,15 +295,37 @@ const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
     <>       
       {(dataAssignActions?.getAssignActions || []).includes("ASSIGN_TO_ME") && (
         <Button 
-          onClick={() => setOpenForwardQueue(true)}    
+          onClick={() => {
+            assignToMeTask(undefined, intl, () => {
+              const payload = checked.map((taskId) => ({
+                taskId,                
+              }));
+              assignToMe({
+                variables: {
+                  payload: JSON.stringify(payload)
+                }
+              });
+            });
+          }}    
           color="primary"     
           variant="rounded">
-            <FormattedMessage id="ttasks.assignToMe" />
+            <FormattedMessage id="tasks.assignToMe" />
         </Button>
       )}
       {(dataAssignActions?.getAssignActions || []).includes("UNASSIGN") && (
         <Button 
-          onClick={() => setOpenForwardQueue(true)}    
+          onClick={() => {
+            unassignTask(undefined, intl, () => {
+              const payload = checked.map((taskId) => ({
+                taskId,                
+              }));
+              unassign({
+                variables: {
+                  payload: JSON.stringify(payload)
+                }
+              });
+            });
+          }}    
           color="primary"     
           variant="rounded">
             <FormattedMessage id="tasks.unassign" />
@@ -318,6 +360,7 @@ const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
             variant="contained"
             color="primary"
             onClick={() => {
+              setCheckAll(false);
               setSize(size + 10);
               refetch({
                 page: 0,

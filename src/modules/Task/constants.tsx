@@ -410,7 +410,7 @@ export const unassign = async (task: Task | undefined, intl: IntlShape, callback
   }
 }
 
-export const approve = async (task: Task, intl: IntlShape, callback: CallbackAction) => {
+export const approve = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction) => {
 
   const result = await confirm(
     intl.formatMessage({
@@ -444,7 +444,7 @@ export const disapprove = async (task: Task, intl: IntlShape, callback: Callback
   }
 }
 
-export const certify = async (task: Task, intl: IntlShape, callback: CallbackAction) => {
+export const certify = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction) => {
 
   const result = await confirm(
     intl.formatMessage({
@@ -461,7 +461,7 @@ export const certify = async (task: Task, intl: IntlShape, callback: CallbackAct
   }
 }
 
-export const provision = async (task: Task, intl: IntlShape, callback: CallbackAction) => {
+export const provision = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction) => {
 
   const result = await confirm(
     intl.formatMessage({
@@ -478,7 +478,7 @@ export const provision = async (task: Task, intl: IntlShape, callback: CallbackA
   }
 }
 
-export const resolve = async (task: Task, intl: IntlShape, callback: CallbackAction) => {
+export const resolve = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction) => {
 
   const result = await confirm(
     intl.formatMessage({

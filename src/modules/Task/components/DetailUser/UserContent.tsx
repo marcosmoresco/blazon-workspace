@@ -4,10 +4,14 @@ import { FormattedMessage } from "react-intl";
 import { getLink } from "@utils/index";
 import Avatar from "@material-ui/core/Avatar";
 import axios from "axios";
+import MuiDialogActions from "@material-ui/core/DialogActions";
+import { withStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
 
 
 //components
 import Loading from "@components/Loading";
+import Button from "@components/Button";
 
 //types
 import { UserContentProps } from "./types";
@@ -22,7 +26,8 @@ import {
  InformationsText,
  InformationContent,
  InformationLabel,
- InformationText
+ InformationText,
+ Actions,
 } from "./styles";
 
 const getUser = async (identifier: number, callback: any) => { 
@@ -37,7 +42,7 @@ const getUser = async (identifier: number, callback: any) => {
   callback(resp);
 }
 
-const UserContent: React.FC<UserContentProps> = ({ user }) => { 
+const UserContent: React.FC<UserContentProps> = ({ user, close }) => { 
   
   const [userDetail, setUserDetail] = useState<{[key: string] : any}>({});
   const [loading, setLoading] = useState<boolean>(false);
@@ -54,7 +59,18 @@ const UserContent: React.FC<UserContentProps> = ({ user }) => {
 
   if(loading) {
     return (
-      <Loading container/>
+      <>
+        <Loading container/>
+        <Actions>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => close()}         
+          >
+            <FormattedMessage id="close" />
+          </Button>
+        </Actions>  
+      </>     
     )
   }
 
@@ -155,7 +171,20 @@ const UserContent: React.FC<UserContentProps> = ({ user }) => {
         <InformationContent>          
           <InformationText>{<FormattedMessage id={userDetail?.locked ? "yes": "no"} />}</InformationText>
         </InformationContent>
-      </InformationsText>          
+      </InformationsText>   
+      <AppBar
+        position="fixed"                
+      >
+        <Actions>
+          <Button
+            variant="contained"
+            color="primary"
+            onClick={() => close()}         
+          >
+            <FormattedMessage id="close" />
+          </Button>
+        </Actions>   
+      </AppBar>            
     </>    
   );
 };

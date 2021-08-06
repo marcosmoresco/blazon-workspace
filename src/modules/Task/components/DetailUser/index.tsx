@@ -2,10 +2,9 @@
 import React, { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { getLink } from "@utils/index";
-import Avatar from "@material-ui/core/Avatar";
 
 //components
-import Dialog from "./Dialog";
+import Avatar from "@material-ui/core/Avatar";
 import UserContent from "./UserContent";
 
 //types
@@ -18,8 +17,12 @@ import {
   BoxRequesterContent,
   BoxRequesterTitle,
   BoxRequesterDisplayName,
-  BoxRequesterAvatar,
+  BoxRequesterAvatar,  
 } from "@modules/Task/styles";
+
+import {
+  DrawerDetailUser
+} from "./styles";
 
 const DetailUser: React.FC<DetailUserProps> = ({ task }) => {  
 
@@ -42,7 +45,7 @@ const DetailUser: React.FC<DetailUserProps> = ({ task }) => {
           </BoxRequesterContent>                      
         </Info>                    
       </BoxRequester>
-      <Dialog
+      {/*<Dialog
         onClose={() => setModalOpen(false)}
         onSave={() => setModalOpen(false)}
         fullWidth={false}
@@ -52,7 +55,13 @@ const DetailUser: React.FC<DetailUserProps> = ({ task }) => {
         noActions
       >
         <UserContent user={task?.headers?.from} />
-      </Dialog>    
+      </Dialog>*/} 
+      <DrawerDetailUser 
+        anchor="right" 
+        open={modalOpen} 
+        onClose={() => setModalOpen(false)}>
+        <UserContent user={task?.headers?.from} close={() => setModalOpen(false)}/>                
+      </DrawerDetailUser>
     </>    
   );
 };
