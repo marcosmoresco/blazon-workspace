@@ -376,7 +376,7 @@ interface CallbackAction<T1 = void> {
   (): T1;
 }
 
-export const assignToMe = async (task: Task, intl: IntlShape, callback: CallbackAction) => {
+export const assignToMe = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction) => {
 
   const result = await confirm(
     intl.formatMessage({
@@ -393,7 +393,7 @@ export const assignToMe = async (task: Task, intl: IntlShape, callback: Callback
   }
 }
 
-export const unassign = async (task: Task, intl: IntlShape, callback: CallbackAction) => {
+export const unassign = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction) => {
 
   const result = await confirm(
     intl.formatMessage({

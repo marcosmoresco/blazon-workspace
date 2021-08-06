@@ -188,23 +188,25 @@ const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
     if(checkAll !== checkedAll) {
       setCheckedAll(checkAll);
       let newChecked: number[] = [];
+      let statusChecked: string[] = [];
       if(checkAll) {
         (data?.getTasks?.representation || [])
           .filter((t) => t?.headers?.status !== "DONE")
           .forEach((t) => {
-            newChecked.push(t.identifier);            
+            newChecked.push(t?.identifier);
+            statusChecked.push(t?.headers?.status);            
           });
       }    
       
       if(newChecked.length) {
-        refetch({
-          status: JSON.stringify(newChecked)
+        refetchAssignActions({
+          status: JSON.stringify(statusChecked)
         })       
       } 
       
       setChecked(newChecked);
     }
-  }, [filteredString, filtered, checkAll, checkedAll, checked, data, refetch])
+  }, [filteredString, filtered, checkAll, checkedAll, checked, data, refetch, refetchAssignActions])
 
   if(loading || loadingAssignActions) {
     return (

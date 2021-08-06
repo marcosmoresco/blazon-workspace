@@ -8,6 +8,8 @@ import Select from "@components/Select";
 import ListBulletsIcon from "@icons/ListBullets";
 import CaretDownIcon from "@icons/CaretDown";
 import CaretUpIcon from "@icons/CaretUp";
+import EmptyState from "@components/EmptyState";
+import EmptyStateSearchIcon from "@icons/EmptyStateSearch";
 import { connect } from "react-redux";
 import apolloClient from "@utils/apollo-client";
 import { filters, queueCategories, queueTypes, generateFilters } from "@modules/Task/constants";
@@ -51,6 +53,8 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
   const [anchorEl, setAnchorEl] = useState(null); 
   const [anchorElCategory, setAnchorElCategory] = useState(null);
   const [anchorElType, setAnchorElType] = useState(null);
+  const [currentFilters, setCurrentFilters] = useState<string>("");
+
 
   const myCallbacksList = useRef<any[]>([]);
 
@@ -62,9 +66,8 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
   }
 
   const { loading, error, data, refetch } = useQuery<{
-    getTaskQueues: { links: Link[], representation: Task[] };
-  }>(GET_TASK_QUEUES, {
-    fetchPolicy: "no-cache"
+    getTaskQueues: { links: Link[], representation: TaskQueue[] };
+  }>(GET_TASK_QUEUES, {   
   });
 
   const queues = data?.getTaskQueues?.representation || []; 
@@ -87,10 +90,12 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
     });
   }
 
-  const handleChangeQueue = (e: any, val: any) => {    
-    setQueueIdentifier(val.props.value);
+  const handleChangeQueue = (val: any) => {    
+    setQueueIdentifier(val);
     setQueueCategoryValue("ANY");
+    setQueueCategoryName(intl.formatMessage({id: "task.any"}));
     setQueueTypeValue("ANY");
+    setQueueTypeName(intl.formatMessage({id: "task.any"}));
     const _filtered = {...filtered};
     delete _filtered.category;
     delete _filtered["taskData.type"];
@@ -103,6 +108,7 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
   const handleChangeCategory = (val: any) => {    
     setQueueCategoryValue(val);
     setQueueTypeValue("ANY");
+    setQueueTypeName(intl.formatMessage({id: "task.any"}));
     if(val != "ANY") {
       setFiltered({...filtered, category: val});
     } else {
@@ -111,7 +117,7 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
       setFiltered(_filtered);
     }    
     setCheckAll(false);        
-    setStateWithCallback([], () => getQueueFilters(val, queueTypeValue));
+    setStateWithCallback([], () => getQueueFilters(val, "ANY"));
   };
 
   const handleChangeType = (val: any) => {    
@@ -132,11 +138,16 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
     myCallbacksList.current.forEach((callback) => callback())
     myCallbacksList.current = [];
     
-    if(!filtersTask.length) {      
+    if(!filtersTask.length) {  
+      setCurrentFilters(JSON.stringify(dataFilters?.getFilters));    
       setFiltersTask(generateFilters(intl, dataFilters?.getFilters || []))
     }
+
+    if(currentFilters !== JSON.stringify(dataFilters?.getFilters)) {
+      setFiltersTask([]);
+    }
    
-  }, [dataFilters, filtersTask, intl, previousData]);
+  }, [dataFilters, filtersTask, intl, previousData, currentFilters]);
   
   if(loading || loadingFilters) {
     return (
@@ -182,29 +193,34 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
               {(anchorElCategory === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
             </SelectBoxContainer>
           </FilterContent> 
-          <FilterContent>
-            <label onClick={(event: any) => setAnchorElType(event.currentTarget)}>
-              <FormattedMessage id="type" />
-            </label>
-            <SelectBoxContainer onClick={(event: any) => setAnchorElType(event.currentTarget)}>
-              <SelectBoxInfo>
-                <SelectBoxInfoIcon>
-                  <ListBulletsIcon width={21} height={21}/>
-                </SelectBoxInfoIcon>
-                {queueTypeName}
-              </SelectBoxInfo>  
-              {(anchorElType === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
-            </SelectBoxContainer>
-          </FilterContent>                                                            
+          {queueCategoryValue !== "ROLE_RIGHT_TASK" && (
+            <FilterContent>
+              <label onClick={(event: any) => setAnchorElType(event.currentTarget)}>
+                <FormattedMessage id="type" />
+              </label>
+              <SelectBoxContainer onClick={(event: any) => setAnchorElType(event.currentTarget)}>
+                <SelectBoxInfo>
+                  <SelectBoxInfoIcon>
+                    <ListBulletsIcon width={21} height={21}/>
+                  </SelectBoxInfoIcon>
+                  {queueTypeName}
+                </SelectBoxInfo>  
+                {(anchorElType === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
+              </SelectBoxContainer>
+            </FilterContent> 
+          )}                                                           
           <Filter filters={filtersTask} onChange={(f: any) => setFiltered(f)}/>
         </HeaderFilters>
       </Header>
       {queueCategoryValue === "ANY" && queueIdentifier && (
-        <QueueTasksSearch filtered={filtered} id={queueIdentifier} checkAll={checkAll}/>
+        <QueueTasksSearch filtered={filtered} id={queueIdentifier} checkAll={checkAll} setCheckAll={setCheckAll}/>
       )}
       {queueCategoryValue !== "ANY" && queueIdentifier && (
-        <QueueTasksSearch filtered={filtered} id={queueIdentifier} type={queueCategoryValue} checkAll={checkAll}/>
+        <QueueTasksSearch filtered={filtered} id={queueIdentifier} type={queueCategoryValue} checkAll={checkAll} setCheckAll={setCheckAll}/>
       )}   
+      {!queueIdentifier && (
+        <EmptyState icon={<EmptyStateSearchIcon />} title="task.empty" text="task.empty.text" bgColor="#FFFFFF"/>
+      )}
       <StyledMenu        
         anchorEl={anchorEl}
         keepMounted
@@ -215,7 +231,7 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
         {queues.map((q: any) => (
           <MenuItemContainer key={`task-queue-${q.identifier}`} onClick={() => {
             setQueueName(q.name);
-            setQueueIdentifier(q.identifier);
+            handleChangeQueue(q.identifier);
             setAnchorEl(null)
           }}>
            <MenuItemText>
@@ -244,25 +260,27 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
          </MenuItemContainer>
         ))}       
       </StyledMenu>       
-      <StyledMenu        
-        anchorEl={anchorElType}
-        keepMounted
-        disableAutoFocusItem
-        open={Boolean(anchorElType)}
-        onClose={() => setAnchorElType(null)}
-      >
-        {queueTypes[queueCategoryValue].map((type: any) => (
-          <MenuItemContainer key={`task-category-${type.value}`} onClick={() => {
-            setQueueTypeName(type.label);            
-            handleChangeType(type.value);
-            setAnchorElType(null)
-          }}>
-           <MenuItemText>
-            {type.label}
-           </MenuItemText>                   
-         </MenuItemContainer>
-        ))}       
-      </StyledMenu> 
+      {queueCategoryValue !== "ROLE_RIGHT_TASK" && (
+        <StyledMenu        
+          anchorEl={anchorElType}
+          keepMounted
+          disableAutoFocusItem
+          open={Boolean(anchorElType)}
+          onClose={() => setAnchorElType(null)}
+        >
+          {queueTypes[queueCategoryValue].map((type: any) => (
+            <MenuItemContainer key={`task-category-${type.value}`} onClick={() => {
+              setQueueTypeName(type.label);            
+              handleChangeType(type.value);
+              setAnchorElType(null)
+            }}>
+            <MenuItemText>
+              {type.label}
+            </MenuItemText>                   
+          </MenuItemContainer>
+          ))}       
+        </StyledMenu>
+      )} 
     </Box>       
   );
 };

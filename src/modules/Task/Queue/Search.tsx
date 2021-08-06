@@ -17,13 +17,16 @@ import ForwardQueue from "@modules/Task/components/ForwardQueue";
 //constants
 import {
   getQueryByType,
-  getActionsByType
+  getActionsByType,
+  assignToMe as assignToMeTask,
+  unassign as unassignTask
 } from "@modules/Task/constants";
 
 //queries
 import { 
   GET_TASK_QUEUE_TASKS, 
   GET_ASSIGN_ACTIONS,   
+  GET_TASK_QUEUES
 } from "@modules/Task/queries";
 
 //mutations
@@ -83,8 +86,11 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
           addMessage(
             intl.formatMessage({id: "task.assignToMe.success"})
           )
-        );               
-      }     
+        );  
+        setChecked([]); 
+        setCheckAll(false);            
+      }  
+
     },
   });
 
@@ -107,7 +113,9 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
           addMessage(
             intl.formatMessage({id: "task.unassigned.success"})
           )
-        );                     
+        ); 
+        setChecked([]);
+        setCheckAll(false);                    
       }     
     },
   });
@@ -123,7 +131,9 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
           ord: "createdDate:desc",
           filters: filteredString
         }
-      },
+      }, {
+        query: GET_TASK_QUEUES
+      }
     ],  
     onCompleted: ({ forwardToUser }) => {        
       if(forwardToUser) {
@@ -133,7 +143,8 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
           )
         );    
         setOpenForwardUser(false);  
-        setChecked([]);          
+        setChecked([]); 
+        setCheckAll(false);         
       }     
     },
   });
@@ -149,7 +160,9 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
           ord: "createdDate:desc",
           filters: filteredString
         }
-      },
+      }, {
+        query: GET_TASK_QUEUES
+      }
     ],  
     onCompleted: ({ forwardToQueue }) => {
       if(forwardToQueue) {
@@ -159,7 +172,8 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
           )
         ); 
         setOpenForwardQueue(false); 
-        setChecked([]);             
+        setChecked([]);    
+        setCheckAll(false);         
       }     
     },
   });
@@ -184,21 +198,23 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
     if(checkAll !== checkedAll) {
       setCheckedAll(checkAll);
       let newChecked: number[] = [];
+      let statusChecked: string[] = [];
       if(checkAll) {
         (data?.getTaskQueueTasks?.representation || []).forEach((t) => {
-          newChecked.push(t.identifier);            
+          newChecked.push(t?.identifier);    
+          statusChecked.push(t?.headers?.status);          
         });
       }    
       
       if(newChecked.length) {
-        refetch({
-          status: JSON.stringify(newChecked)
+        refetchAssignActions({
+          status: JSON.stringify(statusChecked)
         })       
       } 
       
       setChecked(newChecked);
     }
-  }, [filteredString, filtered, id, queueId, checkAll, checkedAll, checked, data, refetch])
+  }, [filteredString, filtered, id, queueId, checkAll, checkedAll, checked, data, refetch, refetchAssignActions])
 
   if(loading || loadingAssignActions) {
     return (
@@ -267,15 +283,37 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
     <>       
       {(dataAssignActions?.getAssignActions || []).includes("ASSIGN_TO_ME") && (
         <Button 
-          onClick={() => setOpenForwardQueue(true)}    
+          onClick={() => {
+            assignToMeTask(undefined, intl, () => {
+              const payload = checked.map((taskId) => ({
+                taskId,                
+              }));
+              assignToMe({
+                variables: {
+                  payload: JSON.stringify(payload)
+                }
+              });
+            });
+          }}
           color="primary"     
           variant="rounded">
-            <FormattedMessage id="ttasks.assignToMe" />
+            <FormattedMessage id="tasks.assignToMe" />
         </Button>
       )}
       {(dataAssignActions?.getAssignActions || []).includes("UNASSIGN") && (
         <Button 
-          onClick={() => setOpenForwardQueue(true)}    
+          onClick={() => {
+            unassignTask(undefined, intl, () => {
+              const payload = checked.map((taskId) => ({
+                taskId,                
+              }));
+              unassign({
+                variables: {
+                  payload: JSON.stringify(payload)
+                }
+              });
+            });
+          }}    
           color="primary"     
           variant="rounded">
             <FormattedMessage id="tasks.unassign" />
