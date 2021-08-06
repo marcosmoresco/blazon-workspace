@@ -5,6 +5,7 @@ export const Resume = `
     openCertificationTasks: Int
     openSodTasks: Int
     openRoleRightsTasks: Int
+    openUserRevalidationTasks: Int
     totalOpenTasks: Int
     links: [Link]
   }

@@ -18,7 +18,6 @@ const useStyles = makeStyles((theme) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#F4F4F5',
     left: 0,
     top: 0,
     height: '400px',
@@ -31,7 +30,7 @@ const useStyles = makeStyles((theme) => ({
 }))
 
 export default function Loading(props) {
-  const { type, container } = props
+  const { type, container, bgColor } = props
   const classes = useStyles()
 
   const defaultOptions = {
@@ -44,7 +43,7 @@ export default function Loading(props) {
   }
 
   return container ? (
-    <div className={classes.loadingContainerContent}>
+    <div className={classes.loadingContainerContent} style={{backgroundColor: bgColor}}>
       <div className={classes.loadingContainer}>
         <Lottie options={defaultOptions} height={128} width={128} />
       </div>
@@ -58,3 +57,5 @@ export default function Loading(props) {
     </div>
   )
 }
+
+Loading.defaultProps = { bgColor: "#F4F4F5" };

@@ -13,8 +13,7 @@ export const BoxContent = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-end;
-  height: 122px;
-  background: #F4F4F5;
+  height: 122px;  
   border-radius: 6px;
   padding: 24px;
   gap: 24px;

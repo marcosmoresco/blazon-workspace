@@ -111,7 +111,7 @@ function Row(props) {
             className={classNames({'Default-margin-no-checkbox': !selectable && props.defaultMargin})}>
             <div className="flex">
               {index === 0 && sortable ? <DragHandle/> : null}
-              {column.renderCell ? column.renderCell(row) : (row[column.field] || ' - ')}
+              {column.renderCell ? column.renderCell(props.row) : (row[column.field] || ' - ')}
             </div>
           </TableCell>)
         })}  

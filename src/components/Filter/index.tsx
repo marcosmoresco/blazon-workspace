@@ -642,7 +642,7 @@ class Filter extends Component<FilterPropsType, FilterStateType> {
                       )}
                       {this.getFilters().length === 0 ? (
                         <div>
-                          <FormattedMessage id="app.filters.not.found" />
+                          <FormattedMessage id="filters.not.found" />
                         </div>
                       ) : null}
                     </div>

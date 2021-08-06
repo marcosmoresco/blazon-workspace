@@ -85,6 +85,7 @@ export const BoxRequesterAvatar = styled.div`
   & img {
     width: 32px;
     height: 32px;
+    border-radius: 20px;
   }
 `;
 
@@ -153,6 +154,7 @@ export const BoxCardStatus = styled.div`
   border-radius: 8px;
   padding: 12px;
   color: #0d875b;
+  text-transform: uppercase;
 `;
 
 export const Info = styled.div`

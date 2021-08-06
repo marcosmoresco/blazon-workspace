@@ -2,10 +2,13 @@
 import React from "react";
 import { FormattedMessage } from "react-intl";
 
+//types
+import { JustifyCardProps } from "./types";
+
 // styles
 import { Box, BoxCard, TitleCard, BoxJustification } from "./style";
 
-const JustifyCard: React.FC = () => {
+const JustifyCard: React.FC<JustifyCardProps> = ({ task }) => {
   return (
     <>
       <Box>
@@ -14,9 +17,7 @@ const JustifyCard: React.FC = () => {
             <FormattedMessage id="tasks.justification" />
           </TitleCard>
           <BoxJustification>
-            Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet
-            sint. Velit officia consequat duis enim velit mollit. Exercitation
-            veniam consequat sunt nostrud amet.
+            {task?.justification || task?.revokeJustification || task?.itemDetails?.justification || " - "}
           </BoxJustification>
         </BoxCard>
       </Box>

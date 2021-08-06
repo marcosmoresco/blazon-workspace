@@ -7,6 +7,8 @@ import { UserQueries } from "./User";
 import { DirectoryQueries } from "./Directory";
 import { FormDatasQueries } from "./FormDatas";
 import { NotificationQueries } from "./Notification";
+import { TaskQueries } from "./Tasks";
+import { TaskQueuesQueries } from "./TaskQueues";
 
 export const Queries = {
   getResume: async (parent: any, args: any, context: any) => {
@@ -26,5 +28,7 @@ export const Queries = {
   ...UserQueries,
   ...DirectoryQueries,
   ...FormDatasQueries,
-  ...NotificationQueries
+  ...NotificationQueries,
+  ...TaskQueries,
+  ...TaskQueuesQueries,
 };

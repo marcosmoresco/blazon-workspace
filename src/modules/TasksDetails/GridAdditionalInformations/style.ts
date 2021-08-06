@@ -33,9 +33,26 @@ export const InsideLine = styled.div`
 `;
 export const DeitalList = styled.div`
   align-items: center;
-  padding: 42px 24px 39px;
+  padding: 22px 24px 39px;
   background: #fff;
+  & label {
+    font-weight: 600;
+    font-size: 14px;
+    line-height: 100%;
+    text-transform: uppercase;
+    color: #26213F;
+    margin-top: 15px;
+    margin-bottom: 5px;
+  }
 `;
+
+export const DetailValue = styled.div`
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 24px;
+  color: #676378;
+`;
+
 export const GridArea = styled.div`
   background: #ffffff;
   box-shadow: 0px 0px 28px rgba(27, 32, 42, 0.16);

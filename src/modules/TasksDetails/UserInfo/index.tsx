@@ -2,12 +2,17 @@
 import React, { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useRouter } from "next/router";
+import { getLink } from "@utils/index";
 
 // components
 import Avatar from "@material-ui/core/Avatar";
 import Check from "@icons/Check";
 import CalendarIcon from "@icons/Calendar";
 import BrowsersIcon from "@icons/BrowsersIcon";
+import DetailUser from "@modules/Task/components/DetailUser";
+
+//types
+import { UserInfoProps } from "./types";
 
 // styles
 import {
@@ -37,17 +42,10 @@ import {
   InfoBrowsers,
 } from "./style";
 
-const UserInfo: React.FC = () => {
-  const tasks = [
-    {
-      identifier: 132593,
-      title: "Algar Telecom Portal Interativo",
-      text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Odio nibh integer amet sit amet sit nibh sapien.",
-      type: "membership role",
-      date: "30/02/2021",
-      priority: "LOW",
-    },
-  ];
+const UserInfo: React.FC<UserInfoProps> = ({ task }) => { 
+
+  const router = useRouter();  
+  const { type } = router.query;
 
   const priorityToElement: { [key: string]: any } = {
     LOW: <BarPriorityLow variant="determinate" value={30} />,
@@ -57,58 +55,94 @@ const UserInfo: React.FC = () => {
 
   return (
     <>
-      <Box>
-        {tasks.map((task) => (
-          <BoxCard key={`task-${task.identifier}`}>
-            <BoxCardContent>
-              <BoxCardHeader>
-                <BoxCardHeaderContent>
-                  <BoxCardTitle>{task.title}</BoxCardTitle>
-                  <BoxCardIdentifier>{task.identifier}</BoxCardIdentifier>
-                </BoxCardHeaderContent>
-                <BoxCardStatus>STATUS: Novo</BoxCardStatus>
-              </BoxCardHeader>
-              <BoxCardText>{task.text}</BoxCardText>
-              <BoxCardFooter>
-                <BoxCardFooterInfo>
-                  <BoxRequester>
-                    <Info>
-                      <BoxRequesterAvatar>
-                        <Avatar src="https://i.ibb.co/nwV8d4s/Avatar.png" />
-                      </BoxRequesterAvatar>
-                      <BoxRequesterContent>
-                        <BoxRequesterTitle>Solicitante</BoxRequesterTitle>
-                        <BoxRequesterDisplayName>
-                          Phillipe Ferreira
-                        </BoxRequesterDisplayName>
-                      </BoxRequesterContent>
-                    </Info>
-                  </BoxRequester>
-                  <BoxPriority>
-                    Prioridade
-                    {priorityToElement[task.priority]}
-                  </BoxPriority>
-                </BoxCardFooterInfo>
-                <BoxCardFooterInfo>
-                  <BoxCardHeaderInfo>
-                    <Info>
-                      <CalendarIcon />
-                      {task.date}
-                    </Info>
-                    <InfoCheck>
-                      <Check color="#0d875b" />
-                      {task.date}
-                    </InfoCheck>
-                    <InfoBrowsers>
-                      <BrowsersIcon color="#92909F" />
-                      {task.date}
-                    </InfoBrowsers>
-                  </BoxCardHeaderInfo>
-                </BoxCardFooterInfo>
-              </BoxCardFooter>
-            </BoxCardContent>
-          </BoxCard>
-        ))}
+      <Box>        
+        <BoxCard key={`task-${task?.identifier}`}>
+          <BoxCardContent>
+            <BoxCardHeader>
+              <BoxCardHeaderContent>
+                <BoxCardTitle>
+                  {["approval", "sod"].includes(type as string) && (
+                    task?.approvalItemDetails?.entitlementName || 
+                    task?.approvalItemDetails?.roleName || 
+                    task?.approvalItemDetails?.resourceName || " - "
+                  )}
+                  {type === "certification" && (
+                    task?.certificationItemDetails?.resourceName || 
+                    task?.certificationItemDetails?.roleName || 
+                    task?.certificationItemDetails?.entitlementName || " - "
+                  )}
+                  {type === "provisioning" && (
+                    task?.provisioningItemDetail?.resource?.name || " - "
+                  )}
+                  {type === "roleRight" && (
+                    task?.itemDetails?.roleName || " - "
+                  )}
+                </BoxCardTitle>
+                {type !== "roleRight" && (
+                  <BoxCardIdentifier>
+                    {["approval", "sod"].includes(type as string) && (
+                      task?.approvalItemDetails?.entitlementIdentifier || 
+                      task?.approvalItemDetails?.roleIdentifier || 
+                      task?.approvalItemDetails?.resourceIdentifier || " - "
+                    )}
+                    {type === "certification" && (
+                      task?.certificationItemDetails?.resourceIdentifier || 
+                      task?.certificationItemDetails?.roleIdentifier || 
+                      task?.certificationItemDetails?.entitlementIdentifier || " - "
+                    )}
+                    {type === "provisioning" && (
+                      task?.provisioningItemDetail?.resource?.identifier || " - "
+                    )}                  
+                  </BoxCardIdentifier>
+                )}                
+              </BoxCardHeaderContent>
+              <BoxCardStatus><FormattedMessage id="task.status"/>: {task?.headers?.status || " - "}</BoxCardStatus>
+            </BoxCardHeader>
+            <BoxCardText>
+              {["approval", "sod"].includes(type as string) && (
+                task?.approvalItemDetails?.entitlementDescription || 
+                task?.approvalItemDetails?.roleDescription || 
+                task?.approvalItemDetails?.resourceDescription || " - "
+              )}
+              {type === "certification" && (
+                task?.certificationItemDetails?.resourceDescription || 
+                task?.certificationItemDetails?.roleDescription || 
+                task?.certificationItemDetails?.entitlementDescription || " - "
+              )}
+              {type === "provisioning" && (
+                task?.provisioningItemDetail?.resource?.description || " - "
+              )}
+              {type === "roleRight" && (
+                task?.itemDetails?.roleDescription || " - "
+              )}
+            </BoxCardText>
+            <BoxCardFooter>
+              <BoxCardFooterInfo>
+                <DetailUser task={task}/>                
+                <BoxPriority>
+                  <FormattedMessage id="task.priority" />
+                  {priorityToElement[task?.headers?.priority || "LOW"]}
+                </BoxPriority>
+              </BoxCardFooterInfo>
+              <BoxCardFooterInfo>
+                <BoxCardHeaderInfo>
+                  <Info>
+                    <CalendarIcon />
+                    {task?.dates?.createdDate || " - "}
+                  </Info>
+                  <InfoCheck>
+                    <Check color="#0d875b" />
+                    {task?.dates?.createdDate || " - "}
+                  </InfoCheck>
+                  <InfoBrowsers>
+                    <BrowsersIcon color="#92909F" />
+                    {task?.dates?.deadline || " - "}
+                  </InfoBrowsers>
+                </BoxCardHeaderInfo>
+              </BoxCardFooterInfo>
+            </BoxCardFooter>
+          </BoxCardContent>
+        </BoxCard>       
       </Box>
       ;
     </>

@@ -22,6 +22,15 @@ import {
 import { Directory, Queries as DirectoryQueries } from "./Directory";
 import { Queries as FormDatasQueries } from "./FormDatas";
 import { Notification, Queries as NotificatonQueries } from "./Notification";
+import {
+  Task,
+  Queries as TaskQueries,
+  Mutations as TaskMutations,
+} from "./Task";
+import {
+  TaskQueue,
+  Queries as TaskQueueQueries,  
+} from "./TaskQueue";
 
 export const typeDefs = gql`
   ${Link}
@@ -34,6 +43,8 @@ export const typeDefs = gql`
   ${SelfService}
   ${Directory}
   ${Notification}
+  ${Task}
+  ${TaskQueue}
 
   type Query {
     ${ResumeQueries}      
@@ -44,11 +55,14 @@ export const typeDefs = gql`
     ${SelfServiceQueries}
     ${FormDatasQueries}
     ${NotificatonQueries}
+    ${TaskQueries}
+    ${TaskQueueQueries}
   }
 
   type Mutation {
     ${SelfServiceMutations}
     ${UserMutations}
     ${PasswordVaultMutations}
+    ${TaskMutations}
   }
 `;

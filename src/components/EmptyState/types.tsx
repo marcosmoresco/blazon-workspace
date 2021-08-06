@@ -1,7 +1,9 @@
 import { IntlShape } from 'react-intl'
 
 export type EmptyStateProps = {
-  icon: React.ReactNode
-  title: string
-  text: string
+  icon: any;
+  title: string;
+  text: string;
+  intl: IntlShape;
+  bgColor?: string;
 }

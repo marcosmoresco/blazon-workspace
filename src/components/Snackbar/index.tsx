@@ -31,6 +31,7 @@ const useStylesSnackbar = makeStyles((theme) => ({
         marginLeft: 'auto',
         marginRight: -8,
         paddingLeft: 16,
+        gap: 15,
       }
     }
   }

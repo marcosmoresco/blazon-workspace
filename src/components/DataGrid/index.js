@@ -66,8 +66,7 @@ const DataGridBlazon = (props) => {
   const [rowsPerPage, setRowsPerPage] = React.useState(size || ((type === "pagination" && rowsPerPageList[0]) || 0))
   const [isFetching, setIsFetching] = React.useState(fetching)
   const [gridLinks, setGridLinks] = React.useState(links)
-  const [expanded, setExpanded] = React.useState([])
-  const [currentParams, setCurrentParams] = React.useState("")
+  const [expanded, setExpanded] = React.useState([])  
 
   useEffect(() => {  
     if(!!list) {
@@ -103,7 +102,7 @@ const DataGridBlazon = (props) => {
     } else if(expand && props.expandAll !== expandAll) {
       setExpanded([]);
       setExpandAll(props.expandAll);
-    } else if(query && pageParam !== page || currentParams !== JSON.stringify(params)) {      
+    } else if(query && pageParam !== page) {      
       executeQuery({
         setIsFetching,        
         setGridLinks,

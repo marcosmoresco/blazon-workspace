@@ -1,11 +1,47 @@
 // vendors
-import React from "react";
-import { FormattedMessage } from "react-intl";
+import React, { useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
+import { useRouter } from "next/router";
+import { useQuery, useMutation } from "@apollo/client";
+import { useDispatch } from "react-redux";
+import { addMessage } from "@actions/index";
+import MenuItem from '@material-ui/core/MenuItem';
 
 // components
 import CirclesFour from "@icons/CirclesFour";
 import Button from "@components/Button";
 import DotsThreeIcon from "@icons/DotsThree";
+import UserIcon from "@icons/User";
+import UsersIcon from "@icons/Users";
+import ListNumbersIcon from "@icons/ListNumbers";
+import CaretRightIcon from "@icons/CaretRight";
+import XIcon from "@icons/X";
+import ForwardUser from "@modules/Task/components/ForwardUser";
+import ForwardQueue from "@modules/Task/components/ForwardQueue";
+import Disapprove from "@modules/Task/components/Disapprove";
+
+//constants
+import {
+  getAvailableActionsByType,
+} from "./constants";
+import { 
+  unassign as unassignTask,
+  assignToMe as assignToMeTask,
+  resolve as resolveTask,
+  approve,
+  certify,
+  provision,
+  getActionsByType,
+  getQueryByType 
+} from "@modules/Task/constants";
+
+//types
+import { HeaderProps } from "./types";
+
+//queries
+import { 
+  GET_ASSIGN_ACTIONS
+} from "@modules/Task/queries";
 
 // styles
 import {
@@ -15,32 +51,423 @@ import {
   MembershipStyle,
   ButtonsArea,
   Actions,
+  StyledMenu,
+  DividerMenu,
+  MenuItemInfo,
+  MenuItemBox,
+  MenuItemContainer
 } from "./style";
 
-const Header: React.FC = () => {
+const Header: React.FC<HeaderProps> = ({ task }) => {
+
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const intl = useIntl();
+  const { id, type } = router.query;
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [openForwardUser, setOpenForwardUser] = useState(false);
+  const [openForwardQueue, setOpenForwardQueue] = useState(false);
+  const [openDisapprove, setOpenDisapprove] = useState(false);
+  const [result, setResult] = useState("DISAPPROVED");
+  
+  const handleClick = (event: any) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleClose = () => {
+    setAnchorEl(null);
+  };
+
+  const { loading, error, data, refetch } = useQuery<{
+    getAssignActions: string[];
+  }>(GET_ASSIGN_ACTIONS, {
+    variables: {
+      status: `["${task?.headers?.status || "TODO"}"]`
+    },
+  });
+
+  const { loading: loadingActions, data: dataActions } = useQuery<{
+    getActions: string[]
+  }>(getAvailableActionsByType(type || "approval"), {
+    variables: {
+      status: `["${task?.headers?.status || "TODO"}"]`
+    },  
+  });
+
+  const [assignToMe, {}] = useMutation(getActionsByType(type || "approval").assignToMe, { 
+    refetchQueries: [
+      {
+        query: getQueryByType(type || "approval"),
+        variables: {
+          id: Number(id)
+        }
+      },
+    ],  
+    onCompleted: ({ assignToMe }) => {        
+      if(assignToMe) {
+        dispatch(
+          addMessage(
+            intl.formatMessage({id: "task.assignToMe.success"})
+          )
+        );       
+        setAnchorEl(null);        
+      }     
+    },
+  });
+
+  const [unassign, {}] = useMutation(getActionsByType(type || "approval").unassign, { 
+    refetchQueries: [
+      {
+        query: getQueryByType(type || "approval"),
+        variables: {
+          id: Number(id)
+        }
+      },
+    ],  
+    onCompleted: ({ unassign }) => {        
+      if(unassign) {
+        dispatch(
+          addMessage(
+            intl.formatMessage({id: "task.unassigned.success"})
+          )
+        );       
+        setAnchorEl(null);        
+      }     
+    },
+  });
+
+  const [forwardToUser, {}] = useMutation(getActionsByType(type || "approval").forwardToUser, { 
+    refetchQueries: [
+      {
+        query: getQueryByType(type || "approval"),
+        variables: {
+          id: Number(id)
+        }
+      },
+    ],  
+    onCompleted: ({ forwardToUser }) => {        
+      if(forwardToUser) {
+        dispatch(
+          addMessage(
+            intl.formatMessage({id: "task.forward.user.success"})
+          )
+        ); 
+        setOpenForwardUser(false); 
+        setAnchorEl(null);        
+      }     
+    },
+  });
+
+  const [forwardToQueue, {}] = useMutation(getActionsByType(type || "approval").forwardToQueue, { 
+    refetchQueries: [
+      {
+        query: getQueryByType(type || "approval"),
+        variables: {
+          id: Number(id)
+        }
+      },
+    ],  
+    onCompleted: ({ forwardToQueue }) => {
+      if(forwardToQueue) {
+        dispatch(
+          addMessage(
+            intl.formatMessage({id: "task.forward.queue.success"})
+          )
+        ); 
+        setOpenForwardQueue(false); 
+        setAnchorEl(null);        
+      }     
+    },
+  });
+
+  const [resolve, {}] = useMutation(getActionsByType(type || "approval").resolve, { 
+    refetchQueries: [
+      {
+        query: getQueryByType(type || "approval"),
+        variables: {
+          id: Number(id)
+        }
+      },
+    ],
+    onCompleted: ({ resolve }) => {
+      if(resolve) {
+        dispatch(
+          addMessage(
+            intl.formatMessage({id: "task.resolved.success"})
+          )
+        );
+        setOpenDisapprove(false);
+        setAnchorEl(null);      
+      }     
+    },
+    onError: () => {
+      dispatch(
+        addMessage(
+          intl.formatMessage({id: "task.resolved.error"}),
+          "error"
+        )
+      );
+      setAnchorEl(null); 
+    }
+  });
+
+  const executeForwardToUser = (userId: number): void => {
+    forwardToUser({
+      variables: {
+        payload: JSON.stringify([{
+          taskId: Number(id),
+          userId
+        }])
+      }
+    });
+  };
+
+  const executeForwardToQueue = (queueId: number): void => {
+    forwardToQueue({
+      variables: {
+        payload: JSON.stringify([{
+          taskId: Number(id),
+          queueId
+        }])
+      }
+    });
+  };
+
+  const executeDissaproved = (justification: string): void => {
+    resolve({
+      variables: {
+        payload: JSON.stringify([{
+          taskId: Number(id),
+          result,
+          justification
+        }])
+      }
+    });
+  };
+
   return (
     <>
       <HeaderPage>
         <InfoHeaderPage>
-          <TypeStyle>APPROVAL</TypeStyle>
+          <TypeStyle>
+            <FormattedMessage id={`task.${type}`} />
+          </TypeStyle>
           <MembershipStyle>
             <CirclesFour />
-            membership role
+            {task?.type && intl.formatMessage({id: `task.type.${task?.type}`})}
+            {type === "roleRight" && intl.formatMessage({id: `task.newRoleRight`})}
           </MembershipStyle>
         </InfoHeaderPage>
         <ButtonsArea>
-          <Button variant="contained" color="default-primary">
-            <FormattedMessage id="tasks.certify" />
-          </Button>
-          <Button variant="contained" color="secondary">
-            <FormattedMessage id="tasks.revoke" />
-          </Button>
-          <Actions>
-            <DotsThreeIcon height={24} width={24} />
-          </Actions>
+          {(dataActions?.getActions || []).includes("APPROVED") && (
+            <Button variant="contained" color="default-primary" onClick={() => {
+              if(task) {
+                approve(task, intl, () => {
+                  resolve({
+                    variables: {
+                      payload: JSON.stringify([{
+                        taskId: Number(id),
+                        result: "APPROVED"
+                      }])
+                    }
+                  });
+                });
+              }
+            }}>
+              <FormattedMessage id="tasks.approve" />
+            </Button>
+          )}
+          {(dataActions?.getActions || []).includes("DISAPPROVED") && (
+            <Button variant="contained" color="secondary" onClick={() => {
+              setResult("DISAPPROVED");
+              setOpenDisapprove(true);
+            }}>
+             <FormattedMessage id="tasks.disapprove" />
+            </Button>
+          )} 
+          {(dataActions?.getActions || []).includes("CERTIFIED") && (
+            <Button variant="contained" color="default-primary" onClick={() => {
+              if(task) {
+                certify(task, intl, () => {
+                  resolve({
+                    variables: {
+                      payload: JSON.stringify([{
+                        taskId: Number(id),
+                        result: "CERTIFIED"
+                      }])
+                    }
+                  });
+                });
+              }
+            }}>
+              <FormattedMessage id="tasks.certify" />
+            </Button>
+          )}
+          {(dataActions?.getActions || []).includes("REVOKED") && (
+            <Button variant="contained" color="secondary" onClick={() => {
+              setResult("REVOKED");
+              setOpenDisapprove(true);
+            }}>
+             <FormattedMessage id="tasks.revoke" />
+            </Button>
+          )}              
+          {(dataActions?.getActions || []).includes("ALLOWED") && (
+            <Button variant="contained" color="default-primary" onClick={() => {
+              setResult("ALLOWED");
+              setOpenDisapprove(true);
+            }}>
+             <FormattedMessage id="tasks.allow" />
+            </Button>
+          )} 
+          {(dataActions?.getActions || []).includes("NOT_ALLOWED") && (
+            <Button variant="contained" color="secondary" onClick={() => {
+              setResult("NOT_ALLOWED");
+              setOpenDisapprove(true);
+            }}>
+             <FormattedMessage id="tasks.deny" />
+            </Button>
+          )}   
+          {(dataActions?.getActions || []).includes("PROVISIONED") && (
+            <Button variant="contained" color="default-primary" onClick={() => {
+              if(task) {
+                provision(task, intl, () => {
+                  resolve({
+                    variables: {
+                      payload: JSON.stringify([{
+                        taskId: Number(id),
+                        result: "PROVISIONED"
+                      }])
+                    }
+                  });
+                });
+              }
+            }}>
+              <FormattedMessage id="tasks.provisioned" />
+            </Button>
+          )}
+          {(dataActions?.getActions || []).includes("NOT_PROVISIONED") && (
+            <Button variant="contained" color="secondary" onClick={() => {
+              setResult("NOT_PROVISIONED");
+              setOpenDisapprove(true);
+            }}>
+             <FormattedMessage id="tasks.notProvisioned" />
+            </Button>
+          )}
+          {(dataActions?.getActions || []).includes("RESOLVE") && (
+            <Button variant="contained" color="default-primary" onClick={() => {
+              if(task) {
+                resolveTask(task, intl, () => {
+                  resolve({
+                    variables: {
+                      payload: JSON.stringify([{
+                        taskId: Number(id),                       
+                      }])
+                    }
+                  });
+                });
+              }
+            }}>
+              <FormattedMessage id="tasks.resolve" />
+            </Button>
+          )}
+          {task?.headers?.status !== "DONE" && (
+            <Actions onClick={handleClick}>
+             <DotsThreeIcon height={24} width={24}/>
+            </Actions>
+          )}            
         </ButtonsArea>
-      </HeaderPage>
-      ;
+      </HeaderPage>     
+      <StyledMenu        
+        anchorEl={anchorEl}
+        keepMounted
+        disableAutoFocusItem
+        open={Boolean(anchorEl)}
+        onClose={handleClose}
+      >
+        {(data?.getAssignActions || []).includes("UNASSIGN") && (
+          <MenuItem onClick={() => {
+            if(task) {
+              unassignTask(task, intl, () => {
+                unassign({
+                  variables: {
+                    payload: JSON.stringify([{
+                      taskId: Number(id),                    
+                    }])
+                  }
+                })
+              });
+            }          
+          }}>
+            <MenuItemInfo>
+              <MenuItemBox className="Red">
+                <XIcon width={21} height={21} color="#FFFFFF"/>
+              </MenuItemBox>
+              <FormattedMessage id="tasks.unassign" />
+            </MenuItemInfo>           
+          </MenuItem>
+        )}
+        {(data?.getAssignActions || []).includes("ASSIGN_TO_ME") && (
+          <MenuItem onClick={() => {
+            if(task) {
+              assignToMeTask(task, intl, () => {
+                assignToMe({
+                  variables: {
+                    payload: JSON.stringify([{
+                      taskId: Number(id),                    
+                    }])
+                  }
+                })
+              });
+            }          
+          }}>
+            <MenuItemInfo>
+              <MenuItemBox className="Blue">
+                <UserIcon width={21} height={21} color="#FFFFFF"/>
+              </MenuItemBox>
+              <FormattedMessage id="tasks.assignToMe" />
+            </MenuItemInfo>             
+          </MenuItem>
+        )}
+        <DividerMenu/>
+        <MenuItem onClick={() => setOpenForwardUser(true)}>
+          <MenuItemInfo>
+            <MenuItemBox className="Blue">
+              <UsersIcon width={21} height={21} color="#FFFFFF"/>
+            </MenuItemBox>
+            <MenuItemContainer>
+              <FormattedMessage id="tasks.forwardToUser" />
+              <CaretRightIcon width={21} height={21} />
+            </MenuItemContainer>            
+          </MenuItemInfo>          
+        </MenuItem>
+        <MenuItem onClick={() => setOpenForwardQueue(true)}>
+          <MenuItemInfo>
+            <MenuItemBox className="Green">
+              <ListNumbersIcon width={21} height={21} color="#FFFFFF"/>
+            </MenuItemBox>
+            <MenuItemContainer>
+              <FormattedMessage id="tasks.forwardToQueue" />
+              <CaretRightIcon width={21} height={21} />
+            </MenuItemContainer>            
+          </MenuItemInfo>          
+        </MenuItem>
+      </StyledMenu>  
+      <ForwardUser 
+        modalOpen={openForwardUser}
+        setModalOpen={setOpenForwardUser} 
+        execute={executeForwardToUser}           
+      />
+      <ForwardQueue 
+        modalOpen={openForwardQueue}
+        setModalOpen={setOpenForwardQueue} 
+        execute={executeForwardToQueue}            
+      />   
+      <Disapprove
+        modalOpen={openDisapprove}
+        setModalOpen={setOpenDisapprove} 
+        execute={executeDissaproved}
+        task={task}     
+      />  
     </>
   );
 };

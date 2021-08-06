@@ -1,12 +1,12 @@
-import React, { FC } from 'react'
-import { injectIntl } from 'react-intl'
-import type { EmptyStateProps } from './types'
-import { Box, BoxContent, Title, Text } from './styles'
+import React, { FC } from "react";
+import { injectIntl } from "react-intl";
+import type { EmptyStateProps } from "./types";
+import { Box, BoxContent, Title, Text } from "./styles";
 
-const EmptyState: FC<EmptyStateProps> = ({ intl, title, text, icon }) => {
+const EmptyState: FC<EmptyStateProps> = ({ intl, title, text, icon, bgColor }) => {
   return (
     <Box>
-      <BoxContent>
+      <BoxContent style={{background: bgColor}}>
         {icon}
         <div>
           <Title>{intl.formatMessage({ id: title })}</Title>
@@ -14,7 +14,9 @@ const EmptyState: FC<EmptyStateProps> = ({ intl, title, text, icon }) => {
         </div>
       </BoxContent>
     </Box>
-  )
-}
+  );
+};
 
-export default injectIntl(EmptyState)
+EmptyState.defaultProps = { bgColor: "#F4F4F5" };
+
+export default injectIntl(EmptyState);

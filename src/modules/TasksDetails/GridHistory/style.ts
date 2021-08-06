@@ -143,7 +143,13 @@ export const Comment = styled.div`
   color: #676378;
   border: 1px solid #d4d3d9;
   border-radius: 6px;
+  width: 100%;
 `;
+
+export const BoxComment = styled.div`
+  width: 100%;
+`;
+
 export const Image = styled.img`
   border-radius: 50%;
 `;
@@ -157,6 +163,17 @@ export const HistoryBox = styled.div`
   gap: 16px;
   margin-bottom: 16px;
 `;
+
+export const HistorySystem = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #F4F4F5;
+  border-radius: 56px;
+  width: 64px;
+  height: 64px;
+`;
+
 export const UserHistory = styled.div`
   display: flex;
   gap: 16px;

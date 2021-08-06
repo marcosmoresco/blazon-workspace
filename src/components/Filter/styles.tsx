@@ -16,7 +16,7 @@ export const useStyles = (theme: Theme) =>
     input: {
       "& input": {
         padding: "11.5px 7px 11.5px 0",
-        width: 400,
+        width: 300,
       },
     },
     content: {

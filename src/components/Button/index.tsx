@@ -32,6 +32,7 @@ const useStyles = () => createStyles({
       fontWeight: 600,
       padding: '6px 16px',
       color: '#FFFFFF',
+      backgroundColor: '#0E46D7',
       '&.Green': {
         backgroundColor: '#06AD5D',            
         '&.MuiButton-root:hover': {

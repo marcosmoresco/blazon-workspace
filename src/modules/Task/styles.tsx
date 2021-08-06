@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { styled as styledMui } from "@material-ui/core/styles";
 import LinearProgress from '@material-ui/core/LinearProgress';
+import { withStyles } from '@material-ui/core/styles';
+import Menu from '@material-ui/core/Menu';
 
 export const Content = styled.div`
   margin-top: 48px;
@@ -12,7 +14,7 @@ export const Box = styled.div`
 
 export const Header = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   margin-top: 50px;
 `;
 
@@ -52,12 +54,12 @@ export const Actions = styled.div`
 
 export const HeaderFilters = styled.div`
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 15px;
 `;
 
 export const BoxCard = styled.div`
-  padding: 15px 24px;
+  padding: 24px;
   display: flex;
 `;
 
@@ -111,6 +113,7 @@ export const BoxCardIdentifier = styled.div`
 export const BoxRequester = styled.div`
   display: flex;
   align-items: center;
+  cursor: pointer;
 `;
 
 export const BoxRequesterContent = styled.div`
@@ -130,10 +133,11 @@ export const BoxRequesterDisplayName = styled.div`
   color: #1b202a;
 `;
 
-export const BoxRequesterAvatar = styled.div`
+export const BoxRequesterAvatar = styled.div`  
   & img {
     width: 32px;
     height: 32px;
+    border-radius: 20px;
   }
 `;
 
@@ -202,6 +206,7 @@ export const FooterType = styled.div`
   border-radius: 8px;
   padding: 12px;
   color: #3174F6;
+  text-transform: uppercase;
 `;
 
 export const FooterStatus = styled.div`
@@ -211,4 +216,103 @@ export const FooterStatus = styled.div`
   border-radius: 8px;
   padding: 12px;
   color: #0D875B;
+  text-transform: uppercase;
 `;
+
+
+export const FilterContent = styled.div`
+  display: block;
+`;
+
+export const MenuItemContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 5px 10px;
+  cursor: pointer;
+  height: 40px;
+  &:hover {
+    background: #E9E8EB;
+    border-radius: 8px;
+  }
+`;
+
+export const MenuItemText = styled.div`
+  font-weight: normal;
+  font-size: 16px;
+  line-height: 16px;
+  color: #000000;
+`;
+
+export const MenuItemInfo = styled.div`
+  padding: 5px;  
+  background: #FF134A;
+  border-radius: 110px;
+  color: #FFFFFF;
+`;
+
+export const SelectBoxContainer = styled.div`
+  min-width: 233px;
+  height: 42px;
+  background: #FFFFFF;
+  border: 1px solid #D4D3D9;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 8px;
+  cursor: pointer;
+  padding-right: 8px;
+`;
+
+export const SelectBoxInfo = styled.div`  
+  display: flex;
+  align-items: center;
+  font-weight: normal;
+  gap: 10px;
+  font-size: 16px;
+  line-height: 16px;
+  color: #26213F;
+`;
+
+export const SelectBoxInfoIcon = styled.div` 
+  width: 30px;
+  height: 30px; 
+  background: #E9E8EB;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-left: 6px;
+`;
+
+export const LoadMoreContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 64px;
+  margin-bottom: 30px;
+`;
+
+export const StyledMenu = withStyles({
+  paper: {
+    border: "1px solid #d3d4d5",
+    boxShadow: "0px 4px 74px rgba(0, 0, 0, 0.25)",
+    background: "#F4F4F5",
+    marginTop: 10,  
+    width: 233,
+    padding: 10   
+  },
+})((props) => (
+  <Menu    
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
