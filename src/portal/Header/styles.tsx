@@ -68,6 +68,14 @@ export const useStyles = (theme: Theme) =>
       },
       '& .MuiDivider-root': {
         marginBottom: 10
+      },
+      '& a': {
+        color: 'initial',
+        textDecoration: 'none',
+        width: '100%'
+      },
+      '& a:hover': {       
+        textDecoration: 'none'
       }
     },
     menuItem: {

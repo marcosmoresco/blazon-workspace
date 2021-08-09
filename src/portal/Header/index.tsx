@@ -16,6 +16,7 @@ import Popper from '@material-ui/core/Popper'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
 import Switch from '@material-ui/core/Switch'
+import Link from '@material-ui/core/Link'
 import Logo from '../../logo.svg'
 
 import PaperPlaneTiltIcon from '@icons/PaperPlaneTilt'
@@ -221,15 +222,17 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                     </div>
                   </MenuItem>
                   <MenuItem>
-                    <div className={classes.menuItem}>
-                      <div className={`${classes.menuImage} red`}>
-                        <SignOutIcon width={20} height={20} color='#FFFFFF' />
+                    <Link href="/saml/logout">
+                      <div className={classes.menuItem}>
+                        <div className={`${classes.menuImage} red`}>
+                          <SignOutIcon width={20} height={20} color='#FFFFFF' />
+                        </div>
+                        {intl.formatMessage({ id: 'logout' })}
                       </div>
-                      {intl.formatMessage({ id: 'logout' })}
-                    </div>
-                    <div className={classes.caretRight}>
-                      <CaretRightIcon width={20} />
-                    </div>
+                      <div className={classes.caretRight}>
+                        <CaretRightIcon width={20} />
+                      </div>
+                    </Link>                    
                   </MenuItem>
                   <MenuItem>
                     <div className={classes.darkMode}>

@@ -79,7 +79,8 @@ export const executeQuery = ({ setIsFetching, setGridLinks, setRows, getResponse
       query,
       variables: {
         ...queryFilters
-      }
+      },
+      fetchPolicy: "network-only"
     })
     .then(({ data }) => {
       setIsFetching(false);

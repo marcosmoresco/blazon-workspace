@@ -20,7 +20,7 @@ import { confirm } from "@components/Dialog/actions";
 import ArrowsOutIcon from "@icons/ArrowsOut";
 import ArrowClockwiseIcon from "@icons/ArrowClockwise";
 import CalendarIcon from "@icons/Calendar";
-import CheckSquareOffsetIcon from "@icons/CheckSquareOffset";
+import CheckIcon from "@icons/Check";
 import CirclesFourIcon from "@icons/CirclesFour";
 import DotsThreeIcon from "@icons/DotsThree";
 import InfoIcon from "@icons/Info";
@@ -52,8 +52,7 @@ import ForwardQueue from "@modules/Task/components/ForwardQueue";
 import Disapprove from "@modules/Task/components/Disapprove";
 import DetailUser from "@modules/Task/components/DetailUser";
 
-import {
-  Box,
+import {  
   BoxCard,
   BoxCardContent,
   BoxCardText,
@@ -63,11 +62,6 @@ import {
   BoxCardTitle,
   BoxCardIdentifier,
   Info,
-  BoxRequester,
-  BoxRequesterContent,
-  BoxRequesterTitle,
-  BoxRequesterDisplayName,
-  BoxRequesterAvatar,
   BoxCardFooter,
   BoxCardFooterInfo,
   BoxPriority,
@@ -76,17 +70,11 @@ import {
   BarPriorityHigh,
   FooterType,
   FooterStatus,
+  Actions
 } from "@modules/Task/styles";
 
 // styles
 import {
-  HeaderPage,
-  InfoHeaderPage,
-  TypeStyle,
-  MembershipStyle,
-  ButtonsArea,
-  Actions,
-  StyledMenu,
   DividerMenu,
   MenuItemInfo,
   MenuItemBox,
@@ -98,6 +86,22 @@ import type { ListProps, Task } from "@modules/Task/types";
 
 //queries
 import { GET_ASSIGN_ACTIONS, GET_TASK_QUEUES } from "@modules/Task/queries";
+
+const getType = (task?: Task, type?: string): string => {
+  let _type = "approval";
+  if(task?.headers?.category === "APPROVAL_TASK" || type === "APPROVAL_TASK") {
+    _type = "approval";
+  } else if(task?.headers?.category === "CERTIFICATION_TASK" || type === "CERTIFICATION_TASK") {
+    _type = "certification";
+  } else if(task?.headers?.category === "PROVISIONING_TASK" || type === "PROVISIONING_TASK") {
+    _type = "provisioning";
+  } else if(task?.headers?.category === "SOD_TASK" || type === "SOD_TASK") {
+    _type = "sod";
+  } else if(task?.headers?.category === "ROLE_RIGHT_TASK" || type === "ROLE_RIGHT_TASK") {
+    _type = "roleRight";
+  }
+  return _type;
+};
 
 const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subType = "any", size = 10, filteredString = "{}"}) => {
 
@@ -117,23 +121,27 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
   const [openForwardQueue, setOpenForwardQueue] = useState(false);
   const [openDisapprove, setOpenDisapprove] = useState(false);
   const [result, setResult] = useState("DISAPPROVED");
+  const [actions, setActions] = useState<string[]>([]);
 
-  let _type = "approval";
-  if(current?.headers.category === "APPROVAL_TASK" || type === "APPROVAL_TASK") {
-    _type = "approval";
-  } else if(current?.headers.category === "CERTIFICATION_TASK" || type === "CERTIFICATION_TASK") {
-    _type = "certification";
-  } else if(current?.headers.category === "PROVISIONING_TASK" || type === "PROVISIONING_TASK") {
-    _type = "provisioning";
-  } else if(current?.headers.category === "SOD_TASK" || type === "SOD_TASK") {
-    _type = "sod";
-  } else if(current?.headers.category === "ROLE_RIGHT_TASK" || type === "ROLE_RIGHT_TASK") {
-    _type = "roleRight";
-  }
+  let _type = getType(current, type);
 
   const handleClick = (event: any, task: Task) => {   
     setCurrent(task);
     setAnchorEl(event.currentTarget);
+      
+    let t = getType(task, type);
+
+    apolloClient
+      .query({
+        query: getAvailableActionsByType(t || "approval"),
+        variables: {
+          status: `["${task?.headers?.status || "TODO"}"]`
+        },
+        fetchPolicy: "network-only"
+      })
+      .then(({ data }) => {        
+        setActions(data.getActions);       
+      });
   };
 
   const handleClose = () => {
@@ -146,15 +154,8 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
     variables: {
       status: `["${current?.headers?.status || "TODO"}"]`
     },
-  });
-
-  const { loading: loadingActions, data: dataActions } = useQuery<{
-    getActions: string[]
-  }>(getAvailableActionsByType((subType !== "any" && subType !== "queue" && subType) || "approval"), {
-    variables: {
-      status: `["${current?.headers?.status || "TODO"}"]`
-    },  
-  });
+    fetchPolicy: "network-only"
+  });  
 
   const [assignToMe, {}] = useMutation(getActionsByType(_type).assignToMe, { 
     refetchQueries: [
@@ -447,12 +448,168 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
           router.push(`/tasks/${_type}/${current?.identifier}`)
         }}>
           <MenuItemInfo>
-              <MenuItemBox className="Blue">
-                <InfoIcon width={21} height={21} color="#FFFFFF"/>
-              </MenuItemBox>
-              <FormattedMessage id="details" />
-            </MenuItemInfo>           
+            <MenuItemBox className="Blue">
+              <InfoIcon width={21} height={21} color="#FFFFFF"/>
+            </MenuItemBox>
+            <FormattedMessage id="details" />
+          </MenuItemInfo>           
         </MenuItem>  
+        {(actions || []).includes("APPROVED") && (
+          <MenuItem onClick={() => {
+            if(current) {
+              approve(current, intl, () => {
+                resolve({
+                  variables: {
+                    payload: JSON.stringify([{
+                      taskId: Number(current?.identifier), 
+                      result: "APPROVED"                   
+                    }])
+                  }
+                })
+              });
+            }          
+          }}>
+            <MenuItemInfo>
+              <MenuItemBox className="Green">
+                <CheckIcon width={21} height={21} color="#FFFFFF"/>
+              </MenuItemBox>
+              <FormattedMessage id="tasks.approve" />
+            </MenuItemInfo>             
+          </MenuItem>           
+        )}
+        {(actions || []).includes("DISAPPROVED") && (
+          <MenuItem onClick={() => {
+            setResult("DISAPPROVED");
+            setOpenDisapprove(true);        
+          }}>
+            <MenuItemInfo>
+              <MenuItemBox className="Red">
+                <XIcon width={21} height={21} color="#FFFFFF"/>
+              </MenuItemBox>
+              <FormattedMessage id="tasks.disapprove" />
+            </MenuItemInfo>             
+          </MenuItem>           
+        )}         
+        {(actions || []).includes("CERTIFIED") && (
+          <MenuItem onClick={() => {
+            if(current) {
+              certify(current, intl, () => {
+                resolve({
+                  variables: {
+                    payload: JSON.stringify([{
+                      taskId: Number(current?.identifier), 
+                      result: "CERTIFIED"                   
+                    }])
+                  }
+                })
+              });
+            }          
+          }}>
+            <MenuItemInfo>
+              <MenuItemBox className="Blue">
+                <UserIcon width={21} height={21} color="#FFFFFF"/>
+              </MenuItemBox>
+              <FormattedMessage id="tasks.certify" />
+            </MenuItemInfo>             
+          </MenuItem>         
+        )}
+        {(actions || []).includes("REVOKED") && (
+          <MenuItem onClick={() => {
+            setResult("REVOKED");
+            setOpenDisapprove(true);        
+          }}>
+            <MenuItemInfo>
+              <MenuItemBox className="Blue">
+                <XIcon width={21} height={21} color="#FFFFFF"/>
+              </MenuItemBox>
+              <FormattedMessage id="tasks.revoke" />
+            </MenuItemInfo>             
+          </MenuItem>           
+        )}    
+        {(actions || []).includes("ALLOWED") && (
+          <MenuItem onClick={() => {
+            setResult("ALLOWED");
+            setOpenDisapprove(true);          
+          }}>
+            <MenuItemInfo>
+              <MenuItemBox className="Blue">
+                <UserIcon width={21} height={21} color="#FFFFFF"/>
+              </MenuItemBox>
+              <FormattedMessage id="tasks.allow" />
+            </MenuItemInfo>             
+          </MenuItem>         
+        )}    
+        {(actions || []).includes("NOT_ALLOWED") && (
+          <MenuItem onClick={() => {
+            setResult("NOT_ALLOWED");
+            setOpenDisapprove(true);          
+          }}>
+            <MenuItemInfo>
+              <MenuItemBox className="Red">
+                <XIcon width={21} height={21} color="#FFFFFF"/>
+              </MenuItemBox>
+              <FormattedMessage id="tasks.deny" />
+            </MenuItemInfo>             
+          </MenuItem>         
+        )}  
+        {(actions || []).includes("PROVISIONED") && (
+          <MenuItem onClick={() => {
+            if(current) {
+              provision(current, intl, () => {
+                resolve({
+                  variables: {
+                    payload: JSON.stringify([{
+                      taskId: Number(current?.identifier), 
+                      result: "PROVISIONED"                   
+                    }])
+                  }
+                })
+              });
+            }          
+          }}>
+            <MenuItemInfo>
+              <MenuItemBox className="Blue">
+                <UserIcon width={21} height={21} color="#FFFFFF"/>
+              </MenuItemBox>
+              <FormattedMessage id="tasks.provisioned" />
+            </MenuItemInfo>             
+          </MenuItem>         
+        )} 
+        {(actions || []).includes("NOT_PROVISIONED") && (
+          <MenuItem onClick={() => {
+            setResult("NOT_PROVISIONED");
+            setOpenDisapprove(true);          
+          }}>
+            <MenuItemInfo>
+              <MenuItemBox className="Red">
+                <XIcon width={21} height={21} color="#FFFFFF"/>
+              </MenuItemBox>
+              <FormattedMessage id="tasks.notProvisioned" />
+            </MenuItemInfo>             
+          </MenuItem>         
+        )}         
+        {(actions || []).includes("RESOLVE") && (
+          <MenuItem onClick={() => {
+            if(current) {
+              resolveTask(current, intl, () => {
+                resolve({
+                  variables: {
+                    payload: JSON.stringify([{
+                      taskId: Number(current?.identifier),                                       
+                    }])
+                  }
+                })
+              });
+            }          
+          }}>
+            <MenuItemInfo>
+              <MenuItemBox className="Blue">
+                <UserIcon width={21} height={21} color="#FFFFFF"/>
+              </MenuItemBox>
+              <FormattedMessage id="tasks.resolve" />
+            </MenuItemInfo>             
+          </MenuItem>         
+        )}         
         {(data?.getAssignActions || []).includes("UNASSIGN") && (
           <MenuItem onClick={() => {
             if(current) {

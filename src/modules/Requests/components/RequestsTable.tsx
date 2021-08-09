@@ -5,14 +5,11 @@ import { useRouter } from "next/router";
 
 import { FormattedMessage, injectIntl } from "react-intl";
 import { connect } from "react-redux";
-import { useQuery } from "@apollo/client";
-import apolloClient from "@utils/apollo-client";
 
 //queries
 import { GET_REQUESTS } from "../queries";
 
 // types
-import type { FilterType } from "@components/Filter/types";
 import { Request } from "../types";
 
 // components
@@ -112,7 +109,8 @@ const Tasks: FC<RequestsTableProps> = ({ intl }) => {
           </div>
         </div>
         <div>
-          <DataGrid                     
+          <DataGrid     
+            defaultOrderBy="createDate:desc"                
             query={GET_REQUESTS}
             queryFilters={queryFilters}
             height={600} 

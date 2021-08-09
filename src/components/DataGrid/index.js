@@ -102,20 +102,50 @@ const DataGridBlazon = (props) => {
     } else if(expand && props.expandAll !== expandAll) {
       setExpanded([]);
       setExpandAll(props.expandAll);
-    } else if(query && pageParam !== page) {      
+    } else if(query && pageParam !== page) {  
+      let _queryFilters = {...queryFilters};
+      if(defaultOrderBy) {
+        _queryFilters = {..._queryFilters, ord: defaultOrderBy};
+        const _defaultOrder = defaultOrderBy.split(":");
+        if(_defaultOrder.length === 2) {
+          setOrder(_defaultOrder[1])
+          setOrderBy(_defaultOrder[0])
+        }
+      } else {
+        setOrderBy(null)
+      }    
       executeQuery({
         setIsFetching,        
         setGridLinks,
         setRows,
-        getResponseLinks, 
+        getResponseLinks,
         getResponse,
         query,
-        queryFilters,       
+        queryFilters: _queryFilters,       
         bindId
       });
-    }    
-
-  }, [list, size, open, links, fetching, rowsPerPageList, bindId, type, selecteds, defaultOrderBy, props])
+    }
+  }, [
+    list, 
+    size, 
+    open, 
+    links, 
+    fetching, 
+    rowsPerPageList, 
+    bindId, 
+    type, 
+    selecteds, 
+    defaultOrderBy, 
+    props,
+    expand,
+    expandAll,
+    getResponse,
+    getResponseLinks,
+    page,
+    pageParam,
+    query,
+    queryFilters
+  ]);
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';    
@@ -280,9 +310,9 @@ const DataGridBlazon = (props) => {
 
         setIsFetching(true);
 
-        const size = Number(getQueryParam('size', link))
-        const page = Number(getQueryParam('page', link))
-        const ord = getQueryParam('ord', link)
+        const size = Number(getQueryParam('size', link));
+        const page = Number(getQueryParam('page', link));
+        const ord = getQueryParam('ord', link);
 
         apolloClient
           .query({
@@ -292,7 +322,8 @@ const DataGridBlazon = (props) => {
               page,
               size,
               ord
-            }
+            },
+            fetchPolicy: "network-only"
           })
           .then(({ data }) => {
             setIsFetching(false);

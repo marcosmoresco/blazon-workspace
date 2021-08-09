@@ -78,13 +78,13 @@ export const columns = [
     }
   },
   {
-    field: 'effectiveDate',
+    field: 'createDate',
     headerName: <FormattedMessage id='request.date' />,
     sortable: true,
     renderCell: (row: Request) => {
       return (
         <EffectiveDate
-          effectiveDate={row.effectiveDate ? row.effectiveDate : ' - '}
+          effectiveDate={row.createdAt ? row.createdAt : ' - '}
         />
       )
     }
