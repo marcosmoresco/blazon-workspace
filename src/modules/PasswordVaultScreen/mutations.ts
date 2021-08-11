@@ -43,3 +43,9 @@ export const DELETE_PASSWORD_VAULT_ENTRY = gql`
     deletePasswordVaultEntry(id: $id)
   }
 `;
+
+export const SHARE_PASSWORD_VAULT_ENTRY = gql`
+  mutation sharePasswordVaultEntry($id: Int, $payload: String) {
+    sharePasswordVaultEntry(id: $id, payload: $payload)
+  }
+`;

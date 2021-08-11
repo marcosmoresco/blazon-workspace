@@ -8,6 +8,7 @@ import Filter from "@components/Filter";
 import { useStyles } from "./styles";
 import { withStyles } from "@material-ui/core/styles";
 import { GET_USER_ACCOUNTS } from "@modules/User/queries";
+import { TitleHierarchy } from "@components/TitlePage/types";
 
 const columns = () => [
   {
@@ -89,13 +90,22 @@ const Regular = ({ classes }) => {
     });
   };
 
+  const hierarchy: TitleHierarchy = {
+    name: "profile.header.breadcrumb",
+    href: "/profile",
+    children: [
+      {
+        name: "profile.accounts",
+      },
+    ],
+  };
+
   return (
     <CardScreen
       loading={false}
-      title="profile"
-      subTitle="profile.accounts.regular"
-      icon={<User height={24} width={24} />}
+      title="profile.accounts.regular"         
       onBack={() => router.push("/profile")}
+      hierarchy={hierarchy}
     >
       <div className="Default-header-filter">
         <Filter

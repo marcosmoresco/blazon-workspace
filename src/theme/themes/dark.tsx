@@ -51,6 +51,11 @@ export const dark = createMuiTheme({
         borderRadius: 20,
         fontSize: 16,
       }
+    },
+    MuiBreadcrumbs: {
+      root: {
+        marginBottom: 10
+      }
     }
   },
   palette: {

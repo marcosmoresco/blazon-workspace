@@ -13,11 +13,20 @@ import Button from "@components/Button";
 import EmptyState from "@components/EmptyState";
 import Section from "@components/Section";
 import Tooltip from "@components/Tooltip";
+import Loading from "@components/Loading";
 import TableIcon from "@icons/Table";
 import PuzzlePieceIcon from "@icons/PuzzlePiece";
 import ArticleIcon from "@icons/Article";
 import UserGearIcon from "@icons/UserGear";
 import NewspaperClippingIcon from "@icons/NewspaperClipping";
+import SharedAccountIcon from "@icons/SharedAccount";
+import ApplicationAccountIcon from "@icons/ApplicationAccount";
+import RegularAccountIcon from "@icons/RegularAccount";
+import AdministrativeAccountIcon from "@icons/AdministrativeAccount";
+import TemporaryAccountIcon from "@icons/Watch";
+import MagnifyingGlassPlusIcon from "@icons/MagnifyingGlassPlus";
+import SecurityUserIcon from "@icons/SecurityUser";
+import PeopleIcon from "@icons/People";
 import ShoppingCartIcon from "@icons/ShoppingCart";
 import SearchIcon from "@icons/Search";
 import SquaresFourIcon from "@icons/SquaresFour";
@@ -52,6 +61,7 @@ import {
   ItemTitleParent,
 } from "./styles";
 import { GET_SELF_SERVICE, GET_SELF_SERVICE_ADVANCED } from "./queries";
+import WatchIcon from "@icons/Watch";
 
 const Search: FC<SearchProps> = ({ intl, classes }) => {
   const { cart } = useCart();
@@ -105,6 +115,12 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
 
   const list = data?.getSelfService || [];
 
+  if(loading) {
+    return (
+      <Loading container/>
+    )
+  }
+
   const save = (filteredMapReference: any, total: number) => {
     setTotalFiltered(total);
     const _filters: any[] = [];
@@ -128,35 +144,39 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
   };
 
   const iconByType: { [key: string]: any } = {
-    RESOURCE: <PuzzlePieceIcon width={24} height={24} color="#3174F6" />,
-    ENTITLEMENT: <ArticleIcon width={24} height={24} color="#3174F6" />,
-    ROLE: <NewspaperClippingIcon width={24} height={24} color="#3174F6" />,
-    ADMIN_PASSWORD: <UserGearIcon width={24} height={24} color="#3174F6" />,
+    RESOURCESHARED_RESOURCE: <SharedAccountIcon width={24} height={24} color="#3174F6" />,
+    RESOURCEAPPLICATION_RESOURCE: <ApplicationAccountIcon width={24} height={24} color="#3174F6" />,
+    RESOURCEREGULAR_RESOURCE: <RegularAccountIcon width={24} height={24} color="#3174F6" />,
+    RESOURCETEMPORARY_RESOURCE: <WatchIcon width={24} height={24} color="#3174F6" />,
+    RESOURCEADMIN_RESOURCE: <AdministrativeAccountIcon width={24} height={24} color="#3174F6" />,
+    ENTITLEMENT: <CheckCircleIcon width={24} height={24} color="#3174F6" />,
+    ROLE: <PeopleIcon width={24} height={24} color="#3174F6" />,
+    ADMIN_PASSWORD: <SecurityUserIcon width={24} height={24} color="#3174F6" />,
   };
 
   const sections = [
     {
-      icon: <TableIcon />,
+      icon: <MagnifyingGlassPlusIcon />,
       name: "all",
       value: "ALL",
     },
     {
-      icon: <PuzzlePieceIcon />,
+      icon: <SquaresFourIcon />,
       name: "resources",
       value: "RESOURCE",
     },
     {
-      icon: <ArticleIcon />,
+      icon: <CheckCircleIcon />,
       name: "entitlements",
       value: "ENTITLEMENT",
     },
     {
-      icon: <UserGearIcon />,
+      icon: <SecurityUserIcon />,
       name: "adminAccounts",
       value: "ADMIN_PASSWORD",
     },
     {
-      icon: <NewspaperClippingIcon />,
+      icon: <PeopleIcon />,
       name: "roles",
       value: "ROLE",
     },
@@ -344,7 +364,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
               >
                 <ListItemContent>
                   <ListItemIconContent>
-                    {iconByType[item.type]}
+                    {iconByType[`${item.type}${(item.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", item.attributes)) || ""}`]}
                   </ListItemIconContent>
                   <Tooltip title={item.name} placement="bottom">
                     <ListItemText>

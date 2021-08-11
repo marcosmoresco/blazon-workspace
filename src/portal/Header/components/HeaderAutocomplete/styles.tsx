@@ -2,10 +2,10 @@ import { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import styled from "styled-components";
 import Paper from "@material-ui/core/Paper";
-import PuzzlePieceIcon from "@icons/PuzzlePiece";
-import ArticleIcon from "@icons/Article";
-import UserGearIcon from "@icons/UserGear";
-import NewspaperClippingIcon from "@icons/NewspaperClipping";
+import SquaresFourIcon from "@icons/SquaresFour";
+import CheckCircleIcon from "@icons/CheckCircle";
+import SecurityUserIcon from "@icons/SecurityUser";
+import PeopleIcon from "@icons/People";
 import CaretRightIcon from "@icons/CaretRight";
 
 export const BoxAutocomplete = styled.div`
@@ -136,6 +136,7 @@ export const AutocompletePaper = ({
   open,
   setOpen,
   setFilter,
+  goToSearch
 }: {
   children: any;
   refetch: any;
@@ -143,6 +144,7 @@ export const AutocompletePaper = ({
   open: boolean;
   setOpen: any;
   setFilter: any;
+  goToSearch: any;
 }) => {
   const [active, setActive] = useState("");
 
@@ -193,7 +195,7 @@ export const AutocompletePaper = ({
           }}
           className={`${active === "ROLES" && "Active"}`}
         >
-          <NewspaperClippingIcon
+          <PeopleIcon
             width={17}
             height={17}
             color={(active === "ROLES" && "#006AC6") || "black"}
@@ -219,7 +221,7 @@ export const AutocompletePaper = ({
           }}
           className={`${active === "ENTITLEMENTS" && "Active"}`}
         >
-          <ArticleIcon
+          <CheckCircleIcon
             width={17}
             height={17}
             color={(active === "ENTITLEMENTS" && "#006AC6") || "black"}
@@ -244,7 +246,7 @@ export const AutocompletePaper = ({
           }}
           className={`${active === "ADMIN_PASSWORD" && "Active"}`}
         >
-          <UserGearIcon
+          <SecurityUserIcon
             width={17}
             height={17}
             color={(active === "ADMIN_PASSWORD" && "#006AC6") || "black"}
@@ -270,7 +272,7 @@ export const AutocompletePaper = ({
           }}
           className={`${active === "RESOURCES" && "Active"}`}
         >
-          <PuzzlePieceIcon
+          <SquaresFourIcon
             width={17}
             height={17}
             color={(active === "RESOURCES" && "#006AC6") || "black"}
@@ -283,7 +285,10 @@ export const AutocompletePaper = ({
       </HeaderResults>
       {children}
       {filter && (
-      <FooterSeeAll>
+      <FooterSeeAll onClick={(e: any) => {
+        e.stopPropagation();
+        goToSearch();
+      }}>
         <span>
           <FormattedMessage id="viewAll.results.for" />
           {` "${filter}"`}          

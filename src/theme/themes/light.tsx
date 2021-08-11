@@ -53,6 +53,11 @@ export const light = createMuiTheme({
         fontSize: 16,
       }
     },   
+    MuiBreadcrumbs: {
+      root: {
+        marginBottom: 10
+      }
+    }
   },
   palette: {
     type: "light",

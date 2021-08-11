@@ -4,7 +4,6 @@ import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 
 // components
-import TitlePage from "./TitlePage";
 import Header from "./Header";
 import UserInfo from "./UserInfo";
 import JustifyCard from "./JustifyCard";
@@ -24,7 +23,7 @@ const TasksDetails: React.FC = () => {
   const { type } = router.query;
 
   return (
-    <>
+    <>     
       {type === "approval" && (
         <Approval />
       )}

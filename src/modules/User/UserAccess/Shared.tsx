@@ -41,6 +41,7 @@ import {
 } from "@modules/User/mutations";
 import { User } from "@types";
 import { getLink } from "@utils/index";
+import { TitleHierarchy } from "@components/TitlePage/types";
 
 const filters = [
   {
@@ -418,13 +419,22 @@ const Shared = ({ classes }) => {
     setModalOpen(false);
   };
 
+  const hierarchy: TitleHierarchy = {
+    name: "profile.header.breadcrumb",
+    href: "/profile",
+    children: [
+      {
+        name: "profile.accounts",
+      },
+    ],
+  };
+
   return (
     <CardScreen
       loading={false}
-      title="profile"
-      subTitle="profile.accounts.shared"
-      icon={<UserIcon height={24} width={24} />}
+      title="profile.accounts.shared"     
       onBack={() => router.push("/profile")}
+      hierarchy={hierarchy}
     >
       <ShareDialog
         modalOpen={modalOpen}

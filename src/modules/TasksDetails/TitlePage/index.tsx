@@ -12,91 +12,59 @@ import { TitleProps } from "./types";
 // styles
 import { TitleBox, TitleText, Line, Header, InfoText } from "./styles";
 
-const TitlePage: React.FC<TitleProps> = ({ intl, onBack, task }) => {
+import { TitleHierarchy } from "@components/TitlePage/types";
+import TitlePage from "@components/TitlePage";
+
+const TitlePageTask: React.FC<TitleProps> = ({ intl, onBack, task }) => {
 
   const router = useRouter();  
-  const { type } = router.query;
+  const { id, type } = router.query;
+
+  const hierarchy: TitleHierarchy = {
+    name: "tasks",  
+    href: "/tasks",
+    children: [{
+      formatedName: String(id)
+    }]  
+  };
+
+  let subTitle = "";
+
+  if(["approval", "sod"].includes(type as string)) {
+    if(task?.approvalItemDetails?.entitlementName) {
+      subTitle = `${task?.approvalItemDetails?.entitlementName} - ${task?.approvalItemDetails?.entitlementIdentifier}`;
+    }
+    if(task?.approvalItemDetails?.roleName) {
+      subTitle = `${task?.approvalItemDetails?.roleName} - ${task?.approvalItemDetails?.roleIdentifier}`;
+    }
+    if(task?.approvalItemDetails?.resourceName) {
+      subTitle = `${task?.approvalItemDetails?.resourceName} - ${task?.approvalItemDetails?.resourceIdentifier}`;
+    }
+  } else if(type as string  === "certification") {
+    if(task?.certificationItemDetails?.entitlementName) {
+      subTitle = `${task?.certificationItemDetails?.entitlementName} - ${task?.certificationItemDetails?.entitlementIdentifier}`;
+    }
+    if(task?.certificationItemDetails?.roleName) {
+      subTitle = `${task?.certificationItemDetails?.roleName} - ${task?.certificationItemDetails?.roleIdentifier}`;
+    }
+    if(task?.certificationItemDetails?.resourceName) {
+      subTitle = `${task?.certificationItemDetails?.resourceName} - ${task?.certificationItemDetails?.resourceIdentifier}`;
+    }
+  } else if(type as string  === "provisioning") {
+    subTitle = `${task?.provisioningItemDetail?.resource?.name} - ${task?.provisioningItemDetail?.resource?.name}`;
+  } else if(type as string  === "provisioning") {
+    subTitle = `${task?.itemDetails?.roleName}`;
+  }
 
   return (
     <>
-      <Header>
-        <div>
-          {onBack && (
-            <div onClick={onBack}>
-              <Link href="/tasks">
-                <a>
-                  <ArrowLeft />
-                </a>
-              </Link>
-            </div>
-          )}
-          <TitleBox>
-            <ShoppingCartSimpleIcon width={24} height={24} />
-            <TitleText>{intl.formatMessage({ id: "tasks" })}</TitleText>
-          </TitleBox>
-        </div>
-        <InfoText>
-          {["approval", "sod"].includes(type as string) && (
-            <>
-              {task?.approvalItemDetails?.entitlementName && (
-                <>
-                  {task?.approvalItemDetails?.entitlementName} - {task?.approvalItemDetails?.entitlementIdentifier}
-                </>                
-              )}  
-              {task?.approvalItemDetails?.roleName && (
-                <>
-                  {task?.approvalItemDetails?.roleName} - {task?.approvalItemDetails?.roleIdentifier}
-                </>                
-              )} 
-              {task?.approvalItemDetails?.resourceName && (
-                <>
-                  {task?.approvalItemDetails?.resourceName} - {task?.approvalItemDetails?.resourceIdentifier}
-                </>                
-              )}              
-            </>            
-          )}
-          {type === "certification" && (
-            <>
-              {task?.certificationItemDetails?.entitlementName && (
-                <>
-                  {task?.certificationItemDetails?.entitlementName} - {task?.certificationItemDetails?.entitlementIdentifier}
-                </>                
-              )}  
-              {task?.certificationItemDetails?.roleName && (
-                <>
-                  {task?.certificationItemDetails?.roleName} - {task?.certificationItemDetails?.roleIdentifier}
-                </>                
-              )} 
-              {task?.certificationItemDetails?.resourceName && (
-                <>
-                  {task?.certificationItemDetails?.resourceName} - {task?.certificationItemDetails?.resourceIdentifier}
-                </>                
-              )}              
-            </>            
-          )}
-          {type === "provisioning" && (
-            <>              
-              {task?.provisioningItemDetail?.resource?.name && (
-                <>
-                  {task?.provisioningItemDetail?.resource?.name} - {task?.provisioningItemDetail?.resource?.name}
-                </>                
-              )}              
-            </>            
-          )}
-          {type === "roleRight" && (
-            <> 
-              {task?.itemDetails?.roleName && (
-                <>
-                  {task?.itemDetails?.roleName}
-                </>                
-              )}            
-            </>            
-          )}
-        </InfoText>
-      </Header>
-      <Line />
+     <TitlePage 
+        title="tasks"   
+        subTitle={subTitle}                 
+        hierarchy={hierarchy} 
+        onBack={() => router.push("/tasks")}/>      
     </>
   );
 };
 
-export default injectIntl(TitlePage);
+export default injectIntl(TitlePageTask);

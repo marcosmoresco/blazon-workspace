@@ -4,7 +4,7 @@ import cors from "cors";
 import axios from "axios";
 const uid = require("uid-safe");
 import passport from "./passport";
-import { info } from "./log";
+import { info, error } from "./log";
 
 //Create server express
 const server = express();
@@ -84,12 +84,12 @@ server.post(
   }
 );
 
-server.get("/saml/logout", (req: any, resp: any, next: any) => {
+server.get("/logout", (req: any, resp: any, next: any) => {
   var passportSaml = passport._strategy("saml");
   try {
     passportSaml.logout(req, (err: any, urlLogoutRequest: string) => {
       if (!!err) {
-        console.log(err);
+        error(err);
         resp.send(500, "Erro ao fazer logout ...");
         next();
         return;
@@ -102,7 +102,7 @@ server.get("/saml/logout", (req: any, resp: any, next: any) => {
   }
 });
 
-server.post("/saml/logout", (req: any, res: any, next: any) => {
+server.post("/logout", (req: any, res: any, next: any) => {
   //Logout user
   req.logout();
   res.redirect("/");

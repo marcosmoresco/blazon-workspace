@@ -1,6 +1,9 @@
 import React, { FC, useState } from "react";
+import { useRouter } from "next/router";
 import { withStyles } from "@material-ui/core/styles";
-import { injectIntl, IntlShape } from "react-intl";
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Typography from '@material-ui/core/Typography';
+import { injectIntl, IntlShape, FormattedMessage } from "react-intl";
 import useStyles from "./styles";
 import NewPassword from "./NewPassword";
 import Divider from "@components/Divider";
@@ -15,8 +18,10 @@ import Plus from "@icons/Plus";
 import { chunk } from "lodash";
 import EmptyState from "@components/EmptyState";
 import EmptyStateSearchIcon from "@icons/EmptyStateSearch";
+import CaretRightIcon from "@icons/CaretRight";
+import HouseSimpleIcon from "@icons/HouseSimple";
 import RequestStatusDialog from "@components/RequestStatusDialog";
-import SharedDialog from "./ShareDialog";
+import Link from "@components/BreadcrumbLink";
 
 const StyledPasswordVaultItem = withStyles(() => ({
   valtItem: {
@@ -36,6 +41,7 @@ const PasswordVaultScreen: FC<PasswordVaultScreenProps> = ({
   const [newPasswordModalOpen, setNewPasswordModalOpen] =
     useState<boolean>(false);
 
+  const router = useRouter();
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [pageSize, setPageSize] = useState<number>(9);
 
@@ -64,7 +70,7 @@ const PasswordVaultScreen: FC<PasswordVaultScreenProps> = ({
   )[0];
 
   return (
-    <>
+    <>      
       <div className={classes.passwordVault}>
         <RequestStatusDialog
           open={showSavePasswordStatusModal}
@@ -87,7 +93,16 @@ const PasswordVaultScreen: FC<PasswordVaultScreenProps> = ({
             setSavePasswordStatus(success);
           }}
         />            
-
+        <Breadcrumbs separator={<CaretRightIcon width={18} height={18} stroke={2}/>} aria-label="breadcrumb">
+          <Link color="primary" href="/" onClick={() => router.push("/")}>
+            <HouseSimpleIcon width={23} height={23} color="#3174F6"/>
+            <FormattedMessage id="home" />
+          </Link>          
+          <Typography>
+            <FormattedMessage id="passwordVault" />
+          </Typography>
+        </Breadcrumbs>
+      
         <div className="title">
           {intl.formatMessage({ id: "passwordVault.title" })}
         </div>
@@ -126,7 +141,7 @@ const PasswordVaultScreen: FC<PasswordVaultScreenProps> = ({
           />
         ) : (
           <div style={{ textAlign: "center" }}>
-            <Button className="newPasswordButton" onClick={loadMore}>
+            <Button color="primary" variant="contained" onClick={loadMore}>
               {intl.formatMessage({ id: "loadMore" })}
             </Button>
           </div>

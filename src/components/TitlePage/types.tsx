@@ -6,4 +6,13 @@ export type TitleProps = {
   subTitle?: string;
   onBack?: () => void;
   icon?: any;
+  hierarchy?: TitleHierarchy
 };
+
+
+export type TitleHierarchy = {
+  name?: string;
+  formatedName?: string;
+  href?: string;
+  children?: TitleHierarchy[];
+}

@@ -9,6 +9,7 @@ import { useStyles } from "./styles";
 import { withStyles } from "@material-ui/core/styles";
 import { RoleDirectory } from "@portal/Search/types";
 import { GET_USER_ROLES } from "@modules/User/queries";
+import { TitleHierarchy } from "@components/TitlePage/types";
 
 const columns = () => [
   {
@@ -45,13 +46,16 @@ const Roles = ({ classes }) => {
     });
   };
 
+  const hierarchy: TitleHierarchy = {
+    name: "profile.header.breadcrumb"      
+  };
+
   return (
     <CardScreen
       loading={false}
-      title="profile"
-      subTitle="roles"
-      icon={<User height={24} width={24} />}
+      title="roles"          
       onBack={() => router.push("/profile")}
+      hierarchy={hierarchy}
     >      
       <div>
         <DataGrid

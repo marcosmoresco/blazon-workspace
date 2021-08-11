@@ -10,7 +10,7 @@ const graphql = async function () {
   const server = new ApolloServer({
     typeDefs,
     resolvers,
-    context: ({ req } : {req : any}) => ({ req }),
+    context: ({ req } : {req : any}) => ({ req }),    
   });
 
   await server.start();

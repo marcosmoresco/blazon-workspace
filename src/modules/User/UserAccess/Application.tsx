@@ -20,6 +20,7 @@ import TextField from '@components/TextField'
 import { addMessage } from "@actions/index";
 import { GET_USER_ACCOUNTS } from "@modules/User/queries";
 import { REQUEST_CREDENTIALS_USER_APPLICATION_ACCOUNT } from "@modules/User/mutations";
+import { TitleHierarchy } from "@components/TitlePage/types";
 
 const columns = ({ classes }) => [
   {
@@ -189,13 +190,22 @@ const Application = ({ classes }) => {
     },
   });
 
+  const hierarchy: TitleHierarchy = {
+    name: "profile.header.breadcrumb",
+    href: "/profile",
+    children: [
+      {
+        name: "profile.accounts",
+      },
+    ],
+  };
+
   return (
     <CardScreen
       loading={false}
-      title='profile'
-      subTitle="profile.accounts.application"
-      icon={<User height={24} width={24} />}
+      title='profile.accounts.application'                 
       onBack={() => router.push('/profile')}
+      hierarchy={hierarchy}
     >
       <Dialog
         open={modalOpen}

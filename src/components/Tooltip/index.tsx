@@ -5,15 +5,14 @@ import type { TooltipProps } from "./types";
 
 const useStylesBootstrap = makeStyles((theme: Theme) => ({
   arrow: {
-    color: "#26213F",
-    marginTop: 3,
+    color: "#26213F",       
   },
   tooltip: {
     backgroundColor: "#26213F",
     fontSize: 16,
     maxWidth: 560,
-    padding: "16px 21px",
-    borderRadius: 8,
+    padding: "4px 21px",
+    borderRadius: 20,    
     "& .Tooltip-title-content": {
       margin: "24px 28px",
     },
@@ -29,6 +28,9 @@ const useStylesBootstrap = makeStyles((theme: Theme) => ({
       marginTop: 17,
       marginBottom: 24,
     },
+    "& .MuiTooltip-arrow": {
+      marginTop: "-0.51em !important",
+    }
   },
 }));
 

@@ -2,7 +2,7 @@
   "name": "blazon-workspace",
   "version": "0.1.0",
   "private": true,
-  "scripts": {    
+  "scripts": {
     "hom": "env-cmd -f .env.staging nodemon",
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",

@@ -1,61 +1,60 @@
-import React, { useState } from 'react'
-import { FormattedMessage, useIntl } from 'react-intl'
-import { useRouter } from 'next/router'
-import Button from '@components/Button'
-import * as Yup from 'yup'
-import CardScreen from '@components/CardScreen'
-import User from '@icons/User'
-import DataGrid from '@components/DataGrid'
-import useMockRequest from '@utils/mockRequest'
-import Filter from '@components/Filter'
-import { useStyles } from './styles'
-import { withStyles } from '@material-ui/core/styles'
-import ShareIcon from '@icons/Share'
-import { useFormikContext, withFormik } from 'formik'
-import Dialog from '@components/Dialog'
-import DatePicker from '@components/DatePicker'
-import TextField from '@components/TextField'
+import React, { useState } from "react";
+import { FormattedMessage, useIntl } from "react-intl";
+import { useRouter } from "next/router";
+import * as Yup from "yup";
+import CardScreen from "@components/CardScreen";
+import User from "@icons/User";
+import DataGrid from "@components/DataGrid";
+import Filter from "@components/Filter";
+import { useStyles } from "./styles";
+import { withStyles } from "@material-ui/core/styles";
+import ShareIcon from "@icons/Share";
+import { useFormikContext, withFormik } from "formik";
+import Dialog from "@components/Dialog";
+import DatePicker from "@components/DatePicker";
+import TextField from "@components/TextField";
+import { TitleHierarchy } from "@components/TitlePage/types";
 import { GET_USER_ACCOUNTS } from "@modules/User/queries";
 
 const columns = ({ classes }) => [
   {
-    field: 'resource',
-    headerName: <FormattedMessage id='resource' />,
-    sortable: false
+    field: "resource",
+    headerName: <FormattedMessage id="resource" />,
+    sortable: false,
   },
   {
-    field: 'account',
-    headerName: <FormattedMessage id='account' />,
-    sortable: false
+    field: "account",
+    headerName: <FormattedMessage id="account" />,
+    sortable: false,
   },
   {
-    field: 'accountIdentifier',
-    headerName: <FormattedMessage id='accountIdentifier' />,
-    sortable: false
+    field: "accountIdentifier",
+    headerName: <FormattedMessage id="accountIdentifier" />,
+    sortable: false,
   },
   {
-    field: 'createdAt',
-    headerName: <FormattedMessage id='createdAt' />,
-    sortable: false
+    field: "createdAt",
+    headerName: <FormattedMessage id="createdAt" />,
+    sortable: false,
   },
   {
-    field: 'status',
-    headerName: <FormattedMessage id='status' />,
-    sortable: false
+    field: "status",
+    headerName: <FormattedMessage id="status" />,
+    sortable: false,
   },
   {
-    field: 'action',
-    headerName: <FormattedMessage id='actions' />,
+    field: "action",
+    headerName: <FormattedMessage id="actions" />,
     sortable: false,
     renderCell: () => {
       return (
         <div className={classes.actionIcon}>
           <ShareIcon height={28} width={28} />
         </div>
-      )
-    }
-  }
-]
+      );
+    },
+  },
+];
 
 const filters = [
   {
@@ -94,71 +93,71 @@ const filters = [
 
 const validationSchema = Yup.object({
   administrativeDialog: Yup.object({
-    effectiveDate: Yup.string().required('requiredField'),
-    justification: Yup.string().required('requiredField')
-  })
-})
+    effectiveDate: Yup.string().required("requiredField"),
+    justification: Yup.string().required("requiredField"),
+  }),
+});
 
 const formik = {
   initialValues: {
     administrativeDialog: {
       effectiveDate: undefined,
-      justification: ''
-    }
+      justification: "",
+    },
   },
   validationSchema,
   onSubmit: (values: any) => {
-    alert(JSON.stringify(values, null, 2))
+    alert(JSON.stringify(values, null, 2));
   },
-  enableReinitialize: true
-}
+  enableReinitialize: true,
+};
 
 const AdministrativeDialog = () => {
-  const form = useFormikContext()
-  const intl = useIntl()
+  const form = useFormikContext();
+  const intl = useIntl();
   return (
-    <div className='modal'>
-      <div className='modal-section'>
-        {intl.formatMessage({ id: 'administrativedialog.dialog.title' })}
+    <div className="modal">
+      <div className="modal-section">
+        {intl.formatMessage({ id: "administrativedialog.dialog.title" })}
       </div>
-      <div className='modal-description'>
-        {intl.formatMessage({ id: 'administrativedialog.dialog.description' })}
+      <div className="modal-description">
+        {intl.formatMessage({ id: "administrativedialog.dialog.description" })}
       </div>
-      <div className='pt48'></div>
+      <div className="pt48"></div>
       <DatePicker
         label={intl.formatMessage({
-          id: 'administrativedialog.dialog.effectiveDate'
+          id: "administrativedialog.dialog.effectiveDate",
         })}
-        name='administrativeDialog.effectiveDate'
+        name="administrativeDialog.effectiveDate"
         onChange={(value) => {
-          form.setFieldValue('administrativeDialog.effectiveDate', value)
+          form.setFieldValue("administrativeDialog.effectiveDate", value);
         }}
       />
-      <div className='pt22'></div>
+      <div className="pt22"></div>
       <TextField
         form={form}
-        name='administrativeDialog.justification'
+        name="administrativeDialog.justification"
         multiline
         rows={3}
         rowsMax={4}
       />
     </div>
-  )
-}
+  );
+};
 
 const Administrative = ({ classes }) => {
-  const router = useRouter()
-  const intl = useIntl()
-  const form = useFormikContext()
-  const [modalOpen, setModalOpen] = useState<boolean>(false)
-  const [currentSelected, setCurrentSelected] = useState<any>(undefined)
+  const router = useRouter();
+  const intl = useIntl();
+  const form = useFormikContext();
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [currentSelected, setCurrentSelected] = useState<any>(undefined);
 
   const [queryFilters, setQueryFilters] = useState({
     page: 0,
     size: 100,
     filters: JSON.stringify({
       resourceType: "ADMIN",
-    })
+    }),
   });
 
   const search = (filters?: any) => {
@@ -167,58 +166,69 @@ const Administrative = ({ classes }) => {
       size: 100,
       filters: JSON.stringify({
         resourceType: "ADMIN",
-        ...filters
+        ...filters,
       }),
     });
   };
 
   const handleClickRow = (row: any) => {
-    setModalOpen(true)
-    setCurrentSelected(row)
-  }  
+    setModalOpen(true);
+    setCurrentSelected(row);
+  };
+
+  const hierarchy: TitleHierarchy = {
+    name: "profile.header.breadcrumb",
+    href: "/profile",
+    children: [
+      {
+        name: "profile.accounts",
+      },
+    ],
+  };
 
   return (
-    <CardScreen
-      loading={false}
-      title='profile'
-      subTitle="profile.accounts.adminstrative"
-      icon={<User height={24} width={24} />}
-      onBack={() => router.push('/profile')}
-    >
-      <Dialog
-        open={modalOpen}
-        onClose={() => setModalOpen(false)}
-        title={intl.formatMessage({ id: 'profile.accounts.adminstrative' })}
-        onSave={() => {
-          form.submitForm()
-          console.log(form.values)
-        }}
-        isValid={form.isValid}
+    <>
+      <CardScreen
+        loading={false}
+        title="profile.accounts.adminstrative"
+        onBack={() => router.push("/profile")}
+        hierarchy={hierarchy}
       >
-        <AdministrativeDialog current={currentSelected} />
-      </Dialog>
-      <div className='Default-header-filter'>
-        <Filter
-          filters={filters}
-          onChange={(filters: any) => search(filters)}
-        />        
-      </div>
-      <div>
-        <DataGrid
-          query={GET_USER_ACCOUNTS}
-          queryFilters={queryFilters}
-          getResponseLinks={(data: any) => data?.getUserAccounts?.links}
-          getResponse={(data: any) => data?.getUserAccounts?.accounts}
-          height={600}         
-          columns={columns({ classes })}
-          page={1}
-          size={25}
-          rowsPerPageList={[25, 50, 75, 100]}
-          handleClick={handleClickRow}
-        />
-      </div>
-    </CardScreen>
-  )
-}
+        <Dialog
+          open={modalOpen}
+          onClose={() => setModalOpen(false)}
+          title={intl.formatMessage({ id: "profile.accounts.adminstrative" })}
+          onSave={() => {
+            form.submitForm();
+            console.log(form.values);
+          }}
+          isValid={form.isValid}
+        >
+          <AdministrativeDialog current={currentSelected} />
+        </Dialog>
+        <div className="Default-header-filter">
+          <Filter
+            filters={filters}
+            onChange={(filters: any) => search(filters)}
+          />
+        </div>
+        <div>
+          <DataGrid
+            query={GET_USER_ACCOUNTS}
+            queryFilters={queryFilters}
+            getResponseLinks={(data: any) => data?.getUserAccounts?.links}
+            getResponse={(data: any) => data?.getUserAccounts?.accounts}
+            height={600}
+            columns={columns({ classes })}
+            page={1}
+            size={25}
+            rowsPerPageList={[25, 50, 75, 100]}
+            handleClick={handleClickRow}
+          />
+        </div>
+      </CardScreen>
+    </>
+  );
+};
 
-export default withStyles(useStyles)(withFormik(formik)(Administrative))
+export default withStyles(useStyles)(withFormik(formik)(Administrative));

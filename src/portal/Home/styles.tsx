@@ -4,44 +4,6 @@ export const BoxRoot = styled.div`
   margin: 42px 64px;
 `;
 
-export const BoxAccounts = styled.div`
-  margin-top: 24px;
-`;
-
-export const AccountsContentInfo = styled.div`
-  display: flex;
-  align-items: center;
-`;
-
-export const AccountsContentInfoIcon = styled.div`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: #1A202B;
-  border-radius: 4px;
-  margin-right: 12px;
-  width: 32px;
-  height: 32px;     
-`;
-
-export const AccountsContent = styled.div` 
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 12px;
-  cursor: pointer;
-  padding: 5px 24px;
-  &:hover {
-    background: #E9E8EB;
-    ${AccountsContentInfoIcon} {
-      background: #514D65;
-    }
-    > .caretRight-icon {
-      filter: invert(20%) sepia(94%) saturate(2990%) hue-rotate(222deg) brightness(84%) contrast(101%);
-    }
-  }
-`;
-
 export const RecentPasswordCard = styled.div`
   background: #FFFFFF;
   border: 1px solid #D4D3D9;
@@ -147,35 +109,62 @@ export const DefaultTitle = styled.div`
   color: #1B202A;
 `;
 
+export const BoxHeaderAccessTitle = styled.div`
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 16px;
+  color: #1B202A;
+  margin-bottom: 10px;
+`;
+
 export const BoxHeader = styled.div`
-  background: linear-gradient(262.19deg, #1B202A 43.97%, #020407 66.35%);
+  background: #FFFFFF;
   border-radius: 8px;
-  padding: 42px;
+  padding: 43px 25px;
   position: relative;
   margin-top: 36px;
-  min-height: 214px;
-  margin-bottom: 48px;
+  min-height: 160px;
+  margin-bottom: 32px;
+`;
+
+export const BoxHeaderAccess = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 10px;
+  cursor: pointer;
+`;
+
+export const BoxHeaderAccessItem = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 15px;
+`;
+
+export const BoxHeaderAccessItemIcon = styled.div`
+  width: 32px;
+  height: 32px;
+  background: #0E46D7;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;
 
 export const HeaderWelcomeText = styled.div`
-  font-weight: 600;
+  font-weight: 400;
   font-size: 24px;
   line-height: 36px;
-  color: #FFFFFF;
+  color: #26213F;
 `;
 
 export const HeaderWelcomeSubText = styled.div`
   font-weight: normal;
-  font-size: 16px;
-  line-height: 24px;
-  color: #F4F4F5;
-  margin-bottom: 25px;
-`;
-
-export const HeaderWelcomeImg = styled.div`
-  position: absolute;
-  top: 0;
-  right: 0;
+  font-size: 14px;
+  line-height: 21px;
+  color: #676378;
+  width: 345px;
+  margin-top: 10px;
 `;
 
 export const BoxCard = styled.div`
@@ -189,8 +178,24 @@ export const BoxCard = styled.div`
   }
 `;
 
+export const BoxRequestHeaderInfo = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+`;
+
+
 export const BoxRequest = styled.div`
-  padding: 24px;
+  padding: 0px;
+`;
+
+export const BoxRequestItem = styled.div`
+  padding: 20px;
+  border-bottom: 1px solid #EBEAED;
+  cursor: pointer;
+  &:hover {
+    background: #F4F4F5;
+  }
 `;
 
 export const BoxRequestHeader = styled.div`
@@ -202,19 +207,19 @@ export const BoxRequestHeader = styled.div`
 export const BoxRequestHeaderIdentifier = styled.div`
   background: #EAF1FE;
   border-radius: 30px;
-  padding: 8px;
+  padding: 4px 8px;
   color: #0E46D7;
 `;
 
 export const BoxRequestHeaderDate = styled.div`
   background: rgba(183, 188, 193, 0.14);
   border-radius: 35px;
-  padding: 8px;
+  padding: 4px 8px;
   color: #26213F;
 `;
 
 export const BoxRequestHeaderTitle = styled.div`
-  font-weight: 500;
+  font-weight: normal;
   font-size: 18px;
   line-height: 100%;
   color: #26213F;
@@ -222,14 +227,14 @@ export const BoxRequestHeaderTitle = styled.div`
   white-space: nowrap;
   overflow: hidden;
   padding-right: 15px;
+  margin-top: 10px;
 `;
 
 export const BoxRequestHeaderType = styled.div`
   background: rgba(19, 119, 213, 0.14);
   border-radius: 35px;
-  padding: 8px;
-  color: #1377D5;
-  margin-top: 12px;
+  padding: 4px 8px;
+  color: #1377D5;  
 `;
 
 export const BoxRequestDescription = styled.div`
@@ -241,4 +246,12 @@ export const BoxRequestDescription = styled.div`
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
+`;
+
+export const QuickActions = styled.div`
+  font-weight: 600;
+  font-size: 24px;
+  line-height: 100%;
+  color: #26213F;
+  margin-bottom: 32px;
 `;

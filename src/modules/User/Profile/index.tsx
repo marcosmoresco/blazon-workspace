@@ -1,9 +1,20 @@
 import React, { FC } from 'react'
 import { withStyles } from '@material-ui/core/styles'
-import { injectIntl, IntlShape } from 'react-intl'
+import { injectIntl, IntlShape, FormattedMessage } from 'react-intl'
 import useStyles from './styles'
 import CardScreen from '@components/CardScreen'
 import { Avatar, Grid, Typography } from '@material-ui/core'
+import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import Link from "@components/BreadcrumbLink";
+import CaretRightIcon from "@icons/CaretRight";
+import HouseSimpleIcon from "@icons/HouseSimple";
+import SharedAccountIcon from "@icons/SharedAccount";
+import ApplicationAccountIcon from "@icons/ApplicationAccount";
+import RegularAccountIcon from "@icons/RegularAccount";
+import AdministrativeAccountIcon from "@icons/AdministrativeAccount";
+import TemporaryAccountIcon from "@icons/Watch";
+import CheckCircleIcon from "@icons/CheckCircle";
+import PeopleIcon from "@icons/People";
 import Key from '@icons/Key'
 import { useRouter } from 'next/router'
 import User from '@icons/User'
@@ -45,113 +56,122 @@ const Profile: FC<ProfileProps> = ({ classes, intl }) => {
   const [user, thumb] = useUser();
   const router = useRouter();
   return (
-    <CardScreen title='profile' icon={<User height={24} width={24} />}>
-      <Grid container>
-        <Grid container className={classes.userBox} spacing={5}>
-          <Grid item xs={4}>
-            <Grid
-              container
-              direction='row'
-              justify='center'
-              alignItems='center'
-              className={classes.userInfo}
-            >
-              <Grid item xs={4}>
-                <Avatar src={thumb} className={classes.avatar}></Avatar>
-              </Grid>
-              <Grid item xs={8}>
-                <Typography noWrap className={classes.userTitle}>
-                  {user?.username}
-                </Typography>
-                <Typography noWrap className={classes.userName}>
-                  {user?.displayName}
-                </Typography>
-                <Typography
-                  noWrap
-                  className={`${classes.editProfile} pointer`}
-                  onClick={() => router.push('/profile/edit')}
-                >
-                  <div className={classes.editProfileIcon}>
-                    <PencilIcon color='#BBBDC0' width={16} height={16} />
-                  </div>
-                  <span className={classes.editProfileText}>
-                    {intl.formatMessage({ id: 'profile.edit' })}
-                  </span>
-                </Typography>
+    <>      
+      <CardScreen title='profile' icon={<User height={24} width={24} onBack={() => router.push("/")}/>}>      
+        <Grid container>
+          <Grid container className={classes.userBox} spacing={5}>
+            <Grid item xs={4}>
+              <Grid
+                container
+                direction='row'
+                justify='center'
+                alignItems='center'
+                className={classes.userInfo}
+              >
+                <Grid item xs={4}>
+                  <Avatar src={thumb} className={classes.avatar}></Avatar>
+                </Grid>
+                <Grid item xs={8}>
+                  <Typography noWrap className={classes.userTitle}>
+                    {user?.username}
+                  </Typography>
+                  <Typography noWrap className={classes.userName}>
+                    {user?.displayName}
+                  </Typography>
+                  <Typography
+                    noWrap
+                    className={`${classes.editProfile} pointer`}
+                    onClick={() => router.push('/profile/edit')}
+                  >
+                    <div className={classes.editProfileIcon}>
+                      <PencilIcon color='#BBBDC0' width={16} height={16} />
+                    </div>
+                    <span className={classes.editProfileText}>
+                      {intl.formatMessage({ id: 'profile.edit' })}
+                    </span>
+                  </Typography>
+                </Grid>
               </Grid>
             </Grid>
+            <Grid item xs={4}>
+              <Listing title='profile.login'>
+                <ListingItem
+                  label='profile.login.changepassword'
+                  subtitle='profile.login.changepassword.subtitle'
+                  icon={<Key width={21} height={21} color='#FFFFFF' />}
+                  iconBg='#0E46D7'
+                  action={() => router.push('/profile/change-password')}
+                />
+              </Listing>
+            </Grid>
+            <Grid item xs={4}>
+              <Listing title='profile.options'>
+                <ListingItem
+                  label='profile.options.suport.blazon'
+                  icon={<InfoIcon width={21} height={21} color='#FFFFFF' />}
+                  iconBg='#9D7230'
+                  action={() => window.open(`https://docs.blazon.im/`, '__blank')}
+                />
+                <ListingItem
+                  label='profile.options.exit'
+                  icon={<SignOutIcon width={21} height={21} color='#FFFFFF' />}
+                  iconBg='#FF134A'
+                  action={() => router.push('/logout')}
+                />
+              </Listing>
+            </Grid>
           </Grid>
-          <Grid item xs={4}>
-            <Listing title='profile.login'>
-              <ListingItem
-                label='profile.login.changepassword'
-                subtitle='profile.login.changepassword.subtitle'
-                icon={<Key width={21} height={21} color='#FFFFFF' />}
-                iconBg='#0E46D7'
-                action={() => router.push('/profile/change-password')}
-              />
-            </Listing>
-          </Grid>
-          <Grid item xs={4}>
-            <Listing title='profile.options'>
-              <ListingItem
-                label='profile.options.suport.blazon'
-                icon={<InfoIcon width={21} height={21} color='#FFFFFF' />}
-                iconBg='#9D7230'
-                action={() => router.push('https://docs.blazon.im/')}
-              />
-              <ListingItem
-                label='profile.options.exit'
-                icon={<SignOutIcon width={21} height={21} color='#FFFFFF' />}
-                iconBg='#FF134A'
-                action={() => router.push('/profile/change-password')}
-              />
-            </Listing>
-          </Grid>
-        </Grid>
-        <Divider />
-        <Grid container spacing={4} className={classes.box}>
-          <Grid item xs={6} className='left'>
-            <div>
-              <BoxListing title='profile.accounts'>
+          <Divider />
+          <Grid container spacing={4} className={classes.box}>
+            <Grid item xs={6} className='left'>
+              <div>
+                <BoxListing title='profile.accounts'>
+                  <BoxListingItem
+                    label='profile.accounts.shared'
+                    action={() => router.push('/profile/access/shared')}
+                    icon={<SharedAccountIcon color="#FFFFFF"/>}
+                  />
+                  <BoxListingItem
+                    label='profile.accounts.temporary'
+                    action={() => router.push('/profile/access/temporary')}
+                    icon={<TemporaryAccountIcon color="#FFFFFF" width={23}/>}
+                  />
+                  <BoxListingItem
+                    label='profile.accounts.application'
+                    action={() => router.push('/profile/access/application')}
+                    icon={<ApplicationAccountIcon color="#FFFFFF"/>}
+                  />
+                  <BoxListingItem
+                    label='profile.accounts.regular'
+                    action={() => router.push('/profile/access/regular')}
+                    icon={<RegularAccountIcon color="#FFFFFF"/>}
+                  />
+                  <BoxListingItem
+                    label='profile.accounts.adminstrative'
+                    action={() => router.push('/profile/access/adminstrative')}
+                    icon={<AdministrativeAccountIcon color="#FFFFFF"/>}
+                  />
+                </BoxListing>
+              </div>{' '}
+            </Grid>
+            <Grid item xs={6} className='right'>
+              <BoxListing title='profile.others'>
                 <BoxListingItem
-                  label='profile.accounts.shared'
-                  action={() => router.push('/profile/access/shared')}
+                  label='profile.accounts.roles'
+                  action={() => router.push('/profile/access/roles')}
+                  icon={<PeopleIcon color="#FFFFFF" width={23}/>}
                 />
                 <BoxListingItem
-                  label='profile.accounts.temporary'
-                  action={() => router.push('/profile/access/temporary')}
-                />
-                <BoxListingItem
-                  label='profile.accounts.application'
-                  action={() => router.push('/profile/access/application')}
-                />
-                <BoxListingItem
-                  label='profile.accounts.regular'
-                  action={() => router.push('/profile/access/regular')}
-                />
-                <BoxListingItem
-                  label='profile.accounts.adminstrative'
-                  action={() => router.push('/profile/access/adminstrative')}
+                  label='profile.accounts.entitlements'
+                  action={() => router.push('/profile/access/entitlements')}
+                  icon={<CheckCircleIcon color="#FFFFFF" width={23}/>}
                 />
               </BoxListing>
-            </div>{' '}
-          </Grid>
-          <Grid item xs={6} className='right'>
-            <BoxListing title='profile.others'>
-              <BoxListingItem
-                label='profile.accounts.roles'
-                action={() => router.push('/profile/access/roles')}
-              />
-              <BoxListingItem
-                label='profile.accounts.entitlements'
-                action={() => router.push('/profile/access/entitlements')}
-              />
-            </BoxListing>
+            </Grid>
           </Grid>
         </Grid>
-      </Grid>
-    </CardScreen>
+      </CardScreen>
+    </>  
   )
 }
 

@@ -40,11 +40,8 @@ import {
   GET_USER_FULL_TEXT,
   GET_USER_SHARED_ACCOUNT_MEMBERS,
 } from "@modules/User/queries";
-import {
-  SHARE_USER_SHARED_ACCOUNT,
-  UNSHARE_USER_SHARED_ACCOUNT,
-} from "@modules/User/mutations";
 import { 
+  SHARE_PASSWORD_VAULT_ENTRY,
   REVOKE_PASSWORD_VAULT_ENTRY, 
   GRANT_PASSWORD_VAULT_ENTRY
 } from "@modules/PasswordVaultScreen/mutations";
@@ -70,7 +67,7 @@ const SharedDialogContent: React.FC<SharedDialogContentProps> = ({ current, setC
 
   const users = data?.getUserFullText || [];
 
-  const [shareUserSharedAccount, {}] = useMutation(SHARE_USER_SHARED_ACCOUNT, {
+  const [sharePasswordVaultEntry, {}] = useMutation(SHARE_PASSWORD_VAULT_ENTRY, {
     refetchQueries: [
       {
         query: GET_USER_SHARED_ACCOUNT_MEMBERS,
@@ -79,8 +76,8 @@ const SharedDialogContent: React.FC<SharedDialogContentProps> = ({ current, setC
         },
       },
     ],
-    onCompleted: ({shareUserSharedAccount}) => {   
-      if(shareUserSharedAccount) {
+    onCompleted: ({sharePasswordVaultEntry}) => {   
+      if(sharePasswordVaultEntry) {
         dispatch(
           addMessage(
             <FormattedMessage id="shareddialog.share.success" />
@@ -89,28 +86,7 @@ const SharedDialogContent: React.FC<SharedDialogContentProps> = ({ current, setC
         setOpen(false);
       }        
     },
-  });
-
-  const [unshareUserSharedAccount, {}] = useMutation(UNSHARE_USER_SHARED_ACCOUNT, {
-    refetchQueries: [
-      {
-        query: GET_USER_SHARED_ACCOUNT_MEMBERS,
-        variables: {
-          id: identifier,
-        },
-      },
-    ],
-    onCompleted: ({unshareUserSharedAccount}) => {   
-      if(unshareUserSharedAccount) {
-        dispatch(
-          addMessage(
-            <FormattedMessage id="shareddialog.unshare.success" />
-          )
-        );
-        setOpen(false);
-      }        
-    },
-  });
+  });  
 
   const [revokePasswordVaultEntry, {}] = useMutation(REVOKE_PASSWORD_VAULT_ENTRY, {
     refetchQueries: [
@@ -184,34 +160,17 @@ const SharedDialogContent: React.FC<SharedDialogContentProps> = ({ current, setC
   };
 
   const share = (e: any, option: any) => {    
-    e.stopPropagation();
-    shareUserSharedAccount({
+    e.stopPropagation();    
+    sharePasswordVaultEntry({
       variables: {
-        userId: Number(option.identifier),
-        accountId: Number(identifier)
+        id: Number(current.identifier),
+        payload: JSON.stringify([{
+          users: {
+            identifier: option.identifier
+          }
+        }])
       },
-    })  
-  };
-
-  const unShare = async (e: any, option: any) => {    
-    e.stopPropagation();
-    const result = await confirm(
-      intl.formatMessage({
-        id: "shareddialog.grid.share",
-      }),
-      intl.formatMessage({
-        id: "shareddialog.unshare.warning",
-      })
-    );
-
-    if (result) { 
-      unshareUserSharedAccount({
-        variables: {
-          userId: Number(option.identifier),
-          accountId: Number(identifier)
-        },
-      })  
-    }   
+    });
   };
 
   return (

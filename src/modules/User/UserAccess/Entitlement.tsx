@@ -10,6 +10,7 @@ import { useStyles } from "./styles";
 import { withStyles } from "@material-ui/core/styles";
 import { EntitlementDirectory } from "@portal/Search/types";
 import { GET_USER_ENTITLEMENTS } from "@modules/User/queries";
+import { TitleHierarchy } from "@components/TitlePage/types";
 
 const columns = () => [
   {
@@ -68,13 +69,16 @@ const Entitlement = ({ classes }) => {
     });
   };
 
+  const hierarchy: TitleHierarchy = {
+    name: "profile.header.breadcrumb"      
+  };
+
   return (
     <CardScreen
       loading={false}
-      title="profile"
-      subTitle="entitlements"
-      icon={<User height={24} width={24} />}
+      title="entitlements"           
       onBack={() => router.push("/profile")}
+      hierarchy={hierarchy}
     >
       <div className="Default-header-filter">
         <Filter

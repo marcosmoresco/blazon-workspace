@@ -49,4 +49,28 @@ export const PasswordVaultMutations = {
       throw error;
     }
   },
+  sharePasswordVaultEntry: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/passwordvault/entries/${args.id}/share`,   
+        JSON.parse(args?.payload),     
+        { ...config(context) }
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }, 
+  unsharePasswordVaultEntry: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/passwordvault/entries/${args.id}/unshare`,   
+        JSON.parse(args?.payload),     
+        { ...config(context) }
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
 }

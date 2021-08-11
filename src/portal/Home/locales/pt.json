@@ -1,9 +1,8 @@
 {
   "home.tutorial.title": "Como gerenciar as suas senhas",
   "home.tutorial.text": "Acompanhe esse mini tutorial e acabe com suas dúvidas.",  
-  "home.welcome": "Bem vindo, {user}",
-  "home.welcome.text.new": "Você tem novas tarefas disponíveis.",
-  "home.welcome.text": "Você não tem nenhuma tarefa disponível.",
+  "home.welcome": "{user}, bem vindo ao workspace", 
+  "home.welcome.text": "Seu espaço de trabalho virtual planejado para tornar o seu dia mais produtivo.",
   "home.welcome.open.tasks": "Abrir tarefas",
   "home.recent.passwords": "Senhas recentes",
   "home.recent.passwords.see.all": "Ver todas",
@@ -11,5 +10,7 @@
   "home.accounts.see.all": "Ver outros",
   "home.requests.in.progress": "Requisições em andamento",
   "home.no.request": "Nenhuma requisição",
-  "home.no.request.text": "Nenhuma requisição em andamamento"
+  "home.no.request.text": "Nenhuma requisição em andamamento",
+  "home.your.access": "Seus acessos",
+  "home.quick.actions": "Ações rápidas"
 }

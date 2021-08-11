@@ -9,12 +9,15 @@ import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import SearchIcon from "@icons/Search";
-import PuzzlePieceIcon from "@icons/PuzzlePiece";
-import ArticleIcon from "@icons/Article";
-import UserGearIcon from "@icons/UserGear";
-import NewspaperClippingIcon from "@icons/NewspaperClipping";
-import ShoppingCart from "@icons/ShoppingCart";
+import SharedAccountIcon from "@icons/SharedAccount";
+import ApplicationAccountIcon from "@icons/ApplicationAccount";
+import RegularAccountIcon from "@icons/RegularAccount";
+import AdministrativeAccountIcon from "@icons/AdministrativeAccount";
+import TemporaryAccountIcon from "@icons/Watch";
 import CheckCircleIcon from "@icons/CheckCircle";
+import SecurityUserIcon from "@icons/SecurityUser";
+import PeopleIcon from "@icons/People";
+import ShoppingCart from "@icons/ShoppingCart";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { useCart } from "@requestCart/index";
 import { getSelfServiceAttributeValue } from "@utils/index";
@@ -80,10 +83,15 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
       size: 5,
     },
   });
+  
+  const goToSearch = () => {
+    setOpen(false);
+    router.push(`/search?q=${filter}`);
+  };
 
   const list = data?.getSelfService || [];
 
-  AutocompletePaper.defaultProps = { refetch, filter, open, setOpen, setFilter };
+  AutocompletePaper.defaultProps = { refetch, filter, open, setOpen, setFilter, goToSearch };
 
   return (
     <>
@@ -124,17 +132,29 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
         renderOption={(option: any) => (
           <>
             <BoxAutocomplete>
-              {option?.type === "RESOURCE" && (
-                <PuzzlePieceIcon width={17} height={17} />
+              {option?.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", option.attributes) === "SHARED_RESOURCE" && (
+                <SharedAccountIcon width={17} height={17} color="black"/>
+              )}
+              {option?.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", option.attributes) === "REGULAR_RESOURCE" && (
+                <RegularAccountIcon width={17} height={17} color="black"/>
+              )}
+              {option?.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", option.attributes) === "APPLICATION_RESOURCE" && (
+                <ApplicationAccountIcon width={17} height={17} color="black"/>
+              )}
+              {option?.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", option.attributes) === "ADMIN_RESOURCE" && (
+                <AdministrativeAccountIcon width={17} height={17} color="black"/>
+              )}
+              {option?.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", option.attributes) === "TEMPORARY_RESOURCE" && (
+                <TemporaryAccountIcon width={17} height={17} color="black"/>
               )}
               {option?.type === "ROLE" && (
-                <NewspaperClippingIcon width={17} height={17} />
+                <PeopleIcon width={17} height={17} color="black"/>
               )}
               {option?.type === "ENTITLEMENT" && (
-                <ArticleIcon width={17} height={17} />
+                <CheckCircleIcon width={17} height={17} color="black"/>
               )}
               {option?.type === "ADMIN_PASSWORD" && (
-                <UserGearIcon width={17} height={17} />
+                <SecurityUserIcon width={17} height={17} color="black"/>
               )}
               <BoxAutocompleteContent>
                 <BoxAutocompleteContentInfo>
@@ -188,8 +208,7 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
             variant="outlined"
             onKeyDown={(event: any) => {
               if(event.key === 'Enter') {
-                setOpen(false);
-                router.push(`/search?q=${filter}`);
+                goToSearch();
               }              
             }}
             onChange={(event: any) => {

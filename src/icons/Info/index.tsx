@@ -24,6 +24,7 @@ function InfoIcon(props: IconProps) {
         strokeWidth={stroke}
         strokeLinecap="round"
         strokeLinejoin="round"
+        
       />
       <path 
         d="M15 15H16V22H17" 

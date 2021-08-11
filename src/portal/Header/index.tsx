@@ -19,9 +19,9 @@ import Switch from '@material-ui/core/Switch'
 import Link from '@material-ui/core/Link'
 import Logo from '../../logo.svg'
 
-import PaperPlaneTiltIcon from '@icons/PaperPlaneTilt'
+import RequestsIcon from '@icons/Requests'
 import KeyIcon from '@icons/Key'
-import NoteBlankIcon from '@icons/NoteBlank'
+import TasksIcon from '@icons/Tasks'
 import CaretDownIcon from '@icons/CaretDown'
 import CaretRightIcon from '@icons/CaretRight'
 import UserIcon from '@icons/User'
@@ -96,7 +96,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                   }`}
                   onClick={() => router.push('/requests')}
                 >
-                  <PaperPlaneTiltIcon
+                  <RequestsIcon
                     width={21}
                     height={21}
                     color={
@@ -137,7 +137,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                   }`}
                   onClick={() => router.push('/tasks')}
                 >
-                  <NoteBlankIcon
+                  <TasksIcon
                     width={21}
                     height={21}
                     color={
@@ -191,13 +191,15 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                 <MenuList autoFocusItem={openProfile} id='menu-list-grow'>
                   <MenuItem
                     onClick={() => {
-                      router.push('/profile')
-                      return true
+                      setOpenProfile(false);
+                      setAnchorEl(null);
+                      router.push('/profile');
+                      return true;
                     }}
                   >
                     <div className={classes.menuItem}>
                       <div className={`${classes.menuImage} blue`}>
-                        <UserIcon width={20} height={20} color='#FFFFFF' />
+                        <UserIcon width={20} height={20} color='#FFFFFF' stroke={2}/>
                       </div>
                       {intl.formatMessage({ id: 'profile' })}
                     </div>
@@ -213,7 +215,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                   >
                     <div className={classes.menuItem}>
                       <div className={`${classes.menuImage} yellow`}>
-                        <InfoIcon width={20} height={20} color='#FFFFFF' />
+                        <InfoIcon width={20} height={20} color='#FFFFFF' stroke={2}/>
                       </div>
                       {intl.formatMessage({ id: 'suport.blazon' })}
                     </div>
@@ -222,10 +224,10 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                     </div>
                   </MenuItem>
                   <MenuItem>
-                    <Link href="/saml/logout">
+                    <Link href="/logout">
                       <div className={classes.menuItem}>
                         <div className={`${classes.menuImage} red`}>
-                          <SignOutIcon width={20} height={20} color='#FFFFFF' />
+                          <SignOutIcon width={20} height={20} color='#FFFFFF' stroke={2}/>
                         </div>
                         {intl.formatMessage({ id: 'logout' })}
                       </div>
@@ -234,7 +236,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                       </div>
                     </Link>                    
                   </MenuItem>
-                  <MenuItem>
+                  {/*<MenuItem>
                     <div className={classes.darkMode}>
                       <div className={classes.darkModeText}>
                         {intl.formatMessage({ id: 'darkMode' })}
@@ -248,7 +250,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                         />
                       </div>
                     </div>
-                  </MenuItem>
+                  </MenuItem>*/}
                 </MenuList>
               </ClickAwayListener>
             </Paper>

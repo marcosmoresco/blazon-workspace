@@ -20,4 +20,6 @@ export const Mutations = `
   revokePasswordVaultEntry(id: Int, permission: String, userId: Int): Boolean
   grantPasswordVaultEntry(id: Int, permission: String, userId: Int): Boolean
   deletePasswordVaultEntry(id: Int): Boolean
+  sharePasswordVaultEntry(id: Int, payload: String): Boolean
+  unsharePasswordVaultEntry(id: Int, payload: String): Boolean
 `;

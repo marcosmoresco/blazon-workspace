@@ -6,9 +6,10 @@ import { useRouter } from "next/router";
 // types
 import { RequestsProps } from "./types";
 import { Request } from "../types";
+import { TitleHierarchy } from "@components/TitlePage/types";
 
 // components
-import TitlePage from "./TitlePage";
+import TitlePage from "@components/TitlePage";
 import Info from "./Info";
 import RequestsDetail from "./RequestsDetail";
 
@@ -32,9 +33,22 @@ const RequestsDetailing: React.FC<RequestsProps> = () => {
 
   const request = data?.getRequest;
 
+  const hierarchy: TitleHierarchy = {
+    name: "request.requests",
+    href: "/requests",
+    children: [
+      {
+        formatedName: String(id),
+      },
+    ],
+  };
+
   return (
     <>
-      <TitlePage onBack={() => router.push("/requests")} />
+      <TitlePage 
+        title="request.requests"
+        onBack={() => router.push("/requests")} 
+        hierarchy={hierarchy} />
       <Info request={requestReloaded || request} refetch={refetch}/>
       <RequestsDetail request={request} />
     </>
