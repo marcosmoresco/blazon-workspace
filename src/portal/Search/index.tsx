@@ -287,7 +287,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                     <div className={classes.searchCardContent}>
                       <div className={classes.searchCardContentHeader}>
                         <div className={classes.searchCardContentHeaderImage}>
-                          {iconByType[item.type]}
+                          {iconByType[`${item.type}${(item.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", item.attributes)) || ""}`]}
                         </div>
                       </div>
                       <Tooltip title={item.name} placement="bottom">

@@ -15,6 +15,15 @@ import PuzzlePieceIcon from "@icons/PuzzlePiece";
 import ArticleIcon from "@icons/Article";
 import NewspaperClippingIcon from "@icons/NewspaperClipping";
 import UserGearIcon from "@icons/UserGear";
+import SharedAccountIcon from "@icons/SharedAccount";
+import ApplicationAccountIcon from "@icons/ApplicationAccount";
+import RegularAccountIcon from "@icons/RegularAccount";
+import AdministrativeAccountIcon from "@icons/AdministrativeAccount";
+import TemporaryAccountIcon from "@icons/Watch";
+import CheckCircleIcon from "@icons/CheckCircle";
+import MagnifyingGlassPlusIcon from "@icons/MagnifyingGlassPlus";
+import SecurityUserIcon from "@icons/SecurityUser";
+import PeopleIcon from "@icons/People";
 import TrashIcon from "@icons/Trash";
 import XIcon from "@icons/X";
 import XCircleIcon from "@icons/XCircle";
@@ -160,10 +169,14 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
   };
 
   const iconByType: { [key: string]: any } = {
-    RESOURCE: <PuzzlePieceIcon width={24} height={24} color="#3174F6" />,
-    ENTITLEMENT: <ArticleIcon width={24} height={24} color="#3174F6" />,
-    ROLE: <NewspaperClippingIcon width={24} height={24} color="#3174F6" />,
-    ADMIN_PASSWORD: <UserGearIcon width={24} height={24} color="#3174F6" />,
+    RESOURCESHARED_RESOURCE: <SharedAccountIcon width={24} height={24} color="#3174F6" />,
+    RESOURCEAPPLICATION_RESOURCE: <ApplicationAccountIcon width={24} height={24} color="#3174F6" />,
+    RESOURCEREGULAR_RESOURCE: <RegularAccountIcon width={24} height={24} color="#3174F6" />,
+    RESOURCETEMPORARY_RESOURCE: <TemporaryAccountIcon width={24} height={24} color="#3174F6" />,
+    RESOURCEADMIN_RESOURCE: <AdministrativeAccountIcon width={24} height={24} color="#3174F6" />,
+    ENTITLEMENT: <CheckCircleIcon width={24} height={24} color="#3174F6" />,
+    ROLE: <PeopleIcon width={24} height={24} color="#3174F6" />,
+    ADMIN_PASSWORD: <SecurityUserIcon width={24} height={24} color="#3174F6" />,
   };
 
   return (
@@ -297,7 +310,7 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
               >
                 <BoxRequestCartItemInfo>
                   <BoxRequestCartItemType>
-                    {iconByType[item.catalogItemType]}
+                    {iconByType[`${item.catalogItemType}${(item.catalogItemType === "RESOURCE" && item.resourceType) || ""}`]}
                   </BoxRequestCartItemType>
                   <BoxRequestCartItemText>
                     {item.name || " - "}

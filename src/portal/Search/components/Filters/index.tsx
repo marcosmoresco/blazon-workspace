@@ -8,11 +8,11 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Button from "@components/Button";
 import Checkbox from "@components/Checkbox";
 import Radio from "@components/Radio";
-import TableIcon from "@icons/Table";
-import PuzzlePieceIcon from "@icons/PuzzlePiece";
-import ArticleIcon from "@icons/Article";
-import UserGearIcon from "@icons/UserGear";
-import NewspaperClippingIcon from "@icons/NewspaperClipping";
+import MagnifyingGlassPlusIcon from "@icons/MagnifyingGlassPlus";
+import SquaresFourIcon from "@icons/SquaresFour";
+import CheckCircleIcon from "@icons/CheckCircle";
+import SecurityUserIcon from "@icons/SecurityUser";
+import PeopleIcon from "@icons/People";
 import CaretUpIcon from "@icons/CaretUp";
 import CaretDownIcon from "@icons/CaretDown";
 import CaretRightIcon from "@icons/CaretRight";
@@ -174,23 +174,23 @@ const Filters: FC<FilterProps> = ({ classes, intl, activeType, onSave }) => {
 
   const currentFilter: { [key: string]: any } = {
     ALL: {
-      icon: <TableIcon width={18} height={18}/>,
+      icon: <MagnifyingGlassPlusIcon width={18} height={18}/>,
       text: <FormattedMessage id="all" />,
     },
     ROLE: {
-      icon: <NewspaperClippingIcon width={18} height={18}/>,
+      icon: <PeopleIcon width={18} height={18}/>,
       text: <FormattedMessage id="roles" />,
     },
     ADMIN_PASSWORD: {
-      icon: <UserGearIcon width={18} height={18}/>,
+      icon: <SecurityUserIcon width={18} height={18}/>,
       text: <FormattedMessage id="adminAccounts" />,
     },
     ENTITLEMENT: {
-      icon: <ArticleIcon width={18} height={18}/>,
+      icon: <CheckCircleIcon width={18} height={18}/>,
       text: <FormattedMessage id="entitlements" />,
     },
     RESOURCE: {
-      icon: <PuzzlePieceIcon width={18} height={18}/>,
+      icon: <SquaresFourIcon width={18} height={18}/>,
       text: <FormattedMessage id="resources" />,
     },
   };
