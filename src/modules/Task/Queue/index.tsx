@@ -96,11 +96,8 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
     setQueueCategoryName(intl.formatMessage({id: "task.any"}));
     setQueueTypeValue("ANY");
     setQueueTypeName(intl.formatMessage({id: "task.any"}));
-    const _filtered = {...filtered};
-    delete _filtered.category;
-    delete _filtered["taskData.type"];
-    setFiltered(_filtered);
-    setCheckAll(false);   
+    setFiltered({});
+    setCheckAll(false);
     getQueueFilters("ANY", "ANY");
     setStateWithCallback([], () => getQueueFilters("ANY", "ANY"));
   };
@@ -110,11 +107,9 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
     setQueueTypeValue("ANY");
     setQueueTypeName(intl.formatMessage({id: "task.any"}));
     if(val != "ANY") {
-      setFiltered({...filtered, category: val});
+      setFiltered({category: val});
     } else {
-      const _filtered = {...filtered};
-      delete _filtered.category;
-      setFiltered(_filtered);
+      setFiltered({});
     }    
     setCheckAll(false);        
     setStateWithCallback([], () => getQueueFilters(val, "ANY"));
@@ -123,11 +118,9 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
   const handleChangeType = (val: any) => {    
     setQueueTypeValue(val);
     if(val != "ANY") {
-      setFiltered({...filtered, "taskData.type": val})
+      setFiltered({"category": queueCategoryValue, "taskData.type": val});
     } else {
-      const _filtered = {...filtered};
-      delete _filtered["taskData.type"];
-      setFiltered(_filtered);
+      setFiltered({"category": queueCategoryValue});     
     }     
     setCheckAll(false);
     setStateWithCallback([], () => getQueueFilters(queueCategoryValue, val));

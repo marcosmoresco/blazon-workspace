@@ -107,21 +107,21 @@ const PersonalTasks: FC<ListProps> = ({ dispatch }) => {
       <Loading />
     )
   }
+  
+  const getTaskFilters = (categoryFilter: string, typeFilter: string | null) => {
 
-  const handleChange = (val: any) => {  
-    
     let query = null;
     setTasksFilters([]);
 
-    if(val === "APPROVAL") {
+    if(categoryFilter === "APPROVAL") {
       query = GET_REQUEST_APPROVAL_TASK_FILTERS;
-    } else if(val === "CERTIFICATION") {
+    } else if(categoryFilter === "CERTIFICATION") {
       query = GET_CERTIFICATION_APPROVAL_TASK_FILTERS;
-    } else if(val === "PROVISIONING") {
+    } else if(categoryFilter === "PROVISIONING") {
       query = GET_PROVISIONING_TASK_FILTERS;
-    } else if(val === "SOD") {
+    } else if(categoryFilter === "SOD") {
       query = GET_SOD_APPROVAL_TASK_FILTERS;
-    }  else if(val === "ROLE_RIGHT") {
+    }  else if(categoryFilter === "ROLE_RIGHT") {
       query = GET_ROLE_RIGHT_APPROVAL_TASK_FILTERS;
     }
 
@@ -131,8 +131,9 @@ const PersonalTasks: FC<ListProps> = ({ dispatch }) => {
         .query({
           query,
           variables: {
-            ...filters
+            type: typeFilter
           },
+          fetchPolicy: "no-cache"
         })
         .then(({ data }) => {          
           if(data?.getFilters) {            
@@ -142,19 +143,23 @@ const PersonalTasks: FC<ListProps> = ({ dispatch }) => {
     } else {
       setTasksFilters(filters);
     }
+  }
+
+  const handleChange = (val: any) => {  
+    setFiltered({});
+    getTaskFilters(val, null);
     setType(val);
   };
 
   const handleChangeType = (val: any) => {    
     setTypeValue(val);
     if(val != "ANY") {
-      setFiltered({...filtered, "taskData.type": val})
+      setFiltered({"taskData.type": val})
     } else {
-      const _filtered = {...filtered};
-      delete _filtered["taskData.type"];
-      setFiltered(_filtered);
-    }     
-    setCheckAll(false);    
+      setFiltered({});      
+    }        
+    setCheckAll(false);
+    getTaskFilters(type, val);  
   };
 
   return (
@@ -166,7 +171,9 @@ const PersonalTasks: FC<ListProps> = ({ dispatch }) => {
             <label onClick={(event: any) => setAnchorElCategory(event.currentTarget)}>
               <FormattedMessage id="category" />
             </label>
-            <SelectBoxContainer onClick={(event: any) => setAnchorElCategory(event.currentTarget)}>
+            <SelectBoxContainer onClick={(event: any) => {
+              setAnchorElCategory(event.currentTarget);                            
+            }}>
               <SelectBoxInfo>
                 <SelectBoxInfoIcon>
                   <ListBulletsIcon width={21} height={21}/>
@@ -202,16 +209,16 @@ const PersonalTasks: FC<ListProps> = ({ dispatch }) => {
         <PersonalTasksApproval filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll}/>
       )}
       {type === "CERTIFICATION" && (
-        <PersonalTasksCertification checkAll={checkAll} setCheckAll={setCheckAll}/>
+        <PersonalTasksCertification filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll}/>
       )}
       {type === "PROVISIONING" && (
-        <PersonalTasksProvisioning checkAll={checkAll} setCheckAll={setCheckAll}/>
+        <PersonalTasksProvisioning filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll}/>
       )}
       {type === "ROLE_RIGHT" && (
-        <PersonalTasksRoleRight checkAll={checkAll} setCheckAll={setCheckAll}/>
+        <PersonalTasksRoleRight filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll}/>
       )}
        {type === "SOD" && (
-        <PersonalTasksSoD checkAll={checkAll} setCheckAll={setCheckAll}/>
+        <PersonalTasksSoD filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll}/>
       )}      
       <StyledMenu        
         anchorEl={anchorElCategory}
@@ -224,7 +231,8 @@ const PersonalTasks: FC<ListProps> = ({ dispatch }) => {
           <MenuItemContainer key={`task-category-${type.value}`} onClick={() => {
             setCurrentCategoryName(type.label);            
             handleChange(type.value);
-            setAnchorElCategory(null)
+            setCurrentTypeName(intl.formatMessage({id: "task.any"}));
+            setAnchorElCategory(null);
           }}>
             <MenuItemText>
               {type.label}

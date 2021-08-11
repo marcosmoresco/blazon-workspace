@@ -51,3 +51,19 @@ export const GET_REQUESTS = gql`
     }
   }
 `;
+
+
+export const GET_OPEN_REQUESTS = gql`
+  query getOpenRequests {
+    getOpenRequests {
+      message
+      amountOpen
+    }
+  }
+`
+
+export const GET_OPEN_STATUS = gql`
+  query getOpenStatus {
+    getOpenStatus
+  }
+`

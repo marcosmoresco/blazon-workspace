@@ -62,6 +62,7 @@ import {
 } from "./styles";
 import { GET_SELF_SERVICE, GET_SELF_SERVICE_ADVANCED } from "./queries";
 import WatchIcon from "@icons/Watch";
+import { stubFalse } from "lodash";
 
 const Search: FC<SearchProps> = ({ intl, classes }) => {
   const { cart } = useCart();
@@ -73,6 +74,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
   const [type, setType] = useState("LIST");
   const [page, setPage] = useState(0);
   const [total, setTotal] = useState(10);
+  const [loadingAdvanced, setLoadingAdvanced] = useState<boolean>(false);
   const [filteredTotal, setTotalFiltered] = useState(0);
   const [listAdvanced, setListAdvanced] = useState(null);
   const [addedItems, setAddedItems] = useState<string[]>([]); 
@@ -122,12 +124,13 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
   }
 
   const save = (filteredMapReference: any, total: number) => {
-    setTotalFiltered(total);
+    setTotalFiltered(total);    
     const _filters: any[] = [];
     Object.keys(filteredMapReference).forEach((f: any) => {
       _filters.push(filteredMapReference[f]);
     });
 
+    setLoadingAdvanced(true);
     apolloClient
       .query({
         query: GET_SELF_SERVICE_ADVANCED,
@@ -140,6 +143,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
       .then(({ data }) => {
         setFiltered(JSON.stringify(_filters));
         setListAdvanced(data?.getSelfServiceAdvanced);
+        setLoadingAdvanced(false);
       });
   };
 
@@ -223,6 +227,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
             setActive(section.value);
             setPage(0);
             setTotal(10);
+            setLoadingAdvanced(true);
             apolloClient
               .query({
                 query: GET_SELF_SERVICE_ADVANCED,
@@ -234,48 +239,131 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
               })
               .then(({ data }) => {
                 setListAdvanced(data?.getSelfServiceAdvanced);
+                setLoadingAdvanced(false);
               });
           }}
         />
         <DividerSearch />
-        <TotalFiltersBox>
-          <div className={classes.totalItens}>
-            {(listAdvanced || list)?.length || 0} Itens found
-          </div>
-          <OptionListFiltersContent>
-            <OptionListContent>
-              <OptionList
-                onClick={() => setType("GRID")}
-                className={`${(type === "GRID" && "Active") || ""}`}
+        {loadingAdvanced && (
+          <Loading container/>
+        )}   
+        {!loadingAdvanced && (
+          <>
+            <TotalFiltersBox>
+            <div className={classes.totalItens}>
+              {(listAdvanced || list)?.length || 0} Itens found
+            </div>
+            <OptionListFiltersContent>
+              <OptionListContent>
+                <OptionList
+                  onClick={() => setType("GRID")}
+                  className={`${(type === "GRID" && "Active") || ""}`}
+                >
+                  <SquaresFourIcon width={21} />
+                </OptionList>
+                <OptionList
+                  onClick={() => setType("LIST")}
+                  className={`${(type === "LIST" && "Active") || ""}`}
+                >
+                  <ListBulletsIcon width={21} />
+                </OptionList>
+              </OptionListContent>
+              <Badge
+                badgeContent={filteredTotal}
+                color="primary"
+                anchorOrigin={{
+                  vertical: "top",
+                  horizontal: "left",
+                }}
               >
-                <SquaresFourIcon width={21} />
-              </OptionList>
-              <OptionList
-                onClick={() => setType("LIST")}
-                className={`${(type === "LIST" && "Active") || ""}`}
-              >
-                <ListBulletsIcon width={21} />
-              </OptionList>
-            </OptionListContent>
-            <Badge
-              badgeContent={filteredTotal}
-              color="primary"
-              anchorOrigin={{
-                vertical: "top",
-                horizontal: "left",
-              }}
-            >
-              <Filters onSave={save} activeType={active} />
-            </Badge>
-          </OptionListFiltersContent>
-        </TotalFiltersBox>
-        {type === "GRID" && (
-          <div>
-            <Grid container spacing={3}>
-              {paginate(listAdvanced || list, total, 0).map((item, index) => (
-                <Grid item xs={3} key={`search-card-item-${index}`}>
-                  <div
-                    className={classes.searchCard}
+                <Filters onSave={save} activeType={active} />
+              </Badge>
+            </OptionListFiltersContent>
+            </TotalFiltersBox>
+            {type === "GRID" && (
+              <div>
+                <Grid container spacing={3}>
+                  {paginate(listAdvanced || list, total, 0).map((item, index) => (
+                    <Grid item xs={3} key={`search-card-item-${index}`}>
+                      <div
+                        className={classes.searchCard}
+                        onClick={() =>
+                          router.push(
+                            `/search/selfService/${item.type
+                              .replaceAll("_", "")
+                              .toLocaleLowerCase()}/${item.identifier}`
+                          )
+                        }
+                      >
+                        <div className={classes.searchCardContent}>
+                          <div className={classes.searchCardContentHeader}>
+                            <div className={classes.searchCardContentHeaderImage}>
+                              {iconByType[`${item.type}${(item.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", item.attributes)) || ""}`]}
+                            </div>
+                          </div>
+                          <Tooltip title={item.name || " - "} placement="bottom">
+                            <div className={classes.searchCardContentHeaderTitle}>
+                              {item?.type === "ENTITLEMENT" && (
+                                <ItemTitleParent>
+                                  {getSelfServiceAttributeValue(
+                                    "resourceName",
+                                    item.attributes
+                                  ) || " - "}{" "}
+                                  /{" "}
+                                </ItemTitleParent>
+                              )}
+                              {item?.type === "ADMIN_PASSWORD" && (
+                                <ItemTitleParent>
+                                  {getSelfServiceAttributeValue(
+                                    "resourceName",
+                                    item.attributes
+                                  ) || " - "}{" "}
+                                  /{" "}
+                                </ItemTitleParent>
+                              )}
+                              {item.name}
+                            </div>
+                          </Tooltip>
+                          <Divider />
+                          <div className={classes.searchCartContent}>
+                            {addedItems.indexOf(item.identifier) === -1 && (
+                              <div
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  e.nativeEvent.stopImmediatePropagation();                                                     
+                                  addSelfServiceCartItem({
+                                    variables: {
+                                      id: item.identifier                                  
+                                    },
+                                  });
+                                }}
+                              >
+                                <div className="Icon-content">
+                                  <ShoppingCartIcon width={25} height={25} />
+                                </div>
+                                {intl.formatMessage({id: "cart.add"})}
+                              </div>
+                            )}   
+                            {addedItems.indexOf(item.identifier) > -1 && (
+                              <div>
+                                <div className="Icon-content">
+                                  <CheckCircleIcon width={25} height={25} color="#26213F"/>
+                                </div>
+                                {intl.formatMessage({id: "search.selfService.added"})}
+                              </div>
+                            )}                        
+                          </div>
+                        </div>
+                      </div>
+                    </Grid>
+                  ))}
+                </Grid>
+              </div>
+            )}
+            {type === "LIST" && (
+              <>
+                {paginate(listAdvanced || list, total, 0).map((item, index) => (
+                  <ListItemBox
                     onClick={() =>
                       router.push(
                         `/search/selfService/${item.type
@@ -283,15 +371,14 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                           .toLocaleLowerCase()}/${item.identifier}`
                       )
                     }
+                    key={`search-list-item-${index}`}
                   >
-                    <div className={classes.searchCardContent}>
-                      <div className={classes.searchCardContentHeader}>
-                        <div className={classes.searchCardContentHeaderImage}>
-                          {iconByType[`${item.type}${(item.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", item.attributes)) || ""}`]}
-                        </div>
-                      </div>
-                      <Tooltip title={item.name} placement="bottom">
-                        <div className={classes.searchCardContentHeaderTitle}>
+                    <ListItemContent>
+                      <ListItemIconContent>
+                        {iconByType[`${item.type}${(item.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", item.attributes)) || ""}`]}
+                      </ListItemIconContent>
+                      <Tooltip title={item.name || " - "} placement="bottom">
+                        <ListItemText>
                           {item?.type === "ENTITLEMENT" && (
                             <ItemTitleParent>
                               {getSelfServiceAttributeValue(
@@ -311,127 +398,53 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                             </ItemTitleParent>
                           )}
                           {item.name}
-                        </div>
+                        </ListItemText>
                       </Tooltip>
-                      <Divider />
-                      <div className={classes.searchCartContent}>
-                        {addedItems.indexOf(item.identifier) === -1 && (
-                          <div
-                            onClick={(e) => {
-                              e.stopPropagation();
-                              e.nativeEvent.stopImmediatePropagation();                                                     
-                              addSelfServiceCartItem({
-                                variables: {
-                                  id: item.identifier                                  
-                                },
-                              });
-                            }}
-                          >
-                            <div className="Icon-content">
-                              <ShoppingCartIcon width={25} height={25} />
-                            </div>
-                            {intl.formatMessage({id: "cart.add"})}
-                          </div>
-                        )}   
-                        {addedItems.indexOf(item.identifier) > -1 && (
-                          <div>
-                            <div className="Icon-content">
-                              <CheckCircleIcon width={25} height={25} color="#26213F"/>
-                            </div>
-                            {intl.formatMessage({id: "search.selfService.added"})}
-                          </div>
-                        )}                        
-                      </div>
-                    </div>
-                  </div>
-                </Grid>
-              ))}
-            </Grid>
-          </div>
-        )}
-        {type === "LIST" && (
-          <>
-            {paginate(listAdvanced || list, total, 0).map((item, index) => (
-              <ListItemBox
-                onClick={() =>
-                  router.push(
-                    `/search/selfService/${item.type
-                      .replaceAll("_", "")
-                      .toLocaleLowerCase()}/${item.identifier}`
-                  )
-                }
-                key={`search-list-item-${index}`}
-              >
-                <ListItemContent>
-                  <ListItemIconContent>
-                    {iconByType[`${item.type}${(item.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", item.attributes)) || ""}`]}
-                  </ListItemIconContent>
-                  <Tooltip title={item.name} placement="bottom">
-                    <ListItemText>
-                      {item?.type === "ENTITLEMENT" && (
-                        <ItemTitleParent>
-                          {getSelfServiceAttributeValue(
-                            "resourceName",
-                            item.attributes
-                          ) || " - "}{" "}
-                          /{" "}
-                        </ItemTitleParent>
-                      )}
-                      {item?.type === "ADMIN_PASSWORD" && (
-                        <ItemTitleParent>
-                          {getSelfServiceAttributeValue(
-                            "resourceName",
-                            item.attributes
-                          ) || " - "}{" "}
-                          /{" "}
-                        </ItemTitleParent>
-                      )}
-                      {item.name}
-                    </ListItemText>
-                  </Tooltip>
-                </ListItemContent>
-                {addedItems.indexOf(item.identifier) === -1 && (
-                <ListItemIconContent
-                  className="Selectable"
-                  onClick={(e) => {
-                    e.stopPropagation();
-                    e.nativeEvent.stopImmediatePropagation();
-                    addSelfServiceCartItem({
-                      variables: { id: item.identifier },
-                    });
+                    </ListItemContent>
+                    {addedItems.indexOf(item.identifier) === -1 && (
+                    <ListItemIconContent
+                      className="Selectable"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        e.nativeEvent.stopImmediatePropagation();
+                        addSelfServiceCartItem({
+                          variables: { id: item.identifier },
+                        });
+                      }}
+                    >
+                      <ShoppingCartIcon width={21} />
+                    </ListItemIconContent>)}
+                    {addedItems.indexOf(item.identifier) > -1 && (
+                    <ListItemIconContent>
+                      <CheckCircleIcon width={21} color="#26213F"/>
+                    </ListItemIconContent>)}
+                  </ListItemBox>
+                ))}
+              </>
+            )}
+            {paginate(listAdvanced || list, 10, page + 1).length > 0 && (
+              <LoadMoreContent>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => {
+                    setPage(page + 1);
+                    setTotal(total + 10);
                   }}
                 >
-                  <ShoppingCartIcon width={21} />
-                </ListItemIconContent>)}
-                {addedItems.indexOf(item.identifier) > -1 && (
-                <ListItemIconContent>
-                  <CheckCircleIcon width={21} color="#26213F"/>
-                </ListItemIconContent>)}
-              </ListItemBox>
-            ))}
+                  <FormattedMessage id="loadMore" />
+                </Button>
+              </LoadMoreContent>
+            )}
+            {!paginate(listAdvanced || list, total, 0).length && (
+              <EmptyState
+                icon={<EmptyStateSearchIcon />}
+                title="no.result"
+                text="search.no.result"
+              />
+            )}
           </>
-        )}
-        {paginate(listAdvanced || list, 10, page + 1).length > 0 && (
-          <LoadMoreContent>
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={() => {
-                setPage(page + 1);
-                setTotal(total + 10);
-              }}
-            >
-              <FormattedMessage id="loadMore" />
-            </Button>
-          </LoadMoreContent>
-        )}
-        {!paginate(listAdvanced || list, total, 0).length && (
-          <EmptyState
-            icon={<EmptyStateSearchIcon />}
-            title="no.result"
-            text="search.no.result"
-          />
-        )}
+        )}                       
       </div>
     </div>
   );

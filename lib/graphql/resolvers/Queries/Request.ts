@@ -35,6 +35,28 @@ export const RequestQueries = {
       throw error;
     }
   },
+  getOpenRequests: async (parent: any, args: any, context: any) => {
+    try {
+      const openRequests = await axios.get(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/requests/openrequests`,       
+        { ...config(context) }
+      );
+      return openRequests.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  getOpenStatus: async (parent: any, args: any, context: any) => {
+    try {
+      const openStatus = await axios.get(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/requests/openstatus`,       
+        { ...config(context) }
+      );
+      return openStatus.data;
+    } catch (error) {
+      throw error;
+    }
+  },
   getRequests: async (parent: any, args: any, context: any) => {
     try {
       const requests = await axios.post(
@@ -46,5 +68,5 @@ export const RequestQueries = {
     } catch (error) {
       throw error;
     }
-  },
+  },  
 };

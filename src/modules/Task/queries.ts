@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 export const GET_REQUEST_APPROVAL_TASK_FILTERS = gql`
-  query getRequestApprovalTaskFilters {
-    getFilters: getRequestApprovalTaskFilters {
+  query getRequestApprovalTaskFilters($type: String) {
+    getFilters: getRequestApprovalTaskFilters(type: $type) {
       label
       clauses {
         label
@@ -15,8 +15,8 @@ export const GET_REQUEST_APPROVAL_TASK_FILTERS = gql`
 `;
 
 export const GET_CERTIFICATION_APPROVAL_TASK_FILTERS = gql`
-  query getCertificationApprovalTaskFilters {
-    getFilters: getCertificationApprovalTaskFilters {
+  query getCertificationApprovalTaskFilters($type: String) {
+    getFilters: getCertificationApprovalTaskFilters(type: $type) {
       label
       clauses {
         label
@@ -29,8 +29,8 @@ export const GET_CERTIFICATION_APPROVAL_TASK_FILTERS = gql`
 `;
 
 export const GET_SOD_APPROVAL_TASK_FILTERS = gql`
-  query getSoDApprovalTaskFilters {
-    getFilters: getSoDApprovalTaskFilters {
+  query getSoDApprovalTaskFilters($type: String) {
+    getFilters: getSoDApprovalTaskFilters(type: $type) {
       label
       clauses {
         label
@@ -43,8 +43,8 @@ export const GET_SOD_APPROVAL_TASK_FILTERS = gql`
 `;
 
 export const GET_ROLE_RIGHT_APPROVAL_TASK_FILTERS = gql`
-  query getRoleRightApprovalTaskFilters {
-    getFilters: getRoleRightApprovalTaskFilters {
+  query getRoleRightApprovalTaskFilters($type: String) {
+    getFilters: getRoleRightApprovalTaskFilters(type: $type) {
       label
       clauses {
         label
@@ -57,8 +57,8 @@ export const GET_ROLE_RIGHT_APPROVAL_TASK_FILTERS = gql`
 `;
 
 export const GET_PROVISIONING_TASK_FILTERS = gql`
-  query getProvisioningTaskFilters {
-    getFilters: getProvisioningTaskFilters {
+  query getProvisioningTaskFilters($type: String) {
+    getFilters: getProvisioningTaskFilters(type: $type) {
       label
       clauses {
         label

@@ -33,6 +33,7 @@
   "request.cancel.text": "Deseja realmente cancelar essa requisição?",
   "request.cancel.success": "Requisição cancelada com sucesso",
   "requests.in.progress": "Solicitações em andamento",
+  "requests.no.progress": "Não há nenhum request aberto",
   "request.type.NEW_USER": "Novo usuário",
   "request.type.LOCK_USER": "Bloquear usuário",
   "request.type.UNLOCK_USER": "Desbloquear usuário",

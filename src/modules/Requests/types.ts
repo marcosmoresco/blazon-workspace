@@ -1,4 +1,5 @@
 import { IntlShape } from "react-intl";
+import { string } from "yup/lib/locale";
 
 export type RequestsProps = {
   intl: IntlShape;
@@ -72,4 +73,9 @@ export interface TransitionStates {
   date: string;
   description: string;
   detail: string;
+}
+
+export interface OpenRequests {
+  message: string;
+  amountOpen: number;
 }

@@ -56,6 +56,11 @@ export const Request = `
     description: String
     detail: String
   }
+
+  type RequestOpen {
+    message: String
+    amountOpen: Int    
+  }
 `;
 
 export const Queries = `
@@ -63,4 +68,6 @@ export const Queries = `
   getCancelRequest(id: Int): Boolean
   getRequestTransitionStates(id: Int): [RequestTransitionState]
   getRequests(page: Int, size: Int, ord: String, filters: String): RequestRepresentation    
+  getOpenRequests: RequestOpen
+  getOpenStatus: [String]
 `;

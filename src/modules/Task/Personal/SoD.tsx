@@ -74,7 +74,8 @@ const PersonalTasksSoD: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
       size: 10,
       ord: "createdDate:desc",
       filters: filteredString
-    },    
+    }, 
+    fetchPolicy: "no-cache"   
   });
 
   const { loading: loadingAssignActions, data: dataAssignActions, refetch: refetchAssignActions } = useQuery<{

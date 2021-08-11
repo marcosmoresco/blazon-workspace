@@ -139,24 +139,24 @@ export const Queries = `
   getRequestApprovalTasksAvailableActions(status: String): [String]
   getRequestApprovalTasks(page: Int, size: Int, ord: String, filters: String): TaskRepresentation 
   getRequestApprovalTask(id: Int): Task
-  getRequestApprovalTaskFilters: [TaskFilter]
+  getRequestApprovalTaskFilters(type: String): [TaskFilter]
   getCertificationApprovalTasksAvailableActions(status: String): [String]
   getCertificationApprovalTasks(page: Int, size: Int, ord: String, filters: String): TaskRepresentation
   getCertificationApprovalTask(id: Int): Task
-  getCertificationApprovalTaskFilters: [TaskFilter]
+  getCertificationApprovalTaskFilters(type: String): [TaskFilter]
   getSoDApprovalTasksAvailableActions(status: String): [String]
   getSoDApprovalTasks(page: Int, size: Int, ord: String, filters: String): TaskRepresentation
   getSoDApprovalTask(id: Int): Task
-  getSoDApprovalTaskFilters: [TaskFilter] 
+  getSoDApprovalTaskFilters(type: String): [TaskFilter] 
   getRoleRightApprovalTasksAvailableActions(status: String): [String]
   getRoleRightApprovalTasks(page: Int, size: Int, ord: String, filters: String): TaskRepresentation
   getRoleRightApprovalTask(id: Int): Task
   getRoleRightApprovalTaskItems(id: Int): RoleRightTaskItems
-  getRoleRightApprovalTaskFilters: [TaskFilter]
+  getRoleRightApprovalTaskFilters(type: String): [TaskFilter]
   getProvisioningTasksAvailableActions(status: String): [String]
   getProvisioningTasks(page: Int, size: Int, ord: String, filters: String): TaskRepresentation
   getProvisioningTask(id: Int): Task
-  getProvisioningTaskFilters: [TaskFilter]
+  getProvisioningTaskFilters(type: String): [TaskFilter]
 `;
 
 export const Mutations = `

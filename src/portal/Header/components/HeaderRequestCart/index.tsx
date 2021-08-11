@@ -24,6 +24,7 @@ import XIcon from "@icons/X";
 import XCircleIcon from "@icons/XCircle";
 import Empty from "./Empty";
 import { addMessage, addCartItemMessage } from "@actions/index";
+import { GET_OPEN_REQUESTS } from "@modules/Requests/queries";
 import { useCart } from "@requestCart/index";
 import { GET_SELF_SERVICE_CART } from "@requestCart/queries";
 import {
@@ -32,6 +33,7 @@ import {
 } from "@requestCart/mutations";
 import type { SelfServiceCart, SelfServiceCartItem } from "@requestCart/types";
 import type { HeaderRequestCartProps } from "./types";
+import type { OpenRequests } from "@modules/Requests/types";
 import {
   Badge,
   BoxRequestCart,
@@ -70,6 +72,10 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
   const selfServiceCart: SelfServiceCart =
     data?.getSelfServiceCart || ({} as SelfServiceCart);
 
+  const { loading: loadingOpenRequests, data: dataOpenRequests } = useQuery<{
+    getOpenRequests: OpenRequests
+  }>(GET_OPEN_REQUESTS);
+
   const [deleteSelfServiceCartItem, {}] = useMutation(
     DELETE_SELF_SERVICE_CART_ITEM,
     {
@@ -100,7 +106,7 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
         addMessage(<FormattedMessage id="cart.items.removed.message" />)
       );
     },
-  });
+  }); 
 
   useEffect(() => {
     if (!loading && !error) {
@@ -172,7 +178,7 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
     ENTITLEMENT: <CheckCircleIcon width={24} height={24} color="#3174F6" />,
     ROLE: <PeopleIcon width={24} height={24} color="#3174F6" />,
     ADMIN_PASSWORD: <SecurityUserIcon width={24} height={24} color="#3174F6" />,
-  };
+  };  
 
   return (
     <>
@@ -211,7 +217,15 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
             <HeaderDivider />
             <BoxHeader>
               <BoxHeaderTitle>
-                04 {intl.formatMessage({ id: "requests.in.progress" })}
+                {!dataOpenRequests?.getOpenRequests?.amountOpen && (
+                  <FormattedMessage id="requests.no.progress" />
+                )}
+                {dataOpenRequests?.getOpenRequests?.amountOpen && (
+                  <>
+                    {dataOpenRequests?.getOpenRequests?.amountOpen > 10 && "10+ " || dataOpenRequests?.getOpenRequests?.amountOpen + " "}
+                    <FormattedMessage id="requests.in.progress" />
+                  </>
+                )}             
               </BoxHeaderTitle>
               <BoxHeaderButton
                 onClick={() => {
