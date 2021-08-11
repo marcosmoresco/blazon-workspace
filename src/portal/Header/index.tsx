@@ -80,78 +80,80 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
             <div className='pointer' onClick={() => router.push('/')}>
               <Image src={Logo} alt='Logo' />
             </div>
-            {router.pathname !== '/search' && (
+            {!['/search', '/checkout', '/checkout-finishing', '/checkout-finished'].includes(router.pathname) && (
               <HeaderAutocomplete classes={classes} />
             )}
           </div>
           <div className={classes.menuOptionsContent}>
-            <div className={classes.menuOptions}>
-              <Tooltip
-                title={intl.formatMessage({ id: 'requests' })}
-                placement='bottom'
-              >
-                <div
-                  className={`${classes.optionImage} ${
-                    router.pathname === '/requests' && 'Active'
-                  }`}
-                  onClick={() => router.push('/requests')}
+            {!['/checkout', '/checkout-finishing', '/checkout-finished'].includes(router.pathname) && (
+              <div className={classes.menuOptions}>
+                <Tooltip
+                  title={intl.formatMessage({ id: 'requests' })}
+                  placement='bottom'
                 >
-                  <RequestsIcon
-                    width={21}
-                    height={21}
-                    color={
-                      (router.pathname === '/requests' && '#0E46D7') ||
-                      currentTheme.overrides.MuiIcon.root.color
-                    }
-                  />
-                </div>
-              </Tooltip>
-              <Tooltip
-                title={intl.formatMessage({ id: 'passwordVault' })}
-                placement='bottom'
-              >
-                <div
-                  className={`${classes.optionImage} ${
-                    router.pathname === '/password-vault' && 'Active'
-                  }`}
-                  onClick={() => router.push('/password-vault')}
+                  <div
+                    className={`${classes.optionImage} ${
+                      router.pathname === '/requests' && 'Active'
+                    }`}
+                    onClick={() => router.push('/requests')}
+                  >
+                    <RequestsIcon
+                      width={21}
+                      height={21}
+                      color={
+                        (router.pathname === '/requests' && '#0E46D7') ||
+                        currentTheme.overrides.MuiIcon.root.color
+                      }
+                    />
+                  </div>
+                </Tooltip>
+                <Tooltip
+                  title={intl.formatMessage({ id: 'passwordVault' })}
+                  placement='bottom'
                 >
-                  <KeyIcon
-                    width={21}
-                    height={21}
-                    color={currentTheme.overrides.MuiIcon.root.color}
-                  />
-                </div>
-              </Tooltip>
-              <HeaderRequestCart
-                currentTheme={currentTheme}
-                classes={classes}
-              />
-              <Tooltip
-                title={intl.formatMessage({ id: 'tasks' })}
-                placement='bottom'
-              >
-                <div
-                  className={`${classes.optionImage} ${
-                    router.pathname === '/tasks' && 'Active'
-                  }`}
-                  onClick={() => router.push('/tasks')}
+                  <div
+                    className={`${classes.optionImage} ${
+                      router.pathname === '/password-vault' && 'Active'
+                    }`}
+                    onClick={() => router.push('/password-vault')}
+                  >
+                    <KeyIcon
+                      width={21}
+                      height={21}
+                      color={currentTheme.overrides.MuiIcon.root.color}
+                    />
+                  </div>
+                </Tooltip>
+                <HeaderRequestCart
+                  currentTheme={currentTheme}
+                  classes={classes}
+                />
+                <Tooltip
+                  title={intl.formatMessage({ id: 'tasks' })}
+                  placement='bottom'
                 >
-                  <TasksIcon
-                    width={21}
-                    height={21}
-                    color={
-                      (router.pathname === '/tasks' && '#0E46D7') ||
-                      currentTheme.overrides.MuiIcon.root.color
-                    }
-                  />
-                </div>
-              </Tooltip>
-              <HeaderNotifications
-                currentTheme={currentTheme}
-                classes={classes}
-              />
-            </div>
+                  <div
+                    className={`${classes.optionImage} ${
+                      router.pathname === '/tasks' && 'Active'
+                    }`}
+                    onClick={() => router.push('/tasks')}
+                  >
+                    <TasksIcon
+                      width={21}
+                      height={21}
+                      color={
+                        (router.pathname === '/tasks' && '#0E46D7') ||
+                        currentTheme.overrides.MuiIcon.root.color
+                      }
+                    />
+                  </div>
+                </Tooltip>
+                <HeaderNotifications
+                  currentTheme={currentTheme}
+                  classes={classes}
+                />
+              </div>
+            )}            
             <Button
               className='Button-avatar'
               onClick={handleClick}
