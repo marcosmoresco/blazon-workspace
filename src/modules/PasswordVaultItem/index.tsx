@@ -1,5 +1,6 @@
 import KeyIcon from "@icons/Key";
-import DotsThreeOutlineVerticalIcon from "@icons/DotsThreeOutlineVertical";
+import DotsThreeVerticalIcon from "@icons/DotsThreeVertical";
+import CaretRightIcon from "@icons/CaretRight";
 import Tooltip from "@components/Tooltip";
 import React, { FC, useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
@@ -13,8 +14,8 @@ import {
   RecentPasswordCardContentHeaderText,
   RecentPasswordCardContentHeaderBox,
   RecentPasswordCardActions,
+  StyledMenu,
 } from "./../../portal/Home/styles";
-import Menu from '@material-ui/core/Menu';
 import MenuItem from '@material-ui/core/MenuItem';
 import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
@@ -104,13 +105,14 @@ const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
           </Tooltip>
         </RecentPasswordCardContent>
         <RecentPasswordCardActions onClick={handleClick}>
-          <DotsThreeOutlineVerticalIcon />
+          <DotsThreeVerticalIcon stroke={3}/>
         </RecentPasswordCardActions>        
       </RecentPasswordCard>
-      <Menu
+      <StyledMenu
         id={`password-vault-menu-item-menu-${r.identifier}`}
         anchorEl={anchorEl}
         keepMounted
+        disableAutoFocusItem
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
@@ -120,6 +122,7 @@ const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
           handleClose();
         }}>
           <FormattedMessage id="details"/>
+          <CaretRightIcon width={23} height={23} stroke={1.2}/>
         </MenuItem>
         <MenuItem onClick={async () => {
           const result = await confirm(intl.formatMessage({
@@ -136,6 +139,7 @@ const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
           }          
         }}>
           <FormattedMessage id="remove"/>
+          <CaretRightIcon width={23} height={23} stroke={1.2}/>
         </MenuItem>
         <MenuItem onClick={() => {
           setSharedModalOpen(true);
@@ -143,8 +147,9 @@ const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
           handleClose();
         }}>
           <FormattedMessage id="share"/>
+          <CaretRightIcon width={23} height={23} stroke={1.2}/>
         </MenuItem>
-      </Menu>
+      </StyledMenu>
       {r && (
         <SharedDialog
           modalOpen={sharedModalOpen}

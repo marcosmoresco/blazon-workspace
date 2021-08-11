@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { withStyles } from '@material-ui/core/styles';
+import Menu from '@material-ui/core/Menu';
 
 export const BoxRoot = styled.div`
   margin: 42px 64px;
@@ -21,7 +23,7 @@ export const RecentPasswordCardContent = styled.div`
 export const RecentPasswordCardActions = styled.div`
   position: absolute;
   right: 10px;
-  bottom: 10px;
+  top: 15px;
 `;
 
 export const RecentPasswordCardContentHeader = styled.div`
@@ -40,7 +42,7 @@ export const RecentPasswordCardContentHeaderImage = styled.div`
 `;
 
 export const RecentPasswordCardContentHeaderBox = styled.div`
-  max-width: 86%;
+  max-width: 80%;
 `;
 
 export const RecentPasswordCardContentHeaderTitle = styled.div`
@@ -255,3 +257,35 @@ export const QuickActions = styled.div`
   color: #26213F;
   margin-bottom: 32px;
 `;
+
+export const StyledMenu = withStyles({
+  paper: {
+    borderRadius: 8,    
+    boxShadow: "0px 4px 74px rgba(0, 0, 0, 0.25)",
+    background: "#FFFFFF",
+    marginTop: 5,  
+    width: 176,
+    "& .MuiList-root": {
+      paddingTop: 0,
+      paddingBottom: 0,      
+    },
+    "& .MuiListItem-root": {
+      padding: "10px 12px 10px 16px",
+      display: "flex",
+      justifyContent: "space-between"
+    }
+  },
+})((props) => (
+  <Menu    
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'right',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'right',
+    }}
+    {...props}
+  />
+));

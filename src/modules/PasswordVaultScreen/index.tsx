@@ -13,7 +13,6 @@ import { useQuery } from "@apollo/client";
 import Loading from "@components/Loading";
 import PasswordVaultItem from "@modules/PasswordVaultItem";
 import { Grid } from "@material-ui/core";
-import PasswordVault from "@modules/PasswordVaultItem/components";
 import Plus from "@icons/Plus";
 import { chunk } from "lodash";
 import EmptyState from "@components/EmptyState";
