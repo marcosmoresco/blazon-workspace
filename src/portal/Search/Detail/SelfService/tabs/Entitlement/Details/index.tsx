@@ -7,7 +7,6 @@ import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
 import ShoppingCartSimpleIcon from "@icons/ShoppingCartSimple";
 import CheckCircleIcon from "@icons/CheckCircle";
-import ArticleIcon from "@icons/Article";
 import {
   Box,
   BoxHeader,
@@ -18,13 +17,13 @@ import {
   BoxCart,
   Label,
 } from "./styles";
-import { getSelfServiceAttributeValue } from "@utils/index";
 import { useCart } from "@requestCart/index";
 import { addCartItemMessage } from "@actions/index";
 import { SelfService } from "@portal/Search/types";
 import { GET_SELF_SERVICE_ITEM } from "@portal/Search/queries";
 import { ADD_SELF_SERVICE_CART_ITEM } from "@requestCart/mutations";
 import { GET_SELF_SERVICE_CART } from "@requestCart/queries";
+import { iconByType, getSelfServiceAttributeValue } from "@utils/index";
 
 export default function EntitlementDetails() {
   const { cart } = useCart();
@@ -81,7 +80,7 @@ export default function EntitlementDetails() {
             {entitlement?.name || " - "}
           </BoxHeaderName>
           <BoxHeaderTitle>
-            <ArticleIcon width={21} height={21} />
+            {iconByType('', 21)[`ENTITLEMENT`]}
             <FormattedMessage id="entitlement" />
           </BoxHeaderTitle>
         </BoxHeader>

@@ -3,8 +3,6 @@ import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
-import ShoppingCartSimpleIcon from "@icons/ShoppingCartSimple";
-import ArticleIcon from "@icons/Article";
 import {
   Box,
   BoxHeader,
@@ -17,6 +15,7 @@ import {
 } from "./styles";
 import { EntitlementDirectory } from "@portal/Search/types";
 import { GET_DIRECTORY_ENTITLEMENT } from "@portal/Search/queries";
+import { iconByType } from "@utils/index";
 
 export default function EntitlementDetails() {
   const router = useRouter();
@@ -40,7 +39,7 @@ export default function EntitlementDetails() {
             {entitlement?.name || " - "}
           </BoxHeaderName>
           <BoxHeaderTitle>
-            <ArticleIcon width={21} height={21} />
+            {iconByType('', 21)[`ENTITLEMENT`]}
             <FormattedMessage id="entitlement" />
           </BoxHeaderTitle>
         </BoxHeader>

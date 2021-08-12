@@ -6,7 +6,6 @@ import SharedAccountIcon from "@icons/SharedAccount";
 import ApplicationAccountIcon from "@icons/ApplicationAccount";
 import RegularAccountIcon from "@icons/RegularAccount";
 import AdministrativeAccountIcon from "@icons/AdministrativeAccount";
-import KeyIcon from "@icons/Key";
 import Grid from "@material-ui/core/Grid";
 import PasswordVaultItem from "@modules/PasswordVaultItem";
 import Progress from "@components/Progress";
@@ -14,7 +13,7 @@ import Tooltip from "@components/Tooltip";
 import EmptyState from "./components/EmptyState";
 import { useQuery } from "@apollo/client";
 import { GET_ENTRIES } from "@modules/PasswordVaultItem/queries";
-import { GET_REQUESTS } from "@modules/Requests/queries";
+import { GET_REQUESTS, GET_OPEN_STATUS } from "@modules/Requests/queries";
 import { Request } from "@modules/Requests/types";
 import type { HomeProps } from "./types";
 import { useUser } from "@hooks";
@@ -54,17 +53,25 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
     data: dataEntries,
   } = useQuery(GET_ENTRIES);
 
+  const { loading: loadingOpenStatus, data: dataOpenStatus } = useQuery<{
+    getOpenStatus: string[]
+  }>(GET_OPEN_STATUS);
+
   const {
     loading: loadingRequests,
     error: errorRequests,
-    data: dataRequests,
+    data: dataRequests    
   } = useQuery<{
     getRequests: { requests: Request[]; links: [] };
   }>(GET_REQUESTS, {
     variables: {
       page: 0,
       size: 4,
-    },
+      filters: JSON.stringify({
+        status:  dataOpenStatus?.getOpenStatus || []
+      })
+    },    
+    skip: !dataOpenStatus?.getOpenStatus
   });
 
   return (
@@ -193,8 +200,8 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
               </ShowAll>
             </DefaultTitleContent>
             <BoxRequest>
-              {(!loadingRequests &&
-                ((!errorRequests &&
+              {(!loadingRequests && !loadingOpenStatus &&
+                ((!errorRequests && 
                   (dataRequests?.getRequests?.requests || []).length && (
                     <>
                       <Grid container spacing={0}>

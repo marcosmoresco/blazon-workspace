@@ -4,7 +4,6 @@ import { FormattedMessage } from "react-intl";
 import { useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
 import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
 import CheckCircleIcon from "@icons/CheckCircle";
 import ShoppingCartSimpleIcon from "@icons/ShoppingCartSimple";
 import NewspaperClippingIcon from "@icons/NewspaperClipping";
@@ -24,6 +23,7 @@ import { SelfService } from "@portal/Search/types";
 import { GET_SELF_SERVICE_ITEM } from "@portal/Search/queries";
 import { ADD_SELF_SERVICE_CART_ITEM } from "@requestCart/mutations";
 import { GET_SELF_SERVICE_CART } from "@requestCart/queries";
+import { iconByType } from "@utils/index";
 
 export default function RoleAttributes() {
   const { cart } = useCart();
@@ -81,7 +81,7 @@ export default function RoleAttributes() {
             {role?.name || " - "}
           </BoxHeaderName>
           <BoxHeaderTitle>
-            <NewspaperClippingIcon width={21} height={21} />
+            {iconByType('', 21)[`ROLE`]}
             <FormattedMessage id="role" />
           </BoxHeaderTitle>
         </BoxHeader>

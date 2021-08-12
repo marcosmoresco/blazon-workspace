@@ -11,6 +11,12 @@ const useStyles = () => createStyles({
       textTransform: 'initial',
       height: 42,
       borderRadius: 8
+    },    
+    '&.Disabled': {
+      cursor: 'not-allowed',
+      '& button': {
+        pointerEvents: 'none',
+      }
     },         
     '& .Default-contained-red': {
       backgroundColor: '#FF134A',
@@ -65,9 +71,9 @@ class Button extends Component<ButtonPropsType> {
     const _color = color?.replace("default-", "");
 
     return (
-      <span className={classes.root}>
+      <span className={`${classes.root} ${isLoading === 1 ? "Disabled" : ""}`}>
         <MuiButton
-          className={classNames({          
+          className={classNames({                    
             'Default-rounded': variant === 'rounded',
             'Red': color === 'secondary',
             'Blue': variant === 'rounded' && color === 'default-primary',

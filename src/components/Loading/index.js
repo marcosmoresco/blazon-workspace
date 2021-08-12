@@ -1,15 +1,12 @@
 import React from "react";
-import Image from "next/image";
 import { makeStyles } from "@material-ui/core/styles";
-import loadingIcon from "./images/loading.svg";
-import loadingBlueIcon from "./images/loadingBlue.svg";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import animationData from "./loading.json";
+import LoadingIcon from "@icons/Loading";
 
 const useStyles = makeStyles((theme) => ({
   loading: {
     height: 26,
-    "& img": {
+    "& svg": {
       animation: "spin 2s linear infinite",
       filter: "inherit !important",
     },
@@ -44,10 +41,7 @@ export default function Loading(props) {
     </div>
   ) : (
     <div className={classes.loading}>
-      <Image
-        alt="Loading"
-        src={type === "blue" ? loadingBlueIcon : loadingIcon}
-      />
+      {type === "blue" ? <LoadingIcon color="#006AC6" width={22} height={22}/> : <LoadingIcon width={22} height={22}/>}
     </div>
   );
 }

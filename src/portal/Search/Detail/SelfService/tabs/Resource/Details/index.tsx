@@ -7,7 +7,6 @@ import FormControl from "@material-ui/core/FormControl";
 import Progress from "@components/Progress";
 import ShoppingCartSimpleIcon from "@icons/ShoppingCartSimple";
 import CheckCircleIcon from "@icons/CheckCircle";
-import PuzzlePieceIcon from "@icons/PuzzlePiece";
 import {
   Box,
   BoxHeader,
@@ -25,6 +24,7 @@ import { SelfService } from "@portal/Search/types";
 import { GET_SELF_SERVICE_ITEM } from "@portal/Search/queries";
 import { ADD_SELF_SERVICE_CART_ITEM } from "@requestCart/mutations";
 import { GET_SELF_SERVICE_CART } from "@requestCart/queries";
+import { iconByType, getSelfServiceAttributeValue } from "@utils/index";
 
 export default function ResourceDetails() {
   const { cart } = useCart();
@@ -86,7 +86,7 @@ export default function ResourceDetails() {
             <BoxHeader>
               <BoxHeaderName>{resource?.name || " - "}</BoxHeaderName>
               <BoxHeaderTitle>
-                <PuzzlePieceIcon width={21} height={21} />
+                {iconByType('', 21)[`RESOURCE${getSelfServiceAttributeValue("resourceType", resource?.attributes || [])}`]}                
                 <FormattedMessage id="resource" />
               </BoxHeaderTitle>
             </BoxHeader>

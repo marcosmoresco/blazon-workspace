@@ -2,9 +2,6 @@ import { FormattedMessage } from "react-intl";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
-import ShoppingCartSimpleIcon from "@icons/ShoppingCartSimple";
-import NewspaperClippingIcon from "@icons/NewspaperClipping";
 import {
   Box,
   BoxHeader,
@@ -17,6 +14,7 @@ import {
 } from "./styles";
 import { RoleDirectory } from "@portal/Search/types";
 import { GET_DIRECTORY_ROLE } from "@portal/Search/queries";
+import { iconByType } from "@utils/index";
 
 export default function RoleAttributes() {
   const router = useRouter();
@@ -40,7 +38,7 @@ export default function RoleAttributes() {
             {role?.name || " - "}
           </BoxHeaderName>
           <BoxHeaderTitle>
-            <NewspaperClippingIcon width={21} height={21} />
+            {iconByType('', 21)[`ROLE`]}
             <FormattedMessage id="role" />
           </BoxHeaderTitle>
         </BoxHeader>

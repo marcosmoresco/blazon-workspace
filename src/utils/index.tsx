@@ -1,10 +1,15 @@
 import { SelfServiceAttribute } from "@portal/Search/types";
 import {  SelfServiceCart } from "@requestCart/types";
 import { FormattedMessage } from "react-intl";
-import PuzzlePieceIcon from "@icons/PuzzlePiece";
-import ArticleIcon from "@icons/Article";
-import NewspaperClippingIcon from "@icons/NewspaperClipping";
-import UserGearIcon from "@icons/UserGear";
+import SharedAccountIcon from "@icons/SharedAccount";
+import ApplicationAccountIcon from "@icons/ApplicationAccount";
+import RegularAccountIcon from "@icons/RegularAccount";
+import AdministrativeAccountIcon from "@icons/AdministrativeAccount";
+import TemporaryAccountIcon from "@icons/Watch";
+import CheckCircleIcon from "@icons/CheckCircle";
+import SecurityUserIcon from "@icons/SecurityUser";
+import PeopleIcon from "@icons/People";
+import SquaresFourIcon from "@icons/SquaresFour";
 
 export const deepCopyFunction = (inObject: any) => {
   let outObject: any, value, key;
@@ -54,10 +59,15 @@ export const getSelfServiceAttributeValue = (
 };
 
 export const iconByType = (color: string, size: number): any =>  ({ 
-  RESOURCE: <PuzzlePieceIcon width={size || 32} height={size || 32} color={color || "black"} />,
-  ENTITLEMENT: <ArticleIcon width={size || 32} height={size || 32} color={color || "black"} />,
-  ROLE: <NewspaperClippingIcon width={size || 32} height={size || 32} color={color || "black"} />,
-  ADMIN_PASSWORD: <UserGearIcon width={size || 32} height={size || 32} color={color || "black"} />,
+  RESOURCE: <SquaresFourIcon width={size || 24} height={size || 24} color={color || "black"} />,
+  RESOURCESHARED_RESOURCE: <SharedAccountIcon width={size || 24} height={size || 24} color={color || "black"} />,
+  RESOURCEAPPLICATION_RESOURCE: <ApplicationAccountIcon width={size || 24} height={size || 24} color={color || "black"} />,
+  RESOURCEREGULAR_RESOURCE: <RegularAccountIcon width={size || 24} height={size || 24} color={color || "black"} />,
+  RESOURCETEMPORARY_RESOURCE: <TemporaryAccountIcon width={size || 24} height={size || 24} color={color || "black"} />,
+  RESOURCEADMIN_RESOURCE: <AdministrativeAccountIcon width={size || 24} height={size || 24} color={color || "black"} />,
+  ENTITLEMENT: <CheckCircleIcon width={size || 24} height={size || 24} color={color || "black"} />,
+  ROLE: <PeopleIcon width={size || 24} height={size || 24} color={color || "black"} />,
+  ADMIN_PASSWORD: <SecurityUserIcon width={size || 24} height={size || 24} color={color || "black"} />,
 });
 
 export const translateByType: {[key: string] : any} = { 

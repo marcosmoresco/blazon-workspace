@@ -36,8 +36,8 @@ export type SelfServiceCartItem = {
 
 export type SelfServiceCart = {
   identifier: number;
-  userId: String;
-  allowedAssignTypes: [String];
+  userId: string;
+  allowedAssignTypes: [string];
   items: [SelfServiceCartItem];
 };
 

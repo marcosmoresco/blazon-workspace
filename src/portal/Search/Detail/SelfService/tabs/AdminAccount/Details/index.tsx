@@ -4,10 +4,8 @@ import { FormattedMessage } from "react-intl";
 import { useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
 import FormControl from "@material-ui/core/FormControl";
-import TextField from "@material-ui/core/TextField";
 import ShoppingCartSimpleIcon from "@icons/ShoppingCartSimple";
 import CheckCircleIcon from "@icons/CheckCircle";
-import ArticleIcon from "@icons/Article";
 import {
   Box,
   BoxHeader,
@@ -24,6 +22,8 @@ import { SelfService } from "@portal/Search/types";
 import { GET_SELF_SERVICE_ITEM } from "@portal/Search/queries";
 import { ADD_SELF_SERVICE_CART_ITEM } from "@requestCart/mutations";
 import { GET_SELF_SERVICE_CART } from "@requestCart/queries";
+import { iconByType } from "@utils/index";
+
 
 export default function EntitlementDetails() {
   const { cart } = useCart();
@@ -80,8 +80,8 @@ export default function EntitlementDetails() {
             {entitlement?.name || " - "}
           </BoxHeaderName>
           <BoxHeaderTitle>
-            <ArticleIcon width={21} height={21} />
-            <FormattedMessage id="entitlement" />
+            {iconByType('', 21)[`ADMIN_PASSWORD`]}            
+            <FormattedMessage id="adminAccount" />
           </BoxHeaderTitle>
         </BoxHeader>
         <BoxContent>          

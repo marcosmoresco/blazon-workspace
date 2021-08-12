@@ -194,7 +194,7 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({ item, allowedAssignTypes }) 
             <TitleItem>{item?.description || " - "}</TitleItem>
           </ItemStyle>
           <Ticket>
-            {iconByType("#7D7A8C", 32)[item.catalogItemType]}
+            {iconByType("#7D7A8C", 32)[(item.catalogItemType === "RESOURCE" && `RESOURCE${item.resourceType}`) || item.catalogItemType]}
             <span>
               {translateByType[item.catalogItemType]}
             </span>

@@ -1,6 +1,7 @@
 // vendors
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
+import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
 import { addMessage } from "@actions/index";
@@ -10,11 +11,13 @@ import { isValidCart } from "@utils/index";
 import TitlePage from "@components/TitlePage";
 import CheckoutItem from "./CheckoutItem";
 import Button from "@components/Button";
+import Loading from "@components/Loading";
 import InfoIcon from "@icons/Info/index";
 import FilePlusIcon from "@icons/FilePlus";
 import CheckCircleIcon from "@icons/CheckCircle";
-import { useCart } from "@requestCart/index";
 import CheckoutEmpty from "@modules/Checkout/CheckoutEmpty";
+import { SelfServiceCart } from "@requestCart/types";
+import { GET_SELF_SERVICE_CART } from "@requestCart/queries";
 
 // styles
 import {
@@ -34,8 +37,24 @@ import { SelfServiceCartItem } from "@requestCart/types";
 const Checkout: React.FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const intl = useIntl();
-  const { cart } = useCart();
+  const intl = useIntl();  
+  const [cart, setCart] = useState<SelfServiceCart | null>(null);
+
+  const { loading: loadingRequestCart, error, data } = useQuery<{
+    getSelfServiceCart: SelfServiceCart;
+  }>(GET_SELF_SERVICE_CART);
+  
+  useEffect(() => {
+    if (!loadingRequestCart && !error && !cart) {
+      setCart(data?.getSelfServiceCart || ({} as SelfServiceCart));
+    }
+  }, [loadingRequestCart, error, cart, data]);
+
+  if(loadingRequestCart) {
+    return (
+      <Loading container/>
+    )
+  }
 
   return (
     <>

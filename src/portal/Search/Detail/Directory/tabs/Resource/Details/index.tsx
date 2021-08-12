@@ -3,8 +3,6 @@ import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import FormControl from "@material-ui/core/FormControl";
 import Progress from "@components/Progress";
-import ShoppingCartSimpleIcon from "@icons/ShoppingCartSimple";
-import PuzzlePieceIcon from "@icons/PuzzlePiece";
 import {
   Box,
   BoxHeader,
@@ -18,6 +16,7 @@ import {
 } from "./styles";
 import { ResourceDirectory } from "@portal/Search/types";
 import { GET_DIRECTORY_RESOURCE } from "@portal/Search/queries";
+import { iconByType } from "@utils/index";
 
 export default function ResourceDetails() {
   const router = useRouter();
@@ -46,7 +45,7 @@ export default function ResourceDetails() {
             <BoxHeader>
               <BoxHeaderName>{resource?.name || " - "}</BoxHeaderName>
               <BoxHeaderTitle>
-                <PuzzlePieceIcon width={21} height={21} />
+                {iconByType('', 21)[`RESOURCE`]}
                 <FormattedMessage id="resource" />
               </BoxHeaderTitle>
             </BoxHeader>

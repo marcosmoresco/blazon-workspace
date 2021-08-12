@@ -1,9 +1,9 @@
 // vendors
-import React from "react";
+import React, { useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
-import { useMutation } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import Image from "next/image";
 import * as Yup from "yup";
 import { useFormikContext, Formik, withFormik } from "formik";
@@ -14,6 +14,7 @@ import Button from "@components/Button";
 import DatePicker from "@components/DatePicker";
 import TextField from "@components/TextField";
 import TitlePage from "@components/TitlePage";
+import Loading from "@components/Loading";
 import InfoIcon from "@icons/Info/index";
 import FilePlusIcon from "@icons/FilePlus";
 import CheckCircleIcon from "@icons/CheckCircle";
@@ -23,6 +24,7 @@ import { addMessage } from "@actions/index";
 
 // types
 import { ItemProps, CheckoutFinishingProps } from "./type";
+import { SelfServiceCart } from "@requestCart/types";
 
 // styles
 import {
@@ -83,9 +85,13 @@ const CheckoutFinishing: React.FC<ItemProps> = ({ nextStep }) => {
   const router = useRouter();
   const intl = useIntl();
   const dispatch = useDispatch();
-  const { cart } = useCart();
+  const { cart, setCart } = useCart();
 
-  const [submitSelfServiceCart, {}] = useMutation(SUBMIT_SELF_SERVICE_CART, { 
+  const { loading: loadingRequestCart, error, data } = useQuery<{
+    getSelfServiceCart: SelfServiceCart;
+  }>(GET_SELF_SERVICE_CART);
+  
+  const [submitSelfServiceCart, { loading }] = useMutation(SUBMIT_SELF_SERVICE_CART, { 
     refetchQueries: [
       {
         query: GET_SELF_SERVICE_CART,
@@ -122,13 +128,13 @@ const CheckoutFinishing: React.FC<ItemProps> = ({ nextStep }) => {
     },
     validationSchema,
     onSubmit: (values: any) => {
-      if(!cart?.items?.length) {
+      if(!data?.getSelfServiceCart?.items.length) {
         dispatch(addMessage(intl.formatMessage({
           id: "checkout.AddItems"
         }), "warning"));
         return;     
       }
-      if(!isValidCart(cart)) {
+      if(!isValidCart(data?.getSelfServiceCart)) {
         dispatch(addMessage(intl.formatMessage({
           id: "checkout.invalid.items"
         }), "warning"));
@@ -142,6 +148,18 @@ const CheckoutFinishing: React.FC<ItemProps> = ({ nextStep }) => {
     },
     enableReinitialize: true,
   };
+
+  useEffect(() => {
+    if (!loading && !error && !cart) {
+      setCart(data?.getSelfServiceCart || ({} as SelfServiceCart));
+    }
+  }, [loading, error, cart, setCart, data]);
+
+  if(loadingRequestCart) {
+    return (
+      <Loading container/>
+    )
+  }
 
   return (
     <>
@@ -203,7 +221,8 @@ const CheckoutFinishing: React.FC<ItemProps> = ({ nextStep }) => {
                 <Button variant="contained" color="primary" onClick={() => {
                   form.submitForm();             
                   //nextStep
-                }}>
+                }}
+                isLoading={loading ? 1 : 0}>
                   <FormattedMessage id="checkout.save" />
                 </Button>
               </ButtonArea>
