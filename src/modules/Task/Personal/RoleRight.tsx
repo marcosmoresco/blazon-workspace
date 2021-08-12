@@ -76,7 +76,7 @@ const PersonalTasksRoleRight: FC<ListProps> = ({ dispatch, filtered = {}, checkA
       ord: "createdDate:desc",
       filters: filteredString
     },
-    fetchPolicy: "no-cache"  
+    fetchPolicy: "network-only"  
   });
 
   const { loading: loadingAssignActions, data: dataAssignActions, refetch: refetchAssignActions } = useQuery<{

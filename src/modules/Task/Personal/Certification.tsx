@@ -76,7 +76,7 @@ const PersonalTasksCertification: FC<ListProps> = ({ dispatch, filtered = {}, ch
       ord: "createdDate:desc",
       filters: filteredString
     },  
-    fetchPolicy: "no-cache"  
+    fetchPolicy: "network-only"  
   });
 
   const { loading: loadingAssignActions, data: dataAssignActions, refetch: refetchAssignActions } = useQuery<{

@@ -73,7 +73,7 @@ const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
       ord: "createdDate:desc",
       filters: filteredString
     }, 
-    fetchPolicy: "no-cache"   
+    fetchPolicy: "network-only"   
   });
 
   const { loading: loadingAssignActions, data: dataAssignActions, refetch: refetchAssignActions } = useQuery<{
