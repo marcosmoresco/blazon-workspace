@@ -1,5 +1,5 @@
 // vendors
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
@@ -23,7 +23,6 @@ import { GET_SELF_SERVICE_CART } from "@requestCart/queries";
 import {
   Line,
   PageInfoStyle,
-  CheckBox,
   StatusCheckoutStyle,
   CircleStyle,
   LineStatusStyle,
@@ -37,19 +36,12 @@ import { SelfServiceCartItem } from "@requestCart/types";
 const Checkout: React.FC = () => {
   const router = useRouter();
   const dispatch = useDispatch();
-  const intl = useIntl();  
-  const [cart, setCart] = useState<SelfServiceCart | null>(null);
+  const intl = useIntl();
 
   const { loading: loadingRequestCart, error, data } = useQuery<{
     getSelfServiceCart: SelfServiceCart;
   }>(GET_SELF_SERVICE_CART);
   
-  useEffect(() => {
-    if (!loadingRequestCart && !error && !cart) {
-      setCart(data?.getSelfServiceCart || ({} as SelfServiceCart));
-    }
-  }, [loadingRequestCart, error, cart, data]);
-
   if(loadingRequestCart) {
     return (
       <Loading container/>
@@ -91,16 +83,16 @@ const Checkout: React.FC = () => {
         </TitlesStyle>
       </StatusCheckoutStyle>
       <Line />
-      {!(cart?.items || []).length ? <CheckoutEmpty /> : null}
-      {(cart?.items || []).length ? (
+      {!(data?.getSelfServiceCart?.items || []).length ? <CheckoutEmpty /> : null}
+      {(data?.getSelfServiceCart?.items || []).length ? (
         <>
           <PageInfoStyle>
             <div>
               <ItemsAdded>
-                <div>{(cart?.items || []).length}</div>
+                <div>{(data?.getSelfServiceCart?.items || []).length}</div>
                 <FormattedMessage
                   id={
-                    (cart?.items || []).length > 1
+                    (data?.getSelfServiceCart?.items || []).length > 1
                       ? "checkout.items.added"
                       : "checkout.item.added"
                   }
@@ -111,7 +103,7 @@ const Checkout: React.FC = () => {
               variant="contained"
               color="primary"
               onClick={() => {
-                if (!isValidCart(cart)) {
+                if (!isValidCart(data?.getSelfServiceCart || null)) {
                   dispatch(
                     addMessage(
                       intl.formatMessage({
@@ -128,21 +120,21 @@ const Checkout: React.FC = () => {
               <FormattedMessage id="checkout.continue" />
             </Button>
           </PageInfoStyle>
-          {(cart?.items || []).map((item: SelfServiceCartItem) => (
+          {(data?.getSelfServiceCart?.items || []).map((item: SelfServiceCartItem) => (
             <CheckoutItem
               key={`checkout-item-${item.identifier}`}
               item={item}
-              allowedAssignTypes={cart?.allowedAssignTypes}
+              allowedAssignTypes={data?.getSelfServiceCart?.allowedAssignTypes}
             />
           ))}
           <Line />
           <PageInfoStyle>
             <div>
               <ItemsAdded>
-                <div>{(cart?.items || []).length}</div>
+                <div>{(data?.getSelfServiceCart?.items || []).length}</div>
                 <FormattedMessage
                   id={
-                    (cart?.items || []).length > 1
+                    (data?.getSelfServiceCart?.items || []).length > 1
                       ? "checkout.items.added"
                       : "checkout.item.added"
                   }
@@ -153,7 +145,7 @@ const Checkout: React.FC = () => {
               variant="contained"
               color="primary"
               onClick={() => {
-                if (!isValidCart(cart)) {
+                if (!isValidCart(data?.getSelfServiceCart || null)) {
                   dispatch(
                     addMessage(
                       intl.formatMessage({

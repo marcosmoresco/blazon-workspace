@@ -12,4 +12,5 @@ export type CheckouitemIstanceProps = {
   onAddItem: any;
   onDeleteItem: any;
   onUpdateItem: any;
+  loadingDeleteItemInstance: boolean;
 };

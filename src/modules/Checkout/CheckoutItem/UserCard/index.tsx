@@ -12,7 +12,7 @@ import { useDispatch } from "react-redux";
 import { useCart } from "@requestCart/index";
 
 // components
-import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Loading from "@components/Loading";
 import MinusCircleIcon from "@icons/MinusCircle";
 import Status from "./Status";
 import Button from "@components/Button";
@@ -64,8 +64,9 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
   onAddItem,
   onDeleteItem,
   onUpdateItem,
+  loadingDeleteItemInstance
 }) => {
-
+  
   const dispatch = useDispatch();
   const intl = useIntl(); 
   const { cart } = useCart();
@@ -210,9 +211,16 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
           </div>
         </UserId>
         {["TO_ME_AND_TO", "TO"].includes(item?.assignType) && Number(instance.userId) !== user?.identifier && (
-        <IconSpace onClick={onDelete}>
-          <MinusCircleIcon width={24} height={24} className="classes.root" />
-        </IconSpace>)}
+        <>
+          {loadingDeleteItemInstance && (
+            <Loading type="blue"/>
+          ) || (
+            <IconSpace onClick={onDelete}>
+              <MinusCircleIcon width={24} height={24} className="classes.root" />
+            </IconSpace>    
+          )}
+        </>  
+        )}
       </UserCardTitle>
       <Line />
       {(instance.schemaValidatedError.status ||

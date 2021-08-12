@@ -27,13 +27,11 @@ import {
   CheckoutStyle,
   Item,
   ItemStyle,
-  CheckBox,
   Line,
   TitleItem,
   Ticket,
   AcessRequest,
   AddAUser,
-  Input,
   BottomArea,
   BoxUserThumb,
   AutocompleteUsers,
@@ -61,7 +59,7 @@ import {
   DELETE_SELF_SERVICE_CART_ITEM,
 } from "@requestCart/mutations";
 
-const CheckoutItem: React.FC<CheckouitemProps> = ({ item, allowedAssignTypes }) => {
+const CheckoutItem: React.FC<CheckouitemProps> = ({ item, allowedAssignTypes = [] }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const intl = useIntl();
@@ -109,7 +107,7 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({ item, allowedAssignTypes }) 
     },
   });
   
-  const [deleteSelfServiceCartItemInstance, {}] = useMutation(DELETE_SELF_SERVICE_CART_ITEM_INSTANCE, {   
+  const [deleteSelfServiceCartItemInstance, {loading: loadingDeleteItemInstance}] = useMutation(DELETE_SELF_SERVICE_CART_ITEM_INSTANCE, {   
     refetchQueries: [
       {
         query: GET_SELF_SERVICE_CART,
@@ -143,7 +141,7 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({ item, allowedAssignTypes }) 
     },
   });
 
-  const [deleteSelfServiceCartItem, {}] = useMutation(
+  const [deleteSelfServiceCartItem, {loading: loadingDeleteItem}] = useMutation(
     DELETE_SELF_SERVICE_CART_ITEM,
     {
       refetchQueries: [
@@ -324,6 +322,7 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({ item, allowedAssignTypes }) 
               instance={instance}
               index={index + 1}
               item={item}
+              loadingDeleteItemInstance={loadingDeleteItemInstance}
               onAddItem={(identifier: string, userId: number, isLoggedUser: boolean) => {                
                 addSelfServiceCartItem({
                   variables: {
@@ -384,6 +383,7 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({ item, allowedAssignTypes }) 
           <Button
             variant="contained"
             color="default-primary"
+            isLoading={loadingDeleteItem ? 1 : 0}
             onClick={async () => {
               const result = await confirm(intl.formatMessage({
                 id: "checkout.item.delete"
