@@ -16,11 +16,13 @@ import { Grid } from "@material-ui/core";
 import Plus from "@icons/Plus";
 import { chunk } from "lodash";
 import EmptyState from "@components/EmptyState";
-import EmptyStateSearchIcon from "@icons/EmptyStateSearch";
 import CaretRightIcon from "@icons/CaretRight";
 import HouseSimpleIcon from "@icons/HouseSimple";
 import RequestStatusDialog from "@components/RequestStatusDialog";
 import Link from "@components/BreadcrumbLink";
+
+//images
+import EmptyStateImage from "@images/EmptyStatePasswordVault.svg";
 
 const StyledPasswordVaultItem = withStyles(() => ({
   valtItem: {
@@ -123,28 +125,33 @@ const PasswordVaultScreen: FC<PasswordVaultScreenProps> = ({
             <div>{intl.formatMessage({ id: "passwordVault.newPassword" })}</div>
           </Button>
         </div>
-        <Grid container className="pt24" spacing={3}>
-          {(dataToRender || []).map((item, i) => (
-            <Grid item key={i} xs={3}>
-              <StyledPasswordVaultItem
-                r={item}               
-              />
-            </Grid>
-          ))}
-        </Grid>
-        {pageSize * currentPage >= data?.getPasswordVaultEntries.length ? (
+        {!(data?.getPasswordVaultEntries || []).length && (
           <EmptyState
-            icon={<EmptyStateSearchIcon />}
+            image={EmptyStateImage}
             title="passwordVault.emptyState.title"
-            text="passwordVault.emptyState.description"
+            text="passwordVault.emptyState.description.text"
           />
-        ) : (
-          <div style={{ textAlign: "center" }}>
-            <Button color="primary" variant="contained" onClick={loadMore}>
-              {intl.formatMessage({ id: "loadMore" })}
-            </Button>
-          </div>
         )}
+        {(data?.getPasswordVaultEntries || []).length && (
+          <>
+            <Grid container className="pt24" spacing={3}>
+              {(dataToRender || []).map((item, i) => (
+                <Grid item key={i} xs={3}>
+                  <StyledPasswordVaultItem
+                    r={item}               
+                  />
+                </Grid>
+              ))}
+            </Grid>
+            {pageSize * currentPage < data?.getPasswordVaultEntries.length && (
+               <div style={{ textAlign: "center" }}>
+               <Button color="primary" variant="contained" onClick={loadMore}>
+                 {intl.formatMessage({ id: "loadMore" })}
+               </Button>
+             </div>
+            ) || null}
+          </>
+        )}        
       </div>
     </>
   );

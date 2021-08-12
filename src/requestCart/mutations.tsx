@@ -11,6 +11,7 @@ export const ADD_SELF_SERVICE_CART_ITEM = gql`
       name
       targetType
       catalogItemId
+      resourceType
     }
   }
 `;
@@ -20,15 +21,18 @@ export const DELETE_SELF_SERVICE_CART_ITEM = gql`
     $identifier: Int
     $name: String
     $targetType: String
+    $resourceType: String
   ) {
     deleteSelfServiceCartItem(
       identifier: $identifier
       name: $name
       targetType: $targetType
+      resourceType: $resourceType
     ) {
       identifier
       name
       targetType
+      resourceType
     }
   }
 `;

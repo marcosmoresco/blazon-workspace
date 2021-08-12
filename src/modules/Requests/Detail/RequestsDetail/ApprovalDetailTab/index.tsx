@@ -7,6 +7,7 @@ import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import { getLink } from "@utils/index";
 import Progress from "@components/Progress";
+import EmptyState from "@components/EmptyState";
 
 // types
 import { CardProps } from "./types";
@@ -20,11 +21,16 @@ import {
   Image,
   Name,
 } from "./styles";
-import RequestStatus from "@modules/Requests/Detail/Info/RequestStatus";
+
+//images
+import EmptyStateImage from "@images/EmptyStateApprovalItemDetail.svg";
 
 const ApprovalTab: React.FC<CardProps> = ({ request }) => {
   return (
     <>
+      {!(request?.approvalDetails || []).length && (
+        <EmptyState image={EmptyStateImage} title="request.approvalDetail.empty" text="request.approvalDetail.empty.text" />
+      )}
       {(request?.approvalDetails || []).map(
         (approvalDetail: ApprovalDetails, index: number) => (
           <ApprovalDetailTab key={`approval-details-${index}`}>

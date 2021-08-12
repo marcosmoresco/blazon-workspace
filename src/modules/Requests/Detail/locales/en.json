@@ -23,6 +23,11 @@
   "request.target":"Target",
   "request.approvalDetail":"Approval Detail",
   "request.sodDetail":"SOD Detail",
-  "request.historyStates":"History States"
-  
+  "request.historyStates":"History States",
+  "request.approvalDetail.empty": "No approval item detail",
+  "request.approvalDetail.empty.text": "You currently have no approval item detail",
+  "request.sodDetail.empty": "No sod detail",
+  "request.sodDetail.empty.text": "You currently have no sod detail",
+  "request.historyStates.empty": "No history states",
+  "request.historyStates.empty.text": "You currently have no history states"  
 }

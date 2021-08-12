@@ -21,6 +21,7 @@ import { addMessage } from "@actions/index";
 import { GET_USER_ACCOUNTS } from "@modules/User/queries";
 import { REQUEST_CREDENTIALS_USER_APPLICATION_ACCOUNT } from "@modules/User/mutations";
 import { TitleHierarchy } from "@components/TitlePage/types";
+import EmptyStateApplicationImage from "@images/EmptyStateApplicationAccount.svg";
 
 const columns = ({ classes }) => [
   {
@@ -231,6 +232,7 @@ const Application = ({ classes }) => {
       </div>
       <div>
         <DataGrid
+          emptyStateImage={EmptyStateApplicationImage}
           query={GET_USER_ACCOUNTS}
           queryFilters={queryFilters}
           getResponseLinks={(data: any) => data?.getUserAccounts?.links}

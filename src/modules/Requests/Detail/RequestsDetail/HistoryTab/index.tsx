@@ -8,6 +8,7 @@ import TableBody from "@material-ui/core/TableBody";
 import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import Progress from "@components/Progress";
+import EmptyState from "@components/EmptyState";
 
 // types
 import { CardProps } from "./types";
@@ -18,6 +19,9 @@ import { DetailTab, StyledTableResource } from "./styles";
 
 // graphql
 import { GET_REQUEST_TRANSITION_STATES } from "../../queries";
+
+//images
+import EmptyStateImage from "@images/EmptyStateHistoryStates.svg";
 
 const HistoryTab: React.FC<CardProps> = () => {
   const router = useRouter();
@@ -35,6 +39,9 @@ const HistoryTab: React.FC<CardProps> = () => {
 
   return (
     <>
+      {!(transitionStates || []).length && (
+        <EmptyState image={EmptyStateImage} title="request.historyStates.empty" text="request.historyStates.empty.text" />
+      )}
       {(transitionStates || []).map((row: TransitionStates, index: number) => (
         <DetailTab key={`transition-state-${index}`}>
           <StyledTableResource>

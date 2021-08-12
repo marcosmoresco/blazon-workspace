@@ -107,5 +107,6 @@
   "yes": "Sim",
   "no": "Não",
   "category": "Categoria",
-  "type": "Tipo"
+  "type": "Tipo",
+  "search.found.message": "Encontre aqui seu acesso..."
 }

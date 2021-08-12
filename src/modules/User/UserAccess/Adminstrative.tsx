@@ -15,6 +15,7 @@ import DatePicker from "@components/DatePicker";
 import TextField from "@components/TextField";
 import { TitleHierarchy } from "@components/TitlePage/types";
 import { GET_USER_ACCOUNTS } from "@modules/User/queries";
+import EmptyStateAdminImage from "@images/EmptyStateAdminAccount.svg";
 
 const columns = ({ classes }) => [
   {
@@ -214,6 +215,7 @@ const Administrative = ({ classes }) => {
         </div>
         <div>
           <DataGrid
+            emptyStateImage={EmptyStateAdminImage}
             query={GET_USER_ACCOUNTS}
             queryFilters={queryFilters}
             getResponseLinks={(data: any) => data?.getUserAccounts?.links}

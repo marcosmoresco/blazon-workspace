@@ -1,10 +1,10 @@
 import styled from "styled-components";
 
 export const UserCardStyle = styled.div`
-  margin: 24px;
+  margin: 0 24px;
   background: #f4f4f5;
   border-radius: 8px;
-  margin-bottom: 58px;
+  margin-bottom: 36px;
 `;
 export const UserCardTitle = styled.div`
   display: flex;

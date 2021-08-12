@@ -11,6 +11,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { EntitlementDirectory } from "@portal/Search/types";
 import { GET_USER_ENTITLEMENTS } from "@modules/User/queries";
 import { TitleHierarchy } from "@components/TitlePage/types";
+import EmptyStateImage from "@images/EmptyStateEntitlements.svg";
 
 const columns = () => [
   {
@@ -88,6 +89,7 @@ const Entitlement = ({ classes }) => {
       </div>
       <div>
         <DataGrid
+          emptyStateImage={EmptyStateImage}
           query={GET_USER_ENTITLEMENTS}
           queryFilters={queryFilters}
           height={600}          

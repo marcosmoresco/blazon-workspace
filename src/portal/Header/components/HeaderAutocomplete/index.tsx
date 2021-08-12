@@ -48,14 +48,16 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
   const [filter, setFilter] = React.useState("");
   const [addedItems, setAddedItems] = useState<string[]>([]); 
 
-  useEffect(() => {
+  useEffect(() => {   
     if(cart && (cart.items || []).length) {
       const cartItems: string[] = [];
       cart.items.map((item) => cartItems.push(item.catalogItemId));
       if(JSON.stringify(cartItems) !== JSON.stringify(addedItems)) {
         setAddedItems(cartItems);
       }     
-    } 
+    } else if((addedItems || []).length) {
+      setAddedItems([]);
+    }
   }, [    
     cart,
     addedItems,
@@ -206,10 +208,11 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
             label=""
             value={filter}
             variant="outlined"
+            placeholder={intl.formatMessage({id: "search.found.message"})}
             onKeyDown={(event: any) => {
               if(event.key === 'Enter') {
                 goToSearch();
-              }              
+              }             
             }}
             onChange={(event: any) => {
               const value = event?.target?.value;

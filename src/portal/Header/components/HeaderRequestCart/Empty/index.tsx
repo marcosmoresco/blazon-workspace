@@ -3,7 +3,7 @@ import { useIntl } from 'react-intl'
 import Image from "next/image";
 import type { EmptyStateProps } from './types'
 import { Box, BoxContent, Title, Text } from './styles'
-import icon from "./essets/Empty.svg";
+import icon from "@images/EmptyStateCart.svg";
 
 const Empty: FC<EmptyStateProps> = () => {
 

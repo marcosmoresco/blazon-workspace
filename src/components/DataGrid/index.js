@@ -27,7 +27,6 @@ const DataGridBlazon = (props) => {
     rowsPerPageList, 
     list, 
     method,
-    body,
     fetching, 
     links, 
     type, 
@@ -52,6 +51,7 @@ const DataGridBlazon = (props) => {
     page: pageParam,
     getResponseLinks,
     getResponse,
+    emptyStateImage
   } = props  
   
   const sortable = handleSortable && typeof handleSortable === "function"
@@ -457,7 +457,7 @@ const DataGridBlazon = (props) => {
                 {(( _rows.length > 0 && !isFetching && ((!links && !isNext()) || (links && !verifyPageLink())) ) || (!isFetching && _rows.length === 0)) && (
                   <TableRow style={{height: (height && _rows.length === 0 ? height - 100 : 0) + 'px'}}>
                     <TableCell colSpan={columns.length + extraColumns}>
-                      <CustomNoRowsOverlay isEmpty={_rows.length === 0} template={template}/>
+                      <CustomNoRowsOverlay isEmpty={_rows.length === 0} template={template} emptyStateImage={emptyStateImage}/>
                     </TableCell>  
                   </TableRow>
                 )}

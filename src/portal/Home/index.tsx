@@ -10,7 +10,9 @@ import Grid from "@material-ui/core/Grid";
 import PasswordVaultItem from "@modules/PasswordVaultItem";
 import Progress from "@components/Progress";
 import Tooltip from "@components/Tooltip";
-import EmptyState from "./components/EmptyState";
+import EmptyState from "@components/EmptyState";
+import EmptyStateRequestsImage from "@images/EmptyStateRequests.svg";
+import EmptyStatePasswordVaultmage from "@images/EmptyStatePasswordVault.svg";
 import { useQuery } from "@apollo/client";
 import { GET_ENTRIES } from "@modules/PasswordVaultItem/queries";
 import { GET_REQUESTS, GET_OPEN_STATUS } from "@modules/Requests/queries";
@@ -18,7 +20,6 @@ import { Request } from "@modules/Requests/types";
 import type { HomeProps } from "./types";
 import { useUser } from "@hooks";
 import {
-  BoxCard,
   BoxRequest,
   BoxRequestHeader,
   BoxRequestHeaderIdentifier,
@@ -256,6 +257,7 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                     </>
                   )) || (
                   <EmptyState
+                    image={EmptyStateRequestsImage}
                     title="home.no.request"
                     text="home.no.request.text"
                   />
@@ -297,8 +299,9 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                     </Grid>
                   )) || (
                   <EmptyState
-                    title="passwordVault.no.password"
-                    text="passwordVault.no.password.text"
+                    image={EmptyStatePasswordVaultmage}
+                    title="passwordVault.emptyState.title"
+                    text="passwordVault.emptyState.description.text"
                   />
                 ))) || <Progress />}
             </BoxRecentPasswordsContent>

@@ -41,7 +41,7 @@ export const BoxDescription = styled.div`
   align-items: flex-start;
   padding: 21px 16px 0px;
   height: 120px;
-  background: rgba(244, 244, 245, 0.62);
+  background: #FFFFFF;
   border-radius: 8px;
   border: 1px solid #E9E8EB;
   color: #A8A6B2;
@@ -61,4 +61,25 @@ export const BoxCart = styled.div`
   &.Added {
     cursor: pointer;
   }
+`;
+
+export const BoxCartItem = styled.div`
+  background: #F4F4F5;
+  border-radius: 6px;
+  padding: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  font-weight: 400;
+`;
+
+export const BoxCartItemIcon = styled.div`
+  background: #E9E8EB;
+  border-radius: 8px;  
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  width: 32px;
+  height: 32px;
 `;

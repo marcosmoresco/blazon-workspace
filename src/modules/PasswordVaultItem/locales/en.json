@@ -1,8 +1,8 @@
 {
   "passwordVault.sucessSave": "Your password has been successfully changed!",
   "passwordVault.errorSave": "Your password has not been changed.",
-  "passwordVault.emptyState.title": "End of results",
-  "passwordVault.emptyState.description": "Click below to view your resolution history.",
+  "passwordVault.emptyState.title": "No password vault",
+  "passwordVault.emptyState.description.text": "You currently have no password vault.",
   "passwordVault.title": "Password vault",
   "passwordVault.itens": "{amount} items",
   "passwordVault.newPassword": "New password",

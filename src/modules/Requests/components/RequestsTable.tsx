@@ -35,6 +35,9 @@ import {
 //constants
 import { columns, filters } from "./constants";
 
+//images
+import EmptyStateImage from "@images/EmptyStateRequests.svg";
+
 
 const Tasks: FC<RequestsTableProps> = ({ intl }) => {
   const router = useRouter();
@@ -109,11 +112,12 @@ const Tasks: FC<RequestsTableProps> = ({ intl }) => {
           </div>
         </div>
         <div>
-          <DataGrid     
+          <DataGrid    
+            emptyStateImage={EmptyStateImage} 
             defaultOrderBy="createDate:desc"                
             query={GET_REQUESTS}
             queryFilters={queryFilters}
-            height={600} 
+            height={600}
             getResponseLinks={(data: any) => data?.getRequests?.links}
             getResponse={(data: any) => data?.getRequests?.requests}           
             columns={columns}

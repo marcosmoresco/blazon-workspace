@@ -33,7 +33,7 @@ type EditProfileProps = {
 
 export const StyledForm = withStyles(() => ({
   root: {
-    padding: 24,    
+    padding: "24px 27%",
   },
 }))((props: any) => <Form {...props} className={props.classes.root} />);
 

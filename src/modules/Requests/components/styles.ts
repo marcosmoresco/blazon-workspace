@@ -4,9 +4,12 @@ export const StyledBeneficiary = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #f0f0f1;
-  padding: 4px 8px 4px 4px;
+  background: #f0f0f1;  
   border-radius: 64px;
+
+  img {
+    border-radius: 20px;
+  }
 
   span {
     padding: 0 8px;

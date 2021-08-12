@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { addCartItemMessage, removeCartItemMessage } from "../../actions";
@@ -9,6 +10,7 @@ import PuzzlePieceIcon from "@icons/PuzzlePiece";
 import type { SelfServiceCartItem } from "@requestCart/types";
 import type { CartProps, CartState, SelfServiceCartItemMessage } from "./types";
 import { Box, Header, HeaderInfo, HeaderCloseIcon, BoxContent, IconItem, TextItem } from "./styles";
+import { iconByType, getSelfServiceAttributeValue } from "@utils/index";
 
 function Alert(props: any) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -32,12 +34,12 @@ function Alert(props: any) {
                 {m.messageType === "add" && (
                 <HeaderInfo>
                   <CheckCircleIcon width={21} height={21} color="#3174F6"/>
-                  Adicionado
+                  <FormattedMessage id="cart.added" />
                 </HeaderInfo>)}
                 {m.messageType === "remove" && (
                 <HeaderInfo>
                   <CheckCircleIcon width={21} height={21} color="#3174F6"/>
-                  Removido
+                  <FormattedMessage id="cart.removed" />
                 </HeaderInfo>)}
                 <HeaderCloseIcon onClick={() => closeSnackbar(m.id)}>
                   <XIcon/>   
@@ -45,7 +47,7 @@ function Alert(props: any) {
               </Header> 
               <BoxContent>
                 <IconItem>
-                  <PuzzlePieceIcon width={25} height={25} color="#3174F6"/>
+                  {iconByType("#3174F6", 25)[(m.targetType === "RESOURCE" && m.resourceType && `RESOURCE${m.resourceType}`) || m.targetType]}                  
                 </IconItem>
                 <TextItem>
                   {m.name}

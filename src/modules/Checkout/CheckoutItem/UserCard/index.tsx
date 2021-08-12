@@ -222,7 +222,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
         </>  
         )}
       </UserCardTitle>
-      <Line />
+      {formDatas && <Line />}
       {(instance.schemaValidatedError.status ||
        instance.alreadyRequestInProgressError.status || 
        instance.accessAlreadyExistError.status || 
@@ -384,8 +384,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                       )}
                     </AddDados>
                   </div>              
-                )})}     
-                <Line className="Add-top"/>         
+                )})} 
+                <Line className="Add-top"/>                          
                 <UserBottomArea>
                   <Button                    
                     variant="contained"
@@ -399,9 +399,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
             </div>          
           )))
         }} />                     
-      )}
-      
-      {!formDatas && <Line className="Add-top"/>}      
+      )}         
     </UserCardStyle>
   );
 };

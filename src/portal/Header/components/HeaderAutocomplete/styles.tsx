@@ -31,6 +31,7 @@ export const BoxAutocompleteContent = styled.div`
 
 export const BoxAutocompleteContentInfo = styled.div`
   margin-left: 15px;
+  width: 100%;
 `;
 
 export const BoxAutocompleteContentCart = styled.div`
@@ -104,12 +105,15 @@ const HeaderTag = styled.div`
 `;
 
 const FooterSeeAll = styled.div`
-  margin: 20px 10px 25px 20px;
+  padding: 10px 10px 10px 20px;
   cursor: pointer;
   display: flex;
   justify-content: space-between;
   color: #777779;
   letter-spacing: 0.0015em;
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.04);
+  }
 `;
 
 export const Autocomplete = styled(Paper)({
@@ -118,15 +122,22 @@ export const Autocomplete = styled(Paper)({
   boxSizing: "border-box",
   boxShadow: "0px 24px 71px 5px rgb(0 0 0 / 25%)",
   borderRadius: 8,
-  marginTop: 15,
-  "& li[data-focus=\"true\"]": {
+  marginTop: 15,  
+  "& .MuiAutocomplete-option::hover": {
+    backgroundColor: "#3174f6 !important",
     "& .Autocomplete-cart": {
-      background: "#3174f6",
+      backgroundColor: "#3174f6",
       "& svg": {
         filter: "invert(100%) sepia(0%) saturate(0%) hue-rotate(276deg) brightness(103%) contrast(101%)"
       }
     }
-  }
+  },
+  "& .MuiAutocomplete-option[data-focus=\"true\"]": {
+    backgroundColor: "transparent",
+    "&:hover": {
+      backgroundColor: "rgba(0, 0, 0, 0.04) !important",
+    }
+  },
 });
 
 export const AutocompletePaper = ({

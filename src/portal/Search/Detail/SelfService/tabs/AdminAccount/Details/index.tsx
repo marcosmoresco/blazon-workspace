@@ -4,8 +4,9 @@ import { FormattedMessage } from "react-intl";
 import { useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
 import FormControl from "@material-ui/core/FormControl";
-import ShoppingCartSimpleIcon from "@icons/ShoppingCartSimple";
+import ShoppingCartIcon from "@icons/ShoppingCart";
 import CheckCircleIcon from "@icons/CheckCircle";
+import CaretRightIcon from "@icons/CaretRight";
 import {
   Box,
   BoxHeader,
@@ -14,6 +15,8 @@ import {
   BoxContent,
   BoxDescription,
   BoxCart,
+  BoxCartItem,
+  BoxCartItemIcon,
   Label,
 } from "./styles";
 import { useCart } from "@requestCart/index";
@@ -105,14 +108,21 @@ export default function EntitlementDetails() {
             })
           }
         >
-          <ShoppingCartSimpleIcon width={21} height={21} />
-          <FormattedMessage id="cart.add" />
+          <BoxCartItem>
+            <BoxCartItemIcon>
+              <ShoppingCartIcon width={21} height={21} />
+            </BoxCartItemIcon>                
+            <FormattedMessage id="cart.add" />
+            <CaretRightIcon width={21} height={21} stroke={2}/>
+          </BoxCartItem> 
         </BoxCart>
       )}
       {addedItems.indexOf(id as string) > -1 && (
         <BoxCart>
-          <CheckCircleIcon width={25} height={25} color="#26213F" />
-          <FormattedMessage id="search.selfService.added" />
+          <BoxCartItem>
+            <CheckCircleIcon width={25} height={25} color="#26213F" />
+            <FormattedMessage id="search.selfService.added" />
+          </BoxCartItem>         
         </BoxCart>
       )}
     </>

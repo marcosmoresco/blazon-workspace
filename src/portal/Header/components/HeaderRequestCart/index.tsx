@@ -108,8 +108,8 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
     },
   }); 
 
-  useEffect(() => {
-    if (!loading && !error) {
+  useEffect(() => {      
+    if (!loading && !error) {     
       setCart(data?.getSelfServiceCart || ({} as SelfServiceCart));
     }
   }, [loading, error, cart, setCart, data]);
@@ -141,12 +141,13 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
       }),
       <XCircleIcon width={48} height={48} color="#FF134A" />
     );
-    if (result) {
+    if (result) {      
       deleteSelfServiceCartItem({
         variables: {
           identifier: item.identifier,
           name: item.name,
           targetType: item.targetType,
+          resourceType: item.resourceType
         },
       });
     }

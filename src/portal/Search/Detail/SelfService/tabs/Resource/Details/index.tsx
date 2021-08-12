@@ -5,10 +5,13 @@ import { useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
 import FormControl from "@material-ui/core/FormControl";
 import Progress from "@components/Progress";
-import ShoppingCartSimpleIcon from "@icons/ShoppingCartSimple";
+import ShoppingCartIcon from "@icons/ShoppingCart";
 import CheckCircleIcon from "@icons/CheckCircle";
+import CaretRightIcon from "@icons/CaretRight";
 import {
   Box,
+  BoxCartItem,
+  BoxCartItemIcon,
   BoxHeader,
   BoxHeaderName,
   BoxHeaderTitle,
@@ -111,14 +114,21 @@ export default function ResourceDetails() {
                 })
               }
             >
-              <ShoppingCartSimpleIcon width={21} height={21} />
-              <FormattedMessage id="cart.add" />
+              <BoxCartItem>
+                <BoxCartItemIcon>
+                  <ShoppingCartIcon width={21} height={21} />
+                </BoxCartItemIcon>                
+                <FormattedMessage id="cart.add" />
+                <CaretRightIcon width={21} height={21} stroke={2}/>
+              </BoxCartItem>              
             </BoxCart>
           )}
           {addedItems.indexOf(id as string) > -1 && (
             <BoxCart>
-              <CheckCircleIcon width={25} height={25} color="#26213F" />
-              <FormattedMessage id="search.selfService.added" />
+              <BoxCartItem>
+                <CheckCircleIcon width={25} height={25} color="#26213F" />
+                <FormattedMessage id="search.selfService.added" />
+              </BoxCartItem>              
             </BoxCart>
           )}
         </>

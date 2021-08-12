@@ -35,6 +35,7 @@ export const SelfServiceMutations = {
         identifier: args?.identifier,
         name: args?.name,
         targetType: args?.targetType,
+        resourceType: args?.resourceType
       };
     } catch (error) {
       throw error;

@@ -107,5 +107,6 @@
   "yes": "Yes",
   "no": "No",
   "category": "Category",
-  "type": "Type"
+  "type": "Type",
+  "search.found.message": "Find your access here..."
 }

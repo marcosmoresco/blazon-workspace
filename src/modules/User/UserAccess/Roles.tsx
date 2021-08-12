@@ -10,6 +10,7 @@ import { withStyles } from "@material-ui/core/styles";
 import { RoleDirectory } from "@portal/Search/types";
 import { GET_USER_ROLES } from "@modules/User/queries";
 import { TitleHierarchy } from "@components/TitlePage/types";
+import EmptyStateImage from "@images/EmptyStateRoles.svg";
 
 const columns = () => [
   {
@@ -59,6 +60,7 @@ const Roles = ({ classes }) => {
     >      
       <div>
         <DataGrid
+          emptyStateImage={EmptyStateImage}
           query={GET_USER_ROLES}
           queryFilters={queryFilters}
           getResponseLinks={(data: any) => data?.getRepresentation?.links}

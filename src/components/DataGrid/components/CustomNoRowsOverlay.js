@@ -31,7 +31,7 @@ const styles = () => ({
     width: 192,    
     lineHeight: '18px',
   }
-})
+});
 
 class CustomNoRowsOverlay extends React.Component {
 
@@ -40,7 +40,7 @@ class CustomNoRowsOverlay extends React.Component {
       props,
     } = this
 
-    const { isEmpty, template, classes } = props 
+    const { isEmpty, template, emptyStateImage, classes } = props 
 
     const id = (isEmpty && 'no.results') || 'end.of.results'
 
@@ -48,7 +48,7 @@ class CustomNoRowsOverlay extends React.Component {
       <div className={classes.root}>
         <div className={classes.emptyGridContent}>
           <div className={classes.emptyGridInfo}>
-            <Image alt="Empty" src={empty} />
+            <Image alt="Empty" src={emptyStateImage || empty} />
             <div className={classes.emptyGridTemplateLabel}>
               <div className={classes.emptyGridLabel}>
                 <FormattedMessage id={id} />

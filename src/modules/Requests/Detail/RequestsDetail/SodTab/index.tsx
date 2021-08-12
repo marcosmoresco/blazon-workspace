@@ -7,6 +7,7 @@ import Table from "@material-ui/core/Table";
 import TableHead from "@material-ui/core/TableHead";
 import { getLink } from "@utils/index";
 import Progress from "@components/Progress";
+import EmptyState from "@components/EmptyState";
 
 // types
 import { CardProps } from "./types";
@@ -21,10 +22,16 @@ import {
   Name,
 } from "./styles";
 
+//images
+import EmptyStateImage from "@images/EmptyStateSodDetail.svg";
+
 const SodTab: React.FC<CardProps> = ({ request }) => {
 
   return (
     <>
+      {!(request?.sodDetails || []).length && (
+        <EmptyState image={EmptyStateImage} title="request.approvalDetail.empty" text="request.approvalDetail.empty.text" />
+      )}
       {(request?.sodDetails || []).map(
         (approvalDetail: ApprovalDetails, index: number) => (
           <ApprovalDetailTab key={`sod-details-${index}`}>

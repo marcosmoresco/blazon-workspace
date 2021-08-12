@@ -1,8 +1,8 @@
 {
   "passwordVault.sucessSave": "Sua senha foi alterada com sucesso!",
   "passwordVault.errorSave": "Sua senha não foi alterada.",
-  "passwordVault.emptyState.title": "Fim dos resultados",
-  "passwordVault.emptyState.description": "Clique abaixo para ver seu histórico de resoluções.",
+  "passwordVault.emptyState.title": "Nenhum cofre de senhas",
+  "passwordVault.emptyState.description.text": "No momento você não tem nenhum cofre de senhas",
   "passwordVault.title": "Cofre de senhas",
   "passwordVault.itens": "{amount} itens",
   "passwordVault.newPassword": "Nova senha",

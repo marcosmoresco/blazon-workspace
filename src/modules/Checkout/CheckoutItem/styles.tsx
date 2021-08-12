@@ -17,7 +17,7 @@ export const ItemStyle = styled.div`
   align-items: center;
   justify-content: center;
   padding: 0 24px;
-  max-width: 740px;
+  width: 100%;
   div {
     justify-content: left;
     display: flex;

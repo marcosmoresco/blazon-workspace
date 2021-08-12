@@ -42,6 +42,7 @@ import {
 import { User } from "@types";
 import { getLink } from "@utils/index";
 import { TitleHierarchy } from "@components/TitlePage/types";
+import EmptyStateSharedAccountImage from "@images/EmptyStateSharedAccount.svg";
 
 const filters = [
   {
@@ -451,12 +452,12 @@ const Shared = ({ classes }) => {
       </div>
       <div>
         <DataGrid
+          emptyStateImage={EmptyStateSharedAccountImage}
           query={GET_USER_ACCOUNTS}
           queryFilters={queryFilters}
           getResponseLinks={(data: any) => data?.getUserAccounts?.links}
           getResponse={(data: any) => data?.getUserAccounts?.accounts}
           height={600}
-
           columns={columns({ classes })}
           page={1}
           size={100}

@@ -9,6 +9,7 @@ import { useStyles } from "./styles";
 import { withStyles } from "@material-ui/core/styles";
 import { GET_USER_ACCOUNTS } from "@modules/User/queries";
 import { TitleHierarchy } from "@components/TitlePage/types";
+import EmptyStateImage from "@images/EmptyStateRegularAccount.svg";
 
 const columns = () => [
   {
@@ -115,6 +116,7 @@ const Regular = ({ classes }) => {
       </div>
       <div>
         <DataGrid
+          emptyState={EmptyStateImage}
           query={GET_USER_ACCOUNTS}
           queryFilters={queryFilters}
           getResponseLinks={(data: any) => data?.getUserAccounts?.links}
