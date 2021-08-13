@@ -57,7 +57,7 @@ export const light = createMuiTheme({
       root: {
         marginBottom: 10
       }
-    }
+    },   
   },
   palette: {
     type: "light",

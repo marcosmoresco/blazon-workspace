@@ -5,3 +5,12 @@ export const GET_FORM_DATAS = gql`
     getNewEntry(resourceId: $resourceId, schema: $schema)
   }
 `;
+
+export const GET_APPLICATION_ACCOUNTS_BY_ENTITLEMENT = gql`
+  query getApplicationAccountsByEntitlement($payload: String) {
+    getApplicationAccountsByEntitlement(payload: $payload) {
+      identifier
+      accountIdentifier      
+    }
+  }
+`;

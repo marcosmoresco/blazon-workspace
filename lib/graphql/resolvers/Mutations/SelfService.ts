@@ -86,7 +86,8 @@ export const SelfServiceMutations = {
           identifier: args.identifier,
           payload: JSON.stringify({
             additionalFields: JSON.parse(args.payload),
-            expireAt: args.expireAt
+            expireAt: args.expireAt,
+            accountId: args.accountId
           }),
         },
         { ...config(context) }

@@ -19,7 +19,8 @@ export const Directory = `
     links: [Link]
   }
   
-  type AccountDirectory {   
+  type AccountDirectory {  
+    identifier: Int 
     accountIdentifier: String    
   }
 
@@ -71,4 +72,5 @@ export const Queries = `
   getDirectoryRole(id: Int): RoleDirectory
   getDirectoryRoleRights(id: Int, page: Int, size: Int, ord: String): RoleDirectoryRightRepresentation
   getDirectoryRoleRightEntitlements(id: Int, rightId: Int, page: Int, size: Int, ord: String): EntitlementDirectoryRepresentation
+  getApplicationAccountsByEntitlement(payload: String): [AccountDirectory]
 `;

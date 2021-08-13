@@ -1,6 +1,5 @@
 // venders
 import React, { useState } from "react";
-import { useRouter } from "next/router";
 import { FormattedMessage, useIntl } from "react-intl";
 import { getLink } from "@utils/index";
 import { Form, Formik, withFormik, useFormikContext } from "formik";
@@ -12,6 +11,10 @@ import { useDispatch } from "react-redux";
 import { useCart } from "@requestCart/index";
 
 // components
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from '@material-ui/core/RadioGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
 import Loading from "@components/Loading";
 import MinusCircleIcon from "@icons/MinusCircle";
 import Status from "./Status";
@@ -51,6 +54,7 @@ import { findItemByCatalogItemId } from "./constants";
 //queries
 import { GET_FORM_DATAS } from "@modules/Checkout/queries";
 import { GET_SELF_SERVICE_CART } from "@requestCart/queries";
+import { GET_APPLICATION_ACCOUNTS_BY_ENTITLEMENT } from "@modules/Checkout/queries";
 
 //mutations
 import { UPDATE_SELF_SERVICE_CART_ITEM_INSTANCE } from "@modules/Checkout/mutations";
@@ -99,6 +103,9 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
     if(payload?.expireAt) {
       additionalFields = {...additionalFields, expireAt: payload?.expireAt};
     } 
+    if(payload?.accountId) {
+      additionalFields = {...additionalFields, accountId: String(payload?.accountId)};
+    }
     initialValues = {
       instance: additionalFields
     };   
@@ -113,15 +120,19 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
     onSubmit: (values: any) => {    
       
       let expireAt = values?.instance?.expireAt;
+      let accountId = values?.instance?.accountId && Number(values?.instance?.accountId) || null;
       const payload = {...values?.instance};
       delete payload.expireAt;
+      delete payload.accountId;
 
       const variables = {
         itemId: item.identifier,
         identifier: instance.identifier,
         payload: JSON.stringify(payload),
-        expireAt
+        expireAt,
+        accountId
       }
+
       updateSelfServiceCartItemInstance({
         variables
       });
@@ -130,7 +141,61 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
   
   const [formDatas, setFormDatas] = useState<{[key: string]: any}>();
 
-  if (item?.catalogItemType === "RESOURCE" && !formDatas) {
+  if(item?.catalogItemType === "ENTITLEMENT" && item?.resourceType === "APPLICATION" && !formDatas) {
+
+    apolloClient
+      .query({
+        query: GET_APPLICATION_ACCOUNTS_BY_ENTITLEMENT,
+        variables: {          
+          payload: JSON.stringify({
+            entitlementId: Number(item?.targetId)
+          }),
+        },
+      })
+      .then(({ data }) => {                
+
+        const schema: {[key: string]: any} = {}; 
+        const extraFormDatas: {[key: string]: any} = {};
+    
+        const label = intl.formatMessage({
+          id: "account"                      
+        });
+        const yupObject = Yup
+          .string()
+          .required(
+            intl.formatMessage({
+              id: "isRequired"                      
+            }, {
+              field: label
+            })
+          ); 
+        schema.accountId = yupObject; 
+        extraFormDatas[intl.formatMessage({id: "checkout.select.account"})] =  [{
+          displayType: "RADIOBUTTON",
+          name: "accountId",
+          label: intl.formatMessage({
+            id: "account"                  
+          }),
+          bind: {
+            label: "accountIdentifier",
+            value: "identifier"
+          },
+          options: data?.getApplicationAccountsByEntitlement
+        }];
+    
+        const validationSchema = Yup.object({
+          instance: Yup.object({
+            ...schema
+          })    
+        });
+    
+        formik.validationSchema = validationSchema;           
+        formik.render = true;         
+             
+        setFormik(formik);
+        setFormDatas({...extraFormDatas});
+      });    
+  } else if (item?.catalogItemType === "RESOURCE" && !formDatas) {
 
     apolloClient
       .query({
@@ -147,7 +212,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
           const attributes = Object.keys(formNewEntry.attributes);    
           const schema: {[key: string]: any} = {}; 
           const extraFormDatas: {[key: string]: any} = {};
-          if(item?.resourceType === 'TEMPORARY_RESOURCE') {
+          if(item?.resourceType === "TEMPORARY_RESOURCE") {
             const label = intl.formatMessage({
               id: "expireAt"                      
             });
@@ -168,7 +233,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                 id: "expireAt"                  
               })
             }];             
-          }      
+          }                 
 
           if(attributes.length) {                       
             Object.keys(formNewEntry.attributes).map((category: any, index: number) => {
@@ -376,7 +441,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                 
                     const fieldValue = get(form.values.instance, attribute.name);                                                      
                     let currentError = null;
-                    if(["DATE", "DATETIME"].includes(attribute.displayType)) {                    
+                    if(["DATE", "DATETIME", "RADIOBUTTON"].includes(attribute.displayType)) {                    
                       currentError = (!form?.values?.instance || !form?.values?.instance[attribute.name]) && form?.errors?.instance && form?.errors?.instance[attribute.name];
                     }                  
 
@@ -420,6 +485,23 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                             lab
                             color="primary"
                           />                                              
+                        )}
+                        {["RADIOBUTTON"].includes(attribute.displayType) && (
+                          <RadioGroup  
+                            name={"instance." + attribute.name} 
+                            value={fieldValue} 
+                            onChange={(e: any) => {
+                              form.setFieldValue("instance." + attribute.name, e?.target?.value, false)
+                            }}>
+                            {(attribute?.options || []).map((opt: any) => (
+                              <FormControlLabel 
+                                key={`option.${index}.option.${opt[attribute?.bind["value"]]}`} 
+                                value={String(opt[attribute?.bind["value"]])} 
+                                control={<Radio color="primary"/>} 
+                                label={opt[attribute?.bind["label"]]}/>
+                            ))}    
+                            <FormHelperText error>{currentError}</FormHelperText>                        
+                          </RadioGroup>
                         )}
                       </AddDados>
                     </div>              

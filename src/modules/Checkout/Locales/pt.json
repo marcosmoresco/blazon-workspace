@@ -51,5 +51,6 @@
   "checkout.NoResults": "Nenhum resultado",
   "checkout.AddItems": "Adicione itens ao carrinho para prosseguir.",
   "checkout.SearchItem": "Buscar item",
-  "checkout.select.expiredAt": "Selecionar a data de expiração" 
+  "checkout.select.expiredAt": "Selecionar a data de expiração",
+  "checkout.select.account": "Selecionar a conta" 
 }

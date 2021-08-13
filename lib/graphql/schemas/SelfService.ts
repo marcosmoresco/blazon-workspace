@@ -92,7 +92,7 @@ export const Mutations = `
   deleteSelfServiceCartItem(identifier: Int, name: String, catalogItemType: String, resourceType: String): SelfServiceCartItem
   updateSelfServiceCartItem(identifier: Int, assignType: String): Boolean
   addSelfServiceCartItem(id: String, assignType: String, userId: String): SelfServiceCartItem
-  updateSelfServiceCartItemInstance(itemId: Int, identifier: Int, payload: String, expireAt: String): Boolean
+  updateSelfServiceCartItemInstance(itemId: Int, identifier: Int, payload: String, expireAt: String, accountId: Int): Boolean
   addSelfServiceCartItemInstance(itemId: Int, userId: Int): Boolean
   deleteSelfServiceCartItemInstance(itemId: Int, userId: Int): Boolean
 `;

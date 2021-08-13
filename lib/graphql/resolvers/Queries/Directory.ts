@@ -73,6 +73,22 @@ export const DirectoryQueries = {
       throw error;
     }
   },
+  getApplicationAccountsByEntitlement: async (
+    parent: any,
+    args: any,
+    context: any
+  ) => {
+    try {
+      const accounts = await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/directory/accounts/applicationaccounts`,
+        {...JSON.parse(args?.payload || "{}"), userId: context.req?.session?.passport?.user?.id},
+        { ...config(context) }
+      );
+      return accounts.data;
+    } catch (error) {
+      throw error;
+    }
+  },
   getDirectoryRoleRightEntitlements: async (
     parent: any,
     args: any,
@@ -93,5 +109,5 @@ export const DirectoryQueries = {
     } catch (error) {
       throw error;
     }
-  },
+  },   
 };

@@ -6,12 +6,14 @@ export const UPDATE_SELF_SERVICE_CART_ITEM_INSTANCE = gql`
     $identifier: Int
     $payload: String
     $expireAt: String
+    $accountId: Int
   ) {
     updateSelfServiceCartItemInstance(
       itemId: $itemId
       identifier: $identifier
       payload: $payload
       expireAt: $expireAt
+      accountId: $accountId
     )
   }
 `;
