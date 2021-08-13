@@ -34,7 +34,7 @@ export const SelfServiceMutations = {
       return {
         identifier: args?.identifier,
         name: args?.name,
-        targetType: args?.targetType,
+        catalogItemType: args?.catalogItemType,
         resourceType: args?.resourceType
       };
     } catch (error) {
@@ -86,6 +86,7 @@ export const SelfServiceMutations = {
           identifier: args.identifier,
           payload: JSON.stringify({
             additionalFields: JSON.parse(args.payload),
+            expireAt: args.expireAt
           }),
         },
         { ...config(context) }

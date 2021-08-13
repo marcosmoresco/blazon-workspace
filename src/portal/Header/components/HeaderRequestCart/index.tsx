@@ -146,8 +146,8 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
         variables: {
           identifier: item.identifier,
           name: item.name,
-          targetType: item.targetType,
-          resourceType: item.resourceType
+          resourceType: item.resourceType,
+          catalogItemType: item.catalogItemType
         },
       });
     }

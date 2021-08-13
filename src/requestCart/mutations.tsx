@@ -9,6 +9,7 @@ export const ADD_SELF_SERVICE_CART_ITEM = gql`
     addSelfServiceCartItem(id: $id, assignType: $assignType, userId: $userId) {
       identifier
       name
+      catalogItemType
       targetType
       catalogItemId
       resourceType
@@ -20,18 +21,18 @@ export const DELETE_SELF_SERVICE_CART_ITEM = gql`
   mutation DeleteSelfServiceCartItem(
     $identifier: Int
     $name: String
-    $targetType: String
+    $catalogItemType: String
     $resourceType: String
   ) {
     deleteSelfServiceCartItem(
       identifier: $identifier
       name: $name
-      targetType: $targetType
+      catalogItemType: $catalogItemType
       resourceType: $resourceType
     ) {
       identifier
       name
-      targetType
+      catalogItemType
       resourceType
     }
   }

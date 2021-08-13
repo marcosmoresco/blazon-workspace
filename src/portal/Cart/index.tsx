@@ -10,7 +10,7 @@ import PuzzlePieceIcon from "@icons/PuzzlePiece";
 import type { SelfServiceCartItem } from "@requestCart/types";
 import type { CartProps, CartState, SelfServiceCartItemMessage } from "./types";
 import { Box, Header, HeaderInfo, HeaderCloseIcon, BoxContent, IconItem, TextItem } from "./styles";
-import { iconByType, getSelfServiceAttributeValue } from "@utils/index";
+import { iconByType } from "@utils/index";
 
 function Alert(props: any) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
@@ -47,7 +47,7 @@ function Alert(props: any) {
               </Header> 
               <BoxContent>
                 <IconItem>
-                  {iconByType("#3174F6", 25)[(m.targetType === "RESOURCE" && m.resourceType && `RESOURCE${m.resourceType}`) || m.targetType]}                  
+                  {iconByType("#3174F6", 25)[(m.catalogItemType === "RESOURCE" && m.resourceType && `RESOURCE${m.resourceType}`) || m.catalogItemType]}                  
                 </IconItem>
                 <TextItem>
                   {m.name}

@@ -69,8 +69,7 @@ const DatePicker = (props:any) => {
           onChange={handleDateChange}
           onBlur={handleDateBlur}
           autoOk={true}
-          variant="inline"
-          orientation="landscape"
+          variant="inline"          
           inputVariant="outlined"
           format={isTime ? 'dd/MM/yyyy HH:mm' : 'dd/MM/yyyy'}
           margin="normal"

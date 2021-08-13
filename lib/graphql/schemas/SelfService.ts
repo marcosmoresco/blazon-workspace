@@ -89,10 +89,10 @@ export const Queries = `
 export const Mutations = `
   submitSelfServiceCart(effectiveDate: String, justification: String): SelfServiceCartSubmit
   deleteSelfServiceCart: Boolean
-  deleteSelfServiceCartItem(identifier: Int, name: String, targetType: String, resourceType: String): SelfServiceCartItem
+  deleteSelfServiceCartItem(identifier: Int, name: String, catalogItemType: String, resourceType: String): SelfServiceCartItem
   updateSelfServiceCartItem(identifier: Int, assignType: String): Boolean
   addSelfServiceCartItem(id: String, assignType: String, userId: String): SelfServiceCartItem
-  updateSelfServiceCartItemInstance(itemId: Int, identifier: Int, payload: String): Boolean
+  updateSelfServiceCartItemInstance(itemId: Int, identifier: Int, payload: String, expireAt: String): Boolean
   addSelfServiceCartItemInstance(itemId: Int, userId: Int): Boolean
   deleteSelfServiceCartItemInstance(itemId: Int, userId: Int): Boolean
 `;

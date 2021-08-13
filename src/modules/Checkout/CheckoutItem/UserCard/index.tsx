@@ -93,10 +93,14 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
     instance: {}
   };
 
-  if(instance.payload) {
-    const payload = JSON.parse(instance.payload);   
+  if(instance.payload) {    
+    const payload = JSON.parse(instance.payload);  
+    let additionalFields = {...payload?.additionalFields};
+    if(payload?.expireAt) {
+      additionalFields = {...additionalFields, expireAt: payload?.expireAt};
+    } 
     initialValues = {
-      instance: payload?.additionalFields
+      instance: additionalFields
     };   
   }
 
@@ -106,11 +110,17 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
     initialValues,
     enableReinitialize: true,
     isInitialValid: false,
-    onSubmit: (values: any) => {           
+    onSubmit: (values: any) => {    
+      
+      let expireAt = values?.instance?.expireAt;
+      const payload = {...values?.instance};
+      delete payload.expireAt;
+
       const variables = {
         itemId: item.identifier,
         identifier: instance.identifier,
-        payload: JSON.stringify(values?.instance || {})
+        payload: JSON.stringify(payload),
+        expireAt
       }
       updateSelfServiceCartItemInstance({
         variables
@@ -207,8 +217,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
               });
             });                                        
           }
-          console.log({...formNewEntry.attributes, ...extraFormDatas});
-          console.log(schema);
+
           const validationSchema = Yup.object({
             instance: Yup.object({
               ...schema
@@ -358,74 +367,76 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
         <Formik
           {...formik}
           render={(form) => {
-          return (Object.keys(formDatas).map((category: any, index: number) => (
-            <div key={`form-datas-category-${index}`}>
-              <Form>
-                <Category>{category}</Category>
-                {formDatas[category].map((attribute: any) => {                 
-                  
-                  const fieldValue = get(form.values.instance, attribute.name);                                                      
-                  let currentError = null;
-                  if(["DATE"].includes(attribute.displayType)) {                    
-                    currentError = (!form?.values?.instance || !form?.values?.instance[attribute.name]) && form?.errors?.instance && form?.errors?.instance[attribute.name];
-                  }                  
+          return (
+            <Form>
+              {Object.keys(formDatas).map((category: any, index: number) => (
+                <>
+                  <Category>{category}</Category>
+                  {formDatas[category].map((attribute: any) => {                 
+                
+                    const fieldValue = get(form.values.instance, attribute.name);                                                      
+                    let currentError = null;
+                    if(["DATE", "DATETIME"].includes(attribute.displayType)) {                    
+                      currentError = (!form?.values?.instance || !form?.values?.instance[attribute.name]) && form?.errors?.instance && form?.errors?.instance[attribute.name];
+                    }                  
 
-                  return (
-                  <div key={`form-datas-attribute-${index}-${attribute.position}`}>
-                    <AddDados>                                     
-                      {["STRING", "TEXTAREA", "NUMBER"].includes(attribute.displayType) && (
-                      <TextField
-                        form={form}
-                        label={attribute.label}
-                        type={attribute.displayType === "NUMBER" ? "number" : "text"}
-                        name={"instance." + attribute.name}
-                        required={attribute.required}
-                        disabled={!attribute.writable}
-                        value={fieldValue}
-                        key={index}  
-                        multiline={"TEXTAREA" === attribute.displayType} 
-                        rows={"TEXTAREA" === attribute.displayType ? 3 : 0}                   
-                      />)}
-                      {["DATE", "DATETIME"].includes(attribute.displayType) && (
-                        <DateType>
-                          <DatePicker                           
-                            label={attribute.label}
-                            key={index}
-                            helperText={currentError}
-                            error={Boolean(currentError) && !Boolean(form?.values?.instance[attribute.name])}
-                            name={"instance." + attribute.name}                            
-                            value={fieldValue}
-                            onChange={(date: string) => form.setFieldValue("instance." + attribute.name, date, false)}
-                          />
-                        </DateType>                        
-                      )}
-                      {["CHECKBOX"].includes(attribute.displayType) && (
-                        <Switch
+                    return (
+                    <div key={`form-datas-attribute-${index}-${attribute.position}`}>
+                      <AddDados>                                     
+                        {["STRING", "TEXTAREA", "NUMBER"].includes(attribute.displayType) && (
+                        <TextField
+                          form={form}
                           label={attribute.label}
-                          value={fieldValue}
-                          checked={fieldValue}
-                          onChange={(val: any) => form.setFieldValue("instance." + attribute.name, val, false)}
+                          type={attribute.displayType === "NUMBER" ? "number" : "text"}
                           name={"instance." + attribute.name}
-                          lab
-                          color="primary"
-                        />                                              
-                      )}
-                    </AddDados>
-                  </div>              
-                )})} 
-                <Line className="Add-top"/>                          
-                <UserBottomArea>
-                  <Button                    
-                    variant="contained"
-                    color="primary"
-                    onClick={() => form.submitForm()}
-                  >
-                    <FormattedMessage id="checkout.save" />
-                  </Button>
-                </UserBottomArea>
-              </Form>                                  
-            </div>          
-          )))
+                          required={attribute.required}
+                          disabled={!attribute.writable}
+                          value={fieldValue}
+                          key={index}  
+                          multiline={"TEXTAREA" === attribute.displayType} 
+                          rows={"TEXTAREA" === attribute.displayType ? 3 : 0}                   
+                        />)}
+                        {["DATE", "DATETIME"].includes(attribute.displayType) && (
+                          <DateType>
+                            <DatePicker       
+                              isTime={"DATETIME" === attribute.displayType}                    
+                              label={attribute.label}
+                              key={index}
+                              helperText={currentError}
+                              error={Boolean(currentError) && !Boolean(form?.values?.instance[attribute.name])}
+                              name={"instance." + attribute.name}                            
+                              value={fieldValue}
+                              onChange={(date: string) => form.setFieldValue("instance." + attribute.name, date, false)}
+                            />
+                          </DateType>                        
+                        )}
+                        {["CHECKBOX"].includes(attribute.displayType) && (
+                          <Switch
+                            label={attribute.label}
+                            value={fieldValue}
+                            checked={fieldValue}
+                            onChange={(val: any) => form.setFieldValue("instance." + attribute.name, val, false)}
+                            name={"instance." + attribute.name}
+                            lab
+                            color="primary"
+                          />                                              
+                        )}
+                      </AddDados>
+                    </div>              
+                  )})} 
+                </>
+              ))}                          
+              <Line className="Add-top"/>                          
+              <UserBottomArea>
+                <Button                    
+                  variant="contained"
+                  color="primary"
+                  onClick={() => form.submitForm()}
+                >
+                  <FormattedMessage id="checkout.save" />
+                </Button>
+              </UserBottomArea>
+            </Form>)          
         }} />                     
       )}         
     </UserCardStyle>

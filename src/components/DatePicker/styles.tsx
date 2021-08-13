@@ -19,4 +19,8 @@ export const Box = styled.div`
     line-height: 14px;
     text-transform: uppercase;
   }  
+  & .MuiFormHelperText-root {
+    text-transform: initial;
+    margin-left: 0;
+  }
 `;
