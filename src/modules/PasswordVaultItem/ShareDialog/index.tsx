@@ -2,9 +2,7 @@ import React, { useState } from "react";
 import { useDispatch } from "react-redux";
 import ShareIcon from "@icons/Share";
 import { FormattedMessage, useIntl } from "react-intl";
-import { useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
-import Button from "@components/Button";
 import Dialog from "@components/Dialog";
 import Checkbox from "@components/Checkbox";
 import { Form, Formik, useFormikContext } from "formik";
@@ -33,18 +31,19 @@ import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import MagnifyingGlassIcon from "@icons/MagnifyingGlass";
 import UserThumb from "@components/UserThumb";
-import { confirm } from "@components/Dialog/actions";
 import { addMessage } from "@actions/index";
 import { GET_ENTRIES } from "@modules/PasswordVaultItem/queries";
 import {
   GET_USER_FULL_TEXT,
-  GET_USER_SHARED_ACCOUNT_MEMBERS,
 } from "@modules/User/queries";
 import { 
   SHARE_PASSWORD_VAULT_ENTRY,
   REVOKE_PASSWORD_VAULT_ENTRY, 
   GRANT_PASSWORD_VAULT_ENTRY
 } from "@modules/PasswordVaultScreen/mutations";
+import {
+  GET_PASSWORD_VAULT_ENTRY
+} from "@modules/PasswordVaultItem/queries";
 import { User } from "@types";
 import { getLink } from "@utils/index";
 import { ShareDialogProps, SharedDialogContentProps } from "./types";
@@ -70,10 +69,7 @@ const SharedDialogContent: React.FC<SharedDialogContentProps> = ({ current, setC
   const [sharePasswordVaultEntry, {}] = useMutation(SHARE_PASSWORD_VAULT_ENTRY, {
     refetchQueries: [
       {
-        query: GET_USER_SHARED_ACCOUNT_MEMBERS,
-        variables: {
-          id: identifier,
-        },
+        query: GET_ENTRIES       
       },
     ],
     onCompleted: ({sharePasswordVaultEntry}) => {   
@@ -164,11 +160,11 @@ const SharedDialogContent: React.FC<SharedDialogContentProps> = ({ current, setC
     sharePasswordVaultEntry({
       variables: {
         id: Number(current.identifier),
-        payload: JSON.stringify([{
-          users: {
-            identifier: option.identifier
-          }
-        }])
+        payload: JSON.stringify({
+          users: [{
+            identifier: Number(option.identifier)
+          }]
+        })
       },
     });
   };

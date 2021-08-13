@@ -50,5 +50,6 @@
   "checkout.AddAnItemToContinue": "Search for an item to continue",
   "checkout.NoResults": "No results",
   "checkout.AddItems": "Add items to cart to proceed.",
-  "checkout.SearchItem": "Search item"  
+  "checkout.SearchItem": "Search item",
+  "checkout.select.expiredAt": "Select the expired date"  
 }

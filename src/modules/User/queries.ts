@@ -75,6 +75,7 @@ export const GET_USER_ACCOUNTS = gql`
       accounts {
         identifier
         accountIdentifier
+        name
         resourceName
         status
         createdAt

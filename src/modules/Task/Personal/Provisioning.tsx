@@ -362,7 +362,8 @@ const PersonalTasksProvisioning: FC<ListProps> = ({ dispatch, filtered = {}, che
   };
 
   const actions = (
-    <>      
+    <>    
+      {/*  
       {(dataActions?.getActions || []).includes("PROVISIONED") && (
         <Button variant="rounded" color="default-primary" onClick={() => {
           provision(undefined, intl, () => {
@@ -389,7 +390,7 @@ const PersonalTasksProvisioning: FC<ListProps> = ({ dispatch, filtered = {}, che
         }}>
           <FormattedMessage id="tasks.notProvisioned" />
         </Button>
-      )}       
+      )}*/}     
       {(dataAssignActions?.getAssignActions || []).includes("ASSIGN_TO_ME") && (
         <Button 
           onClick={() => {

@@ -73,6 +73,14 @@ const ChangePassword: FC<ChangePasswordScreenProps> = ({ classes, intl }) => {
         );       
       }        
     },
+    onError: () => {
+      dispatch(
+        addMessage(
+          intl.formatMessage({id: "changepassword.error"}),
+          "error"
+        )
+      );     
+    }
   });
 
   const formik = {

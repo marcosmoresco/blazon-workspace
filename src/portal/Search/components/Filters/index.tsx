@@ -2,7 +2,6 @@ import React, { FC, useState, useEffect } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { FormattedMessage, injectIntl } from "react-intl";
 import Drawer from "@material-ui/core/Drawer";
-import Grid from "@material-ui/core/Grid";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Button from "@components/Button";

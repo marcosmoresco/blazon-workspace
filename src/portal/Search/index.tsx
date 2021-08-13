@@ -192,6 +192,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
         <InputSearchBox>
           <OutlinedInputSearch
             value={filter}
+            placeholder={intl.formatMessage({id: "search.found.message"})}
             onChange={(e: any) => {
               setFilter(e?.target?.value);
               setPage(0);
@@ -208,10 +209,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                 .then(({ data }) => {
                   setListAdvanced(data?.getSelfServiceAdvanced);
                 });
-            }}
-            placeholder={intl.formatMessage({
-              id: "search",
-            })}
+            }}            
             startAdornment={
               <InputAdornment position="start">
                 <SearchIcon />

@@ -93,7 +93,7 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
 
   const list = data?.getSelfService || [];
 
-  AutocompletePaper.defaultProps = { refetch, filter, open, setOpen, setFilter, goToSearch };
+  AutocompletePaper.defaultProps = { refetch, filter, open, setOpen, setFilter, goToSearch, list };
 
   return (
     <>

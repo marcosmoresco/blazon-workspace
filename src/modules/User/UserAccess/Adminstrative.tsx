@@ -19,12 +19,12 @@ import EmptyStateAdminImage from "@images/EmptyStateAdminAccount.svg";
 
 const columns = ({ classes }) => [
   {
-    field: "resource",
+    field: "resourceName",
     headerName: <FormattedMessage id="resource" />,
     sortable: false,
   },
   {
-    field: "account",
+    field: "name",
     headerName: <FormattedMessage id="account" />,
     sortable: false,
   },
@@ -200,8 +200,7 @@ const Administrative = ({ classes }) => {
           onClose={() => setModalOpen(false)}
           title={intl.formatMessage({ id: "profile.accounts.adminstrative" })}
           onSave={() => {
-            form.submitForm();
-            console.log(form.values);
+            form.submitForm();           
           }}
           isValid={form.isValid}
         >

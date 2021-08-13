@@ -57,6 +57,7 @@
   "changepassword.password.chars": "Deve ter 15 caracteres ou menos",
   "changepassword.repeatPassword.invalid": "As senhas devem corresponder",
   "changepassword.success": "Senha alterada com sucesso!",
+  "changepassword.error": "Erro ao alterar senha!",
 
   "save": "Salvar",
   "profileedit.header.breadcrumb": "Perfil",

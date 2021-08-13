@@ -58,6 +58,7 @@
   "changepassword.password.chars": "Must be 15 characters or less",
   "changepassword.repeatPassword.invalid": "Passwords must match",
   "changepassword.success": "Change password successfully!",
+  "changepassword.error": "Error change password!",
 
   "save": "Save",
   "profileedit.header.breadcrumb": "Profile",

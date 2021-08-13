@@ -19,6 +19,7 @@ export const User = `
   type UserAccount {
     identifier: ID
     accountIdentifier: String
+    name: String
     resourceName: String
     status: String
     createdAt: String

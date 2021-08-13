@@ -452,10 +452,11 @@ export const TaskMutations = {
   },
   resolveProvisioningTask: async (parent: any, args: any, context: any) => {
     try {
+      const payload = JSON.parse(args?.payload);
       await axios.post(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/provisioning/tasks/resolve`,
-         JSON.parse(args?.payload),
-         { ...config(context) }
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/provisioning/tasks/${payload[0].taskId}/resolve`,
+        payload[0],
+        { ...config(context) }
       );
       return true;
     } catch (error) {

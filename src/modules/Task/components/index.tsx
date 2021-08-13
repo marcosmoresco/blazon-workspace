@@ -551,7 +551,7 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
               <FormattedMessage id="tasks.deny" />
             </MenuItemInfo>             
           </MenuItem>         
-        )}  
+        )}
         {(actions || []).includes("PROVISIONED") && (
           <MenuItem onClick={() => {
             if(current) {

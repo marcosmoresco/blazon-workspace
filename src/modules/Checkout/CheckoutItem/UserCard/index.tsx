@@ -89,7 +89,9 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
     },
   });
 
-  let initialValues: {[key: string]: any} = {};
+  let initialValues: {[key: string]: any} = {
+    instance: {}
+  };
 
   if(instance.payload) {
     const payload = JSON.parse(instance.payload);   
@@ -104,7 +106,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
     initialValues,
     enableReinitialize: true,
     isInitialValid: false,
-    onSubmit: (values: any) => {
+    onSubmit: (values: any) => {           
       const variables = {
         itemId: item.identifier,
         identifier: instance.identifier,
@@ -119,6 +121,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
   const [formDatas, setFormDatas] = useState<{[key: string]: any}>();
 
   if (item?.catalogItemType === "RESOURCE" && !formDatas) {
+
     apolloClient
       .query({
         query: GET_FORM_DATAS,
@@ -131,13 +134,36 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
         if(data?.getNewEntry) {        
 
           const formNewEntry = JSON.parse(data?.getNewEntry);
-          const attributes = Object.keys(formNewEntry.attributes);                          
-          if(attributes.length) {  
-            const schema: {[key: string]: any} = {};                               
+          const attributes = Object.keys(formNewEntry.attributes);    
+          const schema: {[key: string]: any} = {}; 
+          const extraFormDatas: {[key: string]: any} = {};
+          if(item?.resourceType === 'TEMPORARY_RESOURCE') {
+            const label = intl.formatMessage({
+              id: "expireAt"                      
+            });
+            const yupObject = Yup
+              .string()
+              .required(
+                intl.formatMessage({
+                  id: "isRequired"                      
+                }, {
+                  field: label
+                })
+              ); 
+            schema.expireAt = yupObject; 
+            extraFormDatas[intl.formatMessage({id: "checkout.select.expiredAt"})] =  [{
+              displayType: "DATETIME",
+              name: "expireAt",
+              label: intl.formatMessage({
+                id: "expireAt"                  
+              })
+            }];             
+          }      
+
+          if(attributes.length) {                       
             Object.keys(formNewEntry.attributes).map((category: any, index: number) => {
               formNewEntry.attributes[category].forEach((attribute: any) => {                
                 if(["STRING", "TEXTAREA", "DATE"].includes(attribute.displayType)) {
-
                   if(attribute.required) {
                     const yupObject = Yup
                       .string()
@@ -167,6 +193,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                         field: attribute.label
                       })
                     ); 
+                    schema[attribute.name] = yupObject;
                   } else {
                     const yupObject = Yup
                       .number();                     
@@ -178,20 +205,21 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                   schema[attribute.name] = yupObject;
                 }                                
               });
-            });           
-
-            const validationSchema = Yup.object({
-              instance: Yup.object({
-                ...schema
-              })    
-            });
-
-            formik.validationSchema = validationSchema;           
-            formik.render = true;         
-                 
-            setFormik(formik);
-            setFormDatas(formNewEntry.attributes);                   
+            });                                        
           }
+          console.log({...formNewEntry.attributes, ...extraFormDatas});
+          console.log(schema);
+          const validationSchema = Yup.object({
+            instance: Yup.object({
+              ...schema
+            })    
+          });
+
+          formik.validationSchema = validationSchema;           
+          formik.render = true;         
+               
+          setFormik(formik);
+          setFormDatas({...formNewEntry.attributes, ...extraFormDatas});  
         }        
       });
   }
@@ -358,9 +386,9 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                         multiline={"TEXTAREA" === attribute.displayType} 
                         rows={"TEXTAREA" === attribute.displayType ? 3 : 0}                   
                       />)}
-                      {["DATE"].includes(attribute.displayType) && (
+                      {["DATE", "DATETIME"].includes(attribute.displayType) && (
                         <DateType>
-                          <DatePicker
+                          <DatePicker                           
                             label={attribute.label}
                             key={index}
                             helperText={currentError}

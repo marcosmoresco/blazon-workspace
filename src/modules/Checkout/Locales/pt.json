@@ -50,5 +50,6 @@
   "checkout.AddAnItemToContinue": "Adicione um item para continuar",
   "checkout.NoResults": "Nenhum resultado",
   "checkout.AddItems": "Adicione itens ao carrinho para prosseguir.",
-  "checkout.SearchItem": "Buscar item" 
+  "checkout.SearchItem": "Buscar item",
+  "checkout.select.expiredAt": "Selecionar a data de expiração" 
 }
