@@ -2,60 +2,19 @@ import React, { FC, useState, useEffect } from "react";
 import { FormattedMessage, injectIntl, useIntl } from "react-intl";
 import apolloClient from "@utils/apollo-client";
 import { useQuery } from "@apollo/client";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@components/Button";
-import Card from "@components/Card";
 import Checkbox from "@components/Checkbox";
 import Loading from "@components/Loading";
 import Filter from "@components/Filter";
-import Section from "@components/Section";
-import Select from "@components/Select";
 import ListBulletsIcon from "@icons/ListBullets";
 import CaretDownIcon from "@icons/CaretDown";
 import CaretUpIcon from "@icons/CaretUp";
-import Tutorial from "@components/Tutorial";
-import { confirm } from "@components/Dialog/actions";
-import ArrowsOutIcon from "@icons/ArrowsOut";
-import ArrowClockwiseIcon from "@icons/ArrowClockwise";
-import CalendarIcon from "@icons/Calendar";
-import CheckSquareOffsetIcon from "@icons/CheckSquareOffset";
-import CirclesFourIcon from "@icons/CirclesFour";
-import DotsThreeIcon from "@icons/DotsThree";
-import UserGearIcon from "@icons/UserGear";
 import { connect } from "react-redux";
-//import { all, save, remove } from './actions'
-import { addMessage } from "@actions/index";
-import { sections, types, filters, generateFilters, queueTypes, queueCategories } from "@modules/Task/constants";
+import { types, filters, generateFilters, queueTypes } from "@modules/Task/constants";
 import type { ListProps, Task } from "@modules/Task/types";
-import type { Link } from "@types";
 import {
   Box,
-  BoxCard,
-  BoxCardContent,
-  BoxCardText,
-  BoxCardHeader,
-  BoxCardHeaderContent,
-  BoxCardHeaderInfo,
-  BoxCardTitle,
-  BoxCardIdentifier,
   Header,
-  Content,
   HeaderFilters,
-  Info,
-  Actions,
-  BoxRequester,
-  BoxRequesterContent,
-  BoxRequesterTitle,
-  BoxRequesterDisplayName,
-  BoxRequesterAvatar,
-  BoxCardFooter,
-  BoxCardFooterInfo,
-  BoxPriority,
-  BarPriorityLow,
-  BarPriorityMedium,
-  BarPriorityHigh,
-  FooterType,
-  FooterStatus,
   FilterContent,
   StyledMenu,
   MenuItemContainer,
@@ -88,7 +47,7 @@ const PersonalTasks: FC<ListProps> = ({ dispatch }) => {
   const intl = useIntl();
 
   const [type, setType] = useState("ALL");
-  const [tasksFilters, setTasksFilters] = useState(filters);
+  const [tasksFilters, setTasksFilters] = useState([...filters]);
   const [typeValue, setTypeValue] = useState<string>("ANY");
   const [loading, setLoading] = useState(false);
   const [checkAll, setCheckAll] = useState<boolean>(false);
@@ -113,7 +72,7 @@ const PersonalTasks: FC<ListProps> = ({ dispatch }) => {
     let query = null;
     setTasksFilters([]);
 
-    if(categoryFilter === "APPROVAL") {
+    if(categoryFilter === "APPROVAL" || categoryFilter === "ALL") {
       query = GET_REQUEST_APPROVAL_TASK_FILTERS;
     } else if(categoryFilter === "CERTIFICATION") {
       query = GET_CERTIFICATION_APPROVAL_TASK_FILTERS;
@@ -135,13 +94,15 @@ const PersonalTasks: FC<ListProps> = ({ dispatch }) => {
           },
           fetchPolicy: "no-cache"
         })
-        .then(({ data }) => {          
-          if(data?.getFilters) {            
-            setTasksFilters(generateFilters(intl, data?.getFilters));
-          }          
+        .then(({ data }) => {
+          if(categoryFilter === "ALL") {
+            setTasksFilters([...filters]);
+          } else {
+            if(data?.getFilters) {            
+              setTasksFilters(generateFilters(intl, data?.getFilters));
+            }
+          }                            
         });
-    } else {
-      setTasksFilters(filters);
     }
   }
 
@@ -199,7 +160,7 @@ const PersonalTasks: FC<ListProps> = ({ dispatch }) => {
               </SelectBoxContainer>
             </FilterContent>
           )}                            
-          <Filter filters={tasksFilters} onChange={(f: any) => setFiltered(f)}/>
+          <Filter filters={tasksFilters} onChange={(f: any) => setFiltered({...filtered, ...f})}/>
         </HeaderFilters>
       </Header>
       {type === "ALL" && (

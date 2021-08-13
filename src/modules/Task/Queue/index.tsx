@@ -205,7 +205,7 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
               </SelectBoxContainer>
             </FilterContent> 
           )}                                                           
-          {queueIdentifier && <Filter filters={filtersTask} onChange={(f: any) => setFiltered(f)}/>}
+          {queueIdentifier && <Filter filters={filtersTask} onChange={(f: any) => setFiltered({...filtered, ...f})}/>}
         </HeaderFilters>
       </Header>)}
       {queueCategoryValue === "ANY" && queueIdentifier && (
