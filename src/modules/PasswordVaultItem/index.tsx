@@ -27,6 +27,7 @@ import { GET_ENTRIES } from "@modules/PasswordVaultItem/queries";
 import { 
   DELETE_PASSWORD_VAULT_ENTRY,
 } from "@modules/PasswordVaultScreen/mutations";
+import { getLink } from "@utils/index";
 
 type PasswordVaultItemProps = {
   classes: any;  
@@ -124,6 +125,7 @@ const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
           <FormattedMessage id="details"/>
           <CaretRightIcon width={23} height={23} stroke={1.2}/>
         </MenuItem>
+        {getLink("remove", r?.links || []) && (
         <MenuItem onClick={async () => {
           const result = await confirm(intl.formatMessage({
             id: "passwordVault.remove.confirm"
@@ -140,7 +142,8 @@ const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
         }}>
           <FormattedMessage id="remove"/>
           <CaretRightIcon width={23} height={23} stroke={1.2}/>
-        </MenuItem>
+        </MenuItem>)}
+        {getLink("share", r?.links || []) && (
         <MenuItem onClick={() => {
           setSharedModalOpen(true);
           setPasswordVault(r);
@@ -148,7 +151,7 @@ const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
         }}>
           <FormattedMessage id="share"/>
           <CaretRightIcon width={23} height={23} stroke={1.2}/>
-        </MenuItem>
+        </MenuItem>)}
       </StyledMenu>
       {r && (
         <SharedDialog
