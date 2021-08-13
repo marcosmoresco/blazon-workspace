@@ -4,9 +4,9 @@ import { injectIntl } from "react-intl";
 import type { EmptyStateProps } from "./types";
 import { Box, BoxContent, Title, Text } from "./styles";
 
-const EmptyState: FC<EmptyStateProps> = ({ intl, title, text, icon, image, bgColor }) => {
+const EmptyState: FC<EmptyStateProps> = ({ intl, title, text, icon, image, height, bgColor }) => {
   return (
-    <Box>
+    <Box style={{height}}>
       <BoxContent style={{background: bgColor}}>
         {icon && icon || null}
         {image && <Image src={image} alt="EmptyState"/> || null}
@@ -19,6 +19,6 @@ const EmptyState: FC<EmptyStateProps> = ({ intl, title, text, icon, image, bgCol
   );
 };
 
-EmptyState.defaultProps = { bgColor: "#F4F4F5" };
+EmptyState.defaultProps = { bgColor: "#F4F4F5", height: 316};
 
 export default injectIntl(EmptyState);

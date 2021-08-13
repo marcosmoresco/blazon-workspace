@@ -7,6 +7,8 @@ import CheckCircleIcon from "@icons/CheckCircle";
 import SecurityUserIcon from "@icons/SecurityUser";
 import PeopleIcon from "@icons/People";
 import CaretRightIcon from "@icons/CaretRight";
+import EmptyState from "@components/EmptyState";
+import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
 
 export const BoxAutocomplete = styled.div`
   display: flex;
@@ -147,7 +149,8 @@ export const AutocompletePaper = ({
   open,
   setOpen,
   setFilter,
-  goToSearch
+  goToSearch,
+  list
 }: {
   children: any;
   refetch: any;
@@ -156,6 +159,7 @@ export const AutocompletePaper = ({
   setOpen: any;
   setFilter: any;
   goToSearch: any;
+  list: any;
 }) => {
   const [active, setActive] = useState("");
 
@@ -291,9 +295,12 @@ export const AutocompletePaper = ({
           <FormattedMessage id="resources" />
         </HeaderTag>
       </HeaderTags>
-      <HeaderResults>
+      {!!list.length && (<HeaderResults>
         <FormattedMessage id="results" />
-      </HeaderResults>
+      </HeaderResults>)}
+      {!list.length && (
+        <EmptyState image={EmptyStateTypeahead} title="no.result" text="search.no.result" height={150} bgColor="transparent"/>
+      )}
       {children}
       {filter && (
       <FooterSeeAll onClick={(e: any) => {

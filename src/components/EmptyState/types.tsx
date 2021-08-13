@@ -7,4 +7,5 @@ export type EmptyStateProps = {
   text: string;
   intl: IntlShape;
   bgColor?: string;
+  height?: number;
 }
