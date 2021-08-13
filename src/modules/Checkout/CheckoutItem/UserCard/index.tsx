@@ -496,7 +496,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                             {(attribute?.options || []).map((opt: any) => (
                               <FormControlLabel 
                                 key={`option.${index}.option.${opt[attribute?.bind["value"]]}`} 
-                                value={String(opt[attribute?.bind["value"]])} 
+                                value={String(opt[attribute?.bind["value"]]) || " - "} 
                                 control={<Radio color="primary"/>} 
                                 label={opt[attribute?.bind["label"]]}/>
                             ))}    
