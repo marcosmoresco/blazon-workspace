@@ -1,28 +1,33 @@
 import React, { Component } from "react";
+import { FormattedMessage } from "react-intl";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { addMessage, removeMessage } from "../../actions";
 import { SnackbarProvider, useSnackbar } from "notistack";
-import CancelIcon from "@material-ui/icons/Cancel";
+import CheckCircleIcon from "@icons/CheckCircle";
+import XCircleIcon from "@icons/XCircle";
+import XIcon from "@icons/X";
+import { Box, Header, HeaderInfo, HeaderCloseIcon, BoxContent, TextItem } from "./styles";
 import type { MessageType, MessageProps, MessageState } from "./types";
+
+const colorsByType: {[key: string]: string} = {
+  "success": "#4EB862",
+  "warning": "#FBB13C",
+  "error": "#FF134A"
+};
+
+const iconByType: {[key: string]: React.ReactNode} = {
+  "success": <CheckCircleIcon width={21} height={21} color="#4EB862"/>,
+  "warning": <XCircleIcon width={21} height={21} color="#FBB13C"/>,
+  "error":  <XCircleIcon width={21} height={21} color="#FF134A"/>
+};
 
 function Alert(props: any) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
 
-  const { messages, onClose } = props;
+  const { messages } = props;
 
   const [messagesQueued, setMessagesQueued] = React.useState([] as any);
-
-  const action = (key: any) => (
-    <React.Fragment>
-      <CancelIcon
-        onClick={() => {
-          closeSnackbar(key);
-          onClose(null, null, key);
-        }}
-      />
-    </React.Fragment>
-  );
 
   React.useEffect(() => {
     let existMessage = messages.length;
@@ -32,9 +37,24 @@ function Alert(props: any) {
         if (messagesQueued.indexOf(m.id) === -1) {
           enqueueSnackbar(m.message, {
             variant: m.type,
-            autoHideDuration: 3000,
-            action,
+            autoHideDuration: 300000,          
             key: m.id,
+            content: <Box>
+              <Header>
+                <HeaderInfo style={{color: colorsByType[m.type]}}>
+                  {iconByType[m.type]}                  
+                  <FormattedMessage id={`message.${m.type}`} />
+                </HeaderInfo>                
+                <HeaderCloseIcon onClick={() => closeSnackbar(m.id)}>
+                  <XIcon/>   
+                </HeaderCloseIcon> 
+              </Header> 
+              <BoxContent>                
+                <TextItem>
+                  {m.message}
+                </TextItem>
+              </BoxContent>              
+            </Box>
           });
           messagesQueued.push(m.id);
           setMessagesQueued(messagesQueued);

@@ -71,7 +71,7 @@ class Button extends Component<ButtonPropsType> {
     const _color = color?.replace("default-", "");
 
     return (
-      <span className={`${classes.root} ${isLoading === 1 ? "Disabled" : ""}`}>
+      <span className={`${classes.root} ${isLoading === 1 || disabled ? "Disabled" : ""}`}>
         <MuiButton
           className={classNames({                    
             'Default-rounded': variant === 'rounded',

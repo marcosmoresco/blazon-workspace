@@ -110,5 +110,8 @@
   "type": "Type",
   "search.found.message": "Find your access here...",
   "continue": "Continue",
-  "conclude": "Conclude"
+  "conclude": "Conclude",
+  "message.success": "Success",
+  "message.warning": "Warning",
+  "message.error": "Error"
 }

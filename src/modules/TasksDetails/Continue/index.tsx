@@ -21,6 +21,10 @@ const Continue: React.FC<ContinueProps> = ({ task, stage, payload, setPayload })
   const intl = useIntl();
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
+  if(task?.type === "CREATE_ACCOUNT" && !stage) {
+    return <></>
+  }
+
   return (
     <>
       <Box>

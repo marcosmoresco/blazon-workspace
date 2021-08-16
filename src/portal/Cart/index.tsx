@@ -6,7 +6,6 @@ import { addCartItemMessage, removeCartItemMessage } from "../../actions";
 import { SnackbarProvider, useSnackbar } from "notistack";
 import XIcon from "@icons/X";
 import CheckCircleIcon from "@icons/CheckCircle";
-import PuzzlePieceIcon from "@icons/PuzzlePiece";
 import type { SelfServiceCartItem } from "@requestCart/types";
 import type { CartProps, CartState, SelfServiceCartItemMessage } from "./types";
 import { Box, Header, HeaderInfo, HeaderCloseIcon, BoxContent, IconItem, TextItem } from "./styles";

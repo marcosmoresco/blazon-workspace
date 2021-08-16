@@ -340,8 +340,8 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
 
   return (
     <>      
-      {list.map((task: Task) => (
-        <Card key={`task-${task.identifier}`}>
+      {list.map((task: Task, index: number) => (
+        <Card key={`task-${task.identifier}-${index}`}>
           <BoxCard>
             {task?.headers?.status !== "DONE" && (
               <Checkbox value={checked.includes(task.identifier)} onChange={() => onCheck && onCheck(task.identifier)}/>

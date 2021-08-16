@@ -110,5 +110,8 @@
   "type": "Tipo",
   "search.found.message": "Encontre aqui seu acesso...",
   "continue": "Continuar",
-  "conclude": "Concluir"
+  "conclude": "Concluir",
+  "message.success": "Sucesso",
+  "message.warning": "Aviso",
+  "message.error": "Erro"
 }

@@ -451,7 +451,8 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
              <FormattedMessage id="tasks.deny" />
             </Button>
           )}   
-          {(dataActions?.getActions || []).includes("PROVISIONED") && (
+          {(dataActions?.getActions || []).includes("PROVISIONED") && 
+            (!["CREATE_ACCOUNT", "CHANGE_PASSWORD"].includes(task?.type || "") || "WAITING_ASSING" === task?.headers?.status) && (
             <Button variant="contained" color="default-primary" onClick={() => {
               if(task) {
                 provision(task, intl, () => {
@@ -469,8 +470,7 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
               <FormattedMessage id="tasks.provisioned" />
             </Button>
           )}
-          {(dataActions?.getActions || []).includes("NOT_PROVISIONED") 
-            && (!["CREATE_ACCOUNT", "CHANGE_PASSWORD"].includes(task?.type || "") || "WAITING_ASSING" === task?.headers?.status) && (
+          {(dataActions?.getActions || []).includes("NOT_PROVISIONED") && !stage && (
             <Button variant="contained" color="secondary" onClick={() => {
               setResult("NOT_PROVISIONED");
               setOpenDisapprove(true);
@@ -480,7 +480,17 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
           )}
           {(dataActions?.getActions || []).includes("PROVISIONED") && ["CREATE_ACCOUNT", "CHANGE_PASSWORD"].includes(task?.type || "") && (
             <>
-              {"CREATE_ACCOUNT" === task?.type && stage !== "SET_USERNAME_PASSWORD" && (
+              {"CREATE_ACCOUNT" === task?.type && !stage && (
+                <Button 
+                  variant="contained" 
+                  color="primary"                  
+                  onClick={() => {             
+                    setStage("SET_ACCOUNT_IDENTIFIER");
+                  }}>
+                  <FormattedMessage id="continue" />
+                </Button>
+              )}
+              {"CREATE_ACCOUNT" === task?.type && stage === "SET_ACCOUNT_IDENTIFIER" && (
                 <Button 
                   variant="contained" 
                   color="primary" 
@@ -548,7 +558,7 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
               <FormattedMessage id="tasks.resolve" />
             </Button>
           )}
-          {task?.headers?.status !== "DONE" && (
+          {task?.headers?.status !== "DONE" && (type !== "provisioning" || !stage) && (
             <Actions onClick={handleClick}>
              <DotsThreeIcon height={24} width={24}/>
             </Actions>
