@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
+import Loading from "@components/Loading";
 import ShoppingCartIcon from "@icons/ShoppingCart";
 import CheckCircleIcon from "@icons/CheckCircle";
 import CaretRightIcon from "@icons/CaretRight";
@@ -45,7 +46,7 @@ export default function EntitlementDetails() {
     }
   }, [cart, addedItems, setAddedItems]);
 
-  const [addSelfServiceCartItem, {}] = useMutation(ADD_SELF_SERVICE_CART_ITEM, {
+  const [addSelfServiceCartItem, {loading: loadingAddSelfServiceCartItem}] = useMutation(ADD_SELF_SERVICE_CART_ITEM, {
     refetchQueries: [
       {
         query: GET_SELF_SERVICE_CART,
@@ -105,23 +106,38 @@ export default function EntitlementDetails() {
         </BoxContent>
       </Box>
       {addedItems.indexOf(id as string) === -1 && (
-        <BoxCart className="Added"
-          onClick={() =>
-            addSelfServiceCartItem({
-              variables: {
-                id,
-              },
-            })
-          }
-        >
-          <BoxCartItem>
-            <BoxCartItemIcon>
-              <ShoppingCartIcon width={21} height={21} />
-            </BoxCartItemIcon>                
-            <FormattedMessage id="cart.add" />
-            <CaretRightIcon width={21} height={21} stroke={2}/>
-          </BoxCartItem>          
-        </BoxCart>
+        <>
+          {loadingAddSelfServiceCartItem && (
+            <BoxCart className="Disabled-action">
+              <BoxCartItem>
+                <BoxCartItemIcon>
+                  <Loading type="blue"/>
+                </BoxCartItemIcon>
+                <FormattedMessage id="cart.add" />
+                <CaretRightIcon width={21} height={21} stroke={2}/>
+              </BoxCartItem>
+            </BoxCart>               
+          )} 
+          {!loadingAddSelfServiceCartItem && (
+            <BoxCart className="Added"
+              onClick={() =>
+                addSelfServiceCartItem({
+                  variables: {
+                    id,
+                  },
+                })
+              }
+            >
+              <BoxCartItem>
+                <BoxCartItemIcon>
+                  <ShoppingCartIcon width={21} height={21} />
+                </BoxCartItemIcon>                
+                <FormattedMessage id="cart.add" />
+                <CaretRightIcon width={21} height={21} stroke={2}/>
+              </BoxCartItem>              
+            </BoxCart>
+          )}
+        </>       
       )}
       {addedItems.indexOf(id as string) > -1 && (
         <BoxCart>

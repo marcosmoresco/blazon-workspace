@@ -57,6 +57,7 @@ import {
   ItemsDivider,
   BoxFooter,
 } from "./styles";
+import Loading from "@components/Loading";
 
 const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
   intl,
@@ -72,11 +73,13 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
   const selfServiceCart: SelfServiceCart =
     data?.getSelfServiceCart || ({} as SelfServiceCart);
 
-  const { loading: loadingOpenRequests, data: dataOpenRequests } = useQuery<{
+  const { loading: loadingOpenRequests, data: dataOpenRequests, refetch: refetchOpenRequests } = useQuery<{
     getOpenRequests: OpenRequests
-  }>(GET_OPEN_REQUESTS);
+  }>(GET_OPEN_REQUESTS, {
+    fetchPolicy: "network-only"
+  });
 
-  const [deleteSelfServiceCartItem, {}] = useMutation(
+  const [deleteSelfServiceCartItem, {loading: loadingDeleteSelfServiceCartItem}] = useMutation(
     DELETE_SELF_SERVICE_CART_ITEM,
     {
       refetchQueries: [
@@ -195,7 +198,10 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
             horizontal: "left",
           }}
         >
-          <div className={classes.optionImage} onClick={() => setOpen(true)}>
+          <div className={classes.optionImage} onClick={() => {
+            refetchOpenRequests();
+            setOpen(true);
+          }}>
             <ShoppingCartSimpleIcon
               width={21}
               height={21}
@@ -326,11 +332,18 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
                     {item.name || " - "}
                   </BoxRequestCartItemText>
                 </BoxRequestCartItemInfo>
-                <BoxRequestCartItemTrash
-                  onClick={(e: React.MouseEvent) => handleDelete(e, item)}
-                >
-                  <TrashIcon />
-                </BoxRequestCartItemTrash>
+                {loadingDeleteSelfServiceCartItem && (
+                  <BoxRequestCartItemTrash className="Disabled-action">
+                    <Loading type="blue"/>
+                  </BoxRequestCartItemTrash>
+                )}   
+                {!loadingDeleteSelfServiceCartItem && (
+                  <BoxRequestCartItemTrash
+                    onClick={(e: React.MouseEvent) => handleDelete(e, item)}
+                  >
+                    <TrashIcon />
+                  </BoxRequestCartItemTrash>
+                )}             
               </BoxRequestCartItem>
             ))}
            {(selfServiceCart?.items || []).length > 0 && (

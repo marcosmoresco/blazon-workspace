@@ -195,4 +195,7 @@ export const Mutations = `
   forwardToUserProvisioningTask(payload: String): Boolean
   forwardToQueueProvisioningTask(payload: String): Boolean
   resolveProvisioningTask(payload: String): Boolean
+  defineAccountIdentifierProvisioningTask(id: Int, accountIdentifier: String): Boolean
+  defineUsernamePasswordProvisioningTask(id: Int, username: String, password: String): Boolean
+  changePasswordProvisioningTask(id: Int, password: String): Boolean
 `;

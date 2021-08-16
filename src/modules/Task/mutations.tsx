@@ -209,3 +209,21 @@ export const RESOLVE_PROVISIONING_TASK = gql`
     resolve: resolveProvisioningTask(payload: $payload)
   }
 `;
+
+export const DEFINE_ACCOUNT_IDENTIFIER_PROVISIONING_TASK = gql`
+  mutation defineAccountIdentifierProvisioningTask($id: Int, $accountIdentifier: String) {
+    defineAccountIdentifierProvisioningTask(id: $id, accountIdentifier: $accountIdentifier)
+  }
+`;
+
+export const DEFINE_USERNAME_PASSWORD_PROVISIONING_TASK = gql`
+  mutation defineUsernamePasswordProvisioningTask($id: Int, $username: String, $password: String) {
+    defineUsernamePasswordProvisioningTask(id: $id, username: $username, password: $password)
+  }
+`;
+
+export const CHANGE_PASSWORD_PROVISIONING_TASK = gql`
+  mutation changePasswordProvisioningTask($id: Int, $password: String) {
+    changePasswordProvisioningTask(id: $id, password: $password)
+  }
+`;

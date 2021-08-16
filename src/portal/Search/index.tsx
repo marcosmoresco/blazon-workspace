@@ -63,6 +63,7 @@ import {
 import { GET_SELF_SERVICE, GET_SELF_SERVICE_ADVANCED } from "./queries";
 import WatchIcon from "@icons/Watch";
 import { stubFalse } from "lodash";
+import { disapprove } from "@modules/Task/constants";
 
 const Search: FC<SearchProps> = ({ intl, classes }) => {
   const { cart } = useCart();
@@ -94,7 +95,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
   ]);
 
   const [
-    addSelfServiceCartItem, { },
+    addSelfServiceCartItem, {loading: loadingAddSelfServiceCartItem},
   ] = useMutation(ADD_SELF_SERVICE_CART_ITEM, {
     refetchQueries: [
       {
@@ -325,22 +326,31 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                           <Divider />
                           <div className={classes.searchCartContent}>
                             {addedItems.indexOf(item.identifier) === -1 && (
-                              <div
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  e.nativeEvent.stopImmediatePropagation();                                                     
-                                  addSelfServiceCartItem({
-                                    variables: {
-                                      id: item.identifier                                  
-                                    },
-                                  });
-                                }}
-                              >
-                                <div className="Icon-content">
-                                  <ShoppingCartIcon width={25} height={25} />
-                                </div>
-                                {intl.formatMessage({id: "cart.add"})}
-                              </div>
+                              <>
+                                {loadingAddSelfServiceCartItem && (
+                                  <div className="Disabled-action">
+                                    <Loading type="blue"/>
+                                  </div>
+                                )}
+                                {!loadingAddSelfServiceCartItem && (
+                                  <div
+                                    onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.nativeEvent.stopImmediatePropagation();                                                     
+                                    addSelfServiceCartItem({
+                                      variables: {
+                                        id: item.identifier                                  
+                                      },
+                                    });
+                                  }}
+                                  >
+                                    <div className="Icon-content">
+                                      <ShoppingCartIcon width={25} height={25} />
+                                    </div>
+                                    {intl.formatMessage({id: "cart.add"})}
+                                  </div>
+                                  )}
+                              </>                              
                             )}   
                             {addedItems.indexOf(item.identifier) > -1 && (
                               <div>
@@ -400,18 +410,28 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                       </Tooltip>
                     </ListItemContent>
                     {addedItems.indexOf(item.identifier) === -1 && (
-                    <ListItemIconContent
-                      className="Selectable"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        e.nativeEvent.stopImmediatePropagation();
-                        addSelfServiceCartItem({
-                          variables: { id: item.identifier },
-                        });
-                      }}
-                    >
-                      <ShoppingCartIcon width={21} />
-                    </ListItemIconContent>)}
+                      <>
+                        {loadingAddSelfServiceCartItem && (
+                          <ListItemIconContent className="Disabled-action">
+                            <Loading type="blue"/>
+                          </ListItemIconContent>
+                        )} 
+                        {!loadingAddSelfServiceCartItem && (
+                          <ListItemIconContent
+                            className="Selectable"
+                            onClick={(e) => {
+                              e.stopPropagation();
+                              e.nativeEvent.stopImmediatePropagation();
+                              addSelfServiceCartItem({
+                                variables: { id: item.identifier },
+                              });
+                            }}
+                          >
+                            <ShoppingCartIcon width={21} />
+                          </ListItemIconContent>
+                        )}
+                      </>
+                    )}
                     {addedItems.indexOf(item.identifier) > -1 && (
                     <ListItemIconContent>
                       <CheckCircleIcon width={21} color="#26213F"/>

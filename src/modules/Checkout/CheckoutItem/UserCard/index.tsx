@@ -324,7 +324,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
         </>  
         )}
       </UserCardTitle>
-      {formDatas && <Line />}
+      {formDatas && !!Object.keys(formDatas).length && <Line />}
       {(instance.schemaValidatedError.status ||
        instance.alreadyRequestInProgressError.status || 
        instance.accessAlreadyExistError.status || 
@@ -428,7 +428,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
         </Observation>
       </ObservationArea>)}
       
-      {formDatas && formik.render && (
+      {formDatas && !!Object.keys(formDatas).length && formik.render && (
         <Formik
           {...formik}
           render={(form) => {

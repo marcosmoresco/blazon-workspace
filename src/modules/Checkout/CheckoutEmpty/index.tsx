@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import Image from "next/image";
 
 // components
-import Empty from "./essets/Empty.svg";
+import Empty from "@images/EmptyStateCart.svg";
 import Button from "@components/Button";
 
 // styles
@@ -38,7 +38,7 @@ const CheckoutEmpty: React.FC = () => {
             </span>
           </div>
           <div>
-            <a>
+            <a onClick={() => router.push("/search")}>
               <FormattedMessage id="checkout.SearchItem" />
             </a>
           </div>

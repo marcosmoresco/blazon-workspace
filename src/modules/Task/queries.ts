@@ -1026,3 +1026,14 @@ export const RESUME = gql`
     }
   }
 `;
+
+export const GET_DIRECTORY_RESOURCE = gql`
+  query getDirectoryResource($id: Int) {
+    getDirectoryResource(id: $id) {
+      identifier
+      name
+      description
+      passwordVaultEnabled
+    }
+  }
+`;

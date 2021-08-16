@@ -463,4 +463,40 @@ export const TaskMutations = {
       throw error;
     }
   },
+  defineAccountIdentifierProvisioningTask: async (parent: any, args: any, context: any) => {
+    try {    
+      await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/provisioning/tasks/${args?.id}/defineAccountIdentifier`,
+        {accountIdentifier: args?.accountIdentifier},
+        { ...config(context) }
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  defineUsernamePasswordProvisioningTask: async (parent: any, args: any, context: any) => {
+    try {    
+      await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/provisioning/tasks/${args?.id}/defineUsernamePassword`,
+        {username: args?.username, password: args?.password},
+        { ...config(context) }
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  changePasswordProvisioningTask: async (parent: any, args: any, context: any) => {
+    try {    
+      await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/provisioning/tasks/${args?.id}/changePassword`,
+        {password: args?.password},
+        { ...config(context) }
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

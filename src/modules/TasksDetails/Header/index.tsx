@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
+import apolloClient from "@utils/apollo-client";
 import { useDispatch } from "react-redux";
 import { addMessage } from "@actions/index";
 import MenuItem from '@material-ui/core/MenuItem';
@@ -40,8 +41,16 @@ import { HeaderProps } from "./types";
 
 //queries
 import { 
-  GET_ASSIGN_ACTIONS
+  GET_ASSIGN_ACTIONS,
+  GET_DIRECTORY_RESOURCE
 } from "@modules/Task/queries";
+
+//mutations
+import {
+  DEFINE_ACCOUNT_IDENTIFIER_PROVISIONING_TASK,
+  DEFINE_USERNAME_PASSWORD_PROVISIONING_TASK,
+  CHANGE_PASSWORD_PROVISIONING_TASK
+} from "@modules/Task/mutations";
 
 // styles
 import {
@@ -58,8 +67,8 @@ import {
   MenuItemContainer
 } from "./style";
 
-const Header: React.FC<HeaderProps> = ({ task }) => {
-
+const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setStage }) => {
+  console.log(stage);
   const dispatch = useDispatch();
   const router = useRouter();
   const intl = useIntl();
@@ -210,6 +219,121 @@ const Header: React.FC<HeaderProps> = ({ task }) => {
       setAnchorEl(null); 
     }
   });
+  
+
+  const [changePasswordProvisioningTask, {}] = useMutation(CHANGE_PASSWORD_PROVISIONING_TASK, { 
+    refetchQueries: [
+      {
+        query: getQueryByType(type || "approval"),
+        variables: {
+          id: Number(id)
+        }
+      },
+    ],
+    onCompleted: ({ changePasswordProvisioningTask }) => {
+      if(changePasswordProvisioningTask) {          
+        setAnchorEl(null);      
+        resolve({
+          variables: {
+            payload: JSON.stringify([{
+              taskId: Number(id),
+              result: "PROVISIONED"                    
+            }])
+          }
+        });
+      }    
+    },
+    onError: () => {
+      dispatch(
+        addMessage(
+          intl.formatMessage({id: "task.resolved.error"}),
+          "error"
+        )
+      );
+      setAnchorEl(null); 
+    }
+  });
+
+  const [defineUsernamePasswordProvisioningTask, {}] = useMutation(DEFINE_USERNAME_PASSWORD_PROVISIONING_TASK, { 
+    refetchQueries: [
+      {
+        query: getQueryByType(type || "approval"),
+        variables: {
+          id: Number(id)
+        }
+      },
+    ],
+    onCompleted: ({ defineUsernamePasswordProvisioningTask }) => {
+      if(defineUsernamePasswordProvisioningTask) {          
+        setAnchorEl(null);      
+        resolve({
+          variables: {
+            payload: JSON.stringify([{
+              taskId: Number(id),
+              result: "PROVISIONED"                    
+            }])
+          }
+        });
+      }    
+    },
+    onError: () => {
+      dispatch(
+        addMessage(
+          intl.formatMessage({id: "task.resolved.error"}),
+          "error"
+        )
+      );
+      setAnchorEl(null); 
+    }
+  });
+
+  const [defineAccountIdentifierProvisioningTask, {}] = useMutation(DEFINE_ACCOUNT_IDENTIFIER_PROVISIONING_TASK, { 
+    refetchQueries: [
+      {
+        query: getQueryByType(type || "approval"),
+        variables: {
+          id: Number(id)
+        }
+      },
+    ],
+    onCompleted: ({ defineAccountIdentifierProvisioningTask }) => {
+      if(defineAccountIdentifierProvisioningTask) {          
+        setAnchorEl(null);      
+        apolloClient
+          .query({
+            query: GET_DIRECTORY_RESOURCE,
+            variables: {
+              id: task?.provisioningItemDetail?.resource?.identifier
+            },
+            fetchPolicy: "network-only"
+          })
+          .then(({ data }) => {
+            if(data?.getDirectoryResource?.passwordVaultEnabled) {
+              setPayload(undefined);
+              setStage("SET_USERNAME_PASSWORD");
+            } else {
+              resolve({
+                variables: {
+                  payload: JSON.stringify([{
+                    taskId: Number(id),
+                    result: "PROVISIONED"                    
+                  }])
+                }
+              });
+            }                        
+          });
+      }    
+    },
+    onError: () => {
+      dispatch(
+        addMessage(
+          intl.formatMessage({id: "task.resolved.error"}),
+          "error"
+        )
+      );
+      setAnchorEl(null); 
+    }
+  });  
 
   const executeForwardToUser = (userId: number): void => {
     forwardToUser({
@@ -345,13 +469,67 @@ const Header: React.FC<HeaderProps> = ({ task }) => {
               <FormattedMessage id="tasks.provisioned" />
             </Button>
           )}
-          {(dataActions?.getActions || []).includes("NOT_PROVISIONED") && (
+          {(dataActions?.getActions || []).includes("NOT_PROVISIONED") 
+            && (!["CREATE_ACCOUNT", "CHANGE_PASSWORD"].includes(task?.type || "") || "WAITING_ASSING" === task?.headers?.status) && (
             <Button variant="contained" color="secondary" onClick={() => {
               setResult("NOT_PROVISIONED");
               setOpenDisapprove(true);
             }}>
              <FormattedMessage id="tasks.notProvisioned" />
             </Button>
+          )}
+          {(dataActions?.getActions || []).includes("PROVISIONED") && ["CREATE_ACCOUNT", "CHANGE_PASSWORD"].includes(task?.type || "") && (
+            <>
+              {"CREATE_ACCOUNT" === task?.type && stage !== "SET_USERNAME_PASSWORD" && (
+                <Button 
+                  variant="contained" 
+                  color="primary" 
+                  disabled={!payload?.accountIdentifier}
+                  onClick={() => {             
+                    defineAccountIdentifierProvisioningTask({
+                      variables: {
+                        id: Number(id),
+                        accountIdentifier: payload?.accountIdentifier
+                      }                  
+                    });
+                  }}>
+                  <FormattedMessage id="continue" />
+                </Button>
+              )}
+              {"CREATE_ACCOUNT" === task?.type && stage === "SET_USERNAME_PASSWORD" && (
+                <Button 
+                  variant="contained" 
+                  color="primary" 
+                  disabled={!payload?.username || !payload?.password}
+                  onClick={() => {             
+                    defineUsernamePasswordProvisioningTask({
+                      variables: {
+                        id: Number(id),
+                        username: payload?.username,
+                        password: payload?.password
+                      }                  
+                    });
+                  }}>
+                  <FormattedMessage id="conclude" />
+                </Button>
+              )}
+              {"CHANGE_PASSWORD" === task?.type && (
+                <Button 
+                  variant="contained" 
+                  color="primary" 
+                  disabled={!payload?.password}
+                  onClick={() => {             
+                    changePasswordProvisioningTask({
+                      variables: {
+                        id: Number(id),                        
+                        password: payload?.password
+                      }                
+                    });
+                  }}>
+                  <FormattedMessage id="continue" />
+                </Button>
+              )}
+            </>            
           )}
           {(dataActions?.getActions || []).includes("RESOLVE") && (
             <Button variant="contained" color="default-primary" onClick={() => {

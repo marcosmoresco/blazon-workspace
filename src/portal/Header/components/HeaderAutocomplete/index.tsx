@@ -18,6 +18,7 @@ import CheckCircleIcon from "@icons/CheckCircle";
 import SecurityUserIcon from "@icons/SecurityUser";
 import PeopleIcon from "@icons/People";
 import ShoppingCart from "@icons/ShoppingCart";
+import Loading from "@components/Loading";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { useCart } from "@requestCart/index";
 import { getSelfServiceAttributeValue } from "@utils/index";
@@ -65,7 +66,7 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
   ]);
 
   const [
-    addSelfServiceCartItem, { },
+    addSelfServiceCartItem, {loading: loadingAddSelfServiceCartItem},
   ] = useMutation(ADD_SELF_SERVICE_CART_ITEM, {
     refetchQueries: [
       {
@@ -174,19 +175,28 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
                   </BoxAutocompleteText>
                 </BoxAutocompleteContentInfo> 
                 {addedItems.indexOf(option.identifier as string) === -1 && (
-                  <BoxAutocompleteContentCart 
-                    className="Autocomplete-cart" 
-                    onClick={(event) => {
-                      event.stopPropagation();
-                      event.nativeEvent.stopImmediatePropagation();
-                      addSelfServiceCartItem({
-                        variables: {
-                          id: option.identifier                                  
-                        },                      
-                      })
-                    }}>
-                    <ShoppingCart width={21} />
-                  </BoxAutocompleteContentCart> 
+                  <>
+                    {loadingAddSelfServiceCartItem && (
+                      <BoxAutocompleteContentCart className="Disabled-action">
+                        <Loading type="blue"/>
+                      </BoxAutocompleteContentCart>
+                    )} 
+                    {!loadingAddSelfServiceCartItem && (
+                      <BoxAutocompleteContentCart 
+                        className="Autocomplete-cart" 
+                        onClick={(event) => {
+                          event.stopPropagation();
+                          event.nativeEvent.stopImmediatePropagation();
+                          addSelfServiceCartItem({
+                            variables: {
+                              id: option.identifier                                  
+                            },                      
+                          })
+                        }}>
+                        <ShoppingCart width={21} />
+                      </BoxAutocompleteContentCart>
+                    )}                
+                  </>                   
                 )}
                 {addedItems.indexOf(option.identifier as string) > -1 && (
                   <BoxAutocompleteContentCart 

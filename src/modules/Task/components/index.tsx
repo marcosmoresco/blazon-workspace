@@ -552,6 +552,7 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
             </MenuItemInfo>             
           </MenuItem>         
         )}
+        {/*
         {(actions || []).includes("PROVISIONED") && (
           <MenuItem onClick={() => {
             if(current) {
@@ -587,7 +588,7 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
               <FormattedMessage id="tasks.notProvisioned" />
             </MenuItemInfo>             
           </MenuItem>         
-        )}         
+        )} */}        
         {(actions || []).includes("RESOLVE") && (
           <MenuItem onClick={() => {
             if(current) {

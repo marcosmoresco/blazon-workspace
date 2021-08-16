@@ -132,3 +132,7 @@ label {
   text-transform: uppercase;
   padding-bottom: 8px;
 }
+
+.Disabled-action {
+  cursor: not-allowed !important;  
+}

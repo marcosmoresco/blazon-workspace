@@ -108,5 +108,7 @@
   "no": "No",
   "category": "Category",
   "type": "Type",
-  "search.found.message": "Find your access here..."
+  "search.found.message": "Find your access here...",
+  "continue": "Continue",
+  "conclude": "Conclude"
 }

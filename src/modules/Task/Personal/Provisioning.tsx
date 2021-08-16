@@ -300,8 +300,7 @@ const PersonalTasksProvisioning: FC<ListProps> = ({ dispatch, filtered = {}, che
       });
       refetchActions({
         status: JSON.stringify(statusList)
-      }); 
-      refetch
+      });      
     }      
   };
 

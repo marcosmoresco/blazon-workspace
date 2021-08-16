@@ -160,7 +160,7 @@ const PersonalTasks: FC<ListProps> = ({ dispatch }) => {
               </SelectBoxContainer>
             </FilterContent>
           )}                            
-          <Filter filters={tasksFilters} onChange={(f: any) => setFiltered({...filtered, ...f})}/>
+          <Filter filters={tasksFilters} onChange={(f: any) => setFiltered({...f, ...(typeValue !== "ANY" ? {"taskData.type": typeValue} : {})})}/>
         </HeaderFilters>
       </Header>
       {type === "ALL" && (

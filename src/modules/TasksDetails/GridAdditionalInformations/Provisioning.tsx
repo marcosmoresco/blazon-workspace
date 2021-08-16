@@ -50,7 +50,7 @@ const GridAdditionalInformationsProvisioning: React.FC<AdditionalInformationsPro
           <InsideLine /> 
           <DeitalList>
             <label><FormattedMessage id="accountIdentifier"/></label> 
-            <DetailValue>{task?.approvalItemDetails?.account?.accountIdentifier || " - "}</DetailValue> 
+            <DetailValue>{task?.provisioningItemDetail?.account?.accountIdentifier || " - "}</DetailValue> 
           </DeitalList>        
         </WorkArea>
       )}  
@@ -73,18 +73,18 @@ const GridAdditionalInformationsProvisioning: React.FC<AdditionalInformationsPro
          <InsideLine /> 
          {tab === "resource" as tabs && (
             <DeitalList>
-                <label><FormattedMessage id="identifier"/></label> 
-                <DetailValue>{task?.approvalItemDetails?.resourceIdentifier || " - "}</DetailValue> 
-                <label><FormattedMessage id="name"/></label> 
-                <DetailValue>{task?.approvalItemDetails?.resourceName || " - "}</DetailValue> 
-                <label><FormattedMessage id="description"/></label> 
-                <DetailValue>{task?.approvalItemDetails?.resourceDescription || " - "}</DetailValue> 
+              <label><FormattedMessage id="identifier"/></label> 
+              <DetailValue>{task?.provisioningItemDetail?.resource?.identifier || " - "}</DetailValue> 
+              <label><FormattedMessage id="name"/></label> 
+              <DetailValue>{task?.provisioningItemDetail?.resource?.name || " - "}</DetailValue> 
+              <label><FormattedMessage id="description"/></label> 
+              <DetailValue>{task?.provisioningItemDetail?.resource?.description || " - "}</DetailValue> 
             </DeitalList>
           )}  
           {tab === "account" as tabs && (
             <DeitalList>
                 <label><FormattedMessage id="accountIdentifier"/></label> 
-                <DetailValue>{task?.approvalItemDetails?.account?.accountIdentifier || " - "}</DetailValue>                
+                <DetailValue>{task?.provisioningItemDetail?.account?.accountIdentifier || " - "}</DetailValue>                
             </DeitalList>
           )}     
        </WorkArea>
