@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import * as Yup from "yup";
+import { useMutation } from "@apollo/client";
+import { useDispatch } from "react-redux";
 import CardScreen from "@components/CardScreen";
 import User from "@icons/User";
 import DataGrid from "@components/DataGrid";
@@ -9,13 +11,15 @@ import Filter from "@components/Filter";
 import { useStyles } from "./styles";
 import { withStyles } from "@material-ui/core/styles";
 import ShareIcon from "@icons/Share";
-import { useFormikContext, withFormik } from "formik";
+import { useFormikContext, Formik, Form } from "formik";
 import Dialog from "@components/Dialog";
 import DatePicker from "@components/DatePicker";
 import TextField from "@components/TextField";
 import { TitleHierarchy } from "@components/TitlePage/types";
 import { GET_USER_ACCOUNTS } from "@modules/User/queries";
+import { CHECKOUT_ADMIN_ACCOUNT } from "@modules/User/mutations";
 import EmptyStateAdminImage from "@images/EmptyStateAdminAccount.svg";
+import { addMessage } from "@actions/index";
 
 const columns = ({ classes }) => [
   {
@@ -92,27 +96,6 @@ const filters = [
   },
 ];
 
-const validationSchema = Yup.object({
-  administrativeDialog: Yup.object({
-    effectiveDate: Yup.string().required("requiredField"),
-    justification: Yup.string().required("requiredField"),
-  }),
-});
-
-const formik = {
-  initialValues: {
-    administrativeDialog: {
-      effectiveDate: undefined,
-      justification: "",
-    },
-  },
-  validationSchema,
-  onSubmit: (values: any) => {
-    alert(JSON.stringify(values, null, 2));
-  },
-  enableReinitialize: true,
-};
-
 const AdministrativeDialog = () => {
   const form = useFormikContext();
   const intl = useIntl();
@@ -130,7 +113,7 @@ const AdministrativeDialog = () => {
           id: "administrativedialog.dialog.effectiveDate",
         })}
         name="administrativeDialog.effectiveDate"
-        onChange={(value) => {
+        onChange={(value: any) => {
           form.setFieldValue("administrativeDialog.effectiveDate", value);
         }}
       />
@@ -149,9 +132,66 @@ const AdministrativeDialog = () => {
 const Administrative = ({ classes }) => {
   const router = useRouter();
   const intl = useIntl();
-  const form = useFormikContext();
+  const dispatch = useDispatch();
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [currentSelected, setCurrentSelected] = useState<any>(undefined);
+  const [currentForm, setCurrenForm] = useState();
+
+  console.log(currentForm);
+
+  const validationSchema = Yup.object({
+    administrativeDialog: Yup.object({
+      effectiveDate: Yup.string(),
+      justification: Yup.string().required(
+        intl.formatMessage({
+          id: "isRequired"                      
+        }, {
+          field: intl.formatMessage({
+            id: "justification"                      
+          })
+        })
+      ),
+    }),
+  });
+  
+  const formik = {
+    initialValues: {
+      administrativeDialog: {
+        effectiveDate: undefined,
+        justification: "",
+      },
+    },
+    validationSchema,
+    onSubmit: (values: any) => {      
+      checkoutAdminAccount({
+        variables: {
+          payload: JSON.stringify({
+            account: {
+              identifier: currentSelected?.identifier
+            },
+            justification: values?.administrativeDialog?.justification 
+          })
+        }
+      });      
+    },
+    enableReinitialize: true,
+  };
+
+  const [checkoutAdminAccount, {}] = useMutation(CHECKOUT_ADMIN_ACCOUNT, {   
+    onCompleted: ({checkoutAdminAccount}) => {   
+      if(checkoutAdminAccount) {
+        dispatch(
+          addMessage(
+            intl.formatMessage({id: "profile.accounts.adminstrative.checkout.success"})
+          )
+        );                        
+        setModalOpen(false);
+        if(currentForm) {          
+          currentForm.resetForm();
+        }
+      }        
+    },
+  });
 
   const [queryFilters, setQueryFilters] = useState({
     page: 0,
@@ -194,18 +234,27 @@ const Administrative = ({ classes }) => {
         title="profile.accounts.adminstrative"
         onBack={() => router.push("/profile")}
         hierarchy={hierarchy}
-      >
-        <Dialog
-          open={modalOpen}
-          onClose={() => setModalOpen(false)}
-          title={intl.formatMessage({ id: "profile.accounts.adminstrative" })}
-          onSave={() => {
-            form.submitForm();           
-          }}
-          isValid={form.isValid}
-        >
-          <AdministrativeDialog current={currentSelected} />
-        </Dialog>
+      >        
+        <Formik
+          {...formik}
+          render={(form: any) => {
+            return (
+              <Dialog
+                open={modalOpen}
+                onClose={() => setModalOpen(false)}
+                title={intl.formatMessage({ id: "profile.accounts.adminstrative" })}
+                onSave={() => {
+                  setCurrenForm(form);
+                  form.submitForm();           
+                }}
+                isValid={form.isValid}
+              >
+                <Form>
+                  <AdministrativeDialog current={currentSelected} />
+                </Form>
+              </Dialog>
+            )}} 
+        />                           
         <div className="Default-header-filter">
           <Filter
             filters={filters}
@@ -232,4 +281,4 @@ const Administrative = ({ classes }) => {
   );
 };
 
-export default withStyles(useStyles)(withFormik(formik)(Administrative));
+export default withStyles(useStyles)(Administrative);

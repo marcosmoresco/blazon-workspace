@@ -1,13 +1,9 @@
 import React, { FC } from 'react'
 import { withStyles } from '@material-ui/core/styles'
-import { injectIntl, IntlShape, FormattedMessage } from 'react-intl'
+import { injectIntl, IntlShape } from 'react-intl'
 import useStyles from './styles'
 import CardScreen from '@components/CardScreen'
 import { Avatar, Grid, Typography } from '@material-ui/core'
-import Breadcrumbs from '@material-ui/core/Breadcrumbs';
-import Link from "@components/BreadcrumbLink";
-import CaretRightIcon from "@icons/CaretRight";
-import HouseSimpleIcon from "@icons/HouseSimple";
 import SharedAccountIcon from "@icons/SharedAccount";
 import ApplicationAccountIcon from "@icons/ApplicationAccount";
 import RegularAccountIcon from "@icons/RegularAccount";
@@ -25,6 +21,7 @@ import SignOutIcon from '@icons/SignOut'
 import Divider from '@components/Divider'
 import PencilIcon from '@icons/Pencil'
 import { useUser } from "@hooks";
+import { CHECKOUT_ADMIN_ACCOUNT } from "@modules/User/mutations";
 
 type ProfileProps = {
   intl: IntlShape

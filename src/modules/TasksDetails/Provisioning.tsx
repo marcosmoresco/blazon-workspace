@@ -36,6 +36,7 @@ const Approval: React.FC = () => {
     variables: {
       id: Number(id)
     },
+    fetchPolicy: "network-only"
   });
 
   if(loading) {

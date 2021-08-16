@@ -73,4 +73,16 @@ export const UserMutations = {
       throw error;
     }
   },
+  checkoutAdminAccount: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/identitybusinessrules/adminaccounts/checkout`,
+        JSON.parse(args?.payload),
+        { ...config(context)}
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

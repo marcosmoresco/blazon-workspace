@@ -221,15 +221,7 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
   });
   
 
-  const [changePasswordProvisioningTask, {}] = useMutation(CHANGE_PASSWORD_PROVISIONING_TASK, { 
-    refetchQueries: [
-      {
-        query: getQueryByType(type || "approval"),
-        variables: {
-          id: Number(id)
-        }
-      },
-    ],
+  const [changePasswordProvisioningTask, {}] = useMutation(CHANGE_PASSWORD_PROVISIONING_TASK, {   
     onCompleted: ({ changePasswordProvisioningTask }) => {
       if(changePasswordProvisioningTask) {          
         setAnchorEl(null);      
@@ -254,15 +246,7 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
     }
   });
 
-  const [defineUsernamePasswordProvisioningTask, {}] = useMutation(DEFINE_USERNAME_PASSWORD_PROVISIONING_TASK, { 
-    refetchQueries: [
-      {
-        query: getQueryByType(type || "approval"),
-        variables: {
-          id: Number(id)
-        }
-      },
-    ],
+  const [defineUsernamePasswordProvisioningTask, {}] = useMutation(DEFINE_USERNAME_PASSWORD_PROVISIONING_TASK, {    
     onCompleted: ({ defineUsernamePasswordProvisioningTask }) => {
       if(defineUsernamePasswordProvisioningTask) {          
         setAnchorEl(null);      
@@ -287,15 +271,7 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
     }
   });
 
-  const [defineAccountIdentifierProvisioningTask, {}] = useMutation(DEFINE_ACCOUNT_IDENTIFIER_PROVISIONING_TASK, { 
-    refetchQueries: [
-      {
-        query: getQueryByType(type || "approval"),
-        variables: {
-          id: Number(id)
-        }
-      },
-    ],
+  const [defineAccountIdentifierProvisioningTask, {}] = useMutation(DEFINE_ACCOUNT_IDENTIFIER_PROVISIONING_TASK, {   
     onCompleted: ({ defineAccountIdentifierProvisioningTask }) => {
       if(defineAccountIdentifierProvisioningTask) {          
         setAnchorEl(null);      
@@ -523,7 +499,17 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
                   <FormattedMessage id="conclude" />
                 </Button>
               )}
-              {"CHANGE_PASSWORD" === task?.type && (
+              {"CHANGE_PASSWORD" === task?.type && !stage && (
+                <Button 
+                  variant="contained" 
+                  color="primary"                 
+                  onClick={() => {             
+                    setStage("SET_PASSWORD");
+                  }}>
+                  <FormattedMessage id="continue" />
+                </Button>
+              )}
+              {"CHANGE_PASSWORD" === task?.type && stage === "SET_PASSWORD" && (
                 <Button 
                   variant="contained" 
                   color="primary" 

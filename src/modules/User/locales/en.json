@@ -81,5 +81,6 @@
   "profile.accounts.entitlements": "Entitlements",
   "profile.others": "Others",
   "profile.accounts.application.requestCredentials": "Request credentials",
-  "profile.accounts.application.requestCredentials.success": "Request credentials successfully!"
+  "profile.accounts.application.requestCredentials.success": "Request credentials successfully!",
+  "profile.accounts.adminstrative.checkout.success": "Checkout executed successfully!"
 }

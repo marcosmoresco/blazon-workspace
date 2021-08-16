@@ -47,4 +47,5 @@ export const Mutations = `
   credentialsUserApplicationAccount(accountId: Int, justification: String, effectiveDate: String): Int
   changeUserThumb(thumb: String): Boolean
   changePassword(currentPassword: String, newPassword: String, newPasswordConfirm: String): Boolean
+  checkoutAdminAccount(payload: String): Boolean
 `;

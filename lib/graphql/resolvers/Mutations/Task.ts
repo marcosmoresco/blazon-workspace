@@ -490,7 +490,7 @@ export const TaskMutations = {
   changePasswordProvisioningTask: async (parent: any, args: any, context: any) => {
     try {    
       await axios.post(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/provisioning/tasks/${args?.id}/changePassword`,
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/provisioning/tasks/${args?.id}/changepassword`,
         {password: args?.password},
         { ...config(context) }
       );

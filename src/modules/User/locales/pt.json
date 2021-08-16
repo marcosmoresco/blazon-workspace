@@ -80,5 +80,6 @@
   "profile.accounts.entitlements": "Entitlements",
   "profile.others": "Outros",
   "profile.accounts.application.requestCredentials": "Solicitar credenciais",
-  "profile.accounts.application.requestCredentials.success": "Solicitação das credenciais feita com sucesso!"
+  "profile.accounts.application.requestCredentials.success": "Solicitação das credenciais feita com sucesso!",
+  "profile.accounts.adminstrative.checkout.success": "Checkout executado com sucesso!"
 }

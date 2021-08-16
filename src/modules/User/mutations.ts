@@ -45,3 +45,9 @@ export const CHANGE_USER_PASSWORD = gql`
     )
   }
 `;
+
+export const CHECKOUT_ADMIN_ACCOUNT = gql`
+  mutation checkoutAdminAccount($payload: String) {
+    checkoutAdminAccount(payload: $payload)
+  }
+`;

@@ -34,6 +34,7 @@ const RoleRight: React.FC = () => {
     variables: {
       id: Number(id)
     },
+    fetchPolicy: "network-only"
   });
 
   if(loading) {

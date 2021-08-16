@@ -21,7 +21,7 @@ const Continue: React.FC<ContinueProps> = ({ task, stage, payload, setPayload })
   const intl = useIntl();
   const [showPassword, setShowPassword] = useState<boolean>(false);
 
-  if(task?.type === "CREATE_ACCOUNT" && !stage) {
+  if(!stage) {
     return <></>
   }
 
@@ -113,31 +113,38 @@ const Continue: React.FC<ContinueProps> = ({ task, stage, payload, setPayload })
             )}         
            </>           
           ) || (
-            <TextField    
-              type={!showPassword && "password" || "text"}               
-              value={payload?.password || ""} 
-              fullWidth={true} 
-              variant="outlined" 
-              error={payload && !payload.password}
-              helperText={(payload && !payload.password && (
-                intl.formatMessage({
-                  id: "isRequired"                      
-                }, {
-                  field: intl.formatMessage({
-                    id: "password"                      
-                  })
-                }))) || ""
-              }
-              InputProps={{
-                endAdornment: 
-                  <InputAdornment position='end'>
-                    <IconButton onClick={() => setShowPassword(!showPassword)}>
-                      {showPassword ? <EyeIcon /> : <EyeSlashIcon />}
-                    </IconButton>
-                  </InputAdornment>                    
-              }}                  
-              onChange={(e) => setPayload({password: e.target.value})}
-            />
+            <>
+              <Label className="Add-top">
+                {intl.formatMessage({
+                  id: "newPassword"                      
+                })}
+              </Label>
+              <TextField    
+                type={!showPassword && "password" || "text"}               
+                value={payload?.password || ""} 
+                fullWidth={true} 
+                variant="outlined" 
+                error={payload && !payload.password}
+                helperText={(payload && !payload.password && (
+                  intl.formatMessage({
+                    id: "isRequired"                      
+                  }, {
+                    field: intl.formatMessage({
+                      id: "newPassword"                      
+                    })
+                  }))) || ""
+                }
+                InputProps={{
+                  endAdornment: 
+                    <InputAdornment position='end'>
+                      <IconButton onClick={() => setShowPassword(!showPassword)}>
+                        {showPassword ? <EyeIcon /> : <EyeSlashIcon />}
+                      </IconButton>
+                    </InputAdornment>                    
+                }}                  
+                onChange={(e) => setPayload({password: e.target.value})}
+              />
+            </>           
           )}
         </BoxCard>
       </Box>
