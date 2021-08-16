@@ -146,16 +146,18 @@ const Filters: FC<FilterProps> = ({ classes, intl, activeType, onSave }) => {
       }
     } else if(filter.type !== 'BOOLEAN'){
       if(value) {        
-        _filtered.total++;                 
+        _filtered.total++;    
+        filterMapReference[filter.name].values.push(valueObject);             
       } else {       
-        _filtered.total--;           
+        _filtered.total--;
+        filterMapReference[filter.name].values = filterMapReference[filter.name].values.filter((v: any) => v.value !== valueObject.value) || [];         
       }
       if(filter.values) {
         var selectedFilters = filter.values.filter((v) => _filtered[filter.name][v.value]);
         if(selectedFilters.length + (value && 1 || -1) === filter.values.length) {
-          _filtered[filter.name].selected = true;
+          _filtered[filter.name].selected = true;          
         } else {
-          _filtered[filter.name].selected = false;
+          _filtered[filter.name].selected = false;          
         }
       }
     } else {

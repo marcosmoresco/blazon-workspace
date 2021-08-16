@@ -36,6 +36,7 @@ import JustificationText from "./JustificationText";
 import MenuGrid from "./MenuGrid";
 import Button from "@components/Button";
 import { getContent } from "@modules/Requests/constants";
+import XCircleIcon from "@icons/XCircle";
 
 const Info: React.FC<FirstTaskProps> = ({ intl, request, refetch }) => {
   const dispatch = useDispatch();
@@ -51,7 +52,8 @@ const Info: React.FC<FirstTaskProps> = ({ intl, request, refetch }) => {
       }),
       intl.formatMessage({
         id: "request.cancel.text",
-      })
+      }),
+      <XCircleIcon width={48} height={48} color="#FF134A"/>
     );
 
     if (result) {      

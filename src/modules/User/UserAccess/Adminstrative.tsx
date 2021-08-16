@@ -88,12 +88,7 @@ const filters = [
     ],
     bind: "value",
     view: "label",
-  },
-  {
-    name: "createdAt",
-    label: <FormattedMessage id="createdAt" />,
-    type: "date",
-  },
+  }, 
 ];
 
 const AdministrativeDialog = () => {

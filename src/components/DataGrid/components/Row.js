@@ -25,7 +25,8 @@ function Row(props) {
     expandAll,   
     noHover,  
     expanded,   
-    handleExpand
+    handleExpand,
+    disabledCheckboxItem
   } = props
   const [open, setOpen] = React.useState(expanded.indexOf(props.row.id) > -1 || false)
   const [disabled, setDisabled] = React.useState(props.disabled || false) 
@@ -97,8 +98,9 @@ function Row(props) {
           padding="checkbox"
           className={classNames({'Disabled': disabled, 'Default-margin': props.defaultMargin})}>
           <Checkbox
-            disabled={disabled}
+            disabled={disabled || (disabledCheckboxItem && disabledCheckboxItem(row))}
             checked={isSelected}
+            value={isSelected}
             inputProps={{ 'aria-labelledby': labelId }}
             onClick={(event) => handleSelectedClick(event, row.id, row)}
           />

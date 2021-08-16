@@ -18,6 +18,7 @@ import Head from './components/Head'
 import Row from './components/Row'
 import { SortableContainer, SortableItem } from './components/Sortable'
 import { executeQuery, getComparator, stableSort, styles } from './constants'
+import parseJSON from 'date-fns/parseJSON/index'
 
 const DataGridBlazon = (props) => {
 
@@ -51,7 +52,8 @@ const DataGridBlazon = (props) => {
     page: pageParam,
     getResponseLinks,
     getResponse,
-    emptyStateImage
+    emptyStateImage,
+    disabledCheckboxItem
   } = props  
   
   const sortable = handleSortable && typeof handleSortable === "function"
@@ -67,6 +69,7 @@ const DataGridBlazon = (props) => {
   const [isFetching, setIsFetching] = React.useState(fetching)
   const [gridLinks, setGridLinks] = React.useState(links)
   const [expanded, setExpanded] = React.useState([])  
+  const [currentQueryFilters, setCurrentQueryFilters] = React.useState(""); 
 
   useEffect(() => {  
     if(!!list) {
@@ -102,7 +105,7 @@ const DataGridBlazon = (props) => {
     } else if(expand && props.expandAll !== expandAll) {
       setExpanded([]);
       setExpandAll(props.expandAll);
-    } else if(query && pageParam !== page) {  
+    } else if(query && pageParam !== page && (!(rows || []).length) || JSON.stringify(queryFilters) !== currentQueryFilters) {  
       let _queryFilters = {...queryFilters};
       if(defaultOrderBy) {
         _queryFilters = {..._queryFilters, ord: defaultOrderBy};
@@ -114,6 +117,7 @@ const DataGridBlazon = (props) => {
       } else {
         setOrderBy(null)
       }    
+      setCurrentQueryFilters(JSON.stringify(queryFilters));
       executeQuery({
         setIsFetching,        
         setGridLinks,
@@ -126,6 +130,8 @@ const DataGridBlazon = (props) => {
       });
     }
   }, [
+    currentQueryFilters,
+    rows,
     list, 
     size, 
     open, 
@@ -191,22 +197,7 @@ const DataGridBlazon = (props) => {
     }
   }
 
-  const handleSelectedAll = (newSelected) => {
-    
-    if(handleSelected && newSelected) {      
-      handleSelected(newSelected, () => {
-        setOpen(false) 
-        setSelected([])
-      }, () => {
-        if(newSelected.length) {
-          return rows.filter((r) => newSelected.indexOf(r.id) > -1)
-        }                
-        return []
-      })
-    }
-  }
-
-  const handleSelectAllClick = (event) => {
+  const handleSelectAllClick = (value, event) => {
 
     if(getRows().length === 0) {
       return
@@ -216,23 +207,38 @@ const DataGridBlazon = (props) => {
 
     if (event.target.checked) {
       newSelected = getRows()
-        .filter((r) => (selected || []).indexOf(r.id) === -1) 
+        .filter((r) => (selected || []).indexOf(r.id) === -1 && (!disabledCheckboxItem || !disabledCheckboxItem(r))) 
         .map((n) => n.id)
 
       setSelected([...selected, ...newSelected])
-      setOpen(true) 
-      handleSelectedAll([...selected, ...newSelected])     
+      if(!newSelected.length) {
+        setOpen(false)
+      } else {
+        setOpen(true)
+      }     
+      handleSelected([...selected, ...newSelected], (clear) => {
+        if(clear) {
+          setOpen(false) 
+          setSelected([])
+        }        
+      });     
     } else {
       newSelected = (selected || []) 
         .filter((id) => !getRows().filter((r) => r.id === id).length)
       
       setSelected(newSelected)
+      handleSelected(newSelected, (clear) => {
+        if(clear) {
+          setOpen(false) 
+          setSelected([])
+        }        
+      });
 
       if(!newSelected.length) {
         setOpen(false)
       }
 
-      handleSelectedAll(newSelected)
+      //handleSelectedAll(newSelected)
     }
   }
 
@@ -257,7 +263,12 @@ const DataGridBlazon = (props) => {
     }
 
     setSelected(newSelected)
-    handleSelectedAll(newSelected)
+    handleSelected([...newSelected], (clear) => {
+      if(clear) {
+        setOpen(false) 
+        setSelected([])
+      }        
+    });
 
     if(newSelected.length) {
       setOpen(true)
@@ -447,6 +458,7 @@ const DataGridBlazon = (props) => {
                         sortable={sortable} 
                         colspan={columns.length + extraColumns}
                         disabled={disabled}
+                        disabledCheckboxItem={disabledCheckboxItem}
                         noHover={noHover}
                         defaultMargin={props.defaultMargin}/>
                     )                      

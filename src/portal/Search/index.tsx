@@ -124,7 +124,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
     )
   }
 
-  const save = (filteredMapReference: any, total: number) => {
+  const save = (filteredMapReference: any, total: number) => {    
     setTotalFiltered(total);    
     const _filters: any[] = [];
     Object.keys(filteredMapReference).forEach((f: any) => {
@@ -140,6 +140,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
           type: active,
           filters: JSON.stringify(_filters),
         },
+        fetchPolicy: "network-only"
       })
       .then(({ data }) => {
         setFiltered(JSON.stringify(_filters));
@@ -242,11 +243,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
               });
           }}
         />
-        <DividerSearch />
-        {loadingAdvanced && (
-          <Loading container/>
-        )}   
-        {!loadingAdvanced && (
+        <DividerSearch />          
           <>
             <TotalFiltersBox>
             <div className={classes.totalItens}>
@@ -280,97 +277,105 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
             </OptionListFiltersContent>
             </TotalFiltersBox>
             {type === "GRID" && (
-              <div>
-                <Grid container spacing={3}>
-                  {paginate(listAdvanced || list, total, 0).map((item, index) => (
-                    <Grid item xs={3} key={`search-card-item-${index}`}>
-                      <div
-                        className={classes.searchCard}
-                        onClick={() =>
-                          router.push(
-                            `/search/selfService/${item.type
-                              .replaceAll("_", "")
-                              .toLocaleLowerCase()}/${item.identifier}`
-                          )
-                        }
-                      >
-                        <div className={classes.searchCardContent}>
-                          <div className={classes.searchCardContentHeader}>
-                            <div className={classes.searchCardContentHeaderImage}>
-                              {iconByType[`${item.type}${(item.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", item.attributes)) || ""}`]}
-                            </div>
-                          </div>
-                          <Tooltip title={item.name || " - "} placement="bottom">
-                            <div className={classes.searchCardContentHeaderTitle}>
-                              {item?.type === "ENTITLEMENT" && (
-                                <ItemTitleParent>
-                                  {getSelfServiceAttributeValue(
-                                    "resourceName",
-                                    item.attributes
-                                  ) || " - "}{" "}
-                                  /{" "}
-                                </ItemTitleParent>
-                              )}
-                              {item?.type === "ADMIN_PASSWORD" && (
-                                <ItemTitleParent>
-                                  {getSelfServiceAttributeValue(
-                                    "resourceName",
-                                    item.attributes
-                                  ) || " - "}{" "}
-                                  /{" "}
-                                </ItemTitleParent>
-                              )}
-                              {item.name}
-                            </div>
-                          </Tooltip>
-                          <Divider />
-                          <div className={classes.searchCartContent}>
-                            {addedItems.indexOf(item.identifier) === -1 && (
-                              <>
-                                {loadingAddSelfServiceCartItem && (
-                                  <div className="Disabled-action">
-                                    <Loading type="blue"/>
-                                  </div>
-                                )}
-                                {!loadingAddSelfServiceCartItem && (
-                                  <div
-                                    onClick={(e) => {
-                                    e.stopPropagation();
-                                    e.nativeEvent.stopImmediatePropagation();                                                     
-                                    addSelfServiceCartItem({
-                                      variables: {
-                                        id: item.identifier                                  
-                                      },
-                                    });
-                                  }}
-                                  >
-                                    <div className="Icon-content">
-                                      <ShoppingCartIcon width={25} height={25} />
-                                    </div>
-                                    {intl.formatMessage({id: "cart.add"})}
-                                  </div>
-                                  )}
-                              </>                              
-                            )}   
-                            {addedItems.indexOf(item.identifier) > -1 && (
-                              <div>
-                                <div className="Icon-content">
-                                  <CheckCircleIcon width={25} height={25} color="#26213F"/>
-                                </div>
-                                {intl.formatMessage({id: "search.selfService.added"})}
+              <>
+                {loadingAdvanced && (
+                  <Loading container/>
+                )}
+                <div>
+                  <Grid container spacing={3}>
+                    {paginate(listAdvanced || list, total, 0).map((item, index) => (
+                      <Grid item xs={3} key={`search-card-item-${index}`}>
+                        <div
+                          className={classes.searchCard}
+                          onClick={() =>
+                            router.push(
+                              `/search/selfService/${item.type
+                                .replaceAll("_", "")
+                                .toLocaleLowerCase()}/${item.identifier}`
+                            )
+                          }
+                        >
+                          <div className={classes.searchCardContent}>
+                            <div className={classes.searchCardContentHeader}>
+                              <div className={classes.searchCardContentHeaderImage}>
+                                {iconByType[`${item.type}${(item.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", item.attributes)) || ""}`]}
                               </div>
-                            )}                        
+                            </div>
+                            <Tooltip title={item.name || " - "} placement="bottom">
+                              <div className={classes.searchCardContentHeaderTitle}>
+                                {item?.type === "ENTITLEMENT" && (
+                                  <ItemTitleParent>
+                                    {getSelfServiceAttributeValue(
+                                      "resourceName",
+                                      item.attributes
+                                    ) || " - "}{" "}
+                                    /{" "}
+                                  </ItemTitleParent>
+                                )}
+                                {item?.type === "ADMIN_PASSWORD" && (
+                                  <ItemTitleParent>
+                                    {getSelfServiceAttributeValue(
+                                      "resourceName",
+                                      item.attributes
+                                    ) || " - "}{" "}
+                                    /{" "}
+                                  </ItemTitleParent>
+                                )}
+                                {item.name}
+                              </div>
+                            </Tooltip>
+                            <Divider />
+                            <div className={classes.searchCartContent}>
+                              {addedItems.indexOf(item.identifier) === -1 && (
+                                <>
+                                  {loadingAddSelfServiceCartItem && (
+                                    <div className="Disabled-action">
+                                      <Loading type="blue"/>
+                                    </div>
+                                  )}
+                                  {!loadingAddSelfServiceCartItem && (
+                                    <div
+                                      onClick={(e) => {
+                                      e.stopPropagation();
+                                      e.nativeEvent.stopImmediatePropagation();                                                     
+                                      addSelfServiceCartItem({
+                                        variables: {
+                                          id: item.identifier                                  
+                                        },
+                                      });
+                                    }}
+                                    >
+                                      <div className="Icon-content">
+                                        <ShoppingCartIcon width={25} height={25} />
+                                      </div>
+                                      {intl.formatMessage({id: "cart.add"})}
+                                    </div>
+                                    )}
+                                </>                              
+                              )}   
+                              {addedItems.indexOf(item.identifier) > -1 && (
+                                <div>
+                                  <div className="Icon-content">
+                                    <CheckCircleIcon width={25} height={25} color="#26213F"/>
+                                  </div>
+                                  {intl.formatMessage({id: "search.selfService.added"})}
+                                </div>
+                              )}                        
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </Grid>
-                  ))}
-                </Grid>
-              </div>
+                      </Grid>
+                    ))}
+                  </Grid>
+                </div>
+              </>                
             )}
             {type === "LIST" && (
               <>
-                {paginate(listAdvanced || list, total, 0).map((item, index) => (
+                {loadingAdvanced && (
+                  <Loading container/>
+                )} 
+                {!loadingAdvanced && paginate(listAdvanced || list, total, 0).map((item, index) => (
                   <ListItemBox
                     onClick={() =>
                       router.push(
@@ -440,7 +445,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                 ))}
               </>
             )}
-            {paginate(listAdvanced || list, 10, page + 1).length > 0 && (
+            {!loadingAdvanced && paginate(listAdvanced || list, 10, page + 1).length > 0 && (
               <LoadMoreContent>
                 <Button
                   variant="contained"
@@ -454,15 +459,14 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                 </Button>
               </LoadMoreContent>
             )}
-            {!paginate(listAdvanced || list, total, 0).length && (
+            {!loadingAdvanced && !paginate(listAdvanced || list, total, 0).length && (
               <EmptyState
                 icon={<EmptyStateSearchIcon />}
                 title="no.result"
                 text="search.no.result"
               />
             )}
-          </>
-        )}                       
+          </>                             
       </div>
     </div>
   );

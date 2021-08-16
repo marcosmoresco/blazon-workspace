@@ -74,6 +74,7 @@ class Head extends React.Component {
               disabled={disabled}                     
               indeterminate={numSelected > 0 && numSelected < rowCount}
               value={isChecked()}
+              checked={isChecked()}
               onChange={onSelectAllClick}
               inputProps={{ 'aria-label': 'select all desserts' }}
             />

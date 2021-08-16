@@ -2,12 +2,16 @@
 import React, { FC, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
+import { useDispatch } from "react-redux";
+import apolloClient from "@utils/apollo-client";
+import { addMessage } from "@actions/index";
 
 import { FormattedMessage, injectIntl } from "react-intl";
 import { connect } from "react-redux";
 
 //queries
 import { GET_REQUESTS } from "../queries";
+import { GET_CANCEL_REQUEST } from "@modules/Requests/Detail/queries";
 
 // types
 import { Request } from "../types";
@@ -16,8 +20,11 @@ import { Request } from "../types";
 import Card from "@components/Card";
 import DataGrid from "@components/DataGrid";
 import Filter from "@components/Filter";
+import Button from "@components/Button";
 import ArrowsOutIcon from "@icons/ArrowsOut";
 import ArrowClockwiseIcon from "@icons/ArrowClockwise";
+import XCircleIcon from "@icons/XCircle";
+import { confirm } from "@components/Dialog/actions";
 
 import Tag from "@icons/Tag";
 import CaretRight from "@icons/CaretRight";
@@ -41,11 +48,73 @@ import EmptyStateImage from "@images/EmptyStateRequests.svg";
 
 const Tasks: FC<RequestsTableProps> = ({ intl }) => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [queryFilters, setQueryFilters] = useState({
     page: 0,
     size: 100,      
     filters: ""
   });
+
+  const cancel = async () => {
+
+    const result = await confirm(
+      intl.formatMessage({
+        id: "request.cancel.title",
+      }),
+      intl.formatMessage({
+        id: "request.cancel.text",
+      }),
+      <XCircleIcon width={48} height={48} color="#FF134A"/>
+    );
+
+    if (result) {      
+
+      const promises = [];
+      const cancelListError = [];
+
+      for( const requestId of selecteds ) {
+        promises.push(
+          apolloClient
+          .query({
+            query: GET_CANCEL_REQUEST,
+            variables: {
+              id: requestId,
+            },
+          })
+          .catch(() => {
+            cancelListError.push(requestId);            
+          }));
+      }
+
+      Promise.all(promises)
+        .then(() => {
+          if(cancelListError.length) {
+            dispatch(
+              addMessage(
+                intl.formatMessage({
+                  id: "requests.cancel.error",
+                }),
+                "error"
+              )
+            );
+          } else {
+            dispatch(
+              addMessage(
+                intl.formatMessage({
+                  id: "requests.cancel.success",
+                })
+              )
+            );
+            search({
+              currentDate: new Date().getTime()
+            });
+            if(callbackClear) {
+              callbackClear(true);
+            }            
+          }          
+        });                
+    }
+  };
 
   const search = (filters?: any) => {
     setQueryFilters({
@@ -57,13 +126,13 @@ const Tasks: FC<RequestsTableProps> = ({ intl }) => {
     });
   };
 
-  const [callbackClear, setCallbackClear] = useState({ execute: () => {} });
+  const [callbackClear, setCallbackClear] = useState(() => (clear: boolean) => {} );
   const [selecteds, setSelecteds] = useState([]);
   const [expandAll, setExpandAll] = useState(false); 
 
-  const handleSelected = (selecteds: any, callbackClear: any) => {
-    setCallbackClear(callbackClear);
+  const handleSelected = (selecteds: any, callbackClearSelected: any) => {    
     setSelecteds(selecteds);
+    setCallbackClear(() => callbackClearSelected);
   };
 
   const handleClickRow = (request: Request) => {
@@ -94,6 +163,18 @@ const Tasks: FC<RequestsTableProps> = ({ intl }) => {
     );
   };
 
+  const actions = (
+    <React.Fragment>        
+      <Button         
+        variant="rounded" 
+        color="secondary"       
+        onClick={cancel}
+        isLoading={0}>
+        <FormattedMessage id="app.cancel"/>
+      </Button>
+    </React.Fragment>
+  )
+
   return (
     <div className="Default-content">
       <Card>
@@ -112,7 +193,8 @@ const Tasks: FC<RequestsTableProps> = ({ intl }) => {
           </div>
         </div>
         <div>
-          <DataGrid    
+          <DataGrid 
+            actions={actions}   
             emptyStateImage={EmptyStateImage} 
             defaultOrderBy="createDate:desc"                
             query={GET_REQUESTS}
@@ -129,6 +211,7 @@ const Tasks: FC<RequestsTableProps> = ({ intl }) => {
             expandOnClick
             expandAll={expandAll}
             selectable
+            disabledCheckboxItem={(item: any) => !["NEW", "WAITING_EXECUTION", "WAITING_APPROVAL"].includes(item.status)}
             type="pagination"
           />
         </div>

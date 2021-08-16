@@ -37,7 +37,7 @@ function Alert(props: any) {
         if (messagesQueued.indexOf(m.id) === -1) {
           enqueueSnackbar(m.message, {
             variant: m.type,
-            autoHideDuration: 300000,          
+            autoHideDuration: 3000,          
             key: m.id,
             content: <Box>
               <Header>
