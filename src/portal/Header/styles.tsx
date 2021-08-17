@@ -30,8 +30,8 @@ export const useStyles = (theme: Theme) =>
     menuLogo: {
       cursor: 'pointer',
       '& img': {
-        maxWidth: 90,
-        maxHeight: 30
+        maxWidth: 180,
+        maxHeight: 90
       }      
     },
     menuOptionsContent: {
