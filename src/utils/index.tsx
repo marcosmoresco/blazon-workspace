@@ -41,7 +41,11 @@ interface Link {
 
 export const getLink = (rel: string, links: Link[]): string => {
   const searched: Link[] = links.filter((l: Link) => l.rel === rel);  
-  return (searched?.length && searched[0].href) || "";
+  let link = (searched?.length && searched[0].href) || "";
+  if(rel === "thumb" && link) {
+    link = `/api/images?url=${link}${link.indexOf("thumb") > -1 ? "&type=binary" : ""}`;
+  }
+  return link;
 };
 
 export function paginate<T>(array: T[], size: number, page: number): T[] {

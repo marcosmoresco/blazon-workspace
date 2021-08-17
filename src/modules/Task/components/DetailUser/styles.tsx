@@ -6,7 +6,7 @@ export const Header = styled.div`
   background: #1B202A;
   border-radius: 8px;
   width: 570px;
-  height: 166px;
+  min-height: 166px;
   display: flex;
   padding-left: 20px;
 `;
