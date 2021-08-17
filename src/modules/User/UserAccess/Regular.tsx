@@ -111,7 +111,7 @@ const Regular = ({ classes }) => {
       </div>
       <div>
         <DataGrid
-          emptyState={EmptyStateImage}
+          emptyStateImage={EmptyStateImage}
           query={GET_USER_ACCOUNTS}
           queryFilters={queryFilters}
           getResponseLinks={(data: any) => data?.getUserAccounts?.links}
