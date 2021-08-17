@@ -265,7 +265,7 @@ const Administrative = ({ classes }) => {
             getResponse={(data: any) => data?.getUserAccounts?.accounts}
             height={600}
             columns={columns({ classes })}
-            page={1}
+            page={0}
             size={25}
             rowsPerPageList={[25, 50, 75, 100]}
             handleClick={handleClickRow}

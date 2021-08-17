@@ -454,7 +454,7 @@ const Shared = ({ classes }) => {
           getResponse={(data: any) => data?.getUserAccounts?.accounts}
           height={600}
           columns={columns({ classes })}
-          page={1}
+          page={0}
           size={100}
           handleClick={handleClickRow}
           type="pagination"

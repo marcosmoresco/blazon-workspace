@@ -94,7 +94,7 @@ const Entitlement = ({ classes }) => {
           queryFilters={queryFilters}
           height={600}          
           columns={columns({ classes })}
-          page={1}
+          page={0}
           size={100}
           rowsPerPageList={[25, 50, 75, 100]}
           handleClick={() => {}}
