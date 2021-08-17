@@ -50,11 +50,11 @@ const columns = ({ classes }) => [
     sortable: false,
     renderCell: () => {
       return (
-        <Button color="primary" variant="contained">
-          <FormattedMessage id="profile.accounts.application.requestCredentials" />
-        </Button>
-      )
-    }
+        <div className={classes.actionIcon}>
+          <ShareIcon height={28} width={28} />
+        </div>
+      );
+    },    
   }
 ]
 
