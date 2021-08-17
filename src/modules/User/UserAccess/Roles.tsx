@@ -1,9 +1,8 @@
 import React, { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client";
 import CardScreen from "@components/CardScreen";
-import User from "@icons/User";
+import Filter from "@components/Filter";
 import DataGrid from "@components/DataGrid";
 import { useStyles } from "./styles";
 import { withStyles } from "@material-ui/core/styles";
@@ -24,7 +23,7 @@ const filters = [
   {
     name: "name",
     label: <FormattedMessage id="name" />,
-    type: "string",
+    type: "text",
   },
 ];
 
@@ -57,7 +56,13 @@ const Roles = ({ classes }) => {
       title="roles"          
       onBack={() => router.push("/profile")}
       hierarchy={hierarchy}
-    >      
+    >    
+     <div className="Default-header-filter">
+        <Filter
+          filters={filters}
+          onChange={(filters: any) => search(filters)}
+        />        
+      </div>  
       <div>
         <DataGrid
           emptyStateImage={EmptyStateImage}

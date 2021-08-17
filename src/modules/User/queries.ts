@@ -20,8 +20,13 @@ export const GET_FORM_DATAS = gql`
 `;
 
 export const GET_USER_ROLES = gql`
-  query getUserRoles($page: Int, $size: Int, $ord: String) {
-    getRepresentation: getUserRoles(page: $page, size: $size, ord: $ord) {
+  query getUserRoles($page: Int, $size: Int, $ord: String, $filters: String) {
+    getRepresentation: getUserRoles(
+      page: $page
+      size: $size
+      ord: $ord
+      filters: $filters
+    ) {
       roles {
         name
       }

@@ -15,9 +15,7 @@ import Paper from '@material-ui/core/Paper'
 import Popper from '@material-ui/core/Popper'
 import Avatar from '@material-ui/core/Avatar'
 import Button from '@material-ui/core/Button'
-import Switch from '@material-ui/core/Switch'
 import Link from '@material-ui/core/Link'
-import Logo from '../../logo.svg'
 
 import RequestsIcon from '@icons/Requests'
 import KeyIcon from '@icons/Key'
@@ -78,7 +76,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
         <Toolbar className={classes.toolBar}>
           <div className={classes.logoSearchInput}>
             <div className='pointer' onClick={() => router.push('/')}>
-              <Image src={Logo} alt='Logo' />
+              <img src="/api/logo" alt="Logo" />
             </div>
             {!['/search', '/checkout', '/checkout-finishing', '/checkout-finished'].includes(router.pathname) && (
               <HeaderAutocomplete classes={classes} />

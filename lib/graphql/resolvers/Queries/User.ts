@@ -31,18 +31,14 @@ export const UserQueries = {
   },
   getUserRoles: async (parent: any, args: any, context: any) => {
     try {
-      const user = await axios.get(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/directory/users/${context.req?.session?.passport?.user?.id}`,
-        { ...config(context) }
-      );
-
+           
       const roles = await axios.post(
         `${
           process.env.SERVER_HOST
         }/blazon-workspace-backend/workspace/directory/roles/user?page=${
           args?.page
         }&size=${args?.size}${args?.ord ? `&ord=${args.ord}` : ""}`,
-        { username: user?.data?.username },
+        { ...JSON.parse(args?.filters || "{}") },
         { ...config(context) }
       );
       return roles.data;

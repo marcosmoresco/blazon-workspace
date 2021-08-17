@@ -15,7 +15,7 @@ export type CartActionType = {
 };
 
 export type CartProps = {
-  removeCartItem: any;
+  removeCartItem?: any;
   cart: any;
 };
 

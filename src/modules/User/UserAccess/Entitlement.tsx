@@ -1,9 +1,7 @@
 import React, { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useRouter } from "next/router";
-import { useQuery } from "@apollo/client";
 import CardScreen from "@components/CardScreen";
-import User from "@icons/User";
 import DataGrid from "@components/DataGrid";
 import Filter from "@components/Filter";
 import { useStyles } from "./styles";

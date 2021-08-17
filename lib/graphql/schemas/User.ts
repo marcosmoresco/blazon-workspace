@@ -36,7 +36,7 @@ export const User = `
 export const Queries = `
   getUserFullText(q: String, size: Int): [User]
   getUserEntitlements(page: Int, size: Int, ord: String, filters: String): UserEntitlementsRepresentation
-  getUserRoles(page: Int, size: Int, ord: String): UserRolesRepresentation
+  getUserRoles(page: Int, size: Int, ord: String, filters: String): UserRolesRepresentation
   getUserAccounts(page: Int, size: Int, ord: String, filters: String): UserAccountsRepresentation
   getUserSharedAccountMembers(id: String): [User]
 `;

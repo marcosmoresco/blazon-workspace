@@ -11,7 +11,7 @@ export default async function handler(req: any, res: NextApiResponse) {
 
   if (type === "binary") {
     const response = await axios.get(url, { responseType: 'arraybuffer' });    
-    var buff = new Buffer(response.data);   
+    const buff = new Buffer(response.data);   
     res.writeHead(200, {
       "Content-Type": "image/png"      
     });          
