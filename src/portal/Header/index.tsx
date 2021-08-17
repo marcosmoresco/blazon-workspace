@@ -75,7 +75,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
       <AppBar position='static' className={classes.root}>
         <Toolbar className={classes.toolBar}>
           <div className={classes.logoSearchInput}>
-            <div className='pointer' onClick={() => router.push('/')}>
+            <div className={classes.menuLogo} onClick={() => router.push('/')}>
               <img src="/api/logo" alt="Logo" />
             </div>
             {!['/search', '/checkout', '/checkout-finishing', '/checkout-finished'].includes(router.pathname) && (

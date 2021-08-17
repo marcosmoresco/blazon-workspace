@@ -27,6 +27,13 @@ export const useStyles = (theme: Theme) =>
         borderRadius: 8
       }
     },
+    menuLogo: {
+      cursor: 'pointer',
+      '& img': {
+        maxWidth: 90,
+        maxHeight: 30
+      }      
+    },
     menuOptionsContent: {
       display: 'flex',
       alignItems: 'center'
