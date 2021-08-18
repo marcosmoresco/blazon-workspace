@@ -169,8 +169,7 @@ const ShareDialog = ({ modalOpen, setModalOpen, currentSelected, classes }) => {
           open={modalOpen}
           title={intl.formatMessage({ id: 'profile.accounts.shared' })}
           onClose={() => setModalOpen(false)}
-          onSave={() => {
-            console.log(form.values)
+          onSave={() => {           
             setModalOpen(false)
           }}
           isValid={true}

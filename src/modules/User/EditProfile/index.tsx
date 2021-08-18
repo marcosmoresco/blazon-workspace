@@ -57,6 +57,9 @@ const formik = {
       justification: ''
     }
   },
+  onSubmit: (values: any) => {
+    alert(JSON.stringify(values, null, 2))
+  },
   validationSchema,
   enableReinitialize: true,
   isInitialValid: false
@@ -140,7 +143,7 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
   const [user, thumb] = useUser();
   const router = useRouter();
 
-  const formik = {
+  const formikUser = {
     initialValues: { user },
     validationSchema: {},
     onSubmit: (values: any) => {
@@ -150,7 +153,7 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
   };
 
   const categorizedFields = {} as any;
-
+  const schema: {[key: string]: any} = {}; 
   if (!loading && !error) {
     const formData = JSON.parse(data?.getModifyEntry);
 
@@ -171,10 +174,28 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
             value,
             type: value.displayType === "STRING" ? "text" : value.displayType === "NUMBER" ? "number" : "text",
           });
+          const yupObject = Yup
+          .string()
+            .required(
+              intl.formatMessage({
+                id: "isRequired"                      
+              }, {
+                field: value.label
+              })
+            ); 
+          schema[value.name] = yupObject; 
         }
       });
     });
   }
+
+  const validationSchemaUser = Yup.object({
+    instance: Yup.object({
+      ...schema
+    })    
+  });
+
+  formikUser.validationSchema = validationSchemaUser;
 
   return (
     <>
@@ -192,113 +213,118 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
         }}
       >
         <EditAvatar onCrop={(t: string) => setThumbChanged(t)}/>
-      </Dialog>
+      </Dialog>  
       <Dialog
-        open={modalOpenUpdate}
-        onClose={() => setModalOpen(false)}
+        onClose={() => setModalOpenUpdate(false)}
+        open={modalOpenUpdate}        
         title={intl.formatMessage({ id: 'user' })}
         onSave={() => {         
-         
+          form.submitForm();
         }}
-        isValid={form?.isValid}
-      >
+        isValid={true}
+      >        
         <CreateRequestDialog />
-      </Dialog>
+      </Dialog>    
       <Formik
-        {...formik}
+        {...formikUser}
         render={(form) => {
           return (
-            <CardScreen
-              loading={!user}
-              title="profile"
-              subTitle="profileedit.title"
-              icon={<PersonOutline />}
-              onBack={() => router.push("/profile")}
-              actions={
-                <div>
-                  <Button
-                    onClick={() => setModalOpenUpdate(true)}
-                    color="primary"
-                    variant="contained"
-                  >
-                    {intl.formatMessage({ id: "save" })}
-                  </Button>
-                </div>
-              }
-            >
-              <div className={classes.header}>
-                <div className={classes.title}>
-                  {intl.formatMessage({ id: `profileedit.title` })}
-                </div>
-                <div className={classes.description}>
-                  {intl.formatMessage({ id: `profileedit.description` })}
-                </div>
-              </div>
-              <Divider />
-
-              <div className={classes.userHeader}>
-                <div className={classes.userHeaderBg}>
-                  <div
-                    className={`${classes.avatarAction} pointer`}
-                    onClick={() => setModalOpen(true)}
-                  >
-                    <CameraIcon />
-                  </div>
-                  <Avatar src={thumbUpdated || thumb} className={classes.avatar}></Avatar>
-                </div>
-              </div>
-
-              <StyledForm className={classes.formControl}>
-                {Object.keys(categorizedFields).map((key, index) => (
-                  <>
-                    <div
-                      className={`${classes.category} ${
-                        (index > 0 && "Top") || ""
-                      }`}
+            <>
+              <CardScreen
+                loading={!user}
+                title="profile"
+                subTitle="profileedit.title"
+                icon={<PersonOutline />}
+                onBack={() => router.push("/profile")}
+                actions={
+                  <div>
+                    <Button
+                      onClick={() => {
+                        console.log(form);
+                        setModalOpenUpdate(true);
+                      }}
+                      color="primary"
+                      variant="contained"
                     >
-                      {key}
+                      {intl.formatMessage({ id: "save" })}
+                    </Button>
+                  </div>
+                }
+              >
+                <div className={classes.header}>
+                  <div className={classes.title}>
+                    {intl.formatMessage({ id: `profileedit.title` })}
+                  </div>
+                  <div className={classes.description}>
+                    {intl.formatMessage({ id: `profileedit.description` })}
+                  </div>
+                </div>
+                <Divider />
+
+                <div className={classes.userHeader}>
+                  <div className={classes.userHeaderBg}>
+                    <div
+                      className={`${classes.avatarAction} pointer`}
+                      onClick={() => setModalOpen(true)}
+                    >
+                      <CameraIcon />
                     </div>
-                    {categorizedFields[key].map((field: any, key: any) => {
-                      const fieldValue = get(form.values, field.name);                           
-                       if (field.value.displayType === "DATE") {
-                        return (
+                    <Avatar src={thumbUpdated || thumb} className={classes.avatar}></Avatar>
+                  </div>
+                </div>
+
+                <StyledForm className={classes.formControl}>
+                  {Object.keys(categorizedFields).map((key, index) => (
+                    <>
+                      <div
+                        className={`${classes.category} ${
+                          (index > 0 && "Top") || ""
+                        }`}
+                      >
+                        {key}
+                      </div>
+                      {categorizedFields[key].map((field: any, key: any) => {
+                        const fieldValue = get(form.values, field.name);                           
+                        if (field.value.displayType === "DATE") {
+                          return (
+                            <StyledFormElement>
+                              <DatePicker
+                                {...field}
+                                key={key}
+                                value={fieldValue || field.defaultValue}
+                                onChange={(value: string) => console.log(value)}
+                              />
+                            </StyledFormElement>                          
+                          );
+                        } else if(field.value.displayType === "CHECKBOX") {
+                          return (
                           <StyledFormElement>
-                            <DatePicker
-                              {...field}
-                              key={key}
-                              value={fieldValue || field.defaultValue}
-                              onChange={(value: string) => console.log(value)}
+                            <Switch  
+                              {...field}  
+                              key={key}                                          
+                              value={fieldValue || field.defaultValue}                                   
                             />
-                          </StyledFormElement>                          
-                        );
-                      } else if(field.value.displayType === "CHECKBOX") {
-                        return (
-                        <StyledFormElement>
-                          <Switch  
-                            {...field}  
-                            key={key}                                          
-                            value={fieldValue || field.defaultValue}                                   
-                          />
-                        </StyledFormElement>                        
-                        );
-                      } else {
-                        return (
-                          <StyledFormElement>
-                            <TextField
-                              form={form}
-                              {...field}
-                              value={fieldValue}
-                              key={key}
-                              placeholder="profileeditform.field.placeholder"
-                            />
-                          </StyledFormElement>                          
-                        );
-                      }                                     
-                    })}
-                  </>
-                ))}
-              </StyledForm>
-            </CardScreen>
+                          </StyledFormElement>                        
+                          );
+                        } else {
+                          return (
+                            <StyledFormElement>
+                              <TextField
+                                form={form}
+                                {...field}
+                                value={fieldValue}
+                                key={key}
+                                placeholder="profileeditform.field.placeholder"
+                              />
+                            </StyledFormElement>                          
+                          );
+                        }                                     
+                      })}
+                    </>
+                  ))}
+                </StyledForm>
+              </CardScreen>             
+            </>
           );
         }}
       />

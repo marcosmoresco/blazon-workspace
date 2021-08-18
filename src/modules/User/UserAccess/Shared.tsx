@@ -369,7 +369,6 @@ const ShareDialog = ({ modalOpen, setModalOpen, currentSelected, classes }) => {
           title={intl.formatMessage({ id: "profile.accounts.shared" })}
           saveLabel={intl.formatMessage({ id: "shareddialog.grid.share" })}
           onClose={() => setModalOpen(false)}
-
           isValid={true}
           noActions
         >
