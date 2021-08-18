@@ -85,4 +85,16 @@ export const UserMutations = {
       throw error;
     }
   },
+  updateUser: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.put(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/directory/users/${context.req?.session?.passport?.user?.id}`,
+        {payload: args?.payload},
+        { ...config(context)}
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

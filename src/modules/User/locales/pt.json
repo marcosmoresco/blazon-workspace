@@ -26,6 +26,7 @@
   "profile.edit.avatar.dialog.title": "Trocar foto do perfil",
   "profile.edit.avatar.dialog.description": "Clique acima para fazer upload de uma imagem png ou jpg.",
   "profile.edit.avatar.success": "Imagem do usuário alterada com sucesso!",
+  "profile.edit.success": "Usuário alterado com sucesso!",
 
   "profile.edit": "Editar informações",
   "profileeditform.risk": "Risco",

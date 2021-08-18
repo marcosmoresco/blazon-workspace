@@ -51,3 +51,9 @@ export const CHECKOUT_ADMIN_ACCOUNT = gql`
     checkoutAdminAccount(payload: $payload)
   }
 `;
+
+export const UPDATE_USER = gql`
+  mutation updateUser($payload: String) {
+    updateUser(payload: $payload)
+  }
+`;

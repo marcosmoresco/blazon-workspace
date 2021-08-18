@@ -48,4 +48,5 @@ export const Mutations = `
   changeUserThumb(thumb: String): Boolean
   changePassword(currentPassword: String, newPassword: String, newPasswordConfirm: String): Boolean
   checkoutAdminAccount(payload: String): Boolean
+  updateUser(payload: String): Boolean
 `;

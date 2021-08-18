@@ -28,6 +28,7 @@ export const GET_USER_ROLES = gql`
       filters: $filters
     ) {
       roles {
+        identifier
         name
       }
       links {

@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { injectIntl, IntlShape, useIntl, FormattedMessage } from "react-intl";
-import { Form, Formik, withFormik, useFormikContext } from "formik";
+import { Form, Formik, useFormikContext } from "formik";
 import { useQuery, useMutation } from "@apollo/client";
 import { parse, format } from "date-fns";
 import useStyles from "./styles";
@@ -23,7 +23,8 @@ import { GET_FORM_DATAS } from "@modules/User/queries";
 import { useDispatch } from "react-redux";
 import { addMessage } from "@actions/index";
 import {
- CHANGE_USER_THUMB
+ CHANGE_USER_THUMB,
+ UPDATE_USER
 } from "@modules/User/mutations";
 
 type EditProfileProps = {
@@ -43,61 +44,6 @@ export const StyledFormElement = withStyles(() => ({
   },
 }))((props: any) => <Box className={props.classes.root}>{props.children}</Box>);
 
-const validationSchema = Yup.object({
-  applicationDialog: Yup.object({
-    effectiveDate: Yup.string(),
-    justification: Yup.string().required(<FormattedMessage id="applicationdialog.justification.required" />)
-  })
-})
-
-const formik = {
-  initialValues: {
-    applicationDialog: {
-      effectiveDate: undefined,
-      justification: ''
-    }
-  },
-  onSubmit: (values: any) => {
-    alert(JSON.stringify(values, null, 2))
-  },
-  validationSchema,
-  enableReinitialize: true,
-  isInitialValid: false
-}
-
-const CreateRequestDialog = () => {
-  const form = useFormikContext()
-  const intl = useIntl()
-  return (
-    <div className='modal'>
-      <div className='modal-section'>
-        {intl.formatMessage({ id: 'profile.edit' })}
-      </div>
-      <div className='modal-description'>
-        {intl.formatMessage({ id: 'applicationdialog.dialog.description' })}
-      </div>
-      <div className='pt48'></div>
-      <DatePicker
-        label={intl.formatMessage({
-          id: 'applicationdialog.dialog.effectiveDate'
-        })}
-        name='applicationDialog.effectiveDate'
-        onChange={(value) => {
-          form.setFieldValue('applicationDialog.effectiveDate', value)
-        }}
-      />
-      <div className='pt22'></div>
-      <TextField
-        form={form}
-        name='applicationDialog.justification'
-        multiline
-        rows={3}
-        rowsMax={4}
-      />
-    </div>
-  )
-}
-
 const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
 
   const dispatch = useDispatch();
@@ -111,7 +57,7 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
   }[];
 
   const [changeUserThumb, {}] = useMutation(CHANGE_USER_THUMB, {   
-    onCompleted: ({changeUserThumb}) => {   
+    onCompleted: ({changeUserThumb} : {changeUserThumb: any}) => {   
       if(changeUserThumb) {
         dispatch(
           addMessage(
@@ -120,6 +66,18 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
         );  
         setThumbUpdated(thumbChanged);                   
         setModalOpen(false);
+      }        
+    },
+  });
+
+  const [updateUser, {}] = useMutation(UPDATE_USER, {   
+    onCompleted: ({updateUser} : {updateUser: any}) => {   
+      if(updateUser) {
+        dispatch(
+          addMessage(
+            intl.formatMessage({id: "profile.edit.success"})
+          )
+        );        
       }        
     },
   });
@@ -144,10 +102,14 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
   const router = useRouter();
 
   const formikUser = {
-    initialValues: { user },
+    initialValues: { profileeditform: user },
     validationSchema: {},
-    onSubmit: (values: any) => {
-      console.log(values);
+    onSubmit: (values: any) => {         
+      updateUser({
+        variables: {
+          payload: JSON.stringify(values.profileeditform)
+        }
+      });  
     },
     enableReinitialize: true,
   };
@@ -163,7 +125,7 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
       forOwn(categoryValue, function (value, key) {
         if (["STRING", "NUMBER", "DATE", "CHECKBOX"].includes(value.displayType)) {                           
           categorizedFields[categoryKey].push({
-            name: `profileeditform.${key}`,
+            name: `profileeditform.${value.name}`,
             label: value.label,
             defaultValue:
               value.displayType === "DATE" && value.value 
@@ -174,28 +136,34 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
             value,
             type: value.displayType === "STRING" ? "text" : value.displayType === "NUMBER" ? "number" : "text",
           });
-          const yupObject = Yup
-          .string()
-            .required(
-              intl.formatMessage({
-                id: "isRequired"                      
-              }, {
-                field: value.label
-              })
-            ); 
-          schema[value.name] = yupObject; 
+          if(value.required) {
+            const yupObject = Yup
+              .string()
+                .required(
+                  intl.formatMessage({
+                    id: "isRequired"                      
+                  }, {
+                    field: value.label
+                  })
+                ); 
+            schema[value.name] = yupObject; 
+          } else {
+            const yupObject = Yup
+              .string();
+            schema[value.name] = yupObject;
+          }          
         }
       });
     });
   }
 
   const validationSchemaUser = Yup.object({
-    instance: Yup.object({
+    profileeditform: Yup.object({
       ...schema
     })    
   });
 
-  formikUser.validationSchema = validationSchemaUser;
+  formikUser.validationSchema = validationSchemaUser;  
 
   return (
     <>
@@ -213,21 +181,10 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
         }}
       >
         <EditAvatar onCrop={(t: string) => setThumbChanged(t)}/>
-      </Dialog>  
-      <Dialog
-        onClose={() => setModalOpenUpdate(false)}
-        open={modalOpenUpdate}        
-        title={intl.formatMessage({ id: 'user' })}
-        onSave={() => {         
-          form.submitForm();
-        }}
-        isValid={true}
-      >        
-        <CreateRequestDialog />
-      </Dialog>    
+      </Dialog>           
       <Formik
         {...formikUser}
-        render={(form) => {
+        render={(form: any) => {
           return (
             <>
               <CardScreen
@@ -240,8 +197,7 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
                   <div>
                     <Button
                       onClick={() => {
-                        console.log(form);
-                        setModalOpenUpdate(true);
+                        form.submitForm();                       
                       }}
                       color="primary"
                       variant="contained"
@@ -284,7 +240,12 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
                         {key}
                       </div>
                       {categorizedFields[key].map((field: any, key: any) => {
-                        const fieldValue = get(form.values, field.name);                           
+                        const fieldValue = get(form.values.profileeditform, field.name);                                                                             
+                        let currentError = null;
+                        if(["DATE"].includes(field.value.displayType)) {                    
+                          currentError = (!form?.values?.profileeditform || !form?.values?.profileeditform[field.name]) && form?.errors?.profileeditform && form?.errors?.profileeditform[field.name];
+                        }                       
+
                         if (field.value.displayType === "DATE") {
                           return (
                             <StyledFormElement>
@@ -293,6 +254,8 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
                                 key={key}
                                 value={fieldValue || field.defaultValue}
                                 onChange={(value: string) => console.log(value)}
+                                helperText={currentError}
+                                error={Boolean(currentError) && !Boolean(form?.values?.profileeditform[field.name])}
                               />
                             </StyledFormElement>                          
                           );
@@ -332,4 +295,4 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
   );
 };
 
-export default withStyles(useStyles)(withFormik(formik)(injectIntl(EditProfile)));
+export default withStyles(useStyles)(injectIntl(EditProfile));
