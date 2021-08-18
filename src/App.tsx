@@ -1,7 +1,5 @@
 import React, { FC } from "react";
 import { ThemeProvider } from "@material-ui/core/styles";
-import Header from "./portal/Header";
-import Footer from "./portal/Footer";
 import { useTheme, themes } from "./theme";
 
 export type AppProps = {
@@ -13,10 +11,8 @@ const App: FC<AppProps> = ({ children }) => {
   const currentTheme = { ...themes[theme] };
 
   return (
-    <ThemeProvider theme={currentTheme}>
-      <Header />
-      {children}
-      <Footer />
+    <ThemeProvider theme={currentTheme}>      
+      {children}      
     </ThemeProvider>
   );
 };

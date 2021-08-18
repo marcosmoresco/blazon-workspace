@@ -1,5 +1,5 @@
 module.exports = {
-  reactStrictMode: true,
+  reactStrictMode: false,
   distDir: 'build',
   i18n: {
     // These are all the locales you want to support in

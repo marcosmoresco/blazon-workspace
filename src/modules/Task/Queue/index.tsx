@@ -136,7 +136,7 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
       setFiltersTask(generateFilters(intl, dataFilters?.getFilters || []))
     }
 
-    if(currentFilters !== JSON.stringify(dataFilters?.getFilters)) {
+    if(currentFilters !== JSON.stringify(dataFilters?.getFilters) && filtersTask.length) {
       setFiltersTask([]);
     }
    

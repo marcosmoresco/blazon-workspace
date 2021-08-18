@@ -1,7 +1,7 @@
 import React, { FC, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { injectIntl, IntlShape, useIntl, FormattedMessage } from "react-intl";
-import { Form, Formik, useFormikContext } from "formik";
+import { injectIntl, IntlShape } from "react-intl";
+import { Form, Formik } from "formik";
 import { useQuery, useMutation } from "@apollo/client";
 import { parse, format } from "date-fns";
 import useStyles from "./styles";
@@ -48,14 +48,6 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
 
   const dispatch = useDispatch();
 
-  const form = useFormikContext();
-
-  const fields = [] as {
-    name: string;
-    value: any;
-    type: string;
-  }[];
-
   const [changeUserThumb, {}] = useMutation(CHANGE_USER_THUMB, {   
     onCompleted: ({changeUserThumb} : {changeUserThumb: any}) => {   
       if(changeUserThumb) {
@@ -94,7 +86,6 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
   }
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [modalOpenUpdate, setModalOpenUpdate] = useState(false);
   const [thumbChanged, setThumbChanged] = useState("");
   const [thumbUpdated, setThumbUpdated] = useState("");
 
@@ -104,10 +95,12 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
   const formikUser = {
     initialValues: { profileeditform: user },
     validationSchema: {},
-    onSubmit: (values: any) => {         
+    onSubmit: (values: any) => {   
+      const payload = values.profileeditform;
+      delete payload.links;    
       updateUser({
         variables: {
-          payload: JSON.stringify(values.profileeditform)
+          payload: JSON.stringify(payload)
         }
       });  
     },

@@ -94,6 +94,7 @@
   "isRequired": "{field} is required",
   "justification": "Justification",
   "effectiveDate": "Effective date",
+  "effectivedAt": "Effectived at",
   "home": "Home",
   "password": "Password",
   "newPassword": "New password",

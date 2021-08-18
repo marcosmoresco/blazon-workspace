@@ -94,6 +94,7 @@
   "isRequired": "{field} é obrigatório",
   "justification": "Justificativa",
   "effectiveDate": "Data de efetivação",
+  "effectivedAt": "Efetivado em",
   "home": "Início",
   "password": "Senha",
   "newPassword": "Nova senha",

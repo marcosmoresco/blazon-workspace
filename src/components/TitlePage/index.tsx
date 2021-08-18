@@ -64,7 +64,7 @@ const TitlePage: React.FC<TitleProps> = ({
               <HouseSimpleIcon width={23} height={23} color="#3174F6"/>
               <FormattedMessage id="home" />
             </Link> 
-            {getHierarchy(intl, hierarchy).map((h: React.ReactNode) => h)}                               
+            {getHierarchy(intl, hierarchy).map((h: React.ReactNode, index: number) => <div key={`title-page-${index}`}>{h}</div>)}                               
           </Breadcrumbs>
           <HeaderTitle>
             {onBack && (

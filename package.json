@@ -7,7 +7,7 @@
     "hom": "env-cmd -f .env.staging nodemon",
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
-    "start": "env-cmd -f config/.env ts-node --project tsconfig.server.json server.ts",    
+    "start": "env-cmd -f config/.env ts-node --project tsconfig.server.json server.ts",
     "prd": "next build && env-cmd -f .env.production ts-node --project tsconfig.server.json server.ts"
   },
   "dependencies": {
@@ -53,6 +53,7 @@
   },
   "devDependencies": {
     "@types/react": "17.0.11",
+    "babel-plugin-styled-components": "^1.13.2",
     "chalk": "^4.1.1",
     "cors": "^2.8.5",
     "env-cmd": "^10.1.0",
