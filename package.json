@@ -3,11 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
+    "lint": "next lint",
     "hom": "env-cmd -f .env.staging nodemon",
     "dev": "NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint",
+    "start": "env-cmd -f config/.env ts-node --project tsconfig.server.json server.ts",    
     "prd": "next build && env-cmd -f .env.production ts-node --project tsconfig.server.json server.ts"
   },
   "dependencies": {
