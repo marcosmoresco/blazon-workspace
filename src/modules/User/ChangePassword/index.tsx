@@ -8,6 +8,7 @@ import Box from "@material-ui/core/Box";
 import PasswordField from "@components/PasswordField";
 import CardScreen from "@components/CardScreen";
 import Button from "@components/Button";
+import Loading from "@components/Loading";
 import { Divider } from "@material-ui/core";
 import User from "@icons/User";
 import { useRouter } from "next/router";
@@ -15,6 +16,7 @@ import { StyledForm } from "../EditProfile";
 import { useMutation } from "@apollo/client";
 import { useDispatch } from "react-redux";
 import { addMessage } from "@actions/index";
+import { useUser } from "@hooks";
 import {
   CHANGE_USER_PASSWORD
 } from "@modules/User/mutations";
@@ -62,6 +64,7 @@ const ChangePassword: FC<ChangePasswordScreenProps> = ({ classes, intl }) => {
   
   const router = useRouter();
   const dispatch = useDispatch();
+  const [user, thumb, {mutate, loading: loadingUser}] = useUser();
 
   const [changeUserPassword, {}] = useMutation(CHANGE_USER_PASSWORD, {    
     onCompleted: ({changeUserPassword}) => {   
@@ -98,47 +101,54 @@ const ChangePassword: FC<ChangePasswordScreenProps> = ({ classes, intl }) => {
   return (
     <Formik
       {...formik}
-      render={(form) => (
-        <CardScreen
-          title="profile"
-          subTitle="changepassword.header.title"
-          icon={<User height={24} width={24} />}
-          onBack={() => router.push("/profile")}
-          actions={
-            <div>
-              <Button
-                type="submit"
-                onClick={form.submitForm}
-                color="primary"
-                variant="contained"
-                disabled={!form?.isValid}
-              >
-                {intl.formatMessage({ id: "save" })}
-              </Button>
-            </div>
-          }
-        >
-          <div className={classes.header}>
-            <div className={classes.title}>
-              {intl.formatMessage({ id: `changepassword.title` })}
-            </div>
-            <div className={classes.description}>
-              {intl.formatMessage({ id: `changepassword.description` })}
-            </div>
-          </div>
-          <Divider />
-
-          <StyledForm className={classes.form}>
-            <PasswordField form={form} name="changePassword.currentPassword" />
-            <StyledFormElement>
-              <PasswordField form={form} name="changePassword.newPassword" />
-            </StyledFormElement>
-            <StyledFormElement>
-              <PasswordField form={form} name="changePassword.newPasswordConfirm" />
-            </StyledFormElement>
-          </StyledForm>
-        </CardScreen>
-      )}
+      render={(form) => {
+        return (
+        <>
+          {loadingUser && (
+            <Loading container/> 
+          )}
+          {!loadingUser && (
+            <CardScreen
+              title="profile"
+              subTitle="changepassword.header.title"
+              icon={<User height={24} width={24} />}
+              onBack={() => router.push("/profile")}
+              actions={
+                <div>
+                  <Button
+                    type="submit"
+                    onClick={form.submitForm}
+                    color="primary"
+                    variant="contained"
+                    disabled={!form?.isValid}
+                  >
+                    {intl.formatMessage({ id: "save" })}
+                  </Button>
+                </div>
+              }
+            >
+              <div className={classes.header}>
+                <div className={classes.title}>
+                  {intl.formatMessage({ id: `changepassword.title` })}
+                </div>
+                <div className={classes.description}>
+                  {intl.formatMessage({ id: `changepassword.description` })}
+                </div>
+              </div>
+              <Divider />         
+              <StyledForm className={classes.form}>
+                <PasswordField key={`user-change-password-currentPassword`} form={form} name="changePassword.currentPassword" />
+                <StyledFormElement>
+                  <PasswordField key={`user-change-password-newPassword`} form={form} name="changePassword.newPassword" />
+                </StyledFormElement>
+                <StyledFormElement>
+                  <PasswordField key={`user-change-password-newPasswordConfirm`} form={form} name="changePassword.newPasswordConfirm" />
+                </StyledFormElement>
+              </StyledForm>
+            </CardScreen>
+          )}          
+        </>);
+      }}
     />
   );
 };

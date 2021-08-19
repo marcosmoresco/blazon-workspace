@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, FC } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
@@ -11,6 +11,7 @@ import Checkbox from "@components/Checkbox";
 import CardScreen from "./CardScreenUntitle";
 import EmptyStateRolesImage from "@images/EmptyStateRoles.svg";
 import { FilterContent } from "./styles";
+import { RolesProps } from "./types";
 
 //queries
 import {
@@ -27,7 +28,7 @@ import {
   RoleRightTaskItems
 } from "@modules/Task/types";
 
-const Roles = () => {
+const Roles: FC<RolesProps>  = ({ task }) => {
   
   const intl = useIntl();
   const dispatch = useDispatch();
@@ -92,7 +93,7 @@ const Roles = () => {
       field: "approvalStatus",
       headerName: <FormattedMessage id="tasks.approved" />,
       sortable: false,
-      renderCell: (row) => <Checkbox value={row.approvalStatus === "APPROVED"} onChange={(val: any) => {
+      renderCell: (row) => <Checkbox disabled={task?.headers?.status === "DONE"} value={row.approvalStatus === "APPROVED"} onChange={(val: any) => {
         const approvalStatus = row.approvalStatus === "APPROVED" ? "DISAPPROVED": "APPROVED";
         setType(approvalStatus);        
         approveRoleRightApprovalTaskItems({

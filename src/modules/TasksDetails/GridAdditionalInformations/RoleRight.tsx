@@ -49,7 +49,7 @@ const GridAdditionalInformationsRoleRight: React.FC<AdditionalInformationsProps>
           <InsideLine />
           <DeitalList>
             <GridArea>
-              <Roles />
+              <Roles task={task}/>
             </GridArea>
           </DeitalList>
         </WorkArea>
