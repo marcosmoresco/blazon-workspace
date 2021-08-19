@@ -16,7 +16,7 @@ export const useStyles = (theme: Theme) =>
       marginRight: "auto",
       paddingLeft: 0,
       paddingRight: 0,
-      gap: 191
+      gap: 83
     },
     logoSearchInput: {
       display: 'flex',
@@ -24,7 +24,7 @@ export const useStyles = (theme: Theme) =>
     },
     searchInput: {
       height: 48,
-      marginLeft: 42,
+      marginLeft: 22,
       width: 600,
       borderRadius: 8,
       backgroundColor: '#FFFFFF',
@@ -35,6 +35,7 @@ export const useStyles = (theme: Theme) =>
     },
     menuLogo: {
       cursor: 'pointer',
+      minWidth: 180,
       '& img': {
         maxWidth: 180,
         maxHeight: 90
@@ -167,6 +168,7 @@ export const HeaderProfileBoxInfo = styled.div`
     font-size: 16px;
     line-height: 16px;
     color: #1B202A;
+    word-break: break-word;
   }
 `;
 
