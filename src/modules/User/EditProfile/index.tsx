@@ -9,7 +9,7 @@ import CardScreen from "@components/CardScreen";
 import Button from "@components/Button";
 import DatePicker from "@components/DatePicker";
 import Switch from "@components/Switch";
-import { PersonOutline } from "@material-ui/icons";
+import { CodeSharp, PersonOutline } from "@material-ui/icons";
 import { Avatar, Divider, Box } from "@material-ui/core";
 import TextField from "@components/TextField";
 import { useRouter } from "next/router";
@@ -96,25 +96,11 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
       }        
     },
   });
-
-  const formikUser = {
-    initialValues: { profileeditform: user },
-    validationSchema: {},
-    onSubmit: (values: any, { resetForm } : { resetForm: any }) => {   
-      const payload = values.profileeditform;
-      delete payload.links;    
-      updateUser({
-        variables: {
-          payload: JSON.stringify(payload)
-        }
-      });  
-      resetForm();
-    },
-    enableReinitialize: true,
-  };
+  
+  const initialValues: {[key: string]: any} = { profileeditform: {} };
 
   const categorizedFields = {} as any;
-  const schema: {[key: string]: any} = {}; 
+  const schema: {[key: string]: any} = {};
   if (!loading && !error) {
     const formData = JSON.parse(data?.getModifyEntry);
 
@@ -122,14 +108,17 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
       categorizedFields[categoryKey] = [] as any;
 
       forOwn(categoryValue, function (value, key) {
-        if (["STRING", "NUMBER", "DATE", "CHECKBOX"].includes(value.displayType)) {                           
+        if (["STRING", "NUMBER", "DATE", "CHECKBOX"].includes(value.displayType)) {  
+
+          const currentValue = value.displayType === "DATE" && value.value 
+          ? format(parse(value.value.replace(/BRST |BRT /, "").substring(4), "MMM dd HH:mm:ss yyyy", new Date()), "dd/MM/yyyy")
+          : value.value;
+                   
+          initialValues.profileeditform[value.name] = currentValue;                                
           categorizedFields[categoryKey].push({
             name: `profileeditform.${value.name}`,
             label: value.label,
-            defaultValue:
-              value.displayType === "DATE" && value.value 
-                ? format(parse(value.value.replace(/BRST |BRT /, "").substring(4), "MMM dd HH:mm:ss yyyy", new Date()), "dd/MM/yyyy")
-                : value.value,
+            defaultValue: currentValue,
             required: value.required,
             disabled: !value.writable,
             value,
@@ -155,6 +144,24 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
       });
     });
   }
+
+  const formikUser = {
+    initialValues: initialValues,
+    validationSchema: {},
+    onSubmit: (values: any, { resetForm } : { resetForm: any }) => {   
+      
+      const payload = values.profileeditform;
+      delete payload.links;
+
+      updateUser({
+        variables: {
+          payload: JSON.stringify(payload)
+        }
+      });
+      resetForm();
+    },
+    enableReinitialize: true,
+  };
 
   const validationSchemaUser = Yup.object({
     profileeditform: Yup.object({
