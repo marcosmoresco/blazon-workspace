@@ -15,6 +15,7 @@ const PasswordField: FC<TextFieldProps> = (props) => {
       <TextField
         {...props}
         type={type}
+        label=""
         endAdornment={
           <InputAdornment position="end">
             <IconButton onClick={() => setShowPassword(!showPassword)}>

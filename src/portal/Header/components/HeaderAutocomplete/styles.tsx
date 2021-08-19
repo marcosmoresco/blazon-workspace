@@ -124,7 +124,7 @@ export const Autocomplete = styled(Paper)({
   boxSizing: "border-box",
   boxShadow: "0px 24px 71px 5px rgb(0 0 0 / 25%)",
   borderRadius: 8,
-  marginTop: 15,  
+  marginTop: 15,
   "& .MuiAutocomplete-option::hover": {
     backgroundColor: "#3174f6 !important",
     "& .Autocomplete-cart": {

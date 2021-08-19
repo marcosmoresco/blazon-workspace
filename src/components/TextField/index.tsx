@@ -55,13 +55,14 @@ const TextField: FC<TextFieldProps> = ({
 
   return (
     <FormControl
-      className={`${classes?.root} ${className || ''} `}
+      className={`${classes?.root} ${className && className || ''} `}
       fullWidth={fullWidth}
     >
       <Label htmlFor={name} hidden={hideLabel}>
         {labelText}
       </Label>
-      <WhiteMuiTextField
+      <MuiTextField
+        label=""
         value={get(values, name)}
         onChange={({ target }: ChangeEvent<HTMLInputElement>) => {
           setFieldValue(name, target.value)

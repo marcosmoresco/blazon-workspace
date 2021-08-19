@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
@@ -34,15 +34,22 @@ const Roles = () => {
   const router = useRouter();
   const { id } = router.query;
 
+  const [list, setList] = useState([]);
+  const [listClearValue, setListClearValue] = useState<boolean>(false);
   const [type, setType] = useState<string>("APPROVED");
 
-  const { loading, error, data, refetch } = useQuery<{
+  const { loading, error, data, refetch, previousData } = useQuery<{
     getRoleRightApprovalTaskItems: RoleRightTaskItems;
   }>(GET_ROLE_RIGHT_APPROVAL_TASK_ITEMS, {
     variables: {
       id: Number(id)
     },
   });
+
+  if(JSON.stringify(data?.getRoleRightApprovalTaskItems.items || []) !== (JSON.stringify(list))) {
+    setListClearValue(true); 
+    setList(data?.getRoleRightApprovalTaskItems?.items || []);
+  } 
 
   const [approveRoleRightApprovalTaskItems, {}] = useMutation(APPROVE_ROLE_RIGHT_APPROVAL_TASK_ITEMS, { 
     refetchQueries: [
@@ -109,11 +116,12 @@ const Roles = () => {
       onBack={() => router.push("/profile")}
     >          
       <div>
-        <DataGrid
-          fetching={loading}
+        <DataGrid   
+          listClear={listClearValue}
+          handleListClear={() => setListClearValue(false)}
           params={{}}
           height={600}
-          list={data?.getRoleRightApprovalTaskItems?.items || []}
+          list={list || []}
           links={[]}
           columns={columns}
           page={1}

@@ -27,6 +27,8 @@ const DataGridBlazon = (props) => {
     size,
     rowsPerPageList, 
     list, 
+    listClear,
+    handleListClear,
     method,
     fetching, 
     links, 
@@ -72,7 +74,10 @@ const DataGridBlazon = (props) => {
   const [currentQueryFilters, setCurrentQueryFilters] = React.useState(""); 
 
   useEffect(() => {  
-    if(!!list) {
+    if(!!list && (!rows.length || listClear)) {
+      if(listClear) {
+        handleListClear();
+      }
       if(!open) {
         setGridLinks(links)
         setIsFetching(fetching)
@@ -105,7 +110,7 @@ const DataGridBlazon = (props) => {
     } else if(expand && props.expandAll !== expandAll) {
       setExpanded([]);
       setExpandAll(props.expandAll);
-    } else if(query && pageParam !== page && (!(rows || []).length) || JSON.stringify(queryFilters) !== currentQueryFilters) {  
+    } else if(query && pageParam !== page && ((!(rows || []).length) || JSON.stringify(queryFilters) !== currentQueryFilters)) {  
       let _queryFilters = {...queryFilters};
       if(defaultOrderBy) {
         _queryFilters = {..._queryFilters, ord: defaultOrderBy};

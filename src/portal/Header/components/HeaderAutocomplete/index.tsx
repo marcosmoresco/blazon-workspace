@@ -7,6 +7,7 @@ import { GET_SELF_SERVICE } from "@portal/Search/queries";
 import { SelfService } from "@portal/Search/types";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
+import Input from '@material-ui/core/Input';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import SearchIcon from "@icons/Search";
 import SharedAccountIcon from "@icons/SharedAccount";
@@ -214,9 +215,10 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
         )}
         renderInput={(params: any) => (
           <TextField
+            key="blazon-workspace-input-search"
             {...params}
             label=""
-            value={filter}
+            value={filter || ""}
             variant="outlined"
             placeholder={intl.formatMessage({id: "search.found.message"})}
             onKeyDown={(event: any) => {
