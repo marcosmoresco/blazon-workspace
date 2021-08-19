@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
 export const WorkArea = styled.div`
-  padding: 0 64px;
+  max-width: 1312px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 export const Grid = styled.div`
   box-shadow: 0px 0px 28px rgba(27, 32, 42, 0.16);

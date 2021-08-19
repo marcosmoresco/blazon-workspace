@@ -10,7 +10,13 @@ export const useStyles = (theme: Theme) =>
       minHeight: 93,
       marginLeft: 65,
       display: 'flex',
-      justifyContent: 'space-between'
+      justifyContent: 'space-between',
+      maxWidth: 1312,
+      marginLeft: "auto",
+      marginRight: "auto",
+      paddingLeft: 0,
+      paddingRight: 0,
+      gap: 191
     },
     logoSearchInput: {
       display: 'flex',
@@ -162,4 +168,10 @@ export const HeaderProfileBoxInfo = styled.div`
     line-height: 16px;
     color: #1B202A;
   }
-`;  
+`;
+
+export const HeaderFixAutocomplete = styled.div`
+  width: 600px;
+  height: 48px;
+  margin-left: 42px;
+`;

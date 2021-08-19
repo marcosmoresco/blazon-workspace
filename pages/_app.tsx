@@ -10,7 +10,6 @@ import Layout from '../src/Layout'
 import '../styles/globals.css'
 import type { LocalesType } from '../src/locales/types'
 import { PortalLocalesPt, PortalLocalesEn } from '../src/portal/locales'
-
 import { ModulesLocalesPt, ModulesLocalesEn } from '../src/modules/locales'
 
 import messages_en from '../src/locales/en.json'

@@ -17,6 +17,7 @@ import CameraIcon from "@icons/Camera";
 import { forOwn, get } from "lodash";
 import { useUser } from "@hooks";
 import Dialog from "@components/Dialog";
+import Loading from "@components/Loading";
 import * as Yup from 'yup'
 import EditAvatar from "./EditAvatar";
 import { GET_FORM_DATAS } from "@modules/User/queries";
@@ -60,19 +61,7 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
         setModalOpen(false);
       }        
     },
-  });
-
-  const [updateUser, {}] = useMutation(UPDATE_USER, {   
-    onCompleted: ({updateUser} : {updateUser: any}) => {   
-      if(updateUser) {
-        dispatch(
-          addMessage(
-            intl.formatMessage({id: "profile.edit.success"})
-          )
-        );        
-      }        
-    },
-  });
+  });  
 
   const { loading, error, data, refetch } = useQuery(GET_FORM_DATAS, {
     variables: {
@@ -81,21 +70,37 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
     },
   });
 
-  if (!loading && !error) {
-    const formData = JSON.parse(data?.getModifyEntry);   
-  }
-
   const [modalOpen, setModalOpen] = useState(false);
   const [thumbChanged, setThumbChanged] = useState("");
   const [thumbUpdated, setThumbUpdated] = useState("");
 
-  const [user, thumb] = useUser();
+  const [user, thumb, {mutate, loading: loadingUser}] = useUser();  
   const router = useRouter();
+
+  const [updateUser, {loading: loadingUpdateUser}] = useMutation(UPDATE_USER, {   
+    refetchQueries: [ {
+      query: GET_FORM_DATAS,
+      variables: {
+        entryId: user?.identifier,
+        schema: "USER",      
+      },
+    }],
+    onCompleted: async ({updateUser} : {updateUser: any}) => {   
+      if(updateUser) {                    
+        dispatch(
+          addMessage(
+            intl.formatMessage({id: "profile.edit.success"})
+          )
+        );        
+        mutate(null);    
+      }        
+    },
+  });
 
   const formikUser = {
     initialValues: { profileeditform: user },
     validationSchema: {},
-    onSubmit: (values: any) => {   
+    onSubmit: (values: any, { resetForm } : { resetForm: any }) => {   
       const payload = values.profileeditform;
       delete payload.links;    
       updateUser({
@@ -103,6 +108,7 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
           payload: JSON.stringify(payload)
         }
       });  
+      resetForm();
     },
     enableReinitialize: true,
   };
@@ -180,106 +186,113 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
         render={(form: any) => {
           return (
             <>
-              <CardScreen
-                loading={!user}
-                title="profile"
-                subTitle="profileedit.title"
-                icon={<PersonOutline />}
-                onBack={() => router.push("/profile")}
-                actions={
-                  <div>
-                    <Button
-                      onClick={() => {
-                        form.submitForm();                       
-                      }}
-                      color="primary"
-                      variant="contained"
-                    >
-                      {intl.formatMessage({ id: "save" })}
-                    </Button>
-                  </div>
-                }
-              >
-                <div className={classes.header}>
-                  <div className={classes.title}>
-                    {intl.formatMessage({ id: `profileedit.title` })}
-                  </div>
-                  <div className={classes.description}>
-                    {intl.formatMessage({ id: `profileedit.description` })}
-                  </div>
-                </div>
-                <Divider />
-
-                <div className={classes.userHeader}>
-                  <div className={classes.userHeaderBg}>
-                    <div
-                      className={`${classes.avatarAction} pointer`}
-                      onClick={() => setModalOpen(true)}
-                    >
-                      <CameraIcon />
-                    </div>
-                    <Avatar src={thumbUpdated || thumb} className={classes.avatar}></Avatar>
-                  </div>
-                </div>
-
-                <StyledForm className={classes.formControl}>
-                  {Object.keys(categorizedFields).map((key, index) => (
-                    <>
-                      <div
-                        className={`${classes.category} ${
-                          (index > 0 && "Top") || ""
-                        }`}
+              {(loading || loadingUser) && (
+                <Loading container/> 
+              )}
+              {(!loading && !loadingUser) && (
+                <CardScreen
+                  loading={!user}
+                  title="profile"
+                  subTitle="profileedit.title"
+                  icon={<PersonOutline />}
+                  onBack={() => router.push("/profile")}
+                  actions={
+                    <div>
+                      <Button
+                        onClick={() => {
+                          form.submitForm();                       
+                        }}
+                        color="primary"
+                        variant="contained"
+                        isLoading={loadingUpdateUser ? 1 : 0}
                       >
-                        {key}
-                      </div>
-                      {categorizedFields[key].map((field: any, key: any) => {
-                        const fieldValue = get(form.values.profileeditform, field.name);                                                                             
-                        let currentError = null;
-                        if(["DATE"].includes(field.value.displayType)) {                    
-                          currentError = (!form?.values?.profileeditform || !form?.values?.profileeditform[field.name]) && form?.errors?.profileeditform && form?.errors?.profileeditform[field.name];
-                        }                       
+                        {intl.formatMessage({ id: "save" })}
+                      </Button>
+                    </div>
+                  }
+                >
+                  <div className={classes.header}>
+                    <div className={classes.title}>
+                      {intl.formatMessage({ id: `profileedit.title` })}
+                    </div>
+                    <div className={classes.description}>
+                      {intl.formatMessage({ id: `profileedit.description` })}
+                    </div>
+                  </div>
+                  <Divider />
 
-                        if (field.value.displayType === "DATE") {
-                          return (
+                  <div className={classes.userHeader}>
+                    <div className={classes.userHeaderBg}>
+                      <div
+                        className={`${classes.avatarAction} pointer`}
+                        onClick={() => setModalOpen(true)}
+                      >
+                        <CameraIcon />
+                      </div>
+                      <Avatar src={thumbUpdated || thumb} className={classes.avatar}></Avatar>
+                    </div>
+                  </div>
+
+                  <StyledForm className={classes.formControl}>
+                    {Object.keys(categorizedFields).map((key, index) => (
+                      <>
+                        <div
+                          className={`${classes.category} ${
+                            (index > 0 && "Top") || ""
+                          }`}
+                        >
+                          {key}
+                        </div>
+                        {categorizedFields[key].map((field: any, key: any) => {
+                          const fieldValue = get(form.values.profileeditform, field.name);                                                                             
+                          let currentError = null;
+                          if(["DATE"].includes(field.value.displayType)) {                    
+                            currentError = (!form?.values?.profileeditform || !form?.values?.profileeditform[field.name]) && form?.errors?.profileeditform && form?.errors?.profileeditform[field.name];
+                          }                       
+
+                          if (field.value.displayType === "DATE") {
+                            return (
+                              <StyledFormElement>
+                                <DatePicker
+                                  {...field}
+                                  key={key}
+                                  value={fieldValue || field.defaultValue}
+                                  onChange={(value: string) => console.log(value)}
+                                  helperText={currentError}
+                                  error={Boolean(currentError) && !Boolean(form?.values?.profileeditform[field.name])}                                 
+                                  onChange={(date: string) => form.setFieldValue("profileeditform." + field.name, date, false)}
+                                />
+                              </StyledFormElement>                          
+                            );
+                          } else if(field.value.displayType === "CHECKBOX") {
+                            return (
                             <StyledFormElement>
-                              <DatePicker
-                                {...field}
-                                key={key}
-                                value={fieldValue || field.defaultValue}
-                                onChange={(value: string) => console.log(value)}
-                                helperText={currentError}
-                                error={Boolean(currentError) && !Boolean(form?.values?.profileeditform[field.name])}
+                              <Switch  
+                                {...field}  
+                                key={key}                                          
+                                value={fieldValue || field.defaultValue}                                   
                               />
-                            </StyledFormElement>                          
-                          );
-                        } else if(field.value.displayType === "CHECKBOX") {
-                          return (
-                          <StyledFormElement>
-                            <Switch  
-                              {...field}  
-                              key={key}                                          
-                              value={fieldValue || field.defaultValue}                                   
-                            />
-                          </StyledFormElement>                        
-                          );
-                        } else {
-                          return (
-                            <StyledFormElement>
-                              <TextField
-                                form={form}
-                                {...field}
-                                value={fieldValue}
-                                key={key}
-                                placeholder="profileeditform.field.placeholder"
-                              />
-                            </StyledFormElement>                          
-                          );
-                        }                                     
-                      })}
-                    </>
-                  ))}
-                </StyledForm>
-              </CardScreen>             
+                            </StyledFormElement>                        
+                            );
+                          } else {
+                            return (
+                              <StyledFormElement>
+                                <TextField
+                                  form={form}
+                                  {...field}
+                                  value={fieldValue}
+                                  key={key}
+                                  placeholder="profileeditform.field.placeholder"
+                                />
+                              </StyledFormElement>                          
+                            );
+                          }                                     
+                        })}
+                      </>
+                    ))}
+                  </StyledForm>
+                </CardScreen>  
+              )}           
             </>
           );
         }}

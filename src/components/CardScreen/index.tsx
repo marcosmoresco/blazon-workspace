@@ -12,6 +12,9 @@ const useStyles = makeStyles(() => ({
     borderRadius: 8,
     minHeight: "100%",
     margin: "42px 64px",
+    maxWidth: 1312,
+    marginLeft: "auto",
+    marginRight: "auto"
   },
   actions: {
     textAlign: "right",

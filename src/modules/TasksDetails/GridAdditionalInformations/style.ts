@@ -1,7 +1,9 @@
 import styled from "styled-components";
 
-export const WorkArea = styled.div`
-  padding: 0 64px;
+export const WorkArea = styled.div`  
+  max-width: 1312px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 export const MenuDetail = styled.div`
   display: flex;

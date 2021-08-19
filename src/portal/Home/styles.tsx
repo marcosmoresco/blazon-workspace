@@ -3,7 +3,7 @@ import { withStyles } from '@material-ui/core/styles';
 import Menu from '@material-ui/core/Menu';
 
 export const BoxRoot = styled.div`
-  margin: 42px 64px;
+  margin: 42px 0px;
 `;
 
 export const RecentPasswordCard = styled.div`

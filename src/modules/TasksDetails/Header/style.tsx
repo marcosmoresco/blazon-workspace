@@ -6,7 +6,10 @@ import Divider from '@material-ui/core/Divider';
 export const HeaderPage = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 32px 64px;
+  padding: 32px 0px;
+  max-width: 1312px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 export const InfoHeaderPage = styled.div`
   display: flex;

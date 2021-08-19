@@ -143,8 +143,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
             </BoxCardFooter>
           </BoxCardContent>
         </BoxCard>       
-      </Box>
-      ;
+      </Box>      
     </>
   );
 };

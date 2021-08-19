@@ -2,6 +2,9 @@ import styled from "styled-components";
 
 export const Box = styled.div`
   margin: 0 64px;
+  max-width: 1312px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 export const BoxCard = styled.div`
   padding: 32px 24px;

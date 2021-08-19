@@ -10,13 +10,14 @@ export type LayoutProps = {
 };
 
 const Layout: FC<LayoutProps> = ({ children }) => {
+  
   return (
     <ThemeStateProvider>
       <RequestCartStateProvider>
         <App>
           <Header />
           {children}
-          <Footer />  
+          <Footer />
         </App>
       </RequestCartStateProvider>      
     </ThemeStateProvider>

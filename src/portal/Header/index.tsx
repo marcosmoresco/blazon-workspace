@@ -35,7 +35,7 @@ import type { HeaderProps } from './types'
 import HeaderAutocomplete from './components/HeaderAutocomplete'
 import HeaderRequestCart from './components/HeaderRequestCart'
 import HeaderNotifications from './components/HeaderNotifications'
-import { useStyles, HeaderProfileBox, HeaderProfileBoxInfo } from './styles'
+import { useStyles, HeaderProfileBox, HeaderProfileBoxInfo, HeaderFixAutocomplete } from './styles'
 
 const Header: FC<HeaderProps> = ({ classes, intl }) => {
   const router = useRouter()
@@ -80,7 +80,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
             </div>
             {!['/search', '/checkout', '/checkout-finishing', '/checkout-finished'].includes(router.pathname) && (
               <HeaderAutocomplete classes={classes} />
-            )}
+            ) || <HeaderFixAutocomplete />}
           </div>
           <div className={classes.menuOptionsContent}>
             {!['/checkout', '/checkout-finishing', '/checkout-finished'].includes(router.pathname) && (

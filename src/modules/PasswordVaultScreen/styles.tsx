@@ -3,7 +3,7 @@ import { createStyles, Theme } from '@material-ui/core/styles'
 const useStyles = (theme: Theme) =>
   createStyles({
     passwordVault: {
-      margin: '42px 64px',
+      margin: '42px 0px',
       '& > .title': {
         fontWeight: 600,
         fontSize: 21,

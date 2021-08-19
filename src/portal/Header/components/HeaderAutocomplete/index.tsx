@@ -73,7 +73,7 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
         query: GET_SELF_SERVICE_CART,
       },
     ],
-    onCompleted: (data) => {   
+    onCompleted: (data: any) => {   
       setAddedItems([...addedItems, data?.addSelfServiceCartItem.catalogItemId]);
       dispatch(addCartItemMessage({...data?.addSelfServiceCartItem, messageType: "add"}));      
     }
@@ -212,7 +212,7 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
             </BoxAutocomplete>
           </>
         )}
-        renderInput={(params) => (
+        renderInput={(params: any) => (
           <TextField
             {...params}
             label=""

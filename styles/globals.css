@@ -6,6 +6,12 @@ body {
     Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
 }
 
+.App {
+  max-width: 1312px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
 a {
   color: inherit;
   text-decoration: none;
@@ -27,6 +33,9 @@ label {
 
 .Default-content {
   margin: 0 64px;
+  max-width: 1312px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .Default-header-filter {

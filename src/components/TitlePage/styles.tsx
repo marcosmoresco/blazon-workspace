@@ -3,6 +3,9 @@ import styled from 'styled-components'
 export const Box = styled.div`
   display: flex;
   justify-content: space-between;
+  max-width: 1312px;
+  margin-left: auto;
+  margin-right: auto;
 `
 
 export const BackBox = styled.div`
@@ -10,7 +13,7 @@ export const BackBox = styled.div`
 `
 
 export const Header = styled.div`
-  padding: 32px 64px 24px;
+  padding: 32px 0px 24px;
 `
 
 export const HeaderTitle = styled.div`
@@ -39,8 +42,7 @@ export const Line = styled.div`
 export const SubTitleBox = styled.div`
   display: flex;
   justify-content: center;
-  align-items: center;
-  margin-right: 64px;
+  align-items: center; 
 `
 
 export const SubTitleText = styled.div`
