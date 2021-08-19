@@ -7,10 +7,10 @@ import { useDispatch } from "react-redux";
 import { addMessage } from "@actions/index";
 import useMockRequest from "@utils/mockRequest";
 import Filter from "@components/Filter";
-import useStyles from "./styles";
-import { withStyles } from "@material-ui/core/styles";
 import Checkbox from "@components/Checkbox";
 import CardScreen from "./CardScreenUntitle";
+import EmptyStateRolesImage from "@images/EmptyStateRoles.svg";
+import { FilterContent } from "./styles";
 
 //queries
 import {
@@ -34,6 +34,7 @@ const Roles = () => {
   const router = useRouter();
   const { id } = router.query;
 
+  const [filter, setFilter] = useState("");
   const [list, setList] = useState([]);
   const [listClearValue, setListClearValue] = useState<boolean>(false);
   const [type, setType] = useState<string>("APPROVED");
@@ -109,29 +110,38 @@ const Roles = () => {
   ];
 
   return (
-    <CardScreen
-      loading={loading}
-      title="profile"
-      icon=""
-      onBack={() => router.push("/profile")}
-    >          
-      <div>
-        <DataGrid   
-          listClear={listClearValue}
-          handleListClear={() => setListClearValue(false)}
-          params={{}}
-          height={600}
-          list={list || []}
-          links={[]}
-          columns={columns}
-          page={1}
-          size={100}
-          rowsPerPageList={[25, 50, 75, 100]}
-          handleClick={() => {}}
-        />
+    <>
+      <div className="header-filter-actions">
+        <FilterContent>
+          <Filter type="simple" onChange={(e) => setFilter(e.target.value)}/>         
+        </FilterContent>
       </div>
-    </CardScreen>
+      <CardScreen
+        loading={loading}
+        title="profile"
+        icon=""
+        onBack={() => router.push("/profile")}
+      >              
+        <div>
+          <DataGrid   
+            emptyStateImage={EmptyStateRolesImage}
+            filter={filter}
+            listClear={listClearValue}
+            handleListClear={() => setListClearValue(false)}
+            params={{}}
+            height={600}
+            list={list || []}
+            links={[]}
+            columns={columns}
+            page={1}
+            size={1000}
+            rowsPerPageList={[25, 50, 75, 100]}
+            handleClick={() => {}}
+          />
+        </div>
+      </CardScreen>
+    </>
   );
 };
 
-export default withStyles(useStyles)(Roles);
+export default Roles;
