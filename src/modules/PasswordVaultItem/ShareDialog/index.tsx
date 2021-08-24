@@ -179,7 +179,7 @@ const SharedDialogContent: React.FC<SharedDialogContentProps> = ({ current, setC
       <PasswordVaultHeader>
         <PasswordVaultCardIconContent>
           <PasswordVaultCardIcon>
-            <KeyIcon height={42} width={42} color="#3174F6"/>
+            <KeyIcon height={42} width={42} color={currentTheme?.palette?.primary?.main || "#3174F6"}/>
           </PasswordVaultCardIcon>            
         </PasswordVaultCardIconContent>
         <PasswordVaultCardHeaderContent>
