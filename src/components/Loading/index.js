@@ -23,6 +23,9 @@ const useStyles = makeStyles((theme) => ({
   loadingContainer: {
     width: 128,
     height: 128,
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
   },
 }));
 

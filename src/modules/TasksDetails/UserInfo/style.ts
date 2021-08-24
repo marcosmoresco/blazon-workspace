@@ -50,9 +50,14 @@ export const BoxCardTitle = styled.div`
   color: #26213f;
 `;
 
-export const BoxCardIdentifier = styled.div`
-  background: #eaf1fe;
-  color: #0e46d7;
+interface BoxCardIdentifierProps {
+  background?: string;
+  color?: string;
+}
+
+export const BoxCardIdentifier = styled.div<BoxCardIdentifierProps>`
+  background: ${props => props.background && props.background || "#eaf1fe"};
+  color: ${props => props.color && props.color || "#0e46d7"};
   font-weight: 500;
   border-radius: 30px;
   margin-left: 19px;

@@ -7,6 +7,7 @@ import apolloClient from "@utils/apollo-client";
 import { useDispatch } from "react-redux";
 import { addMessage } from "@actions/index";
 import MenuItem from '@material-ui/core/MenuItem';
+import { useTheme, themes } from "@theme/index";
 
 // components
 import CirclesFour from "@icons/CirclesFour";
@@ -78,6 +79,8 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
   const [openForwardQueue, setOpenForwardQueue] = useState(false);
   const [openDisapprove, setOpenDisapprove] = useState(false);
   const [result, setResult] = useState("DISAPPROVED");
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
   
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -349,7 +352,8 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
     <>
       <HeaderPage>
         <InfoHeaderPage>
-          <TypeStyle>
+          <TypeStyle 
+            color={currentTheme.palette.primary.main}>
             <FormattedMessage id={`task.${type}`} />
           </TypeStyle>
           <MembershipStyle>

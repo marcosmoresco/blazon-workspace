@@ -28,6 +28,7 @@ import {
  InformationLabel,
  InformationText,
  Actions,
+ CenterAlign
 } from "./styles";
 
 const getUser = async (identifier: number, callback: any) => { 
@@ -60,7 +61,9 @@ const UserContent: React.FC<UserContentProps> = ({ user, close }) => {
   if(loading) {
     return (
       <>
-        <Loading container/>
+        <CenterAlign>
+          <Loading container/>
+        </CenterAlign>        
         <Actions>
           <Button
             variant="contained"

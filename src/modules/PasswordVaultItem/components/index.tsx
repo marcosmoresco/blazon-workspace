@@ -1,8 +1,5 @@
-import React, { Component, FC } from "react";
+import React, { FC } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import Image from "next/image";
-import X from "../../../icons/X";
-import Instagram from "./images/instagram.svg";
 import TextField from "../../../components/TextField";
 import type { PasswordVaultProps, PasswordVaultType } from "./types";
 import { useQuery } from "@apollo/client";
@@ -10,6 +7,7 @@ import useStyles from "./styles";
 import { Formik } from "formik";
 import PasswordField from "@components/PasswordField";
 import { useIntl } from "react-intl";
+import { useTheme, themes } from "@theme/index";
 import Dialog from "@components/Dialog";
 import Divider from "@components/Divider";
 import Loading from "@components/Loading";
@@ -25,6 +23,8 @@ const PasswordVault: FC<PasswordVaultProps> = ({
   onSave,
 }) => {
   const intl = useIntl();
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
 
   const { loading, error, data, refetch } = useQuery<{
     getPasswordVault: PasswordVaultType;
@@ -114,7 +114,7 @@ const PasswordVault: FC<PasswordVaultProps> = ({
             <div className={classes.passwordVaultCardContent}>
               <div className={classes.passwordVaultCardContentHeader}>
                 <div className={classes.passwordVaultCardContentHeaderIcon}>
-                  <KeyIcon width={44} height={44} color="#3174F6" />
+                  <KeyIcon width={44} height={44} color={currentTheme.palette.primary.main || "#3174F6"} stroke={2}/>
                 </div>                
               </div>
 

@@ -14,8 +14,8 @@ export const useStyles = (theme: Theme) =>
       alignItems: "center",
       cursor: "pointer",
       "&.Active": {
-        color: "#0E46D7",
-        background: "rgba(210, 218, 241, 0.42)",
+        color: theme.palette.info.contrastText || "#0E46D7",
+        background: theme.palette.info.main || "rgba(210, 218, 241, 0.42)",
         border: "1px solid rgba(163, 183, 235, 0.4)",
         borderRadius: 6,
       },

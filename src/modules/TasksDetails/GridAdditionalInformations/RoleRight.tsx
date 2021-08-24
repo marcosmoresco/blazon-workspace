@@ -1,6 +1,7 @@
 // vendors
 import React, { useState, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
+import { useTheme, themes } from "@theme/index";
 
 // components
 import Roles from "./Roles";
@@ -12,7 +13,6 @@ import {
   StyleApprovalTab,
   InsideLine,
   DeitalList,
-  DetailValue,
   GridArea,
 } from "./style";
 
@@ -25,6 +25,8 @@ type tabs = "role | undefined";
 
 const GridAdditionalInformationsRoleRight: React.FC<AdditionalInformationsProps> = ({ task }) => {
   const [tab, setTab] = useState<tabs>("role" as tabs);
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
   
   useEffect(() => {
     if(task?.type && !tab) {
@@ -40,6 +42,7 @@ const GridAdditionalInformationsRoleRight: React.FC<AdditionalInformationsProps>
       <WorkArea>
           <MenuDetail>           
             <StyleApprovalTab
+              color={currentTheme.palette.primary.main}
               selected={tab === "role" as tabs}
               onClick={() => setTab("role" as tabs)}
             >

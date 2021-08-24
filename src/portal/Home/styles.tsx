@@ -42,7 +42,7 @@ export const RecentPasswordCardContentHeaderImage = styled.div`
 `;
 
 export const RecentPasswordCardContentHeaderBox = styled.div`
-  max-width: 80%;
+  max-width: 75%;
 `;
 
 export const RecentPasswordCardContentHeaderTitle = styled.div`
@@ -76,8 +76,12 @@ export const RecentPasswordCardContentHeaderText = styled.div`
   margin-right: 25px;
 `;
 
-export const BoxRecentPasswordsContent = styled.div`
-  padding: 24px;
+interface BoxRecentPasswordsContentProps {
+  isEmpty: boolean;
+}
+
+export const BoxRecentPasswordsContent = styled.div<BoxRecentPasswordsContentProps>`
+  padding: ${props => props.isEmpty && "0px" || "24px"};
 `;
 
 export const ShowAll = styled.div`
@@ -146,7 +150,7 @@ export const BoxHeaderAccessItem = styled.div`
 export const BoxHeaderAccessItemIcon = styled.div`
   width: 32px;
   height: 32px;
-  background: #0E46D7;
+  background: ${props => props.color && props.color || "#0E46D7"};
   border-radius: 4px;
   display: flex;
   align-items: center;
@@ -206,11 +210,16 @@ export const BoxRequestHeader = styled.div`
   justify-content: space-between;
 `;
 
-export const BoxRequestHeaderIdentifier = styled.div`
-  background: #EAF1FE;
+interface BoxRequestHeaderIdentifierProps {
+  background?: string;
+  color?: string;
+}
+
+export const BoxRequestHeaderIdentifier = styled.div<BoxRequestHeaderIdentifierProps>`
+  background: ${props => props.background && props.background || "#EAF1FE"};
   border-radius: 30px;
   padding: 4px 8px;
-  color: #0E46D7;
+  color: ${props => props.color && props.color || "#0E46D7"};
 `;
 
 export const BoxRequestHeaderDate = styled.div`
@@ -232,11 +241,16 @@ export const BoxRequestHeaderTitle = styled.div`
   margin-top: 10px;
 `;
 
-export const BoxRequestHeaderType = styled.div`
-  background: rgba(19, 119, 213, 0.14);
+interface BoxRequestHeaderTypeProps {
+  background?: string;
+  color?: string;
+}
+
+export const BoxRequestHeaderType = styled.div<BoxRequestHeaderTypeProps>`
+  background: ${props => props.background && props.background || "rgba(19, 119, 213, 0.14)"}; 
   border-radius: 35px;
   padding: 4px 8px;
-  color: #1377D5;  
+  color: ${props => props.color && props.color || "#1377D5"}; 
 `;
 
 export const BoxRequestDescription = styled.div`

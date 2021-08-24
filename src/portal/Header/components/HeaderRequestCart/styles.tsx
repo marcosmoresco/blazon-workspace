@@ -6,14 +6,7 @@ import MuiBadge from "@material-ui/core/Badge";
 import MuiButton from "@material-ui/core/Button";
 import styled from "styled-components";
 
-export const Badge = styledMui(MuiBadge)({
-  "& .MuiBadge-badge": {
-    width: 20,
-    height: 20,
-    fontSize: 12,
-    borderRadius: 10,
-  }
-});
+export const Badge = MuiBadge;
 
 export const BoxRequestCart = styled.div`
   width: 454px;

@@ -67,6 +67,7 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
   const { cart, setCart } = useCart();
   const dispatch = useDispatch();
   const router = useRouter();
+  const [loadingItems, setLoadingItems] = useState<number[]>([]); 
   const { loading, error, data, refetch } = useQuery<{
     getSelfServiceCart: SelfServiceCart;
   }>(GET_SELF_SERVICE_CART);
@@ -88,6 +89,7 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
         },
       ],
       onCompleted: (data) => {
+        setLoadingItems(loadingItems.filter((i) => i !== data?.deleteSelfServiceCartItem.identifier)); 
         dispatch(
           addCartItemMessage({
             ...data?.deleteSelfServiceCartItem,
@@ -144,7 +146,8 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
       }),
       <XCircleIcon width={48} height={48} color="#FF134A" />
     );
-    if (result) {      
+    if (result) { 
+      setLoadingItems([...loadingItems, item.identifier as number]);     
       deleteSelfServiceCartItem({
         variables: {
           identifier: item.identifier,
@@ -174,14 +177,14 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
   };
 
   const iconByType: { [key: string]: any } = {
-    RESOURCESHARED_RESOURCE: <SharedAccountIcon width={24} height={24} color="#3174F6" />,
-    RESOURCEAPPLICATION_RESOURCE: <ApplicationAccountIcon width={24} height={24} color="#3174F6" />,
-    RESOURCEREGULAR_RESOURCE: <RegularAccountIcon width={24} height={24} color="#3174F6" />,
-    RESOURCETEMPORARY_RESOURCE: <TemporaryAccountIcon width={24} height={24} color="#3174F6" />,
-    RESOURCEADMIN_RESOURCE: <AdministrativeAccountIcon width={24} height={24} color="#3174F6" />,
-    ENTITLEMENT: <CheckCircleIcon width={24} height={24} color="#3174F6" />,
-    ROLE: <PeopleIcon width={24} height={24} color="#3174F6" />,
-    ADMIN_PASSWORD: <SecurityUserIcon width={24} height={24} color="#3174F6" />,
+    RESOURCESHARED_RESOURCE: <SharedAccountIcon width={24} height={24} color={currentTheme.palette.primary.main || "#3174F6"} />,
+    RESOURCEAPPLICATION_RESOURCE: <ApplicationAccountIcon width={24} height={24} color={currentTheme.palette.primary.main || "#3174F6"} />,
+    RESOURCEREGULAR_RESOURCE: <RegularAccountIcon width={24} height={24} color={currentTheme.palette.primary.main || "#3174F6"} />,
+    RESOURCETEMPORARY_RESOURCE: <TemporaryAccountIcon width={24} height={24} color={currentTheme.palette.primary.main || "#3174F6"} />,
+    RESOURCEADMIN_RESOURCE: <AdministrativeAccountIcon width={24} height={24} color={currentTheme.palette.primary.main || "#3174F6"} />,
+    ENTITLEMENT: <CheckCircleIcon width={24} height={24} color={currentTheme.palette.primary.main || "#3174F6"} />,
+    ROLE: <PeopleIcon width={24} height={24} color={currentTheme.palette.primary.main || "#3174F6"} />,
+    ADMIN_PASSWORD: <SecurityUserIcon width={24} height={24} color={currentTheme.palette.primary.main || "#3174F6"} />,
   };  
 
   return (
@@ -205,7 +208,8 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
             <ShoppingCartSimpleIcon
               width={21}
               height={21}
-              color={currentTheme.overrides.MuiIcon.root.color}
+              color={currentTheme.palette.header.contrastText}
+              stroke={1}
             />
           </div>
         </Badge>
@@ -224,12 +228,12 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
             <HeaderDivider />
             <BoxHeader>
               <BoxHeaderTitle>
-                {!dataOpenRequests?.getOpenRequests?.amountOpen && (
+                {dataOpenRequests?.getOpenRequests?.amountOpen === 0 && (
                   <FormattedMessage id="requests.no.progress" />
                 )}
-                {dataOpenRequests?.getOpenRequests?.amountOpen && (
+                {(dataOpenRequests?.getOpenRequests?.amountOpen || 0) > 0 && (
                   <>
-                    {dataOpenRequests?.getOpenRequests?.amountOpen > 10 && "10+ " || dataOpenRequests?.getOpenRequests?.amountOpen + " "}
+                    {(dataOpenRequests?.getOpenRequests?.amountOpen || 0) > 10 && "10+ " || dataOpenRequests?.getOpenRequests?.amountOpen + " "}
                     <FormattedMessage id="requests.in.progress" />
                   </>
                 )}             
@@ -332,12 +336,12 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
                     {item.name || " - "}
                   </BoxRequestCartItemText>
                 </BoxRequestCartItemInfo>
-                {loadingDeleteSelfServiceCartItem && (
+                {loadingItems.includes(item.identifier) && (
                   <BoxRequestCartItemTrash className="Disabled-action">
                     <Loading type="blue"/>
                   </BoxRequestCartItemTrash>
                 )}   
-                {!loadingDeleteSelfServiceCartItem && (
+                {!loadingItems.includes(item.identifier) && (
                   <BoxRequestCartItemTrash
                     onClick={(e: React.MouseEvent) => handleDelete(e, item)}
                   >

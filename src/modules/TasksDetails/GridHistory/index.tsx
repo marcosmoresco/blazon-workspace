@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { useUser } from "@hooks";
 import { getLink } from "@utils/index";
 import moment from "moment";
+import { useTheme, themes } from "@theme/index";
 
 // components
 import PaperPlaneTiltIcon from "@icons/PaperPlaneTilt";
@@ -63,6 +64,8 @@ const GridHistory: React.FC<GridHistoryProps> = ({ task }) => {
   const intl = useIntl();
   const router = useRouter();
   const { id, type } = router.query;
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
 
   const [tab, setTab] = useState<"Comments" | "history">("Comments");
   const [currentComment, setCurrentComment] = useState<string>("");
@@ -95,12 +98,14 @@ const GridHistory: React.FC<GridHistoryProps> = ({ task }) => {
         <Grid>
           <MenuDetail>
             <StyleApprovalTab
+              color={currentTheme.palette.primary.main}
               selected={tab === "Comments"}
               onClick={() => setTab("Comments")}
             >
               <FormattedMessage id="tasks.comments" />
             </StyleApprovalTab>
             <StyleApprovalTab
+              color={currentTheme.palette.primary.main}
               selected={tab === "history"}
               onClick={() => setTab("history")}
             >
@@ -124,17 +129,19 @@ const GridHistory: React.FC<GridHistoryProps> = ({ task }) => {
                       value={currentComment} 
                       onChange={(event: any) => setCurrentComment(event?.target?.value)}>                      
                     </Text>
-                    <PaperPlaneBox onClick={() => {
-                      if(!currentComment) {
-                        return;
-                      }
-
-                      addComment({
-                        variables: {
-                          id: Number(id),
-                          comment: currentComment
+                    <PaperPlaneBox 
+                      color={currentTheme.palette.primary.main}
+                      onClick={() => {
+                        if(!currentComment) {
+                          return;
                         }
-                      })
+
+                        addComment({
+                          variables: {
+                            id: Number(id),
+                            comment: currentComment
+                          }
+                        })
                     }}>
                       <PaperPlaneTiltIcon
                         height={24}

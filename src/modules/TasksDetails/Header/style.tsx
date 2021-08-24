@@ -18,13 +18,18 @@ export const InfoHeaderPage = styled.div`
   border-radius: 8px;
   gap: 16px;
 `;
-export const TypeStyle = styled.div`
+
+interface TypeStyleProps {
+  color?: string;
+}
+
+export const TypeStyle = styled.div<TypeStyleProps>`
   background: #f4f4f5;
   border: 1px dashed #92909f;
   box-sizing: border-box;
   border-radius: 8px;
   padding: 12px;
-  color: #3174f6;
+  color: ${props => props.color && props.color || "#3174F6"};
   text-transform: uppercase;
 `;
 export const MembershipStyle = styled.div`

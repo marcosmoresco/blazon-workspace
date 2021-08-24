@@ -8,15 +8,20 @@ export const StatusTitle = styled.span`
   padding: 8px;
 `;
 
-export const StyledStatus = styled.div`
+interface StyledStatusProps {
+  background?: string;
+  color?: string;
+}
+
+export const StyledStatus = styled.div<StyledStatusProps>`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: #1377d524;
+  background: ${props => props.background && props.background || "#1377d524"};
   border-radius: 64px;
   margin: 8px;
   span {
-    color: #1377d5;
+    color: ${props => props.color && props.color || "#1377D5"};
     padding: 8px;
     font-size: 14px;
   }

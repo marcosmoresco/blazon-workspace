@@ -25,7 +25,7 @@ const NewPassword: FC<NewPasswordProps> = ({ open, onClose, onSave }) => {
         query: GET_ENTRIES,
       },
     ],
-    onCompleted: ({ savePasswordVault }) => {
+    onCompleted: ({ savePasswordVault }) => {      
       if (savePasswordVault) {
         onClose();
         onSave?.(true);
@@ -81,12 +81,14 @@ const NewPassword: FC<NewPasswordProps> = ({ open, onClose, onSave }) => {
   const formik = {
     initialValues,
     validationSchema,
-    onSubmit: (values: any) => {
-      savePasswordVault({
+    enableReinitialize: true,
+    onSubmit: async (values: any, {resetForm}:{resetForm: any}) => {      
+      await savePasswordVault({
         variables: {
           ...values?.changePasswordForm,
         },
       });
+      resetForm();
     },
   };
 

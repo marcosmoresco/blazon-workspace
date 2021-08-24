@@ -16,7 +16,7 @@ export const BoxAutocomplete = styled.div`
   width: 100%;
   &:hover {
     .Autocomplete-cart {
-      background: #3174f6;
+      background:  ${props => props.color};
       & svg {
         filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(276deg)
           brightness(103%) contrast(101%);
@@ -63,6 +63,10 @@ export const BoxAutocompleteText = styled.div`
   line-height: 18px;
   color: #292f33;
   box-sizing: border-box;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  width: 470px;
 `;
 
 const HeaderSearchIn = styled.div`

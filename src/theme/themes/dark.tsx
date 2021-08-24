@@ -49,14 +49,20 @@ export const dark = createMuiTheme({
         width: 26,
         height: 26,
         borderRadius: 20,
-        fontSize: 16,
+        fontSize: 12,
       }
     },
     MuiBreadcrumbs: {
       root: {
         marginBottom: 10
       }
-    }
+    },
+    MuiTabs: {
+      indicator: {
+        height: 4,
+        background: "#0E46D7",
+      }
+    } 
   },
   palette: {
     type: "dark",
@@ -72,6 +78,16 @@ export const dark = createMuiTheme({
     background: {
       default: "#0F141D",
     },
+    header: {
+      main: "#FFFFFF",
+      light: "#FFFFFF",
+      contrastText: "#1B202A"
+    },
+    info: {
+      main: "#CFA87D",
+      contrastText: "#73512B"
+    },
+    profileBg: "blue"
   },
 });
 

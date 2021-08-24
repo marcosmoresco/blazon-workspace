@@ -21,6 +21,7 @@ import { FormattedMessage, useIntl } from "react-intl";
 import { useDispatch } from "react-redux";
 import { addMessage } from "@actions/index";
 import { confirm } from "@components/Dialog/actions";
+import { useTheme, themes } from "@theme/index";
 import SharedDialog from "./ShareDialog";
 import PasswordVault from "./components";
 import { GET_ENTRIES } from "@modules/PasswordVaultItem/queries";
@@ -45,6 +46,9 @@ const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
   const [sharedModalOpen, setSharedModalOpen] = useState<boolean>(false);
   const [openPasswordVault, setOpenPasswordVault] = useState<boolean>(false);
   const [passwordVault, setPasswordVault] = useState(null);
+
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget);
@@ -84,7 +88,7 @@ const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
         <RecentPasswordCardContent>
           <RecentPasswordCardContentHeader>
             <RecentPasswordCardContentHeaderImage>
-              <KeyIcon width={30} height={30} color="#3174F6" />
+              <KeyIcon width={30} height={30} color={currentTheme.palette.primary.main || "#3174F6"} stroke={2}/>
             </RecentPasswordCardContentHeaderImage>
             <RecentPasswordCardContentHeaderBox>
               <Tooltip title={r.name} placement="bottom">

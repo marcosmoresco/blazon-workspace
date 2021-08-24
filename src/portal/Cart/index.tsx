@@ -10,9 +10,12 @@ import type { SelfServiceCartItem } from "@requestCart/types";
 import type { CartProps, CartState, SelfServiceCartItemMessage } from "./types";
 import { Box, Header, HeaderInfo, HeaderCloseIcon, BoxContent, IconItem, TextItem } from "./styles";
 import { iconByType } from "@utils/index";
+import { useTheme, themes } from "@theme/index";
 
 function Alert(props: any) {
   const { enqueueSnackbar, closeSnackbar } = useSnackbar();
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
 
   const { items = [], onClose } = props;
 
@@ -46,7 +49,7 @@ function Alert(props: any) {
               </Header> 
               <BoxContent>
                 <IconItem>
-                  {iconByType("#3174F6", 25)[(m.catalogItemType === "RESOURCE" && m.resourceType && `RESOURCE${m.resourceType}`) || m.catalogItemType]}                  
+                  {iconByType(currentTheme.palette.primary.main || "#3174F6", 25)[(m.catalogItemType === "RESOURCE" && m.resourceType && `RESOURCE${m.resourceType}`) || m.catalogItemType]}                  
                 </IconItem>
                 <TextItem>
                   {m.name}

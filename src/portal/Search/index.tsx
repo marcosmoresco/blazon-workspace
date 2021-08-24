@@ -14,16 +14,10 @@ import EmptyState from "@components/EmptyState";
 import Section from "@components/Section";
 import Tooltip from "@components/Tooltip";
 import Loading from "@components/Loading";
-import TableIcon from "@icons/Table";
-import PuzzlePieceIcon from "@icons/PuzzlePiece";
-import ArticleIcon from "@icons/Article";
-import UserGearIcon from "@icons/UserGear";
-import NewspaperClippingIcon from "@icons/NewspaperClipping";
 import SharedAccountIcon from "@icons/SharedAccount";
 import ApplicationAccountIcon from "@icons/ApplicationAccount";
 import RegularAccountIcon from "@icons/RegularAccount";
 import AdministrativeAccountIcon from "@icons/AdministrativeAccount";
-import TemporaryAccountIcon from "@icons/Watch";
 import MagnifyingGlassPlusIcon from "@icons/MagnifyingGlassPlus";
 import SecurityUserIcon from "@icons/SecurityUser";
 import PeopleIcon from "@icons/People";
@@ -31,8 +25,8 @@ import ShoppingCartIcon from "@icons/ShoppingCart";
 import SearchIcon from "@icons/Search";
 import SquaresFourIcon from "@icons/SquaresFour";
 import ListBulletsIcon from "@icons/ListBullets";
-import EmptyStateSearchIcon from "@icons/EmptyStateSearch";
 import CheckCircleIcon from "@icons/CheckCircle";
+import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
 import Filters from "./components/Filters";
 import { useCart } from "@requestCart/index";
 import { addCartItemMessage } from "@actions/index";
@@ -59,26 +53,29 @@ import {
   ListItemText,
   LoadMoreContent,
   ItemTitleParent,
+  CenterAlign
 } from "./styles";
 import { GET_SELF_SERVICE, GET_SELF_SERVICE_ADVANCED } from "./queries";
+import { useTheme, themes } from "@theme/index";
 import WatchIcon from "@icons/Watch";
-import { stubFalse } from "lodash";
-import { disapprove } from "@modules/Task/constants";
 
 const Search: FC<SearchProps> = ({ intl, classes }) => {
   const { cart } = useCart();
   const router = useRouter();
   const dispatch = useDispatch();
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
   const [active, setActive] = useState("ALL");
   const [filter, setFilter] = useState(router.query.q || "");
   const [filtered, setFiltered] = useState("[]");
   const [type, setType] = useState("LIST");
   const [page, setPage] = useState(0);
-  const [total, setTotal] = useState(10);
+  const [total, setTotal] = useState(12);
   const [loadingAdvanced, setLoadingAdvanced] = useState<boolean>(false);
   const [filteredTotal, setTotalFiltered] = useState(0);
   const [listAdvanced, setListAdvanced] = useState(null);
   const [addedItems, setAddedItems] = useState<string[]>([]); 
+  const [loadingItems, setLoadingItems] = useState<string[]>([]);
 
   useEffect(() => {
     if(cart && (cart.items || []).length) {
@@ -103,6 +100,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
       },
     ],
     onCompleted: (data) => {   
+      setLoadingItems(loadingItems.filter((i) => i !== data?.addSelfServiceCartItem.catalogItemId));
       setAddedItems([...addedItems, data?.addSelfServiceCartItem.catalogItemId]);
       dispatch(addCartItemMessage({...data?.addSelfServiceCartItem, messageType: "add"}));      
     }
@@ -120,7 +118,9 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
 
   if(loading) {
     return (
-      <Loading container/>
+      <CenterAlign>
+        <Loading container/>
+      </CenterAlign>      
     )
   }
 
@@ -150,14 +150,14 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
   };
 
   const iconByType: { [key: string]: any } = {
-    RESOURCESHARED_RESOURCE: <SharedAccountIcon width={24} height={24} color="#3174F6" />,
-    RESOURCEAPPLICATION_RESOURCE: <ApplicationAccountIcon width={24} height={24} color="#3174F6" />,
-    RESOURCEREGULAR_RESOURCE: <RegularAccountIcon width={24} height={24} color="#3174F6" />,
-    RESOURCETEMPORARY_RESOURCE: <WatchIcon width={24} height={24} color="#3174F6" />,
-    RESOURCEADMIN_RESOURCE: <AdministrativeAccountIcon width={24} height={24} color="#3174F6" />,
-    ENTITLEMENT: <CheckCircleIcon width={24} height={24} color="#3174F6" />,
-    ROLE: <PeopleIcon width={24} height={24} color="#3174F6" />,
-    ADMIN_PASSWORD: <SecurityUserIcon width={24} height={24} color="#3174F6" />,
+    RESOURCESHARED_RESOURCE: <SharedAccountIcon width={24} height={24} color={currentTheme.palette.primary.main} />,
+    RESOURCEAPPLICATION_RESOURCE: <ApplicationAccountIcon width={24} height={24} color={currentTheme.palette.primary.main} />,
+    RESOURCEREGULAR_RESOURCE: <RegularAccountIcon width={24} height={24} color={currentTheme.palette.primary.main} />,
+    RESOURCETEMPORARY_RESOURCE: <WatchIcon width={24} height={24} color={currentTheme.palette.primary.main} />,
+    RESOURCEADMIN_RESOURCE: <AdministrativeAccountIcon width={24} height={24} color={currentTheme.palette.primary.main} />,
+    ENTITLEMENT: <CheckCircleIcon width={24} height={24} color={currentTheme.palette.primary.main} />,
+    ROLE: <PeopleIcon width={24} height={24} color={currentTheme.palette.primary.main} />,
+    ADMIN_PASSWORD: <SecurityUserIcon width={24} height={24} color={currentTheme.palette.primary.main} />,
   };
 
   const sections = [
@@ -198,7 +198,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
             onChange={(e: any) => {
               setFilter(e?.target?.value);
               setPage(0);
-              setTotal(10);
+              setTotal(12);
               apolloClient
                 .query({
                   query: GET_SELF_SERVICE_ADVANCED,
@@ -226,7 +226,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
           onSelect={(section) => {
             setActive(section.value);
             setPage(0);
-            setTotal(10);
+            setTotal(12);
             setLoadingAdvanced(true);
             apolloClient
               .query({
@@ -328,16 +328,17 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                             <div className={classes.searchCartContent}>
                               {addedItems.indexOf(item.identifier) === -1 && (
                                 <>
-                                  {loadingAddSelfServiceCartItem && (
+                                  {loadingItems.includes(item.identifier) && (
                                     <div className="Disabled-action">
                                       <Loading type="blue"/>
                                     </div>
                                   )}
-                                  {!loadingAddSelfServiceCartItem && (
+                                  {!loadingItems.includes(item.identifier) && (
                                     <div
                                       onClick={(e) => {
                                       e.stopPropagation();
-                                      e.nativeEvent.stopImmediatePropagation();                                                     
+                                      e.nativeEvent.stopImmediatePropagation();   
+                                      setLoadingItems([...loadingItems, item.identifier as string]);                                                  
                                       addSelfServiceCartItem({
                                         variables: {
                                           id: item.identifier                                  
@@ -387,7 +388,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                     key={`search-list-item-${index}`}
                   >
                     <ListItemContent>
-                      <ListItemIconContent>
+                      <ListItemIconContent color={currentTheme.palette.primary.main}>
                         {iconByType[`${item.type}${(item.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", item.attributes)) || ""}`]}
                       </ListItemIconContent>
                       <Tooltip title={item.name || " - "} placement="bottom">
@@ -416,17 +417,19 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                     </ListItemContent>
                     {addedItems.indexOf(item.identifier) === -1 && (
                       <>
-                        {loadingAddSelfServiceCartItem && (
+                        {loadingItems.includes(item.identifier) && (
                           <ListItemIconContent className="Disabled-action">
                             <Loading type="blue"/>
                           </ListItemIconContent>
                         )} 
-                        {!loadingAddSelfServiceCartItem && (
+                        {!loadingItems.includes(item.identifier) && (
                           <ListItemIconContent
                             className="Selectable"
+                            color={currentTheme.palette.primary.main}
                             onClick={(e) => {
                               e.stopPropagation();
                               e.nativeEvent.stopImmediatePropagation();
+                              setLoadingItems([...loadingItems, item.identifier as string]); 
                               addSelfServiceCartItem({
                                 variables: { id: item.identifier },
                               });
@@ -445,14 +448,14 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                 ))}
               </>
             )}
-            {!loadingAdvanced && paginate(listAdvanced || list, 10, page + 1).length > 0 && (
+            {!loadingAdvanced && paginate(listAdvanced || list, 12, page + 1).length > 0 && (
               <LoadMoreContent>
                 <Button
                   variant="contained"
                   color="primary"
                   onClick={() => {
                     setPage(page + 1);
-                    setTotal(total + 10);
+                    setTotal(total + 12);
                   }}
                 >
                   <FormattedMessage id="loadMore" />
@@ -461,7 +464,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
             )}
             {!loadingAdvanced && !paginate(listAdvanced || list, total, 0).length && (
               <EmptyState
-                icon={<EmptyStateSearchIcon />}
+                image={EmptyStateTypeahead}
                 title="no.result"
                 text="search.no.result"
               />

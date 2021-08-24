@@ -1,9 +1,7 @@
 // vendors
 import React, { useState, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
-
-// components
-import Roles from "./Roles";
+import { useTheme, themes } from "@theme/index";
 
 // styles
 import {
@@ -13,7 +11,6 @@ import {
   InsideLine,
   DeitalList,
   DetailValue,
-  GridArea,
 } from "./style";
 
 //types
@@ -25,6 +22,8 @@ type tabs = "account | resource | undefined";
 
 const GridAdditionalInformationsApproval: React.FC<AdditionalInformationsProps> = ({ task }) => {
   const [tab, setTab] = useState<tabs>();
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
   
   useEffect(() => {
     if(task?.type && !tab) {
@@ -41,6 +40,7 @@ const GridAdditionalInformationsApproval: React.FC<AdditionalInformationsProps> 
         <WorkArea>
           <MenuDetail>
             <StyleApprovalTab
+              color={currentTheme.palette.primary.main}
               selected={tab === "account" as tabs}
               onClick={() => setTab("account" as tabs)}
             >

@@ -12,6 +12,9 @@ export const CheckoutStyle = styled.div`
   padding: 29px 0 32px 0;
   border-radius: 6px;
   background: #fff;
+  max-width: 1312px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 export const ItemStyle = styled.div`
   align-items: center;

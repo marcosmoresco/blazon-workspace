@@ -4,10 +4,11 @@ export type IconProps = {
   width?: number;
   height?: number;
   color?: string;
+  stroke?: number;
 };
 
 function TasksIcon(props: IconProps) {
-  const { width, height, color } = props;
+  const { width, height, color, stroke } = props;
 
   return (
     <svg
@@ -22,35 +23,40 @@ function TasksIcon(props: IconProps) {
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
+        strokeWidth={stroke}
       />
       <path
         d="M6.38086 8.87988L7.13086 9.62988L9.38086 7.37988"
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
+        strokeWidth={stroke}
       />
       <path
         d="M12.3691 15.8799H17.6191"
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
+        strokeWidth={stroke}
       />
       <path
         d="M6.38086 15.8799L7.13086 16.6299L9.38086 14.3799"
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
+        strokeWidth={stroke}
       />
       <path
         d="M9 22H15C20 22 22 20 22 15V9C22 4 20 2 15 2H9C4 2 2 4 2 9V15C2 20 4 22 9 22Z"
         stroke={color}
         strokeLinecap="round"
         strokeLinejoin="round"
+        strokeWidth={stroke}
       />
     </svg>
   );
 }
 
-TasksIcon.defaultProps = { width: 24, height: 24, color: "black" };
+TasksIcon.defaultProps = { width: 24, height: 24, color: "black", stroke: 1 };
 
 export default TasksIcon;

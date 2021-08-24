@@ -19,6 +19,7 @@ import { GET_REQUESTS, GET_OPEN_STATUS } from "@modules/Requests/queries";
 import { Request } from "@modules/Requests/types";
 import type { HomeProps } from "./types";
 import { useUser } from "@hooks";
+import { useTheme, themes } from "@theme/index";
 import {
   BoxRequest,
   BoxRequestHeader,
@@ -47,6 +48,8 @@ import {
 const Home: FC<HomeProps> = ({ classes, intl }) => {
   const router = useRouter();
   const [user] = useUser();
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
 
   const {
     loading: loadingEntries,
@@ -108,7 +111,7 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
               <Grid item xs={6}>
                 <BoxHeaderAccess onClick={() => router.push("/profile/access/shared")}>
                   <BoxHeaderAccessItem>
-                    <BoxHeaderAccessItemIcon>
+                    <BoxHeaderAccessItemIcon color={currentTheme.palette.primary.main}>
                       <SharedAccountIcon                       
                         color="#FFFFFF"
                         stroke={1.2}
@@ -125,7 +128,7 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                 </BoxHeaderAccess>
                 <BoxHeaderAccess onClick={() => router.push("/profile/access/application")}>
                   <BoxHeaderAccessItem>
-                    <BoxHeaderAccessItemIcon>
+                    <BoxHeaderAccessItemIcon color={currentTheme.palette.primary.main}>
                       <ApplicationAccountIcon                        
                         color="#FFFFFF"
                         stroke={1.2}
@@ -144,7 +147,7 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
               <Grid item xs={6}>
                 <BoxHeaderAccess onClick={() => router.push("/profile/access/regular")}>
                   <BoxHeaderAccessItem>
-                    <BoxHeaderAccessItemIcon>
+                    <BoxHeaderAccessItemIcon color={currentTheme.palette.primary.main}>
                       <RegularAccountIcon                       
                         color="#FFFFFF"
                         stroke={1.3}
@@ -161,7 +164,7 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                 </BoxHeaderAccess>
                 <BoxHeaderAccess onClick={() => router.push("/profile/access/adminstrative")}>
                   <BoxHeaderAccessItem>
-                    <BoxHeaderAccessItemIcon>
+                    <BoxHeaderAccessItemIcon color={currentTheme.palette.primary.main}>
                       <AdministrativeAccountIcon                        
                         color="#FFFFFF"
                         stroke={1.3}
@@ -226,11 +229,15 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                                   }
                                 >
                                   <BoxRequestHeader>
-                                    <BoxRequestHeaderIdentifier>
+                                    <BoxRequestHeaderIdentifier
+                                      background={currentTheme.palette.info.main}
+                                      color={currentTheme.palette.info.contrastText}>
                                       {request.identifier}
                                     </BoxRequestHeaderIdentifier>
                                     <BoxRequestHeaderInfo>
-                                      <BoxRequestHeaderType>
+                                      <BoxRequestHeaderType
+                                        background={currentTheme.palette.info.main}
+                                        color={currentTheme.palette.info.contrastText}>
                                         {request?.type || " - "}
                                       </BoxRequestHeaderType>
                                       <BoxRequestHeaderDate>
@@ -280,7 +287,7 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                 <CaretRightIcon width={20} height={20} />
               </ShowAll>
             </DefaultTitleContent>
-            <BoxRecentPasswordsContent>
+            <BoxRecentPasswordsContent isEmpty={!(dataEntries?.getPasswordVaultEntries || []).length}>
               {(!loadingEntries &&
                 ((!errorEntries &&
                   (dataEntries?.getPasswordVaultEntries || []).length && (

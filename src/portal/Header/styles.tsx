@@ -1,22 +1,23 @@
-import { createStyles, Theme } from '@material-ui/core/styles'
+import { createStyles, Theme, styled as styledMui } from '@material-ui/core/styles'
 import styled from "styled-components";
+import MuiBadge from '@material-ui/core/Badge'
 
 export const useStyles = (theme: Theme) =>
   createStyles({
     root: {
-      backgroundColor: theme.palette.type === 'light' ? '#FFFFFF' : '#0D0C13'
+      backgroundColor: theme.palette.header.main || "#FFFFFF"
     },
     toolBar: {
-      minHeight: 93,
-      marginLeft: 65,
+      minHeight: 93,    
       display: 'flex',
       justifyContent: 'space-between',
       maxWidth: 1312,
+      minWidth: 1312,
       marginLeft: "auto",
       marginRight: "auto",
       paddingLeft: 0,
       paddingRight: 0,
-      gap: 83
+      gap: 104
     },
     logoSearchInput: {
       display: 'flex',
@@ -30,7 +31,13 @@ export const useStyles = (theme: Theme) =>
       backgroundColor: '#FFFFFF',
       '& .MuiAutocomplete-inputRoot[class*="MuiOutlinedInput-root"]': {
         padding: '2px 9px',
-        borderRadius: 8
+        borderRadius: 8,
+        height: 48,
+        backgroundColor: theme.palette.header.light || "#FFFFFF",
+        color: theme.palette.header.contrastText || "#FFFFFF",
+        '& .MuiAutocomplete-clearIndicator': {
+          color: theme.palette.header.contrastText || "#FFFFFF",
+        }
       }
     },
     menuLogo: {
@@ -49,23 +56,23 @@ export const useStyles = (theme: Theme) =>
       display: 'flex'
     },
     optionImage: {
-      marginRight: 20,
+      marginRight: 15,
       cursor: 'pointer',
       width: 32,
       height: 32,
       display: 'flex',
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: '#FFFFFF',
+      backgroundColor: 'transparent',
       borderRadius: 4,
       '&.Active::after': {
-        content: '"*"',
+        content: '""',
         display: 'block',
         height: 4,
         width: 38,
-        marginTop: 90,
+        marginTop: 89,
         position: 'absolute',
-        backgroundColor: '#0E46D7'
+        backgroundColor: theme.palette.primary.main || "#0E46D7"
       },
       '&:hover': {
         background: '#F4F4F5'
@@ -177,3 +184,12 @@ export const HeaderFixAutocomplete = styled.div`
   height: 48px;
   margin-left: 42px;
 `;
+
+export const Badge = styledMui(MuiBadge)({ 
+  '& .MuiAvatar-root': {
+    width: 20,
+    height: 20,
+    fontSize: 11,
+    borderRadius: 10
+  }
+})

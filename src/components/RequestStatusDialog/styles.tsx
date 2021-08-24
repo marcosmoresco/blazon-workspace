@@ -1,6 +1,10 @@
 import { makeStyles } from '@material-ui/core'
 
 export const useStyles = makeStyles({
+  icon: {
+    textAlign: 'center',
+    marginTop: 48,
+  },
   center: {
     textAlign: 'center'
   },
@@ -13,6 +17,7 @@ export const useStyles = makeStyles({
   subtitle: {
     textAlign: 'center',
     fontSize: 16,
-    color: '#A8A6B2'
+    color: '#A8A6B2',
+    marginBottom: 68
   }
 })

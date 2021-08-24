@@ -5,7 +5,7 @@ import Tabs from '@material-ui/core/Tabs'
 import Tab from '@material-ui/core/Tab'
 import Box from '@material-ui/core/Box'
 
-function TabPanel(props) {
+function TabPanel(props: any) {
   
     const { children, value, index, ...other } = props;
   
@@ -32,7 +32,7 @@ function TabPanel(props) {
     value: PropTypes.any.isRequired,
   };
     
-  function a11yProps(index) {
+  function a11yProps(index: number) {
     return {
       id: `simple-tab-${index}`,
       'aria-controls': `simple-tabpanel-${index}`,
@@ -45,11 +45,7 @@ function TabPanel(props) {
       backgroundColor: theme.palette.background.paper,
     },
     tabs: {   
-      borderBottom: '1px solid #C9C9C9',
-      ".PrivateTabIndicator-colorSecondary-31": {
-        background: "#0992CC",
-        height: "4px"
-      }    
+      borderBottom: '1px solid #C9C9C9',        
     },
     tab: {       
       fontStyle: 'normal',
@@ -217,22 +213,17 @@ function TabPanel(props) {
     }
   }));
   
-  const StyledTabs = withStyles({
-    indicator: {    
-      backgroundColor: '#0992CC',
-      height: 4    
-    },
-  })((props) => <Tabs {...props} TabIndicatorProps={{ children: <span /> }} />);
+  const StyledTabs = (props: any) => <Tabs {...props} TabIndicatorProps={{ children: <span /> }} />;
   
   
-  export default function CustomizedTabs (props) {
+  export default function CustomizedTabs (props: any) {
     
     const { tabs } = props
 
     const classes = useStyles()
     const [value, setValue] = React.useState(0)
           
-    const handleChange = (event, newValue) => {
+    const handleChange = (event: any, newValue: any) => {
       setValue(newValue);
     };
 
@@ -241,7 +232,7 @@ function TabPanel(props) {
       <div>
         <StyledTabs indicatorColor="primary" value={value} onChange={handleChange} className={classes.tabs} aria-label="simple tabs example">
           
-          { tabs.map((t, i) => (
+          { tabs.map((t: any, i: number) => (
             <Tab 
               key={`Tab-title-${t.id || t.name}`} 
               classes={{
@@ -256,7 +247,7 @@ function TabPanel(props) {
                                 
         </StyledTabs>
 
-        { tabs.map((t, i) => (<TabPanel key={`Tab-panel-${t.id || t.name}`} value={value} index={i} className={classes.tabPanel}> {t.content} </TabPanel>) ) }                                       
+        { tabs.map((t: any, i: number) => (<TabPanel key={`Tab-panel-${t.id || t.name}`} value={value} index={i} className={classes.tabPanel}> {t.content} </TabPanel>) ) }                                       
       </div>   
     )  
   }

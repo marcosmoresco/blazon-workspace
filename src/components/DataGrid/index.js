@@ -110,7 +110,7 @@ const DataGridBlazon = (props) => {
     } else if(expand && props.expandAll !== expandAll) {
       setExpanded([]);
       setExpandAll(props.expandAll);
-    } else if(query && pageParam !== page && ((!(rows || []).length) || JSON.stringify(queryFilters) !== currentQueryFilters)) {  
+    } else if(query && ((!(rows || []).length && !currentQueryFilters) || JSON.stringify(queryFilters) !== currentQueryFilters)) {  
       let _queryFilters = {...queryFilters};
       if(defaultOrderBy) {
         _queryFilters = {..._queryFilters, ord: defaultOrderBy};
@@ -135,6 +135,8 @@ const DataGridBlazon = (props) => {
       });
     }
   }, [
+    listClear,
+    handleListClear,
     currentQueryFilters,
     rows,
     list, 

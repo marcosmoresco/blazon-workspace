@@ -1,4 +1,5 @@
-export type Themes = "light" | "dark";
+export type Themes = "default" | "emerald" | "eletricIndigo" | "magentaProcess" | "saffron" 
+| "steelTeal" | "tomato" | "darkSalmon" | "copper";
 
 export type ThemeState = {
   theme: Themes;

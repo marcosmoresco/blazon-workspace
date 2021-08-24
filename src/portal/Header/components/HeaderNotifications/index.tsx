@@ -18,6 +18,7 @@ import {
   CloseHeader,
   NotificationGroup,
   LoadMoreContent,
+  CenterAlign
 } from "./styles";
 import EmptyStateMailBoxIcon from "@icons/EmptyStateMailBox";
 import EmptyStateNotifications from "@images/EmptyStateNotifications.svg"
@@ -121,13 +122,14 @@ const HeaderNotifications: FC<HeaderNotificationsProps> = ({
           anchorOrigin={{
             vertical: "top",
             horizontal: "left",
-          }}
+          }}          
         >
           <div className={classes.optionImage} onClick={handleOpen}>
             <BellSimpleIcon
               width={21}
               height={21}
-              color={currentTheme.overrides.MuiIcon.root.color}
+              color={currentTheme.palette.header.contrastText}
+              stroke={1}
             />
           </div>
         </Badge>
@@ -147,37 +149,44 @@ const HeaderNotifications: FC<HeaderNotificationsProps> = ({
           </NotificationsHeader>
         </NotificationsBox>
         {loading ? (
-          <Loading container={true} />
+          <CenterAlign>
+            <Loading container={true} />
+          </CenterAlign>          
         ) : (
-          <div>
+          <>
             {!Object.keys(groups).length && (
-              <EmptyState image={EmptyStateNotifications} title="notifications.empty.title" text="notifications.empty.subTitle"/>
-            )}
-            {Object.keys(groups).map((key, index) => {
-              const group = groups[key];
-              return (
-                <div key={index}>
-                  <NotificationGroup>{key}</NotificationGroup>
-                  <div>
-                    {group.map((notification: Notification, key: number) => (
-                      <NotificationItem notification={notification} key={key} />
-                    ))}
+              <CenterAlign>
+                <EmptyState height={0} image={EmptyStateNotifications} title="notifications.empty.title" text="notifications.empty.subTitle"/>
+              </CenterAlign>              
+            ) || (
+            <div>            
+              {Object.keys(groups).map((key, index) => {
+                const group = groups[key];
+                return (
+                  <div key={index}>
+                    <NotificationGroup>{key}</NotificationGroup>
+                    <div>
+                      {group.map((notification: Notification, key: number) => (
+                        <NotificationItem notification={notification} key={key} />
+                      ))}
+                    </div>
                   </div>
-                </div>
-              );
-            })}
-            {next && (
-              <LoadMoreContent>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  onClick={() => handleNext()}
-                >
-                  <FormattedMessage id="loadMore" />
-                </Button>
-              </LoadMoreContent>
+                );
+              })}
+              {next && (
+                <LoadMoreContent>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={() => handleNext()}
+                  >
+                    <FormattedMessage id="loadMore" />
+                  </Button>
+                </LoadMoreContent>
+              )}
+            </div>
             )}
-          </div>
+          </>          
         )}
       </Drawer>
     </>

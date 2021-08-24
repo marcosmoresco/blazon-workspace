@@ -77,3 +77,10 @@ export const HeaderTitle = styled.div`
 export const CloseHeader = styled.div`
   cursor: pointer;
 `
+
+export const CenterAlign = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+`

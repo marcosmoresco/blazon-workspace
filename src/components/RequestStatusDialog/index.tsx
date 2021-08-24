@@ -20,7 +20,7 @@ const SucessContent: FC<ModalContent> = ({ message, onClose }) => {
       <div onClick={onClose} style={{ textAlign: 'right' }}>
         <X width={21} height={21} />
       </div>
-      <div className={classes.center}>
+      <div className={classes.icon}>
         <CircleSuccessIcon />
       </div>
       <div className={classes.title}>
@@ -41,7 +41,7 @@ const ErrorContent: FC<ModalContent> = ({ message, onClose }) => {
       <div onClick={onClose} style={{ textAlign: 'right' }}>
         <X width={21} height={21} />
       </div>
-      <div className={classes.center}>
+      <div className={classes.icon}>
         <CircleErrorIcon />
       </div>
       <div className={classes.title}>
@@ -63,7 +63,7 @@ const RequestStatusDialog: FC<RequestStatusDialogProps> = ({
   const TargetElement = success ? SucessContent : ErrorContent
 
   return (
-    <Dialog open={open} noActions={true} hideTitle={true} onClose={onClose}>
+    <Dialog maxWidth="sm" open={open} noActions={true} hideTitle={true} onClose={onClose}>
       <TargetElement message={message} onClose={onClose} />
     </Dialog>
   )

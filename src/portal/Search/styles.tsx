@@ -89,6 +89,7 @@ export const useStyles = (theme: Theme) =>
       fontSize: 18,
       color: "#26213F",
       marginLeft: 14,
+      marginRight: 14,
       marginBottom: 16,
       textOverflow: "ellipsis",
       whiteSpace: "nowrap",
@@ -124,9 +125,9 @@ export const useStyles = (theme: Theme) =>
           marginRight: 10,
         },
         "&:hover": {
-          color: "#3174F6",
+          color: theme.palette.primary.main || "#3174F6",
           "& .Icon-content": {
-            background: "#3174F6",
+            background: theme.palette.primary.main || "#3174F6",
             "& svg": {
               filter:
                 "invert(100%) sepia(0%) saturate(0%) hue-rotate(276deg) brightness(103%) contrast(101%)",
@@ -216,7 +217,7 @@ export const ListItemIconContent = styled.div`
 
   &.Selectable:hover {
     cursor: pointer;
-    background: #3174f6;
+    background: ${props => props.color && props.color || "#0E46D7"};
     & svg {
       filter: invert(100%) sepia(0%) saturate(0%) hue-rotate(276deg)
         brightness(103%) contrast(101%);
@@ -234,6 +235,7 @@ export const ListItemText = styled.div`
   white-space: nowrap;
   overflow: hidden;
   padding-right: 15px;
+  max-width: 1000px;
 `;
 
 export const LoadMoreContent = styled.div`
@@ -248,3 +250,10 @@ export const ItemTitleParent = styled.span`
   font-size: 12px;
   opacity: 0.4;
 `;
+
+export const CenterAlign = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;  
+  height: calc(100vh - 180px);
+`

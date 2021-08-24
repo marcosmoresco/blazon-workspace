@@ -21,6 +21,7 @@ import SignOutIcon from '@icons/SignOut'
 import Divider from '@components/Divider'
 import PencilIcon from '@icons/Pencil'
 import { useUser } from "@hooks";
+import { useTheme, themes } from '@theme/index'
 import { CHECKOUT_ADMIN_ACCOUNT } from "@modules/User/mutations";
 
 type ProfileProps = {
@@ -52,6 +53,9 @@ const Profile: FC<ProfileProps> = ({ classes, intl }) => {
   
   const [user, thumb] = useUser();
   const router = useRouter();
+  const { theme, setTheme } = useTheme();
+  const currentTheme = themes[theme];
+  
   return (
     <>      
       <CardScreen title='profile' icon={<User height={24} width={24} onBack={() => router.push("/")}/>}>      
@@ -95,8 +99,8 @@ const Profile: FC<ProfileProps> = ({ classes, intl }) => {
                 <ListingItem
                   label='profile.login.changepassword'
                   subtitle='profile.login.changepassword.subtitle'
-                  icon={<Key width={21} height={21} color='#FFFFFF' />}
-                  iconBg='#0E46D7'
+                  icon={<Key width={21} height={21} color="#FFFFFF" />}
+                  iconBg={currentTheme.palette.primary.main || '#0E46D7'}
                   action={() => router.push('/profile/change-password')}
                 />
               </Listing>

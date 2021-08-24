@@ -3,6 +3,7 @@ import React from 'react'
 import Image from 'next/image'
 import { FormattedMessage } from 'react-intl'
 import apolloClient from '@utils/apollo-client'
+import { Theme } from '@material-ui/core/styles' 
 
 //queries
 import { GET_USER_FULL_TEXT } from '@modules/User/queries'
@@ -23,9 +24,11 @@ export function Beneficiary({ name, image }: { name: string; image: string }) {
   )
 }
 
-function Status({ status }: { status: string }) {
+function Status({ status, background, color }: { status: string, background: string, color: string }) {
   return (
-    <StyledStatus>
+    <StyledStatus
+      background={background}
+      color={color}>
       <span>{status}</span>
     </StyledStatus>
   )
@@ -47,7 +50,7 @@ function EffectiveDate({ effectiveDate }: { effectiveDate: string }) {
   )
 }
 
-export const columns = [
+export const columns = (theme: Theme) => [
   {
     field: 'identifier',
     headerName: <FormattedMessage id='request.identifier' />,
@@ -94,7 +97,7 @@ export const columns = [
     headerName: <FormattedMessage id='request.status' />,
     sortable: true,
     renderCell: (row: Request) => {
-      return <Status status={row.status} />
+      return <Status status={row.status} background={theme.palette.info.main} color={theme.palette.info.contrastText} />
     }
   }
 ]

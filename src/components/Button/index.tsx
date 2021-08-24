@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { createStyles, withStyles } from '@material-ui/core/styles'
+import { createStyles, withStyles, Theme } from '@material-ui/core/styles'
 import classNames from 'classnames'
 import MuiButton from '@material-ui/core/Button'
 import Loading from '../Loading'
 import type { ButtonPropsType } from './types'
 
-const useStyles = () => createStyles({
+const useStyles = (theme: Theme) => createStyles({
   root: {
     '& button': {
       textTransform: 'initial',
@@ -23,8 +23,8 @@ const useStyles = () => createStyles({
     },
     '& .Default-contained-blue': {
       backgroundColor: '#FFFFFF',
-      border: '1px solid #0E46D7',
-      color: '#0E46D7'
+      border: `1px solid ${theme.palette.primary.main}`,
+      color: theme.palette.primary.main
     },
     '& .Default-contained-disabled': {
       backgroundColor: '#E9E8EB',
@@ -38,7 +38,7 @@ const useStyles = () => createStyles({
       fontWeight: 600,
       padding: '6px 16px',
       color: '#FFFFFF',
-      backgroundColor: '#0E46D7',
+      backgroundColor: theme.palette.primary.main || '#0E46D7',
       '&.Blue': {
         backgroundColor: '#FFFFFF',     
         color: '#0E46D7',       

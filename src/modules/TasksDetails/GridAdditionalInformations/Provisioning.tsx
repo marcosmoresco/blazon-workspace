@@ -1,9 +1,7 @@
 // vendors
 import React, { useState, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
-
-// components
-import Roles from "./Roles";
+import { useTheme, themes } from "@theme/index";
 
 // styles
 import {
@@ -25,6 +23,8 @@ type tabs = "account | resource | undefined";
 
 const GridAdditionalInformationsProvisioning: React.FC<AdditionalInformationsProps> = ({ task }) => {
   const [tab, setTab] = useState<tabs>();
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
   
   useEffect(() => {
     if(task?.type && !tab) {
@@ -41,6 +41,7 @@ const GridAdditionalInformationsProvisioning: React.FC<AdditionalInformationsPro
         <WorkArea>
           <MenuDetail>
             <StyleApprovalTab
+              color={currentTheme.palette.primary.main}
               selected={tab === "account" as tabs}
               onClick={() => setTab("account" as tabs)}
             >
@@ -58,14 +59,16 @@ const GridAdditionalInformationsProvisioning: React.FC<AdditionalInformationsPro
          <WorkArea>
          <MenuDetail>
            <StyleApprovalTab
-             selected={tab === "resource" as tabs}
-             onClick={() => setTab("resource" as tabs)}
+              color={currentTheme.palette.primary.main}
+              selected={tab === "resource" as tabs}
+              onClick={() => setTab("resource" as tabs)}
            >
              <FormattedMessage id="tasks.ResourceInformations" />
            </StyleApprovalTab>   
            <StyleApprovalTab
-             selected={tab === "account" as tabs}
-             onClick={() => setTab("account" as tabs)}
+              color={currentTheme.palette.primary.main}
+              selected={tab === "account" as tabs}
+              onClick={() => setTab("account" as tabs)}
            >
              <FormattedMessage id="tasks.AccountInformations" />
            </StyleApprovalTab>                 

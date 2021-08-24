@@ -32,8 +32,8 @@ export const StyleApprovalTab = styled.button`
   border: none;
   cursor: pointer;
   border-bottom: 4px solid
-    ${({ selected }: { selected: boolean }) =>
-      selected ? "#0e46d7" : "transparent"};
+    ${({ selected, color }: { selected: boolean, color: string }) =>
+      selected ?  color && color || "#0e46d7" : "transparent"};
 `;
 export const InsideLine = styled.div`
   width: 100%;
@@ -97,7 +97,8 @@ export const Text = styled.input`
 
 export const PaperPlaneBox = styled.a`
   padding: 8px 8px 2px;
-  background: #3174f6;
+  background: ${({ color }: { color: string }) =>
+  color && color || "#0e46d7"};
   border-radius: 8px;
   align-items: center;
   cursor: pointer;

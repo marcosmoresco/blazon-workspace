@@ -2,7 +2,7 @@ import { createMuiTheme } from "@material-ui/core/styles";
 import { red } from "@material-ui/core/colors";
 
 // Create a theme instance.
-export const light = createMuiTheme({
+export const eletricIndigo = createMuiTheme({
   overrides: {
     MuiIcon: {
       root: {
@@ -25,6 +25,14 @@ export const light = createMuiTheme({
       root: {
         backgroundColor: "#F4F4F5",
       },
+    },
+    MuiButton: {     
+      containedPrimary: {
+        color: "#FFFFFF"
+      },
+      containedSecondary: {
+        color: "#FFFFFF"
+      }
     },
     MuiButtonBase: {
       root: {
@@ -50,19 +58,28 @@ export const light = createMuiTheme({
         width: 26,
         height: 26,
         borderRadius: 20,
-        fontSize: 16,
+        fontSize: 12,       
+      },
+      colorPrimary: {
+        color: "#FFFFFF"
       }
-    },   
+    },  
     MuiBreadcrumbs: {
       root: {
         marginBottom: 10
       }
-    },   
+    },
+    MuiTabs: {
+      indicator: {
+        height: 4,
+        background: "#6610F2",
+      }
+    }   
   },
   palette: {
     type: "light",
     primary: {
-      main: "#0E46D7",
+      main: "#6610F2",
     },
     secondary: {
       main: "#DC004E",
@@ -73,7 +90,17 @@ export const light = createMuiTheme({
     background: {
       default: "#F4F4F5",
     },
+    header: {
+      main: "#FFFFFF",
+      light: "#FFFFFF",
+      contrastText: "#1B202A"
+    },
+    info: {
+      main: "#8642F5",
+      contrastText: "#520BC6"
+    },
+    profileBg: "eletricIndigo"
   },
 });
 
-export default light;
+export default eletricIndigo;

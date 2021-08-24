@@ -1,14 +1,31 @@
 import React, { FC, createContext, useContext, useState } from "react";
-import { light as themeLight, dark as themeDark } from "./themes";
+import axios from "axios";
+import { 
+  default as themeDefault,
+  emerald as themeEmerald,
+  eletricIndigo as themeEletricIndigo,
+  magentaProcess as themeMagentaProcess,
+  saffron as themeSaffron,
+  steelTeal as themeSteelTeal,
+  tomato as themeTomato,
+  darkSalmon as themeDarkSalmon,
+  copper as themeCopper,
+  dark as themeDark 
+} from "./themes";
 import type { Themes, ThemeState, ThemeContextProps } from './types'; 
 
 const StateContext = createContext<ThemeState>({
-  theme: "light" as Themes,
+  theme: "default" as Themes,
   setTheme: () => {},
 });
 
 export const ThemeStateProvider: FC<ThemeContextProps> = ({ children }) => {
-  const [theme, setTheme] = useState("light" as Themes);
+  const [theme, setTheme] = useState("default" as Themes);
+
+  axios.get("/api/colorSchema")
+    .then(function(response) {    
+      setTheme(response.data.colorSchema);      
+    });
 
   return (
     <StateContext.Provider
@@ -26,7 +43,15 @@ export const useTheme = () => useContext(StateContext);
 
 export const themes: { [key: string]: any } = {
   dark: themeDark,
-  light: themeLight,
+  default: themeDefault,
+  emerald: themeEmerald,
+  eletricIndigo: themeEletricIndigo,
+  magentaProcess: themeMagentaProcess,
+  saffron: themeSaffron,
+  steelTeal: themeSteelTeal,
+  tomato: themeTomato,
+  darkSalmon: themeDarkSalmon,
+  copper: themeCopper
 };
 
 const Theme = {

@@ -31,8 +31,8 @@ export const StyleApprovalTab = styled.button`
   border: none;
   cursor: pointer;
   border-bottom: 4px solid
-    ${({ selected }: { selected: boolean }) =>
-      selected ? "#0e46d7" : "transparent"};
+    ${({ selected, color }: { selected: boolean, color?: string }) =>
+      selected ? color && color || "#0e46d7" : "transparent"};
 `;
 export const InsideLine = styled.div`
   width: 100%;

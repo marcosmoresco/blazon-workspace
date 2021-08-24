@@ -20,6 +20,7 @@ import CaretRightIcon from "@icons/CaretRight";
 import HouseSimpleIcon from "@icons/HouseSimple";
 import RequestStatusDialog from "@components/RequestStatusDialog";
 import Link from "@components/BreadcrumbLink";
+import { useTheme, themes } from "@theme/index";
 
 //images
 import EmptyStateImage from "@images/EmptyStatePasswordVault.svg";
@@ -39,6 +40,10 @@ const PasswordVaultScreen: FC<PasswordVaultScreenProps> = ({
   classes,
   intl,
 }) => {
+
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
+
   const [newPasswordModalOpen, setNewPasswordModalOpen] =
     useState<boolean>(false);
 
@@ -94,9 +99,9 @@ const PasswordVaultScreen: FC<PasswordVaultScreenProps> = ({
             setSavePasswordStatus(success);
           }}
         />            
-        <Breadcrumbs separator={<CaretRightIcon width={18} height={18} stroke={2}/>} aria-label="breadcrumb">
+        <Breadcrumbs separator={<CaretRightIcon width={18} height={18} stroke={2} color="#7D7A8C"/>} aria-label="breadcrumb">
           <Link color="primary" href="/" onClick={() => router.push("/")}>
-            <HouseSimpleIcon width={23} height={23} color="#3174F6"/>
+            <HouseSimpleIcon width={23} height={23} color={currentTheme.palette.primary.main || "#3174F6"}/>
             <FormattedMessage id="home" />
           </Link>          
           <Typography>
@@ -125,14 +130,14 @@ const PasswordVaultScreen: FC<PasswordVaultScreenProps> = ({
             <div>{intl.formatMessage({ id: "passwordVault.newPassword" })}</div>
           </Button>
         </div>
-        {!(data?.getPasswordVaultEntries || []).length && (
+        {(data?.getPasswordVaultEntries || []).length === 0 && (
           <EmptyState
             image={EmptyStateImage}
             title="passwordVault.emptyState.title"
             text="passwordVault.emptyState.description.text"
           />
         )}
-        {(data?.getPasswordVaultEntries || []).length && (
+        {(data?.getPasswordVaultEntries || []).length > 0 && (
           <>
             <Grid container className="pt24" spacing={3}>
               {(dataToRender || []).map((item, i) => (

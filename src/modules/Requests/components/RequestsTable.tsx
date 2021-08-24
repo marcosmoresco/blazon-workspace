@@ -30,6 +30,7 @@ import Tag from "@icons/Tag";
 import CaretRight from "@icons/CaretRight";
 import { getContent } from "@modules/Requests/constants";
 import type { RequestsTableProps } from "./types";
+import { useTheme, themes } from "@theme/index";
 
 // styles
 import {
@@ -49,6 +50,8 @@ import EmptyStateImage from "@images/EmptyStateRequests.svg";
 const Tasks: FC<RequestsTableProps> = ({ intl }) => {
   const router = useRouter();
   const dispatch = useDispatch();
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
   const [queryFilters, setQueryFilters] = useState({
     page: 0,
     size: 100,      
@@ -202,7 +205,7 @@ const Tasks: FC<RequestsTableProps> = ({ intl }) => {
             height={600}
             getResponseLinks={(data: any) => data?.getRequests?.links}
             getResponse={(data: any) => data?.getRequests?.requests}           
-            columns={columns}
+            columns={columns(currentTheme)}
             page={1}
             size={100}
             rowsPerPageList={[25, 50, 75, 100]}

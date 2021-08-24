@@ -102,9 +102,14 @@ export const BoxCardTitle = styled.div`
   color: #26213f;
 `;
 
-export const BoxCardIdentifier = styled.div`
-  background: #eaf1fe;
-  color: #0e46d7;
+interface BoxCardIdentifierProps {
+  background?: string;
+  color?: string;
+}
+
+export const BoxCardIdentifier = styled.div<BoxCardIdentifierProps>`
+  background: ${props => props.background && props.background || "#eaf1fe"}; 
+  color: ${props => props.color && props.color || "#0e46d7"}; 
   border-radius: 30px;
   margin-left: 19px;
   padding: 8px;
@@ -199,13 +204,17 @@ export const BarPriorityHigh = styledMui(LinearProgress)({
   }
 }); 
 
-export const FooterType = styled.div`
+interface FooterTypeProps {
+  color?: string;
+}
+
+export const FooterType = styled.div<FooterTypeProps>`
   background: #F4F4F5;
   border: 1px dashed #92909F;
   box-sizing: border-box;
   border-radius: 8px;
   padding: 12px;
-  color: #3174F6;
+  color: ${props => props.color && props.color || "#3174F6"}; 
   text-transform: uppercase;
 `;
 

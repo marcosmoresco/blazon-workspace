@@ -43,6 +43,7 @@ import { User } from "@types";
 import { getLink } from "@utils/index";
 import { TitleHierarchy } from "@components/TitlePage/types";
 import EmptyStateSharedAccountImage from "@images/EmptyStateSharedAccount.svg";
+import { useTheme, themes } from "@theme/index";
 
 const filters = [
   {
@@ -115,6 +116,8 @@ const SharedDialogContent = ({ current, classes }) => {
   const { resourceName, accountIdentifier, identifier } = current;
   const form = useFormikContext();
   const [open, setOpen] = useState(false);
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
 
   const { loading, error, data, refetch } = useQuery<{
     getUserFullText: User[];
@@ -199,6 +202,8 @@ const SharedDialogContent = ({ current, classes }) => {
       })  
     }   
   };
+
+  AutocompletePaper.defaultProps = {theme: currentTheme};
 
   return (
     <Form>

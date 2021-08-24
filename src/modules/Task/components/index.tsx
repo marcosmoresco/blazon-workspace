@@ -40,6 +40,7 @@ import {
 import {
   getAvailableActionsByType,
 } from "@modules/TasksDetails/Header/constants";
+import { useTheme, themes } from "@theme/index";
 
 // components
 import UserIcon from "@icons/User";
@@ -108,6 +109,8 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
   const router = useRouter();
   const intl = useIntl();
   const dispatch = useDispatch();
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
 
   const priorityToElement: { [key: string]: any } = {
     "LOW": <BarPriorityLow variant="determinate" value={30} />,
@@ -367,7 +370,9 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
                      task?.itemDetails?.roleName || " - "
                     ) || ""}
                   </BoxCardTitle>
-                  <BoxCardIdentifier>{task.identifier}</BoxCardIdentifier>
+                  <BoxCardIdentifier
+                    background={currentTheme.palette.info.main} 
+                    color={currentTheme.palette.info.contrastText}>{task.identifier}</BoxCardIdentifier>
                 </BoxCardHeaderContent>                  
                 <BoxCardHeaderInfo>
                   <Info>
@@ -413,7 +418,8 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
                   </BoxPriority>
                 </BoxCardFooterInfo>  
                 <BoxCardFooterInfo>
-                  <FooterType>
+                  <FooterType
+                    color={currentTheme.palette.primary.main}>
                     {(task?.headers?.category || type) && intl.formatMessage({id: `task.category.${task?.headers?.category || type}`}) || " - "}
                   </FooterType>
                   <FooterStatus>

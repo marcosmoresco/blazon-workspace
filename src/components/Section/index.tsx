@@ -1,14 +1,17 @@
-import React, { FC, useState, useEffect } from "react";
-import { withStyles } from "@material-ui/core/styles";
+import React, { FC, useState, useEffect, useMemo } from "react";
+import { withStyles, Theme } from "@material-ui/core/styles";
 import { injectIntl } from "react-intl";
-import Button from "@components/Button";
-import X from "@icons/X";
 import type { SectionProps, SectionType } from "./types";
 import { useStyles, Box } from "./styles";
+import { useTheme, themes } from "@theme/index";
 
 const Section: FC<SectionProps> = ({ classes, list, defaultValue, onSelect, intl }) => {
   const [active, setActive] = useState(defaultValue || "");
   const [sections, setSections] = useState<SectionType[]>([]);
+  const { theme } = useTheme();
+  const currentTheme = useMemo(() => {
+    return { ...themes[theme] }
+  }, [theme]);
 
   useEffect(() => {
     if (!sections.length) {
@@ -18,13 +21,13 @@ const Section: FC<SectionProps> = ({ classes, list, defaultValue, onSelect, intl
           ...section,
           icon: {
             ...section.icon,
-            props: { ...section.icon.props, with: 21, height: 21, color: (active === section.value && "#0E46D7") || "black" },
+            props: { ...section.icon.props, with: 21, height: 21, color: (active === section.value && (currentTheme.palette.info.contrastText || "#0E46D7")) || "black" },
           },
         });
       });
       setSections(newSections);
     }
-  }, [list, sections, active]);
+  }, [list, sections, active, currentTheme]);
 
   const onClick = (section: SectionType): void => {
     setActive(section.value);

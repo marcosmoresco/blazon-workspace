@@ -45,7 +45,10 @@ export const FinishingArea = styled.div`
   display: flex;
   justify-content: center;
   align-items: top;
-  padding: 56px 175px 52px;
+  padding: 56px 0px 52px;
+  max-width: 1312px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 export const ItemArea = styled.div`
   background: #ffff;

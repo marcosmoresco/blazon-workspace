@@ -2,7 +2,6 @@
 import React, { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useRouter } from "next/router";
-
 // components
 import Roles from "./Roles";
 import GridAdditionalInformationsApproval from "./Approval";

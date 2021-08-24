@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 import { FormattedMessage } from "react-intl";
 import { useRouter } from "next/router";
-import { getLink } from "@utils/index";
+import { useTheme, themes } from "@theme/index";
 
 // components
 import Avatar from "@material-ui/core/Avatar";
@@ -46,6 +46,8 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
 
   const router = useRouter();  
   const { type } = router.query;
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
 
   const priorityToElement: { [key: string]: any } = {
     LOW: <BarPriorityLow variant="determinate" value={30} />,
@@ -79,7 +81,9 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                   )}
                 </BoxCardTitle>
                 {type !== "roleRight" && (
-                  <BoxCardIdentifier>
+                  <BoxCardIdentifier
+                    background={currentTheme.palette.info.main} 
+                    color={currentTheme.palette.info.contrastText}>
                     {["approval", "sod"].includes(type as string) && (
                       task?.approvalItemDetails?.entitlementIdentifier || 
                       task?.approvalItemDetails?.roleIdentifier || 

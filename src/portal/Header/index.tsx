@@ -29,13 +29,19 @@ import Message from '@portal/Message/index'
 import Cart from '@portal/Cart/index'
 import Tooltip from '@components/Tooltip'
 
+import { useQuery } from "@apollo/client";
 import { useUser } from '@hooks'
 import { useTheme, themes } from '../../theme'
 import type { HeaderProps } from './types'
 import HeaderAutocomplete from './components/HeaderAutocomplete'
 import HeaderRequestCart from './components/HeaderRequestCart'
 import HeaderNotifications from './components/HeaderNotifications'
-import { useStyles, HeaderProfileBox, HeaderProfileBoxInfo, HeaderFixAutocomplete } from './styles'
+import { useStyles, Badge, HeaderProfileBox, HeaderProfileBoxInfo, HeaderFixAutocomplete } from './styles'
+
+//queries
+import { 
+  RESUME 
+} from "@modules/Task/queries";
 
 const Header: FC<HeaderProps> = ({ classes, intl }) => {
   const router = useRouter()
@@ -52,6 +58,10 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
       body.style.backgroundColor = currentTheme.palette.background.default
     }
   }
+
+  const { loading: loadingResume, data: dataResume, refetch: refetchResume } = useQuery(RESUME, {
+    fetchPolicy: "no-cache"
+  });
 
   const handleClick = (event: any) => {
     setAnchorEl(event.currentTarget)
@@ -79,7 +89,7 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
               <img src="/api/logo" alt="Logo" />
             </div>
             {!['/search', '/checkout', '/checkout-finishing', '/checkout-finished'].includes(router.pathname) && (
-              <HeaderAutocomplete classes={classes} />
+              <HeaderAutocomplete classes={classes} theme={currentTheme}/>
             ) || <HeaderFixAutocomplete />}
           </div>
           <div className={classes.menuOptionsContent}>
@@ -99,9 +109,10 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                       width={21}
                       height={21}
                       color={
-                        (router.pathname === '/requests' && '#0E46D7') ||
-                        currentTheme.overrides.MuiIcon.root.color
+                        (router.pathname === '/requests' && currentTheme.palette.primary.main) ||
+                        currentTheme.palette.header.contrastText
                       }
+                      stroke={1}
                     />
                   </div>
                 </Tooltip>
@@ -118,7 +129,11 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                     <KeyIcon
                       width={21}
                       height={21}
-                      color={currentTheme.overrides.MuiIcon.root.color}
+                      color={
+                        (router.pathname === '/password-vault' && currentTheme.palette.primary.main) ||
+                        currentTheme.palette.header.contrastText
+                      }
+                      stroke={1}
                     />
                   </div>
                 </Tooltip>
@@ -130,21 +145,34 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                   title={intl.formatMessage({ id: 'tasks' })}
                   placement='bottom'
                 >
-                  <div
-                    className={`${classes.optionImage} ${
-                      router.pathname === '/tasks' && 'Active'
-                    }`}
-                    onClick={() => router.push('/tasks')}
-                  >
-                    <TasksIcon
-                      width={21}
-                      height={21}
-                      color={
-                        (router.pathname === '/tasks' && '#0E46D7') ||
-                        currentTheme.overrides.MuiIcon.root.color
-                      }
-                    />
-                  </div>
+                  <Badge
+                      color="primary"
+                      anchorOrigin={{
+                        vertical: "top",
+                        horizontal: "left",
+                      }}
+                      badgeContent={
+                        dataResume?.getResume?.totalOpenTasks ? 
+                        dataResume?.getResume?.totalOpenTasks > 99 && "99+" || dataResume?.getResume?.totalOpenTasks 
+                       :dataResume?.getResume?.totalOpenTasks || 0}
+                    >
+                    <div
+                      className={`${classes.optionImage} ${
+                        router.pathname === '/tasks' && 'Active'
+                      }`}
+                      onClick={() => router.push('/tasks')}
+                    >     
+                      <TasksIcon
+                        width={21}
+                        height={21}
+                        color={
+                          (router.pathname === '/tasks' && currentTheme.palette.primary.main) ||
+                          currentTheme.palette.header.contrastText
+                        }
+                        stroke={1}
+                      />                                 
+                    </div>
+                  </Badge>                    
                 </Tooltip>
                 <HeaderNotifications
                   currentTheme={currentTheme}

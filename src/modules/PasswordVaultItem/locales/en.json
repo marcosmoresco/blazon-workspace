@@ -2,7 +2,7 @@
   "passwordVault.sucessSave": "Your password has been successfully changed!",
   "passwordVault.errorSave": "Your password has not been changed.",
   "passwordVault.emptyState.title": "No password vault",
-  "passwordVault.emptyState.description.text": "You currently have no password vault.",
+  "passwordVault.emptyState.description.text": "There are no credentials in your password vault",
   "passwordVault.title": "Password vault",
   "passwordVault.itens": "{amount} items",
   "passwordVault.newPassword": "New password",
@@ -11,7 +11,7 @@
   "passwordVault.tutorial.title": "How to manage your passwords",
   "passwordVault.tutorial.text": "Watch this mini tutorial and end your doubts.",
   "passwordVault.no.password": "No password",
-  "passwordVault.no.password.text": "There are no accesses added to your account.",
+  "passwordVault.no.password.text": "There are no access added to your account.",
 
   "passwordvault.modal.info.title": "Account",
   "passwordvault.modal.info.description": "Below you can find the login information for this account.",

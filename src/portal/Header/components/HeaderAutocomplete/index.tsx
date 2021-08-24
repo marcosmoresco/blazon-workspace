@@ -7,7 +7,6 @@ import { GET_SELF_SERVICE } from "@portal/Search/queries";
 import { SelfService } from "@portal/Search/types";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
-import Input from '@material-ui/core/Input';
 import CircularProgress from "@material-ui/core/CircularProgress";
 import SearchIcon from "@icons/Search";
 import SharedAccountIcon from "@icons/SharedAccount";
@@ -42,13 +41,14 @@ import {
   BoxAutocompleteText,
 } from "./styles";
 
-const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
+const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl, theme }) => {
   const { cart } = useCart();
   const router = useRouter();
   const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);  
   const [filter, setFilter] = React.useState("");
   const [addedItems, setAddedItems] = useState<string[]>([]); 
+  const [loadingItems, setLoadingItems] = useState<string[]>([]); 
 
   useEffect(() => {   
     if(cart && (cart.items || []).length) {
@@ -74,7 +74,8 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
         query: GET_SELF_SERVICE_CART,
       },
     ],
-    onCompleted: (data: any) => {   
+    onCompleted: (data: any) => {  
+      setLoadingItems(loadingItems.filter((i) => i !== data?.addSelfServiceCartItem.catalogItemId)); 
       setAddedItems([...addedItems, data?.addSelfServiceCartItem.catalogItemId]);
       dispatch(addCartItemMessage({...data?.addSelfServiceCartItem, messageType: "add"}));      
     }
@@ -135,7 +136,7 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
         }}
         renderOption={(option: any) => (
           <>
-            <BoxAutocomplete>
+            <BoxAutocomplete color={theme.palette.primary.main}>
               {option?.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", option.attributes) === "SHARED_RESOURCE" && (
                 <SharedAccountIcon width={17} height={17} color="black"/>
               )}
@@ -177,22 +178,23 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
                 </BoxAutocompleteContentInfo> 
                 {addedItems.indexOf(option.identifier as string) === -1 && (
                   <>
-                    {loadingAddSelfServiceCartItem && (
+                    {loadingItems.includes(option.identifier as string) && (
                       <BoxAutocompleteContentCart className="Disabled-action">
                         <Loading type="blue"/>
                       </BoxAutocompleteContentCart>
                     )} 
-                    {!loadingAddSelfServiceCartItem && (
-                      <BoxAutocompleteContentCart 
+                    {!loadingItems.includes(option.identifier as string) && (
+                      <BoxAutocompleteContentCart                         
                         className="Autocomplete-cart" 
                         onClick={(event) => {
                           event.stopPropagation();
-                          event.nativeEvent.stopImmediatePropagation();
+                          event.nativeEvent.stopImmediatePropagation();                         
+                          setLoadingItems([...loadingItems, option.identifier as string]);
                           addSelfServiceCartItem({
                             variables: {
                               id: option.identifier                                  
                             },                      
-                          })
+                          });
                         }}>
                         <ShoppingCart width={21} />
                       </BoxAutocompleteContentCart>
@@ -219,7 +221,7 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
             {...params}
             label=""
             value={filter || ""}
-            variant="outlined"
+            variant="outlined"            
             placeholder={intl.formatMessage({id: "search.found.message"})}
             onKeyDown={(event: any) => {
               if(event.key === 'Enter') {
@@ -245,7 +247,7 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl }) => {
               ...params.InputProps,
               startAdornment: (
                 <InputAdornment position="start">
-                  <SearchIcon width={25} height={25} color="#60636A" />
+                  <SearchIcon width={25} height={25} color={theme.palette.header.contrastText} />
                 </InputAdornment>
               ),
               endAdornment: (

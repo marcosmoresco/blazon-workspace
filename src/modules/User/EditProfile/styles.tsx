@@ -17,7 +17,7 @@ const useStyles = (theme: Theme) =>
     },
     userHeaderBg: {
       height: 151,
-      backgroundImage: 'url(../profile-bg.jpg)',
+      backgroundImage: `url(../profile-bg-${theme.palette.profileBg || "blue"}.png)`,
       backgroundPosition: 'left',
       textAlign: 'center'
     },

@@ -7,6 +7,7 @@ import HouseSimpleIcon from "@icons/HouseSimple";
 import Link from "@components/BreadcrumbLink";
 import Typography from "@material-ui/core/Typography";
 import Breadcrumbs from '@material-ui/core/Breadcrumbs';
+import { useTheme, themes } from "@theme/index";
 import { TitleBox, TitleText, SubTitleBox, SubTitleText, Line, Header, HeaderTitle, Box, BackBox } from "./styles";
 
 const getHierarchyRecursive = (intl: IntlShape, hierarchy: TitleHierarchy, components: React.ReactNode[]) => {
@@ -27,7 +28,7 @@ const getHierarchyRecursive = (intl: IntlShape, hierarchy: TitleHierarchy, compo
     )
   } else {
     components.push(
-      <Typography>
+      <Typography style={{color: "#7D7A8C"}}>
         {(hierarchy?.formatedName && hierarchy?.formatedName) || intl.formatMessage({ id: hierarchy?.name })}
       </Typography>
     )
@@ -54,14 +55,17 @@ const TitlePage: React.FC<TitleProps> = ({
   onBack,
   hierarchy,
 }) => {
+
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
  
   return (
     <>
       <Box>
         <Header>
-          <Breadcrumbs separator={<CaretRightIcon width={18} height={18} stroke={2}/>} aria-label="breadcrumb">
+          <Breadcrumbs separator={<CaretRightIcon width={18} height={18} stroke={2} color="#7D7A8C"/>} aria-label="breadcrumb">
             <Link color="primary" href="/">
-              <HouseSimpleIcon width={23} height={23} color="#3174F6"/>
+              <HouseSimpleIcon width={23} height={23} color={currentTheme.palette.primary.main || "#3174F6"}/>
               <FormattedMessage id="home" />
             </Link> 
             {getHierarchy(intl, hierarchy).map((h: React.ReactNode, index: number) => <div key={`title-page-${index}`}>{h}</div>)}                               
