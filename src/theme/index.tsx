@@ -1,5 +1,4 @@
 import React, { FC, createContext, useContext, useState } from "react";
-import axios from "axios";
 import { 
   default as themeDefault,
   emerald as themeEmerald,
@@ -21,11 +20,6 @@ const StateContext = createContext<ThemeState>({
 
 export const ThemeStateProvider: FC<ThemeContextProps> = ({ children }) => {
   const [theme, setTheme] = useState("default" as Themes);
-
-  axios.get("/api/colorSchema")
-    .then(function(response) {    
-      setTheme(response.data.colorSchema);      
-    });
 
   return (
     <StateContext.Provider
