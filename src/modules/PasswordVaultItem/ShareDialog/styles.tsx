@@ -1,4 +1,4 @@
-import { styled as styledMui } from '@material-ui/core/styles';
+import { styled as styledMui, Theme } from '@material-ui/core/styles';
 import styled from "styled-components";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import Paper from "@material-ui/core/Paper";
@@ -134,28 +134,30 @@ export const BoxAutocompleteOption = styled.div`
   width: 100%;
 `;
 
-export const BoxAutocomplete = styled(Paper)({
+export const BoxAutocomplete = styled(Paper)(({theme}) => ({
   backgroundColor: "#FFFFFF !important", 
   borderRadius: 8,
   marginTop: 15,  
   "& .MuiAutocomplete-option[data-focus=\"true\"]": {
     "& .Shared-action-icon": {
-      background: "#3174f6" 
+      background: theme?.palette?.primary?.main || "#3174f6" 
     },
     "& svg": {
       filter: "invert(100%) sepia(0%) saturate(0%) hue-rotate(276deg) brightness(103%) contrast(101%)"
     }
   }
-});
+}));
 
 export const AutocompletePaper = ({
   children,
+  theme
 }: {
   children: any;
+  theme: Theme
 }) => {
 
   return (
-    <BoxAutocomplete>
+    <BoxAutocomplete theme={theme}>
       {children}
     </BoxAutocomplete>
   );

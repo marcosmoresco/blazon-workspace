@@ -47,6 +47,7 @@ import {
 import { User } from "@types";
 import { getLink } from "@utils/index";
 import { ShareDialogProps, SharedDialogContentProps } from "./types";
+import { useTheme, themes } from "@theme/index";
 
 const SharedDialogContent: React.FC<SharedDialogContentProps> = ({ current, setCurrPasswordVault }) => {
   const intl = useIntl();
@@ -54,6 +55,8 @@ const SharedDialogContent: React.FC<SharedDialogContentProps> = ({ current, setC
   const { name, description, identifier } = current;
   const form = useFormikContext();
   const [open, setOpen] = useState(false);
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
 
   const { loading, error, data, refetch } = useQuery<{
     getUserFullText: User[];
@@ -168,6 +171,8 @@ const SharedDialogContent: React.FC<SharedDialogContentProps> = ({ current, setC
       },
     });
   };
+
+  AutocompletePaper.defaultProps = {theme: currentTheme};
 
   return (
     <Form>
