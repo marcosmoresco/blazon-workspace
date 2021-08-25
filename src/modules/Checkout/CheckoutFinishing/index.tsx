@@ -6,7 +6,8 @@ import { useDispatch } from "react-redux";
 import { useQuery, useMutation } from "@apollo/client";
 import Image from "next/image";
 import * as Yup from "yup";
-import { useFormikContext, Formik, withFormik } from "formik";
+import { Formik } from "formik";
+import { useTheme, themes } from "@theme/index";
 
 // components
 import Finishing from "./essets/Finishing.svg";
@@ -86,6 +87,8 @@ const CheckoutFinishing: React.FC<ItemProps> = ({ nextStep }) => {
   const intl = useIntl();
   const dispatch = useDispatch();
   const { cart, setCart } = useCart();
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
 
   const { loading: loadingRequestCart, error, data } = useQuery<{
     getSelfServiceCart: SelfServiceCart;
@@ -167,11 +170,11 @@ const CheckoutFinishing: React.FC<ItemProps> = ({ nextStep }) => {
       <StatusCheckoutStyle>
         <SymbolStyle>
           <CircleStyle>
-            <InfoIcon width={48} height={48} color="#3174F6" stroke={2}/>
+            <InfoIcon width={48} height={48} color={currentTheme.palette.primary.main || "#3174F6"} stroke={2}/>
           </CircleStyle>
-          <LineStatusStyle style={{ background: "#3174F6" }} />
+          <LineStatusStyle style={{ background: currentTheme.palette.primary.main || "#3174F6" }} />
           <CircleStyle>
-            <FilePlusIcon color="#514D65" stroke={2}/>
+            <FilePlusIcon color="#514D65" stroke={2.5}/>
           </CircleStyle>
           <LineStatusStyle style={{ background: "#E9E8EB" }} />
           <CircleStyle>

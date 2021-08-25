@@ -3,6 +3,7 @@ import React from "react";
 import { FormattedMessage } from "react-intl";
 import { useRouter } from "next/router";
 import Image from "next/image";
+import { useTheme, themes } from "@theme/index";
 
 // components
 import CheckCircle from "./essets/CheckCircle.svg";
@@ -36,21 +37,24 @@ import {
 
 const CheckoutRequested: React.FC<ItemProps> = ({ nextStep }) => {
   const router = useRouter();
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
+
   return (
     <>
       <TitlePage title="checkout" subTitle="checkout.requested"/>
       <StatusCheckoutStyle>
         <SymbolStyle>
           <CircleStyle>
-            <InfoIcon width={48} height={48} color="#3174F6" stroke={2}/>
+            <InfoIcon width={48} height={48} color={currentTheme.palette.primary.main || "#3174F6"} stroke={2}/>
           </CircleStyle>
-          <LineStatusStyle style={{ background: "#3174F6" }} />
+          <LineStatusStyle style={{ background: currentTheme.palette.primary.main || "#3174F6" }} />
           <CircleStyle>
-            <FilePlusIcon color="#3174F6" stroke={2}/>
+            <FilePlusIcon color={currentTheme.palette.primary.main || "#3174F6"} stroke={2.5}/>
           </CircleStyle>
-          <LineStatusStyle style={{ background: "#3174F6" }} />
+          <LineStatusStyle style={{ background: currentTheme.palette.primary.main || "#3174F6" }} />
           <CircleStyle>
-            <CheckCircleIcon width={48} height={48} color="#3174F6" stroke={2}/>
+            <CheckCircleIcon width={48} height={48} color={currentTheme.palette.primary.main || "#3174F6"} stroke={2}/>
           </CircleStyle>
         </SymbolStyle>
         <TitlesStyle>

@@ -58,7 +58,7 @@ const Checkout: React.FC = () => {
           </CircleStyle>
           <LineStatusStyle style={{ background: "#E9E8EB" }} />
           <CircleStyle>
-            <FilePlusIcon color="#BDBCC5" stroke={2} />
+            <FilePlusIcon color="#BDBCC5" stroke={2.5} />
           </CircleStyle>
           <LineStatusStyle style={{ background: "#E9E8EB" }} />
           <CircleStyle>
