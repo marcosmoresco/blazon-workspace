@@ -55,7 +55,7 @@ const validationSchema = Yup.object({
       .required(
         <FormattedMessage id="changepassword.repeatPassword.required" />
       )
-      .oneOf([Yup.ref('newPasswordConfirm'), null], <FormattedMessage id="changepassword.repeatPassword.invalid" />),
+      .oneOf([Yup.ref('newPassword'), null], <FormattedMessage id="changepassword.repeatPassword.invalid" />),
       
   }).required("Required"),
 });
@@ -137,12 +137,12 @@ const ChangePassword: FC<ChangePasswordScreenProps> = ({ classes, intl }) => {
               </div>
               <Divider />         
               <StyledForm className={classes.form}>
-                <PasswordField key={`user-change-password-currentPassword`} form={form} name="changePassword.currentPassword" />
+                <PasswordField key={`user-change-password-currentPassword`} placeholder="changepassword.currentpassword.placeholder" form={form} name="changePassword.currentPassword" />
                 <StyledFormElement>
-                  <PasswordField key={`user-change-password-newPassword`} form={form} name="changePassword.newPassword" />
+                  <PasswordField key={`user-change-password-newPassword`} placeholder="changepassword.newpassword.placeholder" form={form} name="changePassword.newPassword" />
                 </StyledFormElement>
                 <StyledFormElement>
-                  <PasswordField key={`user-change-password-newPasswordConfirm`} form={form} name="changePassword.newPasswordConfirm" />
+                  <PasswordField key={`user-change-password-newPasswordConfirm`} placeholder="changepassword.newpasswordconfirm.placeholder" form={form} name="changePassword.newPasswordConfirm" />
                 </StyledFormElement>
               </StyledForm>
             </CardScreen>
