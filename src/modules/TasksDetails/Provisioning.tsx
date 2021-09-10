@@ -51,8 +51,7 @@ const Approval: React.FC = () => {
       <Header task={data?.getProvisioningTask} payload={payload} setPayload={setPayload} setStage={setStage} stage={stage}/>
       {["CREATE_ACCOUNT", "CHANGE_PASSWORD"].includes(data?.getProvisioningTask?.type || "") 
       && !["WAITING_ASSIGN", "DONE"].includes(data?.getProvisioningTask?.headers?.status || "") &&  <Continue task={data?.getProvisioningTask} stage={stage} payload={payload} setPayload={setPayload}/>}
-      <UserInfo task={data?.getProvisioningTask}/>
-      <JustifyCard task={data?.getProvisioningTask}/>      
+      <UserInfo task={data?.getProvisioningTask}/>          
       <GridAdditionalInformations task={data?.getProvisioningTask}/>
       <GridHistory task={data?.getProvisioningTask}/>
     </div>

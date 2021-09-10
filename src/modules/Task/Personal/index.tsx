@@ -42,16 +42,48 @@ import {
   RESUME 
 } from "@modules/Task/queries";
 
-const PersonalTasks: FC<ListProps> = ({ dispatch }) => {
+const PersonalTasks: FC<ListProps> = ({ resolved }) => {
 
   const intl = useIntl();
 
   const [type, setType] = useState("ALL");
-  const [tasksFilters, setTasksFilters] = useState([...filters]);
+  const [tasksFilters, setTasksFilters] = useState(resolved ? [...(filters.filter((f) => f.name !== "status")), {
+    name: "status",
+    label: <FormattedMessage id="status" />,
+    type: "list",
+    values: [
+      {
+        label: "DONE",
+        value: "DONE"
+      },      
+      {
+        label: "CANCELED",
+        value: "CANCELED"
+      },
+    ],
+    bind: "value",
+    view: "label"
+  }] : [...(filters.filter((f) => f.name !== "status")), {
+    name: "status",
+    label: <FormattedMessage id="status" />,
+    type: "list",
+    values: [
+      {
+        label: "TODO",
+        value: "TODO"
+      },      
+      {
+        label: "WAITING_ASSIGN",
+        value: "WAITING_ASSIGN"
+      },
+    ],
+    bind: "value",
+    view: "label"
+  }]);
   const [typeValue, setTypeValue] = useState<string>("ANY");
   const [loading, setLoading] = useState(false);
   const [checkAll, setCheckAll] = useState<boolean>(false);
-  const [filtered, setFiltered] = useState<{[key: string]: any}>({});
+  const [filtered, setFiltered] = useState<{[key: string]: any}>(resolved ? {status: ["DONE", "CANCELED"]} : {status: ["TODO", "WAITING_ASSIGN"]});
   const [anchorElCategory, setAnchorElCategory] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [currentCategoryName, setCurrentCategoryName] = useState<string>(intl.formatMessage({id: "task.all"}));  
@@ -96,10 +128,20 @@ const PersonalTasks: FC<ListProps> = ({ dispatch }) => {
         })
         .then(({ data }) => {
           if(categoryFilter === "ALL") {
-            setTasksFilters([...filters]);
+            const _filters = [...filters];
+            const filtered = _filters.filter((f) => f.name === "status");
+            if(filtered?.length) {
+              filtered[0].values = filtered[0].values.filter((f: any) => (resolved ? ["DONE", "CANCELED"] : ["TODO", "WAITING_ASSIGN"]).includes(f.value));
+            }            
+            setTasksFilters(_filters);
           } else {
-            if(data?.getFilters) {            
-              setTasksFilters(generateFilters(intl, data?.getFilters));
+            if(data?.getFilters) { 
+              const _filters = generateFilters(intl, data?.getFilters);
+              const filtered = _filters.filter((f) => f.name === "status");
+              if(filtered?.length) {
+                filtered[0].values = filtered[0].values.filter((f: any) => (resolved ? ["DONE", "CANCELED"] : ["TODO", "WAITING_ASSIGN"]).includes(f.value));
+              }           
+              setTasksFilters(_filters);
             }
           }                            
         });
@@ -121,6 +163,14 @@ const PersonalTasks: FC<ListProps> = ({ dispatch }) => {
     }        
     setCheckAll(false);
     getTaskFilters(type, val);  
+  };
+
+  const handleChangeFiltered = (f: {[key: string]: any}) => {
+    if(!f.status) {      
+      f.status = resolved ? ["DONE", "CANCELED"] : ["TODO", "WAITING_ASSIGN"];
+    }
+
+    setFiltered({...f, ...(typeValue !== "ANY" ? {"taskData.type": typeValue} : {})});
   };
 
   return (
@@ -160,7 +210,7 @@ const PersonalTasks: FC<ListProps> = ({ dispatch }) => {
               </SelectBoxContainer>
             </FilterContent>
           )}                            
-          <Filter filters={tasksFilters} onChange={(f: any) => setFiltered({...f, ...(typeValue !== "ANY" ? {"taskData.type": typeValue} : {})})}/>
+          <Filter filters={tasksFilters} onChange={(f: any) => handleChangeFiltered(f)}/>
         </HeaderFilters>
       </Header>
       {type === "ALL" && (

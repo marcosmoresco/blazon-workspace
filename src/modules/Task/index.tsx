@@ -1,25 +1,7 @@
-import React, { FC, useState, useEffect } from "react";
-import { FormattedMessage, injectIntl } from "react-intl";
-import Avatar from "@material-ui/core/Avatar";
-import Button from "@components/Button";
+import React, { FC, useState } from "react";
 import Card from "@components/Card";
-import Checkbox from "@components/Checkbox";
-import DataGrid from "@components/DataGrid";
-import Filter from "@components/Filter";
 import Section from "@components/Section";
-import Select from "@components/Select";
-import Tutorial from "@components/Tutorial";
-import { confirm } from "@components/Dialog/actions";
-import ArrowsOutIcon from "@icons/ArrowsOut";
-import ArrowClockwiseIcon from "@icons/ArrowClockwise";
-import CalendarIcon from "@icons/Calendar";
-import CheckSquareOffsetIcon from "@icons/CheckSquareOffset";
-import CirclesFourIcon from "@icons/CirclesFour";
-import DotsThreeIcon from "@icons/DotsThree";
-import UserGearIcon from "@icons/UserGear";
 import { connect } from "react-redux";
-//import { all, save, remove } from './actions'
-import { addMessage } from "@actions/index";
 import { sections } from "./constants";
 import type { ListProps } from "./types";
 import {
@@ -52,6 +34,9 @@ const Tasks: FC<ListProps> = ({ dispatch }) => {
             )}
             {section === "TASKS_PERSONAL" && (
               <PersonalTasks />
+            )}
+            {section === "TASKS_RESOLVED" && (
+              <PersonalTasks resolved={true}/>
             )}
           </Card>
         </Content>     

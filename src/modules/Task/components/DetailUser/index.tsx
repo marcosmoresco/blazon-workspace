@@ -24,23 +24,25 @@ import {
   DrawerDetailUser
 } from "./styles";
 
-const DetailUser: React.FC<DetailUserProps> = ({ task }) => {  
+const DetailUser: React.FC<DetailUserProps> = ({ task, title = "task.requester", user }) => {  
 
   const [modalOpen, setModalOpen] = useState(false);
+
+  const currentUser = user || task?.headers?.from;
 
   return (
     <>
       <BoxRequester onClick={() => setModalOpen(true)}>
         <Info>
           <BoxRequesterAvatar>
-            <Avatar src={getLink("thumb", task?.headers?.from?.links || [])} />
+            <Avatar src={getLink("thumb", currentUser?.links || [])} />
           </BoxRequesterAvatar>                     
           <BoxRequesterContent>
             <BoxRequesterTitle>
-              <FormattedMessage id="task.requester" />
+              <FormattedMessage id={title} />
             </BoxRequesterTitle>
             <BoxRequesterDisplayName>
-              {task?.headers?.from?.displayName || " - "}
+              {currentUser?.displayName || " - "}
             </BoxRequesterDisplayName>
           </BoxRequesterContent>                      
         </Info>                    
@@ -51,16 +53,16 @@ const DetailUser: React.FC<DetailUserProps> = ({ task }) => {
         fullWidth={false}
         isValid={true}
         open={modalOpen}
-        title={task?.headers?.from?.displayName}
+        title={currentUser?.displayName}
         noActions
       >
-        <UserContent user={task?.headers?.from} />
+        <UserContent user={currentUser} />
       </Dialog>*/} 
       <DrawerDetailUser 
         anchor="right" 
         open={modalOpen} 
         onClose={() => setModalOpen(false)}>
-        <UserContent user={task?.headers?.from} close={() => setModalOpen(false)}/>                
+        <UserContent user={currentUser} close={() => setModalOpen(false)}/>                
       </DrawerDetailUser>
     </>    
   );

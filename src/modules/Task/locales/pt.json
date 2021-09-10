@@ -62,6 +62,7 @@
   "task.any": "Alguma",
   "task.newRoleRight": "Novo direito de papel",
   "task.resource": "Recurso",
+  "tasks.resolved": "Resolvidas",
 
   "task.category.APPROVAL_TASK": "Aprovação",
   "task.category.CERTIFICATION_TASK": "Certificação",

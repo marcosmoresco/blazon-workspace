@@ -2,6 +2,7 @@ import type { User, Link } from "@types";
 
 export type TaskDates = {
   createdDate: string;
+  resolvedDate: string;
   deadline: string;
 };
 
@@ -113,6 +114,7 @@ export type ListProps = {
   filteredString?: string;
   id?: number;
   isQueue?: boolean;
+  resolved?: boolean;
 };
 
 export type TaskFilterClause = {

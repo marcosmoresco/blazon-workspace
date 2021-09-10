@@ -72,19 +72,19 @@ export const filters: FilterType[] = [
     type: "list",
     values: [
       {
-        label: <FormattedMessage id="task.status.DONE" />,
+        label: "DONE",
         value: "DONE"
       },
       {
-        label: <FormattedMessage id="task.status.TODO" />,
+        label: "TODO",
         value: "TODO"
       },
       {
-        label: <FormattedMessage id="task.status.WAITING_ASSIGN" />,
+        label: "WAITING_ASSIGN",
         value: "WAITING_ASSIGN"
       },
       {
-        label: <FormattedMessage id="task.status.CANCELED" />,
+        label: "CANCELED",
         value: "CANCELED"
       },
     ],
@@ -210,15 +210,17 @@ export const types = [
 ];
 
 export const sections = [
-  {
-    icon: <CheckSquareOffsetIcon />,
+  {   
     name: "tasks",
     value: "TASKS",
   },
-  {
-    icon: <UserGearIcon />,
+  {   
     name: "tasks.personal",
     value: "TASKS_PERSONAL",
+  },
+  {   
+    name: "tasks.resolved",
+    value: "TASKS_RESOLVED",
   },
 ];
 

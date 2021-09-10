@@ -14,6 +14,7 @@ export const Task = `
 
   type TaskDates {
     createdDate: String
+    resolvedDate: String
     deadline: String
   }
 

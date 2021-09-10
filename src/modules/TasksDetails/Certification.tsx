@@ -47,8 +47,7 @@ const Certifcation: React.FC = () => {
     <div>
       <TitlePage onBack={() => router.push("/tasks")} task={data?.getCertificationApprovalTask}/>
       <Header task={data?.getCertificationApprovalTask}/>
-      <UserInfo task={data?.getCertificationApprovalTask}/>
-      <JustifyCard task={data?.getCertificationApprovalTask}/>        
+      <UserInfo task={data?.getCertificationApprovalTask}/>            
       <GridHistory task={data?.getCertificationApprovalTask}/>
     </div>
   );

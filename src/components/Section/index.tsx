@@ -17,13 +17,19 @@ const Section: FC<SectionProps> = ({ classes, list, defaultValue, onSelect, intl
     if (!sections.length) {
       const newSections: SectionType[] = [];
       list.map((section) => {
-        newSections.push({
-          ...section,
-          icon: {
-            ...section.icon,
-            props: { ...section.icon.props, with: 21, height: 21, color: (active === section.value && (currentTheme.palette.info.contrastText || "#0E46D7")) || "black" },
-          },
-        });
+        if(section.icon) {
+          newSections.push({
+            ...section,
+            icon: {
+              ...section.icon,
+              props: { ...section.icon.props, with: 21, height: 21, color: (active === section.value && (currentTheme.palette.info.contrastText || "#0E46D7")) || "black" },
+            },
+          })
+        } else {
+          newSections.push({
+            ...section,
+          })
+        }      
       });
       setSections(newSections);
     }

@@ -12,10 +12,12 @@ export const useStyles = (theme: Theme) =>
       padding: "0 10px",
       display: "flex",
       alignItems: "center",
+      justifyContent: "center",
+      minWidth: 157,
       cursor: "pointer",
       "&.Active": {
-        color: theme.palette.info.contrastText || "#0E46D7",
-        background: theme.palette.info.main || "rgba(210, 218, 241, 0.42)",
+        color: "#FFFFFF",
+        background: "#514D65",
         border: "1px solid rgba(163, 183, 235, 0.4)",
         borderRadius: 6,
       },
@@ -26,8 +28,8 @@ export const useStyles = (theme: Theme) =>
   });
 
 export const Box = styled.div`
-  background: #E9EBF3;
-  border-radius: 4px;
+  background: #F6F6F7;
+  border-radius: 6px;
   margin-top: 24px;
   padding: 10px;
   display: flex;

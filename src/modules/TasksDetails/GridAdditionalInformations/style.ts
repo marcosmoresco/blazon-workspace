@@ -35,24 +35,26 @@ export const InsideLine = styled.div`
 `;
 export const DeitalList = styled.div`
   align-items: center;
-  padding: 22px 24px 39px;
+  padding: 22px 24px 22px;
   background: #fff;
   & label {
-    font-weight: 600;
     font-size: 14px;
-    line-height: 100%;
-    text-transform: uppercase;
-    color: #26213F;
-    margin-top: 15px;
-    margin-bottom: 5px;
+    color: #514D65;
+    padding-bottom: 8px;
   }
 `;
 
 export const DetailValue = styled.div`
-  font-weight: normal;
+  width: 100%;
+  background: #FBFAFB;
+  border: 1px solid #A8A6B2;
+  box-sizing: border-box;
+  border-radius: 8px;
+  color: #514D65;
   font-size: 16px;
-  line-height: 24px;
-  color: #676378;
+  font-weight: 400;
+  padding: 10px 16px;
+  margin-bottom: 5px;
 `;
 
 export const GridArea = styled.div`

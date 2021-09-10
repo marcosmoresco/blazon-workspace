@@ -47,8 +47,7 @@ const RoleRight: React.FC = () => {
     <div>
       <TitlePage onBack={() => router.push("/tasks")} task={data?.getRoleRightApprovalTask}/>
       <Header task={data?.getRoleRightApprovalTask}/>
-      <UserInfo task={data?.getRoleRightApprovalTask}/>
-      <JustifyCard task={data?.getRoleRightApprovalTask}/>      
+      <UserInfo task={data?.getRoleRightApprovalTask}/>            
       <GridAdditionalInformations task={data?.getRoleRightApprovalTask}/>
       <GridHistory task={data?.getRoleRightApprovalTask}/>
     </div>

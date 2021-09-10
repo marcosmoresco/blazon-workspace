@@ -59,8 +59,7 @@ const TitlePageTask: React.FC<TitleProps> = ({ intl, onBack, task }) => {
   return (
     <>
      <TitlePage 
-        title="tasks"   
-        subTitle={subTitle}                 
+        title={subTitle}                 
         hierarchy={hierarchy} 
         onBack={() => router.push("/tasks")}/>      
     </>

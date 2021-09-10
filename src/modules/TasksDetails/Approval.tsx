@@ -47,8 +47,7 @@ const Approval: React.FC = () => {
     <div>
       <TitlePage onBack={() => router.push("/tasks")} task={data?.getRequestApprovalTask}/>
       <Header task={data?.getRequestApprovalTask}/>
-      <UserInfo task={data?.getRequestApprovalTask}/>
-      <JustifyCard task={data?.getRequestApprovalTask}/>      
+      <UserInfo task={data?.getRequestApprovalTask}/>            
       <GridAdditionalInformations task={data?.getRequestApprovalTask}/>
       <GridHistory task={data?.getRequestApprovalTask}/>
     </div>

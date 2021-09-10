@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import { styled as styledMui } from "@material-ui/core/styles";
 import LinearProgress from "@material-ui/core/LinearProgress";
+import Divider from "@material-ui/core/Divider";
 
 export const BoxCard = styled.div`
   padding: 32px 24px;
   background: #ffffff;
   box-shadow: 0px 0px 28px rgba(27, 32, 42, 0.16);
   border-radius: 8px;
-  margin-bottom: 32px;
+  margin-bottom: 18px;
 `;
 
 export const BoxCardContent = styled.div`
@@ -19,8 +20,7 @@ export const BoxCardText = styled.div`
   font-size: 16px;
   line-height: 24px;
   color: #676378;
-  margin-top: 16px;
-  max-width: 550px;
+  margin-top: 16px;  
 `;
 
 export const BoxCardHeader = styled.div`
@@ -98,7 +98,7 @@ export const BoxCardFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 24px;
+  margin-top: 15px;
   gap: 15px;
 `;
 
@@ -117,12 +117,13 @@ export const BoxPriority = styled.div`
   padding: 12px;
   color: #000000;
   font-weight: 500;
+  margin-right: 10px;
 `;
 
 export const BarPriorityLow = styledMui(LinearProgress)({
   marginLeft: 12,
   backgroundColor: "#E9E8EB",
-  width: 150,
+  width: 80,
   height: 8,
   borderRadius: 80,
   "& .MuiLinearProgress-barColorPrimary": {
@@ -133,7 +134,7 @@ export const BarPriorityLow = styledMui(LinearProgress)({
 export const BarPriorityMedium = styledMui(LinearProgress)({
   marginLeft: 12,
   backgroundColor: "#E9E8EB",
-  width: 150,
+  width: 80,
   height: 8,
   borderRadius: 80,
   "& .MuiLinearProgress-barColorPrimary": {
@@ -144,7 +145,7 @@ export const BarPriorityMedium = styledMui(LinearProgress)({
 export const BarPriorityHigh = styledMui(LinearProgress)({
   marginLeft: 12,
   backgroundColor: "#E9E8EB",
-  width: 150,
+  width: 80,
   height: 8,
   borderRadius: 80,
   "& .MuiLinearProgress-barColorPrimary": {
@@ -220,4 +221,54 @@ export const Box = styled.div`
   max-width: 1312px;
   margin-left: auto;
   margin-right: auto;
+`;
+
+export const TitleJustification = styled.div`
+  font-size: 14px;
+  color: #514D65;
+  padding-bottom: 0px;
+`;
+
+export const BoxJustification = styled.div`
+  padding: 16px;
+  background: #FBFAFB;
+  border: 1px solid #EDEDEF;
+  box-sizing: border-box;
+  border-radius: 6px;
+`;
+
+export const BoxJustificationValue = styled.div`
+  width: 100%;
+  background: #FBFAFB;
+  border: 1px solid #A8A6B2;
+  box-sizing: border-box;
+  border-radius: 8px;
+  color: #514D65;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 10px 16px;
+`;
+
+export const JustificationDivider = styledMui(Divider)({
+  marginTop: 20,
+  marginBottom: 14
+}); 
+
+export const InfoText = styled.div`
+  height: 46px; 
+  background: #FBFAFB;
+  border-radius: 6px;
+  padding: 8px;
+`;
+
+export const InfoTextContainer = styled.div`
+  background: #F2F1F3;
+  border-radius: 6px;
+  height: 30px;
+  color: #514D65;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
 `;

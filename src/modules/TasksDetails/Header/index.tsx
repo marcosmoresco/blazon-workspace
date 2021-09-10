@@ -351,17 +351,7 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
   return (
     <>
       <HeaderPage>
-        <InfoHeaderPage>
-          <TypeStyle 
-            color={currentTheme.palette.primary.main}>
-            <FormattedMessage id={`task.${type}`} />
-          </TypeStyle>
-          <MembershipStyle>
-            <CirclesFour />
-            {task?.type && intl.formatMessage({id: `task.type.${task?.type}`})}
-            {type === "roleRight" && intl.formatMessage({id: `task.newRoleRight`})}
-          </MembershipStyle>
-        </InfoHeaderPage>
+        <div></div>
         <ButtonsArea>
           {(dataActions?.getActions || []).includes("APPROVED") && (
             <Button variant="contained" color="default-primary" onClick={() => {

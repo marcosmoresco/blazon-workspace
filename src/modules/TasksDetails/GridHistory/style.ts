@@ -8,7 +8,7 @@ export const WorkArea = styled.div`
 export const Grid = styled.div`
   box-shadow: 0px 0px 28px rgba(27, 32, 42, 0.16);
   padding: 0 0 2px;
-  margin: 32px 0;
+  margin: 18px 0;
   border-radius: 6px;
   background: #ffff;
 `;
@@ -43,7 +43,7 @@ export const InsideLine = styled.div`
 
 export const DeitalList = styled.div`
   align-items: center;
-  padding: 42px 24px 39px;
+  padding: 33px 24px 7px 24px;
   background: #fff;
 `;
 
@@ -73,9 +73,7 @@ export const CommentsTab = styled.div`
 `;
 export const IsertComments = styled.div`
   align-items: center;
-  display: flex;
-  padding: 24px;
-  border: 1px solid #d4d3d9;
+  display: flex;  
   box-sizing: border-box;
   border-radius: 6px;
   gap: 16px;
@@ -83,7 +81,7 @@ export const IsertComments = styled.div`
 export const Text = styled.input`
   width: 100%;
   padding: 12px;
-  background: #ffffff;
+  background: #FBFAFB;
   border: 1px solid #bebecb;
   box-sizing: border-box;
   border-radius: 8px;
@@ -106,8 +104,9 @@ export const PaperPlaneBox = styled.a`
 
 export const CommentsRegister = styled.div`
   display: flex;
-  padding: 24px;
-  border: 1px solid #d4d3d9;
+  padding: 16px 16px 0px 16px;
+  border: 1px solid #F2F1F3;
+  background: #FBFAFB;
   border-radius: 6px;
   gap: 16px;
   margin-bottom: 16px;
@@ -124,7 +123,7 @@ export const TitleComments = styled.div`
   margin-bottom: 16px;
 `;
 export const UserNameComments = styled.div`
-  font-size: 21px;
+  font-size: 18px;
   font-weight: 500;
   color: #1b202a;
 `;
@@ -160,11 +159,12 @@ export const Image = styled.img`
 export const HistoryBox = styled.div`
   display: flex;
   justify-content: space-between;
-  padding: 24px;
+  padding: 12px;
   border: 1px solid #d4d3d9;
   border-radius: 6px;
   gap: 16px;
   margin-bottom: 16px;
+  background: #FBFAFB;
 `;
 
 export const HistorySystem = styled.div`
@@ -173,23 +173,29 @@ export const HistorySystem = styled.div`
   align-items: center;
   background: #F4F4F5;
   border-radius: 56px;
-  width: 64px;
-  height: 64px;
+  width: 32px;
+  height: 32px;
 `;
 
 export const UserHistory = styled.div`
   display: flex;
   gap: 16px;
+  background: #FFFFFF;
+  border: 1px solid #D4D3D9;
+  padding: 8px;
+  border-radius: 6px;
 `;
 export const UserName = styled.div`
-  font-size: 16px;
-  font-weight: 400;
-  color: #1b202a;
+  font-size: 12px;
+  font-weight: 400;  
+  color: #26213F;
+  line-height: 17px;
+
 `;
 export const User = styled.div`
-  font-size: 21px;
+  font-size: 16px;
   font-weight: 500;
-  color: #1b202a;
+  color: #26213F;
 `;
 
 export const UserBox = styled.div`

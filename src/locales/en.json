@@ -95,6 +95,8 @@
   "justification": "Justification",
   "effectiveDate": "Effective date",
   "effectivedAt": "Effectived at",
+  "resolvedAt": "Resolved at",
+  "deadline": "Deadline",
   "home": "Home",
   "password": "Password",
   "newPassword": "New password",
@@ -115,5 +117,6 @@
   "conclude": "Conclude",
   "message.success": "Success",
   "message.warning": "Warning",
-  "message.error": "Error"
+  "message.error": "Error",
+  "viewMore": "Ver mais"
 }

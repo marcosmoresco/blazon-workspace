@@ -47,8 +47,7 @@ const SoD: React.FC = () => {
     <div>
       <TitlePage onBack={() => router.push("/tasks")} task={data?.getSoDApprovalTask}/>
       <Header task={data?.getSoDApprovalTask}/>
-      <UserInfo task={data?.getSoDApprovalTask}/>
-      <JustifyCard task={data?.getSoDApprovalTask}/>        
+      <UserInfo task={data?.getSoDApprovalTask}/>           
       <GridHistory task={data?.getSoDApprovalTask}/>
     </div>
   );

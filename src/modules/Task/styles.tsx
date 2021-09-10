@@ -3,6 +3,7 @@ import { styled as styledMui } from "@material-ui/core/styles";
 import LinearProgress from '@material-ui/core/LinearProgress';
 import { withStyles } from '@material-ui/core/styles';
 import Menu from '@material-ui/core/Menu';
+import Divider from '@material-ui/core/Divider';
 
 export const Content = styled.div`
   margin-top: 48px;
@@ -18,26 +19,54 @@ export const Header = styled.div`
   margin-top: 50px;
 `;
 
+export const InfoText = styled.div`
+  height: 46px; 
+  background: #FBFAFB;
+  border-radius: 6px;
+  padding: 8px;
+`;
+
+export const InfoTextContainer = styled.div`
+  background: #F2F1F3;
+  border-radius: 6px;
+  height: 30px;
+  color: #514D65;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+`;
+
 export const Info = styled.div`
+  &.Selectable {
+    cursor:pointer;
+    padding: 12px;
+    border: 1px solid #7D7A8C;
+    & svg {
+      margin-right: 0px;
+      margin-left: 6px;
+    }
+  }
   border: 1px solid #d4d3d9;
   box-sizing: border-box;
   border-radius: 8px;
-  padding: 8px;
+  padding: 4px;
   font-weight: 500;
   font-size: 16px;
   line-height: 16px;
   color: #26213f;
-  height: 48px;
+  height: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
   & svg {
     margin-right: 8px;
-  }
+  },  
 `;
 
 export const Actions = styled.div`
-  border: 1px solid #d4d3d9;
+  border: 1px solid #7D7A8C;
   box-sizing: border-box;
   border-radius: 8px;
   padding: 8px;
@@ -45,7 +74,8 @@ export const Actions = styled.div`
   font-size: 16px;
   line-height: 16px;
   color: #26213f;
-  height: 48px;
+  height: 42px;
+  width: 42px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -97,7 +127,7 @@ export const BoxCardHeaderInfo = styled.div`
 export const BoxCardTitle = styled.div`
   font-style: normal;
   font-weight: 500;
-  font-size: 22px;
+  font-size: 16px;
   line-height: 33px;
   color: #26213f;
 `;
@@ -110,9 +140,13 @@ interface BoxCardIdentifierProps {
 export const BoxCardIdentifier = styled.div<BoxCardIdentifierProps>`
   background: ${props => props.background && props.background || "#eaf1fe"}; 
   color: ${props => props.color && props.color || "#0e46d7"}; 
-  border-radius: 30px;
+  border-radius: 6px;
   margin-left: 19px;
-  padding: 8px;
+  padding: 2px 5px;
+  font-weight: 500;
+  &.No-background {
+    background: transparent;
+  }
 `;
 
 export const BoxRequester = styled.div`
@@ -165,7 +199,7 @@ export const BoxPriority = styled.div`
   align-items: center;
   background: #f4f4f5;
   border-radius: 8px;
-  height: 48px;
+  height: 42px;
   padding: 12px;
   color: #000000;
   font-weight: 500;
@@ -174,7 +208,7 @@ export const BoxPriority = styled.div`
 export const BarPriorityLow = styledMui(LinearProgress)({
   marginLeft: 12,
   backgroundColor: "#E9E8EB",
-  width: 150,
+  width: 80,
   height: 8,
   borderRadius: 80,
   "& .MuiLinearProgress-barColorPrimary": {
@@ -325,3 +359,10 @@ export const StyledMenu = withStyles({
     {...props}
   />
 ));
+
+export const InfoDivider = styledMui(Divider)({
+  marginTop: 20,
+  marginBottom: -5,
+  marginLeft: -24,
+  marginRight: -24
+}); 

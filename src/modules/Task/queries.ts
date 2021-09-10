@@ -84,6 +84,7 @@ export const GET_TASKS = gql`
         type
         dates {
           createdDate
+          resolvedDate
           deadline
         }
         headers {
@@ -174,6 +175,7 @@ export const GET_REQUEST_APPROVAL_TASKS = gql`
         type
         dates {
           createdDate
+          resolvedDate
           deadline
         }
         headers {
@@ -232,6 +234,7 @@ export const GET_REQUEST_APPROVAL_TASK = gql`
       type
       dates {
         createdDate
+        resolvedDate
         deadline
       }
       headers {
@@ -329,6 +332,7 @@ export const GET_CERTIFICATION_APPROVAL_TASKS = gql`
         type
         dates {
           createdDate
+          resolvedDate
           deadline
         }
         headers {
@@ -384,6 +388,7 @@ export const GET_CERTIFICATION_APPROVAL_TASK = gql`
       type
       dates {
         createdDate
+        resolvedDate
         deadline
       }
       headers {
@@ -475,6 +480,7 @@ export const GET_SOD_APPROVAL_TASKS = gql`
         type
         dates {
           createdDate
+          resolvedDate
           deadline
         }
         headers {
@@ -529,6 +535,7 @@ export const GET_SOD_APPROVAL_TASK = gql`
       type
       dates {
         createdDate
+        resolvedDate
         deadline
       }
       headers {
@@ -619,6 +626,7 @@ export const GET_ROLE_RIGHT_APPROVAL_TASKS = gql`
         type
         dates {
           createdDate
+          resolvedDate
           deadline
         }
         headers {
@@ -665,6 +673,7 @@ export const GET_ROLE_RIGHT_APPROVAL_TASK = gql`
       type
       dates {
         createdDate
+        resolvedDate
         deadline
       }
       headers {
@@ -765,6 +774,7 @@ export const GET_PROVISIONING_TASKS = gql`
         type
         dates {
           createdDate
+          resolvedDate
           deadline
         }
         headers {
@@ -819,6 +829,7 @@ export const GET_PROVISIONING_TASK = gql`
       entrySchema
       dates {
         createdDate
+        resolvedDate
         deadline
       }
       headers {
@@ -923,6 +934,7 @@ export const GET_TASK_QUEUE_TASKS = gql`
         type
         dates {
           createdDate
+          resolvedDate
           deadline
         }
         headers {

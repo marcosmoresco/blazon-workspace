@@ -1,6 +1,6 @@
 // vendors
 import React, { useState } from "react";
-import { FormattedMessage } from "react-intl";
+import { FormattedMessage, useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import { useTheme, themes } from "@theme/index";
 
@@ -9,6 +9,7 @@ import Avatar from "@material-ui/core/Avatar";
 import Check from "@icons/Check";
 import CalendarIcon from "@icons/Calendar";
 import BrowsersIcon from "@icons/BrowsersIcon";
+import ArrowRightIcon from "@icons/ArrowRight";
 import DetailUser from "@modules/Task/components/DetailUser";
 
 //types
@@ -25,12 +26,7 @@ import {
   BoxCardTitle,
   BoxCardIdentifier,
   Info,
-  Box,
-  BoxRequester,
-  BoxRequesterContent,
-  BoxRequesterTitle,
-  BoxRequesterDisplayName,
-  BoxRequesterAvatar,
+  Box,  
   BoxCardFooter,
   BoxCardFooterInfo,
   BoxPriority,
@@ -40,11 +36,18 @@ import {
   BoxCardStatus,
   InfoCheck,
   InfoBrowsers,
+  TitleJustification,
+  BoxJustification,
+  BoxJustificationValue,
+  JustificationDivider,
+  InfoText,
+  InfoTextContainer
 } from "./style";
 
 const UserInfo: React.FC<UserInfoProps> = ({ task }) => { 
 
   const router = useRouter();  
+  const intl = useIntl();
   const { type } = router.query;
   const { theme } = useTheme();
   const currentTheme = { ...themes[theme] };
@@ -81,27 +84,51 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                   )}
                 </BoxCardTitle>
                 {type !== "roleRight" && (
-                  <BoxCardIdentifier
-                    background={currentTheme.palette.info.main} 
-                    color={currentTheme.palette.info.contrastText}>
-                    {["approval", "sod"].includes(type as string) && (
-                      task?.approvalItemDetails?.entitlementIdentifier || 
-                      task?.approvalItemDetails?.roleIdentifier || 
-                      task?.approvalItemDetails?.resourceIdentifier || " - "
-                    )}
-                    {type === "certification" && (
-                      task?.certificationItemDetails?.resourceIdentifier || 
-                      task?.certificationItemDetails?.roleIdentifier || 
-                      task?.certificationItemDetails?.entitlementIdentifier || " - "
-                    )}
-                    {type === "provisioning" && (
-                      task?.provisioningItemDetail?.resource?.identifier || " - "
-                    )}                  
-                  </BoxCardIdentifier>
+                  <>
+                    <BoxCardIdentifier
+                      background={currentTheme.palette.info.main} 
+                      color={currentTheme.palette.info.contrastText}>
+                      ID: {["approval", "sod"].includes(type as string) && (
+                        task?.approvalItemDetails?.entitlementIdentifier || 
+                        task?.approvalItemDetails?.roleIdentifier || 
+                        task?.approvalItemDetails?.resourceIdentifier || " - "
+                      )}
+                      {type === "certification" && (
+                        task?.certificationItemDetails?.resourceIdentifier || 
+                        task?.certificationItemDetails?.roleIdentifier || 
+                        task?.certificationItemDetails?.entitlementIdentifier || " - "
+                      )}
+                      {type === "provisioning" && (
+                        task?.provisioningItemDetail?.resource?.identifier || " - "
+                      )}                  
+                    </BoxCardIdentifier>
+                    <BoxCardIdentifier
+                      background={currentTheme.palette.info.main} 
+                      color={currentTheme.palette.info.contrastText}>                   
+                      <FormattedMessage id="category" />: <FormattedMessage id={`task.${type}`} />                 
+                    </BoxCardIdentifier>   
+                    <BoxCardIdentifier
+                      background={currentTheme.palette.info.main} 
+                      color={currentTheme.palette.info.contrastText}>
+                      <FormattedMessage id="status"/>: {task?.headers?.status}
+                    </BoxCardIdentifier>                 
+                  </>
                 )}                
               </BoxCardHeaderContent>
-              <BoxCardStatus><FormattedMessage id="task.status"/>: {task?.headers?.status || " - "}</BoxCardStatus>
-            </BoxCardHeader>
+              <BoxCardHeaderContent>
+                <BoxPriority>
+                  <FormattedMessage id="task.priority" />
+                  {priorityToElement[task?.headers?.priority || "LOW"]}
+                </BoxPriority> 
+                <InfoText>
+                  <InfoTextContainer>
+                    <FormattedMessage id="type" />                     
+                    : {task?.type && intl.formatMessage({id: `task.type.${task?.type}`})}                    
+                      {type === "roleRight" && intl.formatMessage({id: `task.newRoleRight`})}
+                  </InfoTextContainer>                    
+                </InfoText>                
+              </BoxCardHeaderContent>  
+            </BoxCardHeader>            
             <BoxCardText>
               {["approval", "sod"].includes(type as string) && (
                 task?.approvalItemDetails?.entitlementDescription || 
@@ -119,32 +146,42 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
               {type === "roleRight" && (
                 task?.itemDetails?.roleDescription || " - "
               )}
-            </BoxCardText>
+            </BoxCardText>                                      
             <BoxCardFooter>
               <BoxCardFooterInfo>
-                <DetailUser task={task}/>                
-                <BoxPriority>
-                  <FormattedMessage id="task.priority" />
-                  {priorityToElement[task?.headers?.priority || "LOW"]}
-                </BoxPriority>
+                <DetailUser task={task}/>        
+                <ArrowRightIcon width={18} height={18}/>   
+                <DetailUser task={task} user={task?.headers?.recipient} title="task.recipient"/>                         
               </BoxCardFooterInfo>
               <BoxCardFooterInfo>
                 <BoxCardHeaderInfo>
-                  <Info>
-                    <CalendarIcon />
-                    {task?.dates?.createdDate || " - "}
-                  </Info>
-                  <InfoCheck>
-                    <Check color="#0d875b" />
-                    {task?.dates?.createdDate || " - "}
-                  </InfoCheck>
-                  <InfoBrowsers>
-                    <BrowsersIcon color="#92909F" />
-                    {task?.dates?.deadline || " - "}
-                  </InfoBrowsers>
+                  <InfoText>
+                    <InfoTextContainer>
+                      <FormattedMessage id="createdAt" />: {task?.dates?.createdDate}
+                    </InfoTextContainer>
+                  </InfoText> 
+                  {task?.headers?.status === "DONE" && (
+                    <InfoText>
+                      <InfoTextContainer>
+                        <FormattedMessage id="resolvedAt" />: {task?.dates?.resolvedDate}
+                      </InfoTextContainer>
+                    </InfoText>
+                  )}                                                     
+                  <InfoText>
+                    <InfoTextContainer>
+                      <FormattedMessage id="deadline" />: {task?.dates?.deadline}
+                    </InfoTextContainer>
+                  </InfoText>
                 </BoxCardHeaderInfo>
               </BoxCardFooterInfo>
             </BoxCardFooter>
+            <JustificationDivider />            
+            <TitleJustification>
+              <FormattedMessage id="tasks.justification" />
+            </TitleJustification>
+            <BoxJustificationValue>
+              {task?.justification || task?.revokeJustification || task?.itemDetails?.justification || " - "}
+            </BoxJustificationValue>                       
           </BoxCardContent>
         </BoxCard>       
       </Box>      

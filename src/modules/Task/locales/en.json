@@ -62,6 +62,7 @@
   "task.any": "Any",
   "task.newRoleRight": "New role right",
   "task.resource": "Resource",
+  "tasks.resolved": "Resolved",
 
   "task.category.APPROVAL_TASK": "Approval",
   "task.category.CERTIFICATION_TASK": "Certification",

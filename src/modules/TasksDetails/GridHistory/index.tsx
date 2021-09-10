@@ -121,8 +121,8 @@ const GridHistory: React.FC<GridHistoryProps> = ({ task }) => {
                     <Image
                       alt="From thumb"
                       src={thumb}
-                      width={64}
-                      height={64}
+                      width={48}
+                      height={48}
                     />
                     <Text 
                       placeholder={intl.formatMessage({id: "tasks.add.comment.here"})} 
@@ -164,8 +164,8 @@ const GridHistory: React.FC<GridHistoryProps> = ({ task }) => {
                         <Image
                           alt="Thumb comment"
                           src={getLink("thumb", comment?.user?.links || [])}
-                          width={64}
-                          height={64}
+                          width={48}
+                          height={48}
                         />
                       </div>
                       <BoxComment>
@@ -192,7 +192,7 @@ const GridHistory: React.FC<GridHistoryProps> = ({ task }) => {
                         {!history?.from && (
                           <>
                             <HistorySystem>
-                              <ListBulletsIcon />
+                              <ListBulletsIcon width={21} height={21}/>
                             </HistorySystem>
                             <UserName>
                               <FormattedMessage id="tasks.AssignedFrom" />
@@ -204,8 +204,8 @@ const GridHistory: React.FC<GridHistoryProps> = ({ task }) => {
                           <>
                             <Image
                               src={getLink("thumb", history?.from?.links)}
-                              width={64}
-                              height={64}
+                              width={32}
+                              height={32}
                               alt={history?.from?.displayName}
                             />
                             <UserName>
@@ -215,12 +215,12 @@ const GridHistory: React.FC<GridHistoryProps> = ({ task }) => {
                           </>                         
                         )}                        
                       </UserHistory>
-                      <ArrowRightIcon color="#0E46D7" />
+                      <ArrowRightIcon color="#26213F" stroke={2} width={21} height={21}/>
                       <UserHistory>
                         <Image
                           src={getLink("thumb", history?.to?.links)}
-                          width={64}
-                          height={64}
+                          width={32}
+                          height={32}
                           alt={history?.to?.displayName}
                         />
                         <UserName>

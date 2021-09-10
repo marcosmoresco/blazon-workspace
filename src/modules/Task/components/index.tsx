@@ -17,13 +17,16 @@ import Section from "@components/Section";
 import Select from "@components/Select";
 import Tutorial from "@components/Tutorial";
 import { confirm } from "@components/Dialog/actions";
-import ArrowsOutIcon from "@icons/ArrowsOut";
-import ArrowClockwiseIcon from "@icons/ArrowClockwise";
-import CalendarIcon from "@icons/Calendar";
+import CaretDownIcon from "@icons/CaretDown";
+import CaretUpIcon from "@icons/CaretUp";
+import ArrowRightIcon from "@icons/ArrowRight";
+import CalendarIcon from "@icons/CalendarBlank";
 import CheckIcon from "@icons/Check";
 import CirclesFourIcon from "@icons/CirclesFour";
 import DotsThreeIcon from "@icons/DotsThree";
 import InfoIcon from "@icons/Info";
+import DividerIcon from "@icons/Divider";
+import Divider from '@material-ui/core/Divider';
 import { connect } from "react-redux";
 //import { all, save, remove } from './actions'
 import { addMessage } from "@actions/index";
@@ -63,6 +66,9 @@ import {
   BoxCardTitle,
   BoxCardIdentifier,
   Info,
+  InfoText,
+  InfoTextContainer,
+  InfoDivider,
   BoxCardFooter,
   BoxCardFooterInfo,
   BoxPriority,
@@ -123,6 +129,7 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
   const [openForwardUser, setOpenForwardUser] = useState(false);
   const [openForwardQueue, setOpenForwardQueue] = useState(false);
   const [openDisapprove, setOpenDisapprove] = useState(false);
+  const [expanded, setExpanded] = useState<number[]>([]);
   const [result, setResult] = useState("DISAPPROVED");
   const [actions, setActions] = useState<string[]>([]);
 
@@ -345,13 +352,13 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
     <>      
       {list.map((task: Task, index: number) => (
         <Card key={`task-${task.identifier}-${index}`}>
-          <BoxCard>
-            {task?.headers?.status !== "DONE" && (
-              <Checkbox value={checked.includes(task.identifier)} onChange={() => onCheck && onCheck(task.identifier)}/>
-            )}
+          <BoxCard>            
             <BoxCardContent>
               <BoxCardHeader>
                 <BoxCardHeaderContent>
+                  {task?.headers?.status !== "DONE" && (
+                    <Checkbox value={checked.includes(task.identifier)} onChange={() => onCheck && onCheck(task.identifier)}/>
+                  )}
                   <BoxCardTitle>
                     {(["APPROVAL_TASK", "SOD_TASK"].includes(task?.headers?.category) || ["APPROVAL_TASK", "SOD_TASK"].includes(type as string)) && (
                      task?.approvalItemDetails?.entitlementName || 
@@ -372,25 +379,39 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
                   </BoxCardTitle>
                   <BoxCardIdentifier
                     background={currentTheme.palette.info.main} 
-                    color={currentTheme.palette.info.contrastText}>{task.identifier}</BoxCardIdentifier>
+                    color={currentTheme.palette.info.contrastText}>
+                    ID: {task.identifier}
+                  </BoxCardIdentifier>                                  
+                  <BoxCardIdentifier
+                    background={currentTheme.palette.info.main} 
+                    color={currentTheme.palette.info.contrastText}>                   
+                    <FormattedMessage id="category" />: {(task?.headers?.category || type) && intl.formatMessage({id: `task.category.${task?.headers?.category || type}`}) || " - "}                    
+                  </BoxCardIdentifier>                   
+                  <BoxCardIdentifier 
+                    background={currentTheme.palette.info.main} 
+                    color={currentTheme.palette.info.contrastText}>
+                    <FormattedMessage id="task.status"/>: {task?.headers?.status}                   
+                  </BoxCardIdentifier>  
                 </BoxCardHeaderContent>                  
-                <BoxCardHeaderInfo>
-                  <Info>
-                    <CirclesFourIcon />
-                    {task?.type && intl.formatMessage({id: `task.type.${task?.type}`})}
-                    {task?.headers?.category === "ROLE_RIGHT_TASK" && (
-                      <FormattedMessage id="role" />
-                    )}
-                  </Info>
-                  <Info>
-                    <CalendarIcon />
-                    {task.dates?.createdDate}
-                  </Info>
+                <BoxCardHeaderInfo>                  
+                  <BoxPriority>
+                    <FormattedMessage id="task.priority"/>
+                    {priorityToElement[task.headers?.priority || "LOW"]}                      
+                  </BoxPriority>                                                     
                   <Actions onClick={(e: any) => handleClick(e, task)}>
-                    <DotsThreeIcon />
+                    <DotsThreeIcon color="#26213F" stroke={2}/>
                   </Actions>
+                  <Info className="Selectable" onClick={() => expanded.includes(task?.identifier) ? setExpanded(expanded.filter((id) => id !== task?.identifier)) : setExpanded([...expanded, task?.identifier])}>
+                    <FormattedMessage id="viewMore"/>
+                    {expanded.includes(task?.identifier) ? (
+                      <CaretUpIcon width={20} color="#26213F" stroke={2}/>
+                    ) : (
+                      <CaretDownIcon width={20} color="#26213F" stroke={2}/> 
+                    )}                                    
+                  </Info>
                 </BoxCardHeaderInfo>
               </BoxCardHeader>
+              {expanded.includes(task?.identifier) && (
               <BoxCardText>
                 {(["APPROVAL_TASK", "SOD_TASK"].includes(task?.headers?.category) || ["APPROVAL_TASK", "SOD_TASK"].includes(type || "")) && (
                   task?.approvalItemDetails?.entitlementDescription || 
@@ -408,25 +429,66 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
                 {(task?.headers?.category === "ROLE_RIGHT_TASK" || type === "ROLE_RIGHT_TASK") && (
                   task?.itemDetails?.roleDescription || " - "
                 )}
-              </BoxCardText>
+              </BoxCardText>)}
               <BoxCardFooter>
                 <BoxCardFooterInfo>
-                  <DetailUser task={task}/>                  
-                  <BoxPriority>
-                    <FormattedMessage id="task.priority"/>
-                    {priorityToElement[task.headers?.priority || "LOW"]}                      
-                  </BoxPriority>
+                  <DetailUser task={task}/>  
+                  <ArrowRightIcon width={18} height={18}/>   
+                  <DetailUser task={task} user={task?.headers?.recipient} title="task.recipient"/>                               
                 </BoxCardFooterInfo>  
+                {!expanded.includes(task?.identifier) && 
                 <BoxCardFooterInfo>
-                  <FooterType
-                    color={currentTheme.palette.primary.main}>
-                    {(task?.headers?.category || type) && intl.formatMessage({id: `task.category.${task?.headers?.category || type}`}) || " - "}
-                  </FooterType>
-                  <FooterStatus>
-                    <FormattedMessage id="task.status"/>: {task?.headers?.status}
-                  </FooterStatus>
-                </BoxCardFooterInfo>                                     
-              </BoxCardFooter>                  
+                  <InfoText>
+                    <InfoTextContainer>
+                      <FormattedMessage id="createdAt" />: {task.dates?.createdDate}
+                    </InfoTextContainer>
+                  </InfoText>                  
+                  <InfoText>
+                    <InfoTextContainer>
+                      <FormattedMessage id="type" />                     
+                      : {task?.type && intl.formatMessage({id: `task.type.${task?.type}`})}
+                      {task?.headers?.category === "ROLE_RIGHT_TASK" && (
+                        <FormattedMessage id="role" />
+                      )}
+                    </InfoTextContainer>                    
+                  </InfoText>                                                    
+                </BoxCardFooterInfo>}                                     
+              </BoxCardFooter> 
+              {expanded.includes(task?.identifier) && (
+              <>
+                <InfoDivider />    
+                <BoxCardFooter>
+                  <BoxCardFooterInfo>
+                    <InfoText>
+                      <InfoTextContainer>
+                        <FormattedMessage id="createdAt" />: {task.dates?.createdDate}
+                      </InfoTextContainer>
+                    </InfoText> 
+                    {task?.headers?.status === "DONE" && 
+                    <InfoText>
+                      <InfoTextContainer>
+                        <FormattedMessage id="resolvedAt" />: {task.dates?.resolvedDate}
+                      </InfoTextContainer>
+                    </InfoText>}
+                    <InfoText>
+                      <InfoTextContainer>
+                        <FormattedMessage id="deadline" />: {task.dates?.deadline}
+                      </InfoTextContainer>
+                    </InfoText>                          
+                  </BoxCardFooterInfo>  
+                  <BoxCardFooterInfo>                                   
+                    <InfoText>
+                      <InfoTextContainer>
+                        <FormattedMessage id="type" />                     
+                        : {task?.type && intl.formatMessage({id: `task.type.${task?.type}`})}
+                        {task?.headers?.category === "ROLE_RIGHT_TASK" && (
+                          <FormattedMessage id="role" />
+                        )}
+                      </InfoTextContainer>                    
+                    </InfoText>                                                    
+                  </BoxCardFooterInfo>                                     
+                </BoxCardFooter>
+              </>)}              
             </BoxCardContent>                              
           </BoxCard>
         </Card>
