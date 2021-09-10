@@ -12,11 +12,21 @@ export const useStyles = (theme: Theme) =>
     inputFilterIcon: {
       display: "flex",
       alignItems: "center",
+      width: 30,
+      height: 30,
+      background: "#E9E8EB",
+      borderRadius: 8,
+      '& svg': {
+        marginLeft: 5
+      }
     },
     input: {
+      borderRadius: 8,
+      background: "#FFFFFF",
+      paddingLeft: 6,
       "& input": {
-        padding: "11.5px 7px 11.5px 0",
-        width: 300,
+        padding: "11.5px 7px 11.5px 5px",
+        width: 137,
       },
     },
     content: {

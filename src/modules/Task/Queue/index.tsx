@@ -159,10 +159,7 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
       <Header>
         <Checkbox value={checkAll} onChange={() => setCheckAll(!checkAll)}/>
         <HeaderFilters>
-          <FilterContent>
-            <label onClick={(event: any) => setAnchorEl(event.currentTarget)}>
-              <FormattedMessage id="queue" />
-            </label>
+          <FilterContent>            
             <SelectBoxContainer onClick={(event: any) => setAnchorEl(event.currentTarget)}>
               <SelectBoxInfo>
                 <SelectBoxInfoIcon>
@@ -174,10 +171,7 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
             </SelectBoxContainer>
           </FilterContent> 
           {queueIdentifier && (
-            <FilterContent>
-              <label onClick={(event: any) => setAnchorElCategory(event.currentTarget)}>
-                <FormattedMessage id="category" />
-              </label>
+            <FilterContent>              
               <SelectBoxContainer onClick={(event: any) => setAnchorElCategory(event.currentTarget)}>
                 <SelectBoxInfo>
                   <SelectBoxInfoIcon>
@@ -190,10 +184,7 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
             </FilterContent>
           )} 
           {queueCategoryValue !== "ROLE_RIGHT_TASK" && queueIdentifier && (
-            <FilterContent>
-              <label onClick={(event: any) => setAnchorElType(event.currentTarget)}>
-                <FormattedMessage id="type" />
-              </label>
+            <FilterContent>              
               <SelectBoxContainer onClick={(event: any) => setAnchorElType(event.currentTarget)}>
                 <SelectBoxInfo>
                   <SelectBoxInfoIcon>

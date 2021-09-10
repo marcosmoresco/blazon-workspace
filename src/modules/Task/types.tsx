@@ -115,6 +115,7 @@ export type ListProps = {
   id?: number;
   isQueue?: boolean;
   resolved?: boolean;
+  task?: Task
 };
 
 export type TaskFilterClause = {

@@ -15,8 +15,14 @@ export const Box = styled.div`
 
 export const Header = styled.div`
   display: flex;
-  align-items: flex-end;
+  align-items: center;
   margin-top: 50px;
+  background: #FBFAFB;
+  border-radius: 6px;
+  height: 68px;
+  padding-left: 12px;
+  width: 100%;
+  margin-bottom: 32px;
 `;
 
 export const InfoText = styled.div`
@@ -84,8 +90,8 @@ export const Actions = styled.div`
 
 export const HeaderFilters = styled.div`
   display: flex;
-  align-items: flex-end;
-  gap: 15px;
+  align-items: center;
+  gap: 15px;  
 `;
 
 export const BoxCard = styled.div`
@@ -115,6 +121,15 @@ export const BoxCardHeader = styled.div`
 export const BoxCardHeaderContent = styled.div`
   display: flex;
   align-items: center;
+  gap: 10px;
+  & .MuiFormControlLabel-root {
+    margin-right: 0px;
+  }
+
+  & .MuiCheckbox-root {
+    padding: 0;
+    margin-left: 11px;
+  }
 `;
 
 export const BoxCardHeaderInfo = styled.div`
@@ -140,8 +155,7 @@ interface BoxCardIdentifierProps {
 export const BoxCardIdentifier = styled.div<BoxCardIdentifierProps>`
   background: ${props => props.background && props.background || "#eaf1fe"}; 
   color: ${props => props.color && props.color || "#0e46d7"}; 
-  border-radius: 6px;
-  margin-left: 19px;
+  border-radius: 6px;  
   padding: 2px 5px;
   font-weight: 500;
   &.No-background {
@@ -366,3 +380,38 @@ export const InfoDivider = styledMui(Divider)({
   marginLeft: -24,
   marginRight: -24
 }); 
+
+export const ButtonsArea = styled.div`
+  display: flex;
+  gap: 15px;
+
+  Button {
+    min-width: 105px;
+  }
+`;
+
+export const TitleJustification = styled.div`
+  font-size: 14px;
+  color: #514D65;
+  padding-bottom: 8px;
+`;
+
+export const BoxJustification = styled.div`
+  padding: 16px;
+  background: #FBFAFB;
+  border: 1px solid #EDEDEF;
+  box-sizing: border-box;
+  border-radius: 6px;
+`;
+
+export const BoxJustificationValue = styled.div`
+  width: 100%;
+  background: #FBFAFB;
+  border: 1px solid #A8A6B2;
+  box-sizing: border-box;
+  border-radius: 8px;
+  color: #514D65;
+  font-size: 16px;
+  font-weight: 400;
+  padding: 10px 16px;
+`;

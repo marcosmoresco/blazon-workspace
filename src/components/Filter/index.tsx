@@ -544,6 +544,7 @@ class Filter extends Component<FilterPropsType, FilterStateType> {
                 }}
               >
                 <OutlinedInput
+                  placeholder={intl.formatMessage({id: "filters"})}
                   className={classes.input}                  
                   value={filterText || ""}
                   onChange={(event) =>
@@ -661,7 +662,7 @@ class Filter extends Component<FilterPropsType, FilterStateType> {
             onClick={this.handleClick}
             startAdornment={
               <InputAdornment position="start">
-                <FilterIcon />
+                <FilterIcon color="#26213F"/>
               </InputAdornment>
             }
             labelWidth={0}

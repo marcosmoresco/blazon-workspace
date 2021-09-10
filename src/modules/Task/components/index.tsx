@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect, useRef } from "react";
 import { useRouter } from "next/router";
 import { FormattedMessage, useIntl } from "react-intl";
 import { getLink } from "@utils/index";
@@ -11,12 +11,6 @@ import MenuItem from '@material-ui/core/MenuItem';
 import Button from "@components/Button";
 import Card from "@components/Card";
 import Checkbox from "@components/Checkbox";
-import Loading from "@components/Loading";
-import Filter from "@components/Filter";
-import Section from "@components/Section";
-import Select from "@components/Select";
-import Tutorial from "@components/Tutorial";
-import { confirm } from "@components/Dialog/actions";
 import CaretDownIcon from "@icons/CaretDown";
 import CaretUpIcon from "@icons/CaretUp";
 import ArrowRightIcon from "@icons/ArrowRight";
@@ -77,7 +71,11 @@ import {
   BarPriorityHigh,
   FooterType,
   FooterStatus,
-  Actions
+  Actions,
+  ButtonsArea,
+  TitleJustification,
+  BoxJustification,
+  BoxJustificationValue
 } from "@modules/Task/styles";
 
 // styles
@@ -110,7 +108,7 @@ const getType = (task?: Task, type?: string): string => {
   return _type;
 };
 
-const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subType = "any", size = 10, filteredString = "{}"}) => {
+const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subType = "any", size = 10, filteredString = "{}"}) => {
 
   const router = useRouter();
   const intl = useIntl();
@@ -130,29 +128,39 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
   const [openForwardQueue, setOpenForwardQueue] = useState(false);
   const [openDisapprove, setOpenDisapprove] = useState(false);
   const [expanded, setExpanded] = useState<number[]>([]);
-  const [result, setResult] = useState("DISAPPROVED");
+  const [result, setResult] = useState("DISAPPROVED");  
   const [actions, setActions] = useState<string[]>([]);
 
   let _type = getType(current, type);
 
-  const handleClick = (event: any, task: Task) => {   
+  const handleClick = (event: any) => {   
     setCurrent(task);
-    setAnchorEl(event.currentTarget);
-      
-    let t = getType(task, type);
+    setAnchorEl(event.currentTarget);       
+  };  
 
-    apolloClient
-      .query({
-        query: getAvailableActionsByType(t || "approval"),
-        variables: {
-          status: `["${task?.headers?.status || "TODO"}"]`
-        },
-        fetchPolicy: "network-only"
-      })
-      .then(({ data }) => {        
-        setActions(data.getActions);       
-      });
-  };
+  const caller = useRef(false);
+
+  useEffect(() => {
+    
+    if(!actions.length && task && !caller.current) {
+
+      let t = getType(task, type);                    
+      
+      caller.current = true;
+      apolloClient
+        .query({
+          query: getAvailableActionsByType(t || "approval"),
+          variables: {
+            status: `["${task?.headers?.status || "TODO"}"]`
+          },
+          fetchPolicy: "network-only"
+        })
+        .then(({ data }) => { 
+          setActions(data.getActions || []);
+        });
+
+    }         
+  }, [actions, type, task]);  
 
   const handleClose = () => {
     setAnchorEl(null);
@@ -350,99 +358,255 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
 
   return (
     <>      
-      {list.map((task: Task, index: number) => (
-        <Card key={`task-${task.identifier}-${index}`}>
-          <BoxCard>            
-            <BoxCardContent>
-              <BoxCardHeader>
-                <BoxCardHeaderContent>
-                  {task?.headers?.status !== "DONE" && (
-                    <Checkbox value={checked.includes(task.identifier)} onChange={() => onCheck && onCheck(task.identifier)}/>
-                  )}
-                  <BoxCardTitle>
-                    {(["APPROVAL_TASK", "SOD_TASK"].includes(task?.headers?.category) || ["APPROVAL_TASK", "SOD_TASK"].includes(type as string)) && (
-                     task?.approvalItemDetails?.entitlementName || 
-                     task?.approvalItemDetails?.roleName || 
-                     task?.approvalItemDetails?.resourceName || " - "
-                    ) || ""}
-                    {(task?.headers?.category === "CERTIFICATION_TASK" || type === "CERTIFICATION_TASK") && (
-                     task?.certificationItemDetails?.resourceName || 
-                     task?.certificationItemDetails?.roleName || 
-                     task?.certificationItemDetails?.entitlementName || " - "
-                    ) || ""}
-                    {(task?.headers?.category === "PROVISIONING_TASK" || type === "PROVISIONING_TASK") && (
-                     task?.provisioningItemDetail?.resource?.name || " - "
-                    ) || ""}
-                    {(task?.headers?.category === "ROLE_RIGHT_TASK" || type === "ROLE_RIGHT_TASK") && (
-                     task?.itemDetails?.roleName || " - "
-                    ) || ""}
-                  </BoxCardTitle>
-                  <BoxCardIdentifier
-                    background={currentTheme.palette.info.main} 
-                    color={currentTheme.palette.info.contrastText}>
-                    ID: {task.identifier}
-                  </BoxCardIdentifier>                                  
-                  <BoxCardIdentifier
-                    background={currentTheme.palette.info.main} 
-                    color={currentTheme.palette.info.contrastText}>                   
-                    <FormattedMessage id="category" />: {(task?.headers?.category || type) && intl.formatMessage({id: `task.category.${task?.headers?.category || type}`}) || " - "}                    
-                  </BoxCardIdentifier>                   
-                  <BoxCardIdentifier 
-                    background={currentTheme.palette.info.main} 
-                    color={currentTheme.palette.info.contrastText}>
-                    <FormattedMessage id="task.status"/>: {task?.headers?.status}                   
-                  </BoxCardIdentifier>  
-                </BoxCardHeaderContent>                  
-                <BoxCardHeaderInfo>                  
-                  <BoxPriority>
-                    <FormattedMessage id="task.priority"/>
-                    {priorityToElement[task.headers?.priority || "LOW"]}                      
-                  </BoxPriority>                                                     
-                  <Actions onClick={(e: any) => handleClick(e, task)}>
-                    <DotsThreeIcon color="#26213F" stroke={2}/>
-                  </Actions>
-                  <Info className="Selectable" onClick={() => expanded.includes(task?.identifier) ? setExpanded(expanded.filter((id) => id !== task?.identifier)) : setExpanded([...expanded, task?.identifier])}>
-                    <FormattedMessage id="viewMore"/>
-                    {expanded.includes(task?.identifier) ? (
-                      <CaretUpIcon width={20} color="#26213F" stroke={2}/>
-                    ) : (
-                      <CaretDownIcon width={20} color="#26213F" stroke={2}/> 
-                    )}                                    
-                  </Info>
-                </BoxCardHeaderInfo>
-              </BoxCardHeader>
-              {expanded.includes(task?.identifier) && (
-              <BoxCardText>
-                {(["APPROVAL_TASK", "SOD_TASK"].includes(task?.headers?.category) || ["APPROVAL_TASK", "SOD_TASK"].includes(type || "")) && (
-                  task?.approvalItemDetails?.entitlementDescription || 
-                  task?.approvalItemDetails?.roleDescription || 
-                  task?.approvalItemDetails?.resourceDescription || " - "
-                )}
-                {(task?.headers?.category === "CERTIFICATION_TASK" || type === "CERTIFICATION_TASK") && (
-                  task?.certificationItemDetails?.entitlementDescription || 
-                  task?.certificationItemDetails?.roleDescription || 
-                  task?.certificationItemDetails?.resourceDescription || " - "
-                )}
-                {(task?.headers?.category === "PROVISIONING_TASK" || type === "PROVISIONING_TASK") && (
-                  task?.provisioningItemDetail?.resource?.description || " - "                 
-                )}           
-                {(task?.headers?.category === "ROLE_RIGHT_TASK" || type === "ROLE_RIGHT_TASK") && (
-                  task?.itemDetails?.roleDescription || " - "
-                )}
-              </BoxCardText>)}
-              <BoxCardFooter>
-                <BoxCardFooterInfo>
-                  <DetailUser task={task}/>  
-                  <ArrowRightIcon width={18} height={18}/>   
-                  <DetailUser task={task} user={task?.headers?.recipient} title="task.recipient"/>                               
-                </BoxCardFooterInfo>  
-                {!expanded.includes(task?.identifier) && 
+  
+      <Card key={`task-${task?.identifier}`} 
+        boxShadow="0px 4px 16px rgba(27, 32, 42, 0.08)"
+        border="1px solid #EDEDEF;"
+        marginTop={16}
+        marginBottom={16}>
+        <BoxCard>            
+          <BoxCardContent>
+            <BoxCardHeader>
+              <BoxCardHeaderContent>
+                {task?.headers?.status !== "DONE" && (
+                  <Checkbox value={checked.includes(task?.identifier || -1)} onChange={() => onCheck && onCheck(task?.identifier)}/>
+                )}                  
+                <BoxCardIdentifier
+                  background="#EDEDEF" 
+                  color={currentTheme.palette.primary.main}>
+                  ID: {task?.identifier}
+                </BoxCardIdentifier>                                  
+                <BoxCardIdentifier
+                  background="#EDEDEF" 
+                  color={currentTheme.palette.primary.main}>                   
+                  <FormattedMessage id="category" />: {(task?.headers?.category || type) && intl.formatMessage({id: `task.category.${task?.headers?.category || type}`}) || " - "}                    
+                </BoxCardIdentifier>                   
+                <BoxCardIdentifier 
+                  background="#EDEDEF" 
+                  color={currentTheme.palette.primary.main}>
+                  <FormattedMessage id="type" />                     
+                  : {task?.type && intl.formatMessage({id: `task.type.${task?.type}`})}
+                  {task?.headers?.category === "ROLE_RIGHT_TASK" && (
+                    <FormattedMessage id="role" />
+                  )}                                      
+                </BoxCardIdentifier>  
+              </BoxCardHeaderContent>                  
+              <BoxCardHeaderInfo>                                    
                 <BoxCardFooterInfo>
                   <InfoText>
                     <InfoTextContainer>
-                      <FormattedMessage id="createdAt" />: {task.dates?.createdDate}
+                      <FormattedMessage id="createdAt" />: {task?.dates?.createdDate}
                     </InfoTextContainer>
                   </InfoText>                  
+                  <InfoText>
+                    <InfoTextContainer>
+                      <FormattedMessage id="task.status"/>: {task?.headers?.status} 
+                    </InfoTextContainer>                    
+                  </InfoText>                                                    
+                </BoxCardFooterInfo>
+              </BoxCardHeaderInfo>
+            </BoxCardHeader>
+            <BoxCardTitle>
+              {(["APPROVAL_TASK", "SOD_TASK"].includes(task?.headers?.category || "") || ["APPROVAL_TASK", "SOD_TASK"].includes(type as string)) && (
+                task?.approvalItemDetails?.entitlementName || 
+                task?.approvalItemDetails?.roleName || 
+                task?.approvalItemDetails?.resourceName || " - "
+              ) || ""}
+              {(task?.headers?.category === "CERTIFICATION_TASK" || type === "CERTIFICATION_TASK") && (
+                task?.certificationItemDetails?.resourceName || 
+                task?.certificationItemDetails?.roleName || 
+                task?.certificationItemDetails?.entitlementName || " - "
+              ) || ""}
+              {(task?.headers?.category === "PROVISIONING_TASK" || type === "PROVISIONING_TASK") && (
+                task?.provisioningItemDetail?.resource?.name || " - "
+              ) || ""}
+              {(task?.headers?.category === "ROLE_RIGHT_TASK" || type === "ROLE_RIGHT_TASK") && (
+                task?.itemDetails?.roleName || " - "
+              ) || ""}
+            </BoxCardTitle>
+            <BoxJustification>
+              <TitleJustification>
+                <FormattedMessage id="tasks.justification" />
+              </TitleJustification>
+              <BoxJustificationValue>
+                {task?.justification || " - "}
+              </BoxJustificationValue>
+            </BoxJustification>                       
+            {expanded.includes(task?.identifier || -1) && (
+            <BoxCardText>
+              {(["APPROVAL_TASK", "SOD_TASK"].includes(task?.headers?.category || "") || ["APPROVAL_TASK", "SOD_TASK"].includes(type || "")) && (
+                task?.approvalItemDetails?.entitlementDescription || 
+                task?.approvalItemDetails?.roleDescription || 
+                task?.approvalItemDetails?.resourceDescription || " - "
+              )}
+              {(task?.headers?.category === "CERTIFICATION_TASK" || type === "CERTIFICATION_TASK") && (
+                task?.certificationItemDetails?.entitlementDescription || 
+                task?.certificationItemDetails?.roleDescription || 
+                task?.certificationItemDetails?.resourceDescription || " - "
+              )}
+              {(task?.headers?.category === "PROVISIONING_TASK" || type === "PROVISIONING_TASK") && (
+                task?.provisioningItemDetail?.resource?.description || " - "                 
+              )}           
+              {(task?.headers?.category === "ROLE_RIGHT_TASK" || type === "ROLE_RIGHT_TASK") && (
+                task?.itemDetails?.roleDescription || " - "
+              )}
+            </BoxCardText>)}
+            <BoxCardFooter>
+              <BoxCardFooterInfo>
+                <DetailUser task={task}/>                    
+                <DetailUser task={task} user={task?.headers?.recipient} title="task.recipient"/>                               
+              </BoxCardFooterInfo> 
+              <BoxCardFooterInfo>
+                <ButtonsArea>
+                  {(actions || []).includes("APPROVED") && (
+                    <Button variant="contained" color="default-primary" onClick={() => {
+                      if(task) {
+                        approve(task, intl, () => {
+                          resolve({
+                            variables: {
+                              payload: JSON.stringify([{
+                                taskId: Number(id),
+                                result: "APPROVED"
+                              }])
+                            }
+                          });
+                        });
+                      }
+                    }}>
+                      <FormattedMessage id="tasks.approve" />
+                    </Button>
+                  )}
+                  {(actions || []).includes("DISAPPROVED") && (
+                    <Button variant="contained" color="secondary" onClick={() => {
+                      setResult("DISAPPROVED");
+                      setOpenDisapprove(true);
+                    }}>
+                    <FormattedMessage id="tasks.disapprove" />
+                    </Button>
+                  )} 
+                  {(actions || []).includes("CERTIFIED") && (
+                    <Button variant="contained" color="default-primary" onClick={() => {
+                      if(task) {
+                        certify(task, intl, () => {
+                          resolve({
+                            variables: {
+                              payload: JSON.stringify([{
+                                taskId: Number(id),
+                                result: "CERTIFIED"
+                              }])
+                            }
+                          });
+                        });
+                      }
+                    }}>
+                      <FormattedMessage id="tasks.certify" />
+                    </Button>
+                  )}
+                  {(actions || []).includes("REVOKED") && (
+                    <Button variant="contained" color="secondary" onClick={() => {
+                      setResult("REVOKED");
+                      setOpenDisapprove(true);
+                    }}>
+                    <FormattedMessage id="tasks.revoke" />
+                    </Button>
+                  )}              
+                  {(actions || []).includes("ALLOWED") && (
+                    <Button variant="contained" color="default-primary" onClick={() => {
+                      setResult("ALLOWED");
+                      setOpenDisapprove(true);
+                    }}>
+                    <FormattedMessage id="tasks.allow" />
+                    </Button>
+                  )} 
+                  {(actions || []).includes("NOT_ALLOWED") && (
+                    <Button variant="contained" color="secondary" onClick={() => {
+                      setResult("NOT_ALLOWED");
+                      setOpenDisapprove(true);
+                    }}>
+                    <FormattedMessage id="tasks.deny" />
+                    </Button>
+                  )}   
+                  {(actions || []).includes("PROVISIONED") && 
+                    (!["CREATE_ACCOUNT", "CHANGE_PASSWORD"].includes(task?.type || "") || "WAITING_ASSING" === task?.headers?.status) && (
+                    <Button variant="contained" color="default-primary" onClick={() => {
+                      if(task) {
+                        provision(task, intl, () => {
+                          resolve({
+                            variables: {
+                              payload: JSON.stringify([{
+                                taskId: Number(id),
+                                result: "PROVISIONED"
+                              }])
+                            }
+                          });
+                        });
+                      }
+                    }}>
+                      <FormattedMessage id="tasks.provisioned" />
+                    </Button>
+                  )}
+                  {(actions || []).includes("NOT_PROVISIONED") && (
+                    <Button variant="contained" color="secondary" onClick={() => {
+                      setResult("NOT_PROVISIONED");
+                      setOpenDisapprove(true);
+                    }}>
+                    <FormattedMessage id="tasks.notProvisioned" />
+                    </Button>
+                  )}                  
+                  {(actions || []).includes("RESOLVE") && (
+                    <Button variant="contained" color="default-primary" onClick={() => {
+                      if(task) {
+                        resolveTask(task, intl, () => {
+                          resolve({
+                            variables: {
+                              payload: JSON.stringify([{
+                                taskId: Number(id),                       
+                              }])
+                            }
+                          });
+                        });
+                      }
+                    }}>
+                      <FormattedMessage id="tasks.resolve" />
+                    </Button>
+                  )}                            
+                </ButtonsArea>                                                                  
+                <Actions onClick={(e: any) => handleClick(e)}>
+                  <DotsThreeIcon color="#26213F" stroke={2}/>
+                </Actions>
+                {/*<Info className="Selectable" onClick={() => expanded.includes(task?.identifier) ? setExpanded(expanded.filter((id) => id !== task?.identifier)) : setExpanded([...expanded, task?.identifier])}>
+                  <FormattedMessage id="viewMore"/>
+                  {expanded.includes(task?.identifier) ? (
+                    <CaretUpIcon width={20} color="#26213F" stroke={2}/>
+                  ) : (
+                    <CaretDownIcon width={20} color="#26213F" stroke={2}/> 
+                  )}                                    
+                  </Info>*/}
+              </BoxCardFooterInfo>                                                                    
+            </BoxCardFooter> 
+            {expanded.includes(task?.identifier || -1) && (
+            <>
+              <InfoDivider />    
+              <BoxCardFooter>
+                <BoxCardFooterInfo>
+                  <InfoText>
+                    <InfoTextContainer>
+                      <FormattedMessage id="createdAt" />: {task?.dates?.createdDate}
+                    </InfoTextContainer>
+                  </InfoText> 
+                  {task?.headers?.status === "DONE" && 
+                  <InfoText>
+                    <InfoTextContainer>
+                      <FormattedMessage id="resolvedAt" />: {task.dates?.resolvedDate}
+                    </InfoTextContainer>
+                  </InfoText>}
+                  <InfoText>
+                    <InfoTextContainer>
+                      <FormattedMessage id="deadline" />: {task?.dates?.deadline}
+                    </InfoTextContainer>
+                  </InfoText>                          
+                </BoxCardFooterInfo>  
+                <BoxCardFooterInfo>                                   
                   <InfoText>
                     <InfoTextContainer>
                       <FormattedMessage id="type" />                     
@@ -452,47 +616,13 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
                       )}
                     </InfoTextContainer>                    
                   </InfoText>                                                    
-                </BoxCardFooterInfo>}                                     
-              </BoxCardFooter> 
-              {expanded.includes(task?.identifier) && (
-              <>
-                <InfoDivider />    
-                <BoxCardFooter>
-                  <BoxCardFooterInfo>
-                    <InfoText>
-                      <InfoTextContainer>
-                        <FormattedMessage id="createdAt" />: {task.dates?.createdDate}
-                      </InfoTextContainer>
-                    </InfoText> 
-                    {task?.headers?.status === "DONE" && 
-                    <InfoText>
-                      <InfoTextContainer>
-                        <FormattedMessage id="resolvedAt" />: {task.dates?.resolvedDate}
-                      </InfoTextContainer>
-                    </InfoText>}
-                    <InfoText>
-                      <InfoTextContainer>
-                        <FormattedMessage id="deadline" />: {task.dates?.deadline}
-                      </InfoTextContainer>
-                    </InfoText>                          
-                  </BoxCardFooterInfo>  
-                  <BoxCardFooterInfo>                                   
-                    <InfoText>
-                      <InfoTextContainer>
-                        <FormattedMessage id="type" />                     
-                        : {task?.type && intl.formatMessage({id: `task.type.${task?.type}`})}
-                        {task?.headers?.category === "ROLE_RIGHT_TASK" && (
-                          <FormattedMessage id="role" />
-                        )}
-                      </InfoTextContainer>                    
-                    </InfoText>                                                    
-                  </BoxCardFooterInfo>                                     
-                </BoxCardFooter>
-              </>)}              
-            </BoxCardContent>                              
-          </BoxCard>
-        </Card>
-      ))}
+                </BoxCardFooterInfo>                                     
+              </BoxCardFooter>
+            </>)}              
+          </BoxCardContent>                              
+        </BoxCard>
+      </Card>
+      
       <Menu
         id="simple-menu"
         anchorEl={anchorEl}
@@ -521,164 +651,7 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
             </MenuItemBox>
             <FormattedMessage id="details" />
           </MenuItemInfo>           
-        </MenuItem>  
-        {(actions || []).includes("APPROVED") && (
-          <MenuItem onClick={() => {
-            if(current) {
-              approve(current, intl, () => {
-                resolve({
-                  variables: {
-                    payload: JSON.stringify([{
-                      taskId: Number(current?.identifier), 
-                      result: "APPROVED"                   
-                    }])
-                  }
-                })
-              });
-            }          
-          }}>
-            <MenuItemInfo>
-              <MenuItemBox className="Green">
-                <CheckIcon width={21} height={21} color="#FFFFFF"/>
-              </MenuItemBox>
-              <FormattedMessage id="tasks.approve" />
-            </MenuItemInfo>             
-          </MenuItem>           
-        )}
-        {(actions || []).includes("DISAPPROVED") && (
-          <MenuItem onClick={() => {
-            setResult("DISAPPROVED");
-            setOpenDisapprove(true);        
-          }}>
-            <MenuItemInfo>
-              <MenuItemBox className="Red">
-                <XIcon width={21} height={21} color="#FFFFFF"/>
-              </MenuItemBox>
-              <FormattedMessage id="tasks.disapprove" />
-            </MenuItemInfo>             
-          </MenuItem>           
-        )}         
-        {(actions || []).includes("CERTIFIED") && (
-          <MenuItem onClick={() => {
-            if(current) {
-              certify(current, intl, () => {
-                resolve({
-                  variables: {
-                    payload: JSON.stringify([{
-                      taskId: Number(current?.identifier), 
-                      result: "CERTIFIED"                   
-                    }])
-                  }
-                })
-              });
-            }          
-          }}>
-            <MenuItemInfo>
-              <MenuItemBox className="Blue">
-                <UserIcon width={21} height={21} color="#FFFFFF"/>
-              </MenuItemBox>
-              <FormattedMessage id="tasks.certify" />
-            </MenuItemInfo>             
-          </MenuItem>         
-        )}
-        {(actions || []).includes("REVOKED") && (
-          <MenuItem onClick={() => {
-            setResult("REVOKED");
-            setOpenDisapprove(true);        
-          }}>
-            <MenuItemInfo>
-              <MenuItemBox className="Blue">
-                <XIcon width={21} height={21} color="#FFFFFF"/>
-              </MenuItemBox>
-              <FormattedMessage id="tasks.revoke" />
-            </MenuItemInfo>             
-          </MenuItem>           
-        )}    
-        {(actions || []).includes("ALLOWED") && (
-          <MenuItem onClick={() => {
-            setResult("ALLOWED");
-            setOpenDisapprove(true);          
-          }}>
-            <MenuItemInfo>
-              <MenuItemBox className="Blue">
-                <UserIcon width={21} height={21} color="#FFFFFF"/>
-              </MenuItemBox>
-              <FormattedMessage id="tasks.allow" />
-            </MenuItemInfo>             
-          </MenuItem>         
-        )}    
-        {(actions || []).includes("NOT_ALLOWED") && (
-          <MenuItem onClick={() => {
-            setResult("NOT_ALLOWED");
-            setOpenDisapprove(true);          
-          }}>
-            <MenuItemInfo>
-              <MenuItemBox className="Red">
-                <XIcon width={21} height={21} color="#FFFFFF"/>
-              </MenuItemBox>
-              <FormattedMessage id="tasks.deny" />
-            </MenuItemInfo>             
-          </MenuItem>         
-        )}
-        {/*
-        {(actions || []).includes("PROVISIONED") && (
-          <MenuItem onClick={() => {
-            if(current) {
-              provision(current, intl, () => {
-                resolve({
-                  variables: {
-                    payload: JSON.stringify([{
-                      taskId: Number(current?.identifier), 
-                      result: "PROVISIONED"                   
-                    }])
-                  }
-                })
-              });
-            }          
-          }}>
-            <MenuItemInfo>
-              <MenuItemBox className="Blue">
-                <UserIcon width={21} height={21} color="#FFFFFF"/>
-              </MenuItemBox>
-              <FormattedMessage id="tasks.provisioned" />
-            </MenuItemInfo>             
-          </MenuItem>         
-        )} 
-        {(actions || []).includes("NOT_PROVISIONED") && (
-          <MenuItem onClick={() => {
-            setResult("NOT_PROVISIONED");
-            setOpenDisapprove(true);          
-          }}>
-            <MenuItemInfo>
-              <MenuItemBox className="Red">
-                <XIcon width={21} height={21} color="#FFFFFF"/>
-              </MenuItemBox>
-              <FormattedMessage id="tasks.notProvisioned" />
-            </MenuItemInfo>             
-          </MenuItem>         
-        )} */}        
-        {(actions || []).includes("RESOLVE") && (
-          <MenuItem onClick={() => {
-            if(current) {
-              resolveTask(current, intl, () => {
-                resolve({
-                  variables: {
-                    payload: JSON.stringify([{
-                      taskId: Number(current?.identifier),                                       
-                    }])
-                  }
-                })
-              });
-            }          
-          }}>
-            <MenuItemInfo>
-              <MenuItemBox className="Blue">
-                <UserIcon width={21} height={21} color="#FFFFFF"/>
-              </MenuItemBox>
-              <FormattedMessage id="tasks.resolve" />
-            </MenuItemInfo>             
-          </MenuItem>         
-        )}         
+        </MenuItem>                
         {(data?.getAssignActions || []).includes("UNASSIGN") && (
           <MenuItem onClick={() => {
             if(current) {
@@ -763,6 +736,26 @@ const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subT
         execute={executeDissaproved}
         task={current}     
       />  
+    </>  
+  );
+};
+
+const Tasks: FC<ListProps> = ({ list = [], type, id, checked = [], onCheck, subType = "any", size = 10, filteredString = "{}"}) => {
+
+  return (
+    <>      
+      {list.map((task: Task, index: number) => (
+        <TaskDetail 
+          key={`task-${task.identifier}-${index}`} 
+          type={type}
+          id={id}
+          checked={checked}
+          onCheck={onCheck}
+          subType={subType}
+          size={size}
+          filteredString={filteredString}
+          task={task} />       
+      ))}      
     </>  
   );
 };

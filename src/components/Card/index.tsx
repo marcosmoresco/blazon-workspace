@@ -3,10 +3,11 @@ import Card from '@material-ui/core/Card';
 import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({    
-  root: {
-    marginTop: 23,  
-    marginBottom: 23,  
-    boxShadow: '0px 0px 28px rgba(0, 0, 0, 0.25)',    
+  root: props => ({
+    marginTop: props.marginTop || 23,  
+    marginBottom: props.marginBottom || 23,    
+    border: props.border || "none",  
+    boxShadow: props.boxShadow || '0px 0px 28px rgba(0, 0, 0, 0.25)',    
     '& .Card-header': {
       display: 'flex',
       justifyContent: 'space-between',
@@ -42,12 +43,12 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 15
       }      
     }
-  }  
+  })  
 }));
 
-export default function CustomizedCard(props) {
+export default function CustomizedCard(props) { 
   
-    const classes = useStyles() 
+    const classes = useStyles(props) 
   
     return (
       

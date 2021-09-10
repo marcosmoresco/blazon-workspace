@@ -149,15 +149,15 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
   }
 
   const handleChange = (val: any) => {  
-    setFiltered({});
+    setFiltered({status: resolved ? ["DONE", "CANCELED"] : ["TODO", "WAITING_ASSIGN"]});
     getTaskFilters(val, null);
     setType(val);
-  };
+  }; 
 
   const handleChangeType = (val: any) => {    
     setTypeValue(val);
     if(val != "ANY") {
-      setFiltered({"taskData.type": val})
+      setFiltered({"taskData.type": val, status: resolved ? ["DONE", "CANCELED"] : ["TODO", "WAITING_ASSIGN"]})
     } else {
       setFiltered({});      
     }        
@@ -178,10 +178,7 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
       <Header>
         <Checkbox value={checkAll} onChange={() => setCheckAll(!checkAll)}/>
         <HeaderFilters>
-          <FilterContent>
-            <label onClick={(event: any) => setAnchorElCategory(event.currentTarget)}>
-              <FormattedMessage id="category" />
-            </label>
+          <FilterContent>            
             <SelectBoxContainer onClick={(event: any) => {
               setAnchorElCategory(event.currentTarget);                            
             }}>
@@ -195,10 +192,7 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
             </SelectBoxContainer>
           </FilterContent> 
           {type !== "ALL" && (
-            <FilterContent>
-              <label onClick={(event: any) => setAnchorEl(event.currentTarget)}>
-                <FormattedMessage id="type" />
-              </label>
+            <FilterContent>             
               <SelectBoxContainer onClick={(event: any) => setAnchorEl(event.currentTarget)}>
                 <SelectBoxInfo>
                   <SelectBoxInfoIcon>

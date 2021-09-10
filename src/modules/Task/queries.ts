@@ -82,6 +82,7 @@ export const GET_TASKS = gql`
       representation {
         identifier
         type
+        justification
         dates {
           createdDate
           resolvedDate
@@ -173,6 +174,7 @@ export const GET_REQUEST_APPROVAL_TASKS = gql`
       representation {
         identifier
         type
+        justification
         dates {
           createdDate
           resolvedDate
@@ -330,6 +332,7 @@ export const GET_CERTIFICATION_APPROVAL_TASKS = gql`
       representation {
         identifier
         type
+        justification
         dates {
           createdDate
           resolvedDate
@@ -478,6 +481,7 @@ export const GET_SOD_APPROVAL_TASKS = gql`
       representation {
         identifier
         type
+        justification
         dates {
           createdDate
           resolvedDate
@@ -624,6 +628,7 @@ export const GET_ROLE_RIGHT_APPROVAL_TASKS = gql`
       representation {
         identifier
         type
+        justification
         dates {
           createdDate
           resolvedDate
@@ -772,6 +777,7 @@ export const GET_PROVISIONING_TASKS = gql`
       representation {
         identifier
         type
+        justification
         dates {
           createdDate
           resolvedDate
@@ -932,6 +938,7 @@ export const GET_TASK_QUEUE_TASKS = gql`
       representation {
         identifier
         type
+        justification
         dates {
           createdDate
           resolvedDate
