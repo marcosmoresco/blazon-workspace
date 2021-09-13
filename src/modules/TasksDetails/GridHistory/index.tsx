@@ -116,6 +116,7 @@ const GridHistory: React.FC<GridHistoryProps> = ({ task }) => {
           <DeitalList>
             {tab === "Comments" ? (
               <>
+                {!task?.dates?.resolvedDate && 
                 <CommentsTab>
                   <IsertComments>
                     <Image
@@ -150,7 +151,7 @@ const GridHistory: React.FC<GridHistoryProps> = ({ task }) => {
                       />
                     </PaperPlaneBox>
                   </IsertComments>
-                </CommentsTab>
+                </CommentsTab>}
                 <TitleComments>
                   <FormattedMessage id="tasks.comments" />
                 </TitleComments>

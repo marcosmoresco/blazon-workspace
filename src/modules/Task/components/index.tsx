@@ -58,6 +58,7 @@ import {
   BoxCardHeaderContent,
   BoxCardHeaderInfo,
   BoxCardTitle,
+  BoxCardTitleResource,
   BoxCardIdentifier,
   Info,
   InfoText,
@@ -144,7 +145,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
     
     if(!actions.length && task && !caller.current) {
 
-      let t = getType(task, type);                    
+      let t = getType(task, type);         
       
       caller.current = true;
       apolloClient
@@ -165,12 +166,12 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
   const handleClose = () => {
     setAnchorEl(null);
   };
-
+  
   const { loading, error, data, refetch } = useQuery<{
     getAssignActions: string[];
   }>(GET_ASSIGN_ACTIONS, {
     variables: {
-      status: `["${current?.headers?.status || "TODO"}"]`
+      status: `["${task?.headers?.status}"]`
     },
     fetchPolicy: "network-only"
   });  
@@ -408,7 +409,13 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
             </BoxCardHeader>
             <BoxCardTitle>
               {(["APPROVAL_TASK", "SOD_TASK"].includes(task?.headers?.category || "") || ["APPROVAL_TASK", "SOD_TASK"].includes(type as string)) && (
-                task?.approvalItemDetails?.entitlementName || 
+                task?.approvalItemDetails?.entitlementName && (
+                  <>
+                    <BoxCardTitleResource>
+                      {task?.approvalItemDetails?.resourceName}
+                    </BoxCardTitleResource>/{task?.approvalItemDetails?.entitlementName}
+                  </>  
+                ) || 
                 task?.approvalItemDetails?.roleName || 
                 task?.approvalItemDetails?.resourceName || " - "
               ) || ""}
@@ -697,17 +704,20 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
           </MenuItem>
         )}
         <DividerMenu/>
-        <MenuItem onClick={() => setOpenForwardUser(true)}>
-          <MenuItemInfo>
-            <MenuItemBox className="Blue">
-              <UsersIcon width={21} height={21} color="#FFFFFF"/>
-            </MenuItemBox>
-            <MenuItemContainer>
-              <FormattedMessage id="tasks.forwardToUser" />
-              <CaretRightIcon width={21} height={21} />
-            </MenuItemContainer>            
-          </MenuItemInfo>          
-        </MenuItem>
+        {data?.getAssignActions.includes("FORWARD_TO_USER") && 
+          <MenuItem onClick={() => setOpenForwardUser(true)}>
+            <MenuItemInfo>
+              <MenuItemBox className="Blue">
+                <UsersIcon width={21} height={21} color="#FFFFFF"/>
+              </MenuItemBox>
+              <MenuItemContainer>
+                <FormattedMessage id="tasks.forwardToUser" />
+                <CaretRightIcon width={21} height={21} />
+              </MenuItemContainer>            
+            </MenuItemInfo>          
+          </MenuItem>
+        }      
+        {data?.getAssignActions.includes("FORWARD_TO_QUEUE") && 
         <MenuItem onClick={() => setOpenForwardQueue(true)}>
           <MenuItemInfo>
             <MenuItemBox className="Green">
@@ -718,8 +728,9 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
               <CaretRightIcon width={21} height={21} />
             </MenuItemContainer>            
           </MenuItemInfo>          
-        </MenuItem>     
-      </Menu>
+        </MenuItem>
+      }     
+      </Menu>     
       <ForwardUser 
         modalOpen={openForwardUser}
         setModalOpen={setOpenForwardUser} 
@@ -729,7 +740,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
         modalOpen={openForwardQueue}
         setModalOpen={setOpenForwardQueue} 
         execute={executeForwardToQueue}            
-      />   
+      />  
       <Disapprove
         modalOpen={openDisapprove}
         setModalOpen={setOpenDisapprove} 

@@ -49,6 +49,7 @@ const getHierarchy = (intl: IntlShape, hierarchy: TitleHierarchy | undefined): R
 }
 
 const TitlePage: React.FC<TitleProps> = ({
+  formatedTitle,
   title,
   subTitle,
   intl,
@@ -77,7 +78,7 @@ const TitlePage: React.FC<TitleProps> = ({
               </BackBox>
             )}
             <TitleBox>           
-              <TitleText>{intl.formatMessage({ id: title })}</TitleText>
+              <TitleText>{(formatedTitle && formatedTitle) || intl.formatMessage({ id: title })}</TitleText>
             </TitleBox>
           </HeaderTitle>                    
         </Header>

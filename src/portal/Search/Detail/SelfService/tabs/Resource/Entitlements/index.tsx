@@ -24,29 +24,6 @@ const ResourceEntitlements: FC<ListProps> = ({ dispatch }) => {
 
   const resource = data?.getSelfServiceItem;
 
-  const [loadingEntitlements, setLoadingEntitlements] = useState(true);
-  const [entitlements, setEntitlements] = useState([]);
-  const [links, setLinks] = useState([]);
-
-  useEffect(() => {
-    if(!loading && resource) {      
-      apolloClient
-        .query({
-          query: GET_DIRECTORY_RESOURCE_ENTITLEMENTS,
-          variables: {
-            id: resource?.referenceTo?.referenceToIdentifier,
-            page: 0,
-            size: 100,
-          },
-        })
-        .then(({ data }) => {
-          setEntitlements(data?.getRepresentation?.representation);
-          setLinks(data?.getRepresentation?.links);
-          setLoadingEntitlements(false);
-        });
-    }
-  }, [loading, resource]);
-
   const handleClickRow = (row: Entitlement) => {
     router.push(`/search/entitlement/${row.identifier}`);
   };
@@ -56,11 +33,8 @@ const ResourceEntitlements: FC<ListProps> = ({ dispatch }) => {
       <div>
         <DataGrid
           query={GET_DIRECTORY_RESOURCE_ENTITLEMENTS}
-          queryFilters={{ id: resource?.referenceTo?.referenceToIdentifier }}
-          height={600}
-          list={entitlements}
-          links={links}
-          fetching={loadingEntitlements}
+          queryFilters={{ id: resource?.referenceTo?.referenceToIdentifier, page: 0, size: 100 }}
+          height={600}                  
           columns={columns}
           page={1}
           size={100}

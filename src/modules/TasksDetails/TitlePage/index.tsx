@@ -54,12 +54,14 @@ const TitlePageTask: React.FC<TitleProps> = ({ intl, onBack, task }) => {
     subTitle = `${task?.provisioningItemDetail?.resource?.name} - ${task?.provisioningItemDetail?.resource?.name}`;
   } else if(type as string  === "provisioning") {
     subTitle = `${task?.itemDetails?.roleName}`;
+  } else {
+    subTitle = `${task?.itemDetails?.roleName}`;
   }
 
   return (
     <>
      <TitlePage 
-        title={subTitle}                 
+        formatedTitle={subTitle}                 
         hierarchy={hierarchy} 
         onBack={() => router.push("/tasks")}/>      
     </>

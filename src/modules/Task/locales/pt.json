@@ -63,6 +63,8 @@
   "task.newRoleRight": "Novo direito de papel",
   "task.resource": "Recurso",
   "tasks.resolved": "Resolvidas",
+  "tasks.waitingResolution": "Aguardando resolução",
+  "tasks.waitingAssignment": "Aguardando atribuição",
 
   "task.category.APPROVAL_TASK": "Aprovação",
   "task.category.CERTIFICATION_TASK": "Certificação",

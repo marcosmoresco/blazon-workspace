@@ -33,6 +33,15 @@ export const BoxCardHeader = styled.div`
 export const BoxCardHeaderContent = styled.div`
   display: flex;
   align-items: center;
+  gap: 10px;
+  & .MuiFormControlLabel-root {
+    margin-right: 0px;
+  }
+
+  & .MuiCheckbox-root {
+    padding: 0;
+    margin-left: 11px;
+  }
 `;
 
 export const BoxCardHeaderInfo = styled.div`
@@ -56,12 +65,14 @@ interface BoxCardIdentifierProps {
 }
 
 export const BoxCardIdentifier = styled.div<BoxCardIdentifierProps>`
-  background: ${props => props.background && props.background || "#eaf1fe"};
-  color: ${props => props.color && props.color || "#0e46d7"};
+  background: ${props => props.background && props.background || "#eaf1fe"}; 
+  color: ${props => props.color && props.color || "#0e46d7"}; 
+  border-radius: 6px;  
+  padding: 2px 5px;
   font-weight: 500;
-  border-radius: 30px;
-  margin-left: 19px;
-  padding: 8px;
+  &.No-background {
+    background: transparent;
+  }
 `;
 
 export const BoxRequester = styled.div`
@@ -113,11 +124,10 @@ export const BoxPriority = styled.div`
   align-items: center;
   background: #f4f4f5;
   border-radius: 8px;
-  height: 48px;
+  height: 42px;
   padding: 12px;
   color: #000000;
   font-weight: 500;
-  margin-right: 10px;
 `;
 
 export const BarPriorityLow = styledMui(LinearProgress)({

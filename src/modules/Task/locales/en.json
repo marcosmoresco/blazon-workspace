@@ -63,6 +63,8 @@
   "task.newRoleRight": "New role right",
   "task.resource": "Resource",
   "tasks.resolved": "Resolved",
+  "tasks.waitingResolution": "Waiting Resolution",
+  "tasks.waitingAssignment": "Waiting Assignment",
 
   "task.category.APPROVAL_TASK": "Approval",
   "task.category.CERTIFICATION_TASK": "Certification",

@@ -4,9 +4,10 @@ export type TitleProps = {
   intl: IntlShape;
   title: string;
   subTitle?: string;
+  formatedTitle?: string;
   onBack?: () => void;
   icon?: any;
-  hierarchy?: TitleHierarchy
+  hierarchy?: TitleHierarchy;  
 };
 
 

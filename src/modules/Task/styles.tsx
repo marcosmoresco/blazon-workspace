@@ -145,6 +145,15 @@ export const BoxCardTitle = styled.div`
   font-size: 16px;
   line-height: 33px;
   color: #26213f;
+  margin-bottom: 7px;
+`;
+
+export const BoxCardTitleResource = styled.span`
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  line-height: 33px;
+  color: #26213f;
 `;
 
 interface BoxCardIdentifierProps {
@@ -198,7 +207,7 @@ export const BoxCardFooter = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-top: 24px;
+  margin-top: 20px;
   gap: 15px;
 `;
 

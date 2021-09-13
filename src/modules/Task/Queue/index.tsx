@@ -4,7 +4,6 @@ import { FormattedMessage, useIntl } from "react-intl";
 import Checkbox from "@components/Checkbox";
 import Filter from "@components/Filter";
 import Loading from "@components/Loading";
-import Select from "@components/Select";
 import ListBulletsIcon from "@icons/ListBullets";
 import CaretDownIcon from "@icons/CaretDown";
 import CaretUpIcon from "@icons/CaretUp";
@@ -144,13 +143,13 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
   
   if(loading || loadingFilters) {
     return (
-      <Loading />
+      <Loading container bgColor="#FFFFFF"/>
     )
-  }
+  }  
 
   if((queues || []).length && !queueIdentifier) {
     setQueueName(queues[0].name || "");
-    setQueueIdentifier(queues[0].identifier);
+    setQueueIdentifier(queues[0].identifier);    
   }
 
   return (

@@ -211,13 +211,13 @@ export const types = [
 
 export const sections = [
   {   
-    name: "tasks",
-    value: "TASKS",
-  },
-  {   
-    name: "tasks.personal",
+    name: "tasks.waitingResolution",
     value: "TASKS_PERSONAL",
   },
+  {   
+    name: "tasks.waitingAssignment",
+    value: "TASKS",
+  },  
   {   
     name: "tasks.resolved",
     value: "TASKS_RESOLVED",

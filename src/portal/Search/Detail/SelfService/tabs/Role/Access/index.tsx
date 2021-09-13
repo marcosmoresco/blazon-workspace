@@ -30,54 +30,12 @@ const RoleAccess: FC<ListProps> = () => {
 
   const role = data?.getSelfServiceItem;
 
-  const [open, setOpen] = useState(false);
-  const [loadingEntitlements, setLoadingEntitlements] = useState(false);
-  const [current, setCurrent] = useState<EntitlementDirectory>();
-  const [entitlements, setEntitlements] = useState([]);
-  const [entitlementsLinks, setEntitlementsLinks] = useState([]);
-  const [loadingRights, setLoadingRights] = useState(true);
-  const [rights, setRights] = useState([]);
-  const [rightsLinks, setRightsLinks] = useState([]);
+  const [open, setOpen] = useState(false); 
+  const [current, setCurrent] = useState<EntitlementDirectory>(); 
 
-  useEffect(() => {
-    if(!loading && role) {      
-      apolloClient
-        .query({
-          query: GET_DIRECTORY_ROLE_RIGHTS,
-          variables: {
-            id: role?.referenceTo?.referenceToIdentifier,
-            page: 0,
-            size: 100,
-          },
-        })
-        .then(({ data }) => {
-          setRights(data?.getRepresentation?.representation);
-          setRightsLinks(data?.getRepresentation?.links);
-          setLoadingRights(false);
-        });
-    }
-  }, [loading, role]);
-  
-
-  const handleOpen = (row: any) => {
-    setLoadingEntitlements(true);
+  const handleOpen = (row: any) => {    
     setCurrent(row);
-    setOpen(true);
-    apolloClient
-      .query({
-        query: GET_DIRECTORY_ROLE_RIGHT_ENTITLEMENTS,
-        variables: {
-          id: role?.referenceTo?.referenceToIdentifier,
-          rightId: row?.identifier,
-          page: 0,
-          size: 100,
-        },
-      })
-      .then(({ data }) => {
-        setEntitlements(data?.getRepresentation?.representation);
-        setEntitlementsLinks(data?.getRepresentation?.links);
-        setLoadingEntitlements(false);
-      });
+    setOpen(true);    
   };
 
   return (
@@ -85,14 +43,11 @@ const RoleAccess: FC<ListProps> = () => {
       <div>
         <DataGrid
           query={GET_DIRECTORY_ROLE_RIGHTS}         
-          queryFilters={{ id: role?.referenceTo?.referenceToIdentifier }}
-          height={600}
-          list={rights}
-          links={rightsLinks}
-          fetching={loadingRights}
+          queryFilters={{ id: role?.referenceTo?.referenceToIdentifier, page: 0, size: 100 }}
+          height={600}         
           columns={columns(handleOpen)}
           page={1}
-          size={25}
+          size={100}
           rowsPerPageList={[25, 50, 75, 100]}
           type="pagination"
         />
@@ -108,11 +63,8 @@ const RoleAccess: FC<ListProps> = () => {
         <EntitlementsDialog>
           <DataGrid
             query={GET_DIRECTORY_ROLE_RIGHT_ENTITLEMENTS}
-            queryFilters={{ id: role?.referenceTo?.referenceToIdentifier, rightId: current?.identifier }}
-            height={600}
-            list={entitlements}
-            links={entitlementsLinks}
-            fetching={loadingEntitlements}
+            queryFilters={{ id: role?.referenceTo?.referenceToIdentifier, rightId: current?.identifier, page: 0, size: 1000 }}
+            height={600}           
             columns={columnsEntitlements}
             page={1}
             size={25}

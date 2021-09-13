@@ -5,11 +5,6 @@ import { useRouter } from "next/router";
 import { useTheme, themes } from "@theme/index";
 
 // components
-import Avatar from "@material-ui/core/Avatar";
-import Check from "@icons/Check";
-import CalendarIcon from "@icons/Calendar";
-import BrowsersIcon from "@icons/BrowsersIcon";
-import ArrowRightIcon from "@icons/ArrowRight";
 import DetailUser from "@modules/Task/components/DetailUser";
 
 //types
@@ -64,30 +59,12 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
         <BoxCard key={`task-${task?.identifier}`}>
           <BoxCardContent>
             <BoxCardHeader>
-              <BoxCardHeaderContent>
-                <BoxCardTitle>
-                  {["approval", "sod"].includes(type as string) && (
-                    task?.approvalItemDetails?.entitlementName || 
-                    task?.approvalItemDetails?.roleName || 
-                    task?.approvalItemDetails?.resourceName || " - "
-                  )}
-                  {type === "certification" && (
-                    task?.certificationItemDetails?.resourceName || 
-                    task?.certificationItemDetails?.roleName || 
-                    task?.certificationItemDetails?.entitlementName || " - "
-                  )}
-                  {type === "provisioning" && (
-                    task?.provisioningItemDetail?.resource?.name || " - "
-                  )}
-                  {type === "roleRight" && (
-                    task?.itemDetails?.roleName || " - "
-                  )}
-                </BoxCardTitle>
+              <BoxCardHeaderContent>                
                 {type !== "roleRight" && (
                   <>
                     <BoxCardIdentifier
-                      background={currentTheme.palette.info.main} 
-                      color={currentTheme.palette.info.contrastText}>
+                      background="#EDEDEF" 
+                      color={currentTheme.palette.primary.main}>
                       ID: {["approval", "sod"].includes(type as string) && (
                         task?.approvalItemDetails?.entitlementIdentifier || 
                         task?.approvalItemDetails?.roleIdentifier || 
@@ -103,14 +80,16 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                       )}                  
                     </BoxCardIdentifier>
                     <BoxCardIdentifier
-                      background={currentTheme.palette.info.main} 
-                      color={currentTheme.palette.info.contrastText}>                   
+                      background="#EDEDEF" 
+                      color={currentTheme.palette.primary.main}>                   
                       <FormattedMessage id="category" />: <FormattedMessage id={`task.${type}`} />                 
                     </BoxCardIdentifier>   
                     <BoxCardIdentifier
-                      background={currentTheme.palette.info.main} 
-                      color={currentTheme.palette.info.contrastText}>
-                      <FormattedMessage id="status"/>: {task?.headers?.status}
+                      background="#EDEDEF" 
+                      color={currentTheme.palette.primary.main}>
+                      <FormattedMessage id="type" />                     
+                      : {task?.type && intl.formatMessage({id: `task.type.${task?.type}`})}                    
+                      {type === "roleRight" && intl.formatMessage({id: `task.newRoleRight`})}                     
                     </BoxCardIdentifier>                 
                   </>
                 )}                
@@ -122,14 +101,30 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                 </BoxPriority> 
                 <InfoText>
                   <InfoTextContainer>
-                    <FormattedMessage id="type" />                     
-                    : {task?.type && intl.formatMessage({id: `task.type.${task?.type}`})}                    
-                      {type === "roleRight" && intl.formatMessage({id: `task.newRoleRight`})}
+                    <FormattedMessage id="status"/>: {task?.headers?.status}
                   </InfoTextContainer>                    
                 </InfoText>                
               </BoxCardHeaderContent>  
-            </BoxCardHeader>            
-            <BoxCardText>
+            </BoxCardHeader>   
+            <BoxCardTitle>
+              {["approval", "sod"].includes(type as string) && (
+                task?.approvalItemDetails?.entitlementName || 
+                task?.approvalItemDetails?.roleName || 
+                task?.approvalItemDetails?.resourceName || " - "
+              )}
+              {type === "certification" && (
+                task?.certificationItemDetails?.resourceName || 
+                task?.certificationItemDetails?.roleName || 
+                task?.certificationItemDetails?.entitlementName || " - "
+              )}
+              {type === "provisioning" && (
+                task?.provisioningItemDetail?.resource?.name || " - "
+              )}
+              {type === "roleRight" && (
+                task?.itemDetails?.roleName || " - "
+              )}
+            </BoxCardTitle>         
+            {/*<BoxCardText>
               {["approval", "sod"].includes(type as string) && (
                 task?.approvalItemDetails?.entitlementDescription || 
                 task?.approvalItemDetails?.roleDescription || 
@@ -146,11 +141,10 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
               {type === "roleRight" && (
                 task?.itemDetails?.roleDescription || " - "
               )}
-            </BoxCardText>                                      
+              </BoxCardText> */}                                      
             <BoxCardFooter>
               <BoxCardFooterInfo>
-                <DetailUser task={task}/>        
-                <ArrowRightIcon width={18} height={18}/>   
+                <DetailUser task={task}/>                           
                 <DetailUser task={task} user={task?.headers?.recipient} title="task.recipient"/>                         
               </BoxCardFooterInfo>
               <BoxCardFooterInfo>
@@ -175,13 +169,15 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                 </BoxCardHeaderInfo>
               </BoxCardFooterInfo>
             </BoxCardFooter>
-            <JustificationDivider />            
-            <TitleJustification>
-              <FormattedMessage id="tasks.justification" />
-            </TitleJustification>
-            <BoxJustificationValue>
-              {task?.justification || task?.revokeJustification || task?.itemDetails?.justification || " - "}
-            </BoxJustificationValue>                       
+            <JustificationDivider /> 
+            <BoxJustification>
+              <TitleJustification>
+                <FormattedMessage id="tasks.justification" />
+              </TitleJustification>
+              <BoxJustificationValue>
+                {task?.justification || task?.revokeJustification || task?.itemDetails?.justification || " - "}
+              </BoxJustificationValue>
+            </BoxJustification>                                              
           </BoxCardContent>
         </BoxCard>       
       </Box>      

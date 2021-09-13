@@ -126,6 +126,7 @@ export const StyledMenu = withStyles({
 export const DividerMenu = withStyles({
   root: {
     margin: "10px 0",
+    minWidth: 335
   }
 })((props) => (
   <Divider
