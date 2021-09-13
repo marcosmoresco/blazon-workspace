@@ -660,6 +660,7 @@ export const GET_ROLE_RIGHT_APPROVAL_TASKS = gql`
         itemDetails {         
           roleName          
           roleDescription
+          justification
         }
       }
       links {
@@ -816,6 +817,10 @@ export const GET_PROVISIONING_TASKS = gql`
             description
             identifier
           }
+          entitlement {
+            name
+            description
+          }
         }
       }
       links {
@@ -870,6 +875,10 @@ export const GET_PROVISIONING_TASK = gql`
           name
           description
           identifier
+        }
+        entitlement {
+          name
+          description
         }
       }
       comments {

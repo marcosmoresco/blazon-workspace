@@ -68,9 +68,15 @@ export const Task = `
     risk: String
   }
 
+  type TaskProvisioningItemDetailEntitlement {
+    name: String
+    description: String    
+  }
+
   type TaskProvisioningItemDetail {
     account: TaskProvisioningItemDetailAccount
     resource: TaskProvisioningItemDetailResource
+    entitlement: TaskProvisioningItemDetailEntitlement
   }
 
   type TaskItemDetails {

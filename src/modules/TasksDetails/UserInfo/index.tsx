@@ -59,40 +59,38 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
         <BoxCard key={`task-${task?.identifier}`}>
           <BoxCardContent>
             <BoxCardHeader>
-              <BoxCardHeaderContent>                
-                {type !== "roleRight" && (
-                  <>
-                    <BoxCardIdentifier
-                      background="#EDEDEF" 
-                      color={currentTheme.palette.primary.main}>
-                      ID: {["approval", "sod"].includes(type as string) && (
-                        task?.approvalItemDetails?.entitlementIdentifier || 
-                        task?.approvalItemDetails?.roleIdentifier || 
-                        task?.approvalItemDetails?.resourceIdentifier || " - "
-                      )}
-                      {type === "certification" && (
-                        task?.certificationItemDetails?.resourceIdentifier || 
-                        task?.certificationItemDetails?.roleIdentifier || 
-                        task?.certificationItemDetails?.entitlementIdentifier || " - "
-                      )}
-                      {type === "provisioning" && (
-                        task?.provisioningItemDetail?.resource?.identifier || " - "
-                      )}                  
-                    </BoxCardIdentifier>
-                    <BoxCardIdentifier
-                      background="#EDEDEF" 
-                      color={currentTheme.palette.primary.main}>                   
-                      <FormattedMessage id="category" />: <FormattedMessage id={`task.${type}`} />                 
-                    </BoxCardIdentifier>   
-                    <BoxCardIdentifier
-                      background="#EDEDEF" 
-                      color={currentTheme.palette.primary.main}>
-                      <FormattedMessage id="type" />                     
-                      : {task?.type && intl.formatMessage({id: `task.type.${task?.type}`})}                    
-                      {type === "roleRight" && intl.formatMessage({id: `task.newRoleRight`})}                     
-                    </BoxCardIdentifier>                 
-                  </>
-                )}                
+              <BoxCardHeaderContent>                              
+                <>
+                  <BoxCardIdentifier
+                    background="#EDEDEF" 
+                    color={currentTheme.palette.primary.main}>
+                    ID: {["approval", "sod"].includes(type as string) && (
+                      task?.approvalItemDetails?.entitlementIdentifier || 
+                      task?.approvalItemDetails?.roleIdentifier || 
+                      task?.approvalItemDetails?.resourceIdentifier || " - "
+                    )}
+                    {type === "certification" && (
+                      task?.certificationItemDetails?.resourceIdentifier || 
+                      task?.certificationItemDetails?.roleIdentifier || 
+                      task?.certificationItemDetails?.entitlementIdentifier || " - "
+                    )}
+                    {type === "provisioning" && (
+                      task?.provisioningItemDetail?.resource?.identifier || " - "
+                    )}                  
+                  </BoxCardIdentifier>
+                  <BoxCardIdentifier
+                    background="#EDEDEF" 
+                    color={currentTheme.palette.primary.main}>                   
+                    <FormattedMessage id="category" />: <FormattedMessage id={`task.${type}`} />                 
+                  </BoxCardIdentifier>   
+                  {type !== "roleRight" && 
+                  <BoxCardIdentifier
+                    background="#EDEDEF" 
+                    color={currentTheme.palette.primary.main}>
+                    <FormattedMessage id="type" />                     
+                    : {task?.type && intl.formatMessage({id: `task.type.${task?.type}`})}                                         
+                  </BoxCardIdentifier>}                 
+                </>                              
               </BoxCardHeaderContent>
               <BoxCardHeaderContent>
                 <BoxPriority>

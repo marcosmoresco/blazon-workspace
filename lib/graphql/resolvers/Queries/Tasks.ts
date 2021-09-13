@@ -246,7 +246,7 @@ export const TaskQueries = {
   getRoleRightApprovalTasks: async (parent: any, args: any, context: any) => {
     try {
       const tasks = await axios.post(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/rolerights/approvaltasks/filter?page=${args?.page}&size=${args?.size}${args?.ord ? `&ord=${args.ord}` : ""}`,   
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/rolerights/approvaltasks/filter?expand=true&page=${args?.page}&size=${args?.size}${args?.ord ? `&ord=${args.ord}` : ""}`,   
         {...(JSON.parse(args?.filters || "{}"))},     
         { ...config(context) }
       );

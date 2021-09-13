@@ -358,8 +358,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
   };
 
   return (
-    <>      
-  
+    <>        
       <Card key={`task-${task?.identifier}`} 
         boxShadow="0px 4px 16px rgba(27, 32, 42, 0.08)"
         border="1px solid #EDEDEF;"
@@ -382,15 +381,13 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                   color={currentTheme.palette.primary.main}>                   
                   <FormattedMessage id="category" />: {(task?.headers?.category || type) && intl.formatMessage({id: `task.category.${task?.headers?.category || type}`}) || " - "}                    
                 </BoxCardIdentifier>                   
+                {(task?.headers?.category !== "ROLE_RIGHT_TASK" && type !== "ROLE_RIGHT_TASK") && 
                 <BoxCardIdentifier 
                   background="#EDEDEF" 
                   color={currentTheme.palette.primary.main}>
                   <FormattedMessage id="type" />                     
-                  : {task?.type && intl.formatMessage({id: `task.type.${task?.type}`})}
-                  {task?.headers?.category === "ROLE_RIGHT_TASK" && (
-                    <FormattedMessage id="role" />
-                  )}                                      
-                </BoxCardIdentifier>  
+                  : {task?.type && intl.formatMessage({id: `task.type.${task?.type}`})}                                                       
+                </BoxCardIdentifier>}  
               </BoxCardHeaderContent>                  
               <BoxCardHeaderInfo>                                    
                 <BoxCardFooterInfo>
@@ -420,25 +417,50 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                 task?.approvalItemDetails?.resourceName || " - "
               ) || ""}
               {(task?.headers?.category === "CERTIFICATION_TASK" || type === "CERTIFICATION_TASK") && (
+                task?.certificationItemDetails?.entitlementName && (
+                  <>
+                    <BoxCardTitleResource>
+                      {task?.certificationItemDetails?.resourceName}
+                    </BoxCardTitleResource>/{task?.certificationItemDetails?.entitlementName}
+                  </>  
+                ) || 
                 task?.certificationItemDetails?.resourceName || 
-                task?.certificationItemDetails?.roleName || 
-                task?.certificationItemDetails?.entitlementName || " - "
+                task?.certificationItemDetails?.roleName || " - "
               ) || ""}
               {(task?.headers?.category === "PROVISIONING_TASK" || type === "PROVISIONING_TASK") && (
+                task?.provisioningItemDetail?.entitlement?.name && (
+                  <>
+                    <BoxCardTitleResource>
+                      {task?.provisioningItemDetail?.resource?.name}
+                    </BoxCardTitleResource>/{task?.provisioningItemDetail?.entitlement?.name}
+                  </>  
+                ) || 
                 task?.provisioningItemDetail?.resource?.name || " - "
               ) || ""}
               {(task?.headers?.category === "ROLE_RIGHT_TASK" || type === "ROLE_RIGHT_TASK") && (
                 task?.itemDetails?.roleName || " - "
               ) || ""}
             </BoxCardTitle>
+            {!["PROVISIONING_TASK", "CERTIFICATION_TASK"].includes(task?.headers?.category || "") && !["PROVISIONING_TASK", "CERTIFICATION_TASK"].includes(type || "") && 
             <BoxJustification>
               <TitleJustification>
                 <FormattedMessage id="tasks.justification" />
               </TitleJustification>
               <BoxJustificationValue>
-                {task?.justification || " - "}
+                {task?.justification || task?.revokeJustification || task?.itemDetails?.justification || " - "}
               </BoxJustificationValue>
-            </BoxJustification>                       
+            </BoxJustification>}  
+            {(["PROVISIONING_TASK"].includes(task?.headers?.category || "") || ["PROVISIONING_TASK"].includes(type || "")) &&
+             (["UPDATE_ACCOUNT", "ACTIVATE_ACCOUNT", "INACTIVATE_ACCOUNT", "REVOKE_ACCOUNT", "CHANGE_PASSWORD", "GRANT_ENTITLEMENT", 
+               "REVOKE_ENTITLEMENT"]).includes(task?.type) && 
+            <BoxJustification>
+              <TitleJustification>
+                <FormattedMessage id="accountIdentifier" />
+              </TitleJustification>
+              <BoxJustificationValue>
+                {task?.provisioningItemDetail?.account?.accountIdentifier || " - "}
+              </BoxJustificationValue>
+            </BoxJustification>}                  
             {expanded.includes(task?.identifier || -1) && (
             <BoxCardText>
               {(["APPROVAL_TASK", "SOD_TASK"].includes(task?.headers?.category || "") || ["APPROVAL_TASK", "SOD_TASK"].includes(type || "")) && (
@@ -560,7 +582,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                     <FormattedMessage id="tasks.notProvisioned" />
                     </Button>
                   )}                  
-                  {(actions || []).includes("RESOLVE") && (
+                  {/*(actions || []).includes("RESOLVE") && (
                     <Button variant="contained" color="default-primary" onClick={() => {
                       if(task) {
                         resolveTask(task, intl, () => {
@@ -576,7 +598,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                     }}>
                       <FormattedMessage id="tasks.resolve" />
                     </Button>
-                  )}                            
+                  )*/}                            
                 </ButtonsArea>                                                                  
                 <Actions onClick={(e: any) => handleClick(e)}>
                   <DotsThreeIcon color="#26213F" stroke={2}/>
