@@ -191,7 +191,7 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
               {(anchorElCategory === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
             </SelectBoxContainer>
           </FilterContent> 
-          {type !== "ALL" && (
+          {type !== "ALL" && type !== "ROLE_RIGHT" && (
             <FilterContent>             
               <SelectBoxContainer onClick={(event: any) => setAnchorEl(event.currentTarget)}>
                 <SelectBoxInfo>
