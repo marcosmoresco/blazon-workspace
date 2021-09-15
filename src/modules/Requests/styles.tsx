@@ -318,13 +318,14 @@ export const MenuItemText = styled.div`
   font-size: 16px;
   line-height: 16px;
   color: #000000;
+  min-width: 280px;
 `;
 
 export const MenuItemInfo = styled.div`
   padding: 5px;  
   background: #FF134A;
   border-radius: 110px;
-  color: #FFFFFF;
+  color: #FFFFFF; 
 `;
 
 export const SelectBoxContainer = styled.div`
@@ -421,9 +422,6 @@ export const BoxJustification = styled.div`
   border: 1px solid #EDEDEF;
   box-sizing: border-box;
   border-radius: 6px;
-  &.Add-top {
-    margin-top: 12px;
-  }
 `;
 
 export const BoxJustificationValue = styled.div`
@@ -436,4 +434,22 @@ export const BoxJustificationValue = styled.div`
   font-size: 16px;
   font-weight: 400;
   padding: 10px 16px;
+`;
+
+export const ActionButton = styled.div`
+  border: 1px solid #D4D3D9;
+  box-sizing: border-box;
+  border-radius: 8px;
+  height: 42px;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 24px;
+  color: #26213F;
+  gap: 7px;
 `;

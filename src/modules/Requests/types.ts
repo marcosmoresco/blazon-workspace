@@ -1,5 +1,6 @@
 import { IntlShape } from "react-intl";
 import { string } from "yup/lib/locale";
+import { Link } from "@types";
 
 export type RequestsProps = {
   intl: IntlShape;
@@ -47,11 +48,6 @@ interface UserDetail {
   links: Link[];
 }
 
-interface Link {
-  rel: string;
-  href: string;
-}
-
 export interface ApprovalDetails {
   identifier: number;
   creation: string;
@@ -79,3 +75,22 @@ export interface OpenRequests {
   message: string;
   amountOpen: number;
 }
+
+export type ListProps = {
+  dispatch?: any;
+  list?: Request[];
+  checked?: number[];
+  onCheck?: any;
+  checkAll?: boolean;
+  setCheckAll?: any;
+  type?: string;
+  subType?: string;
+  size?: number;
+  filtered?: any;
+  filteredString?: string;
+  id?: number;
+  isQueue?: boolean;
+  resolved?: boolean;
+  request?: Request;
+  orderBy?: string;
+};

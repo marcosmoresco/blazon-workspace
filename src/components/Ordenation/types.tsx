@@ -5,4 +5,5 @@ export type OrdenationProps = {
   list: [any];
   onChange: any;
   composed: string;
+  orderBy: string;
 }

@@ -28,6 +28,7 @@ import {
   unassign as unassignTask,
   assignToMe as assignToMeTask,
   resolve as resolveTask,
+  notAllowed,
   approve,
   certify,
   provision,
@@ -426,7 +427,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                   <>
                     <BoxCardTitleResource>
                       {task?.approvalItemDetails?.resourceName}
-                    </BoxCardTitleResource>/{task?.approvalItemDetails?.entitlementName}
+                    </BoxCardTitleResource> / {task?.approvalItemDetails?.entitlementName}
                   </>  
                 ) || 
                 task?.approvalItemDetails?.roleName || 
@@ -437,7 +438,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                   <>
                     <BoxCardTitleResource>
                       {task?.certificationItemDetails?.resourceName}
-                    </BoxCardTitleResource>/{task?.certificationItemDetails?.entitlementName}
+                    </BoxCardTitleResource> / {task?.certificationItemDetails?.entitlementName}
                   </>  
                 ) || 
                 task?.certificationItemDetails?.resourceName || 
@@ -448,7 +449,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                   <>
                     <BoxCardTitleResource>
                       {task?.provisioningItemDetail?.resource?.name}
-                    </BoxCardTitleResource>/{task?.provisioningItemDetail?.entitlement?.name}
+                    </BoxCardTitleResource> / {task?.provisioningItemDetail?.entitlement?.name}
                   </>  
                 ) || 
                 task?.provisioningItemDetail?.resource?.name || " - "
@@ -564,9 +565,19 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                     </Button>
                   )} 
                   {(actions || []).includes("NOT_ALLOWED") && (
-                    <Button variant="contained" color="secondary" onClick={() => {
-                      setResult("NOT_ALLOWED");
-                      setOpenDisapprove(true);
+                    <Button variant="contained" color="secondary" onClick={() => {                     
+                      if(task) {
+                        notAllowed(task, intl, () => {
+                          resolve({
+                            variables: {
+                              payload: JSON.stringify([{
+                                taskId: Number(id),
+                                result: "NOT_ALLOWED"
+                              }])
+                            }
+                          });
+                        });
+                      }
                     }}>
                     <FormattedMessage id="tasks.deny" />
                     </Button>

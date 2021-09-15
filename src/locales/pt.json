@@ -121,5 +121,7 @@
   "viewMore": "View more",
   "result": "Resultado",
   "orderBy": "Ordenar por",
-  "downloadCSV": "Baixar CSV"
+  "downloadCSV": "Baixar CSV",
+  "expand": "Expandir",
+  "refresh": "Recarregar"
 }

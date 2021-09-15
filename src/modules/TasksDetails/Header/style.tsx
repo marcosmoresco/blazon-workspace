@@ -71,6 +71,7 @@ export const MenuItemInfo = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  min-width: 280px;
 `;
 
 export const MenuItemContainer = styled.div`

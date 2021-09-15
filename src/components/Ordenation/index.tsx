@@ -6,7 +6,7 @@ import CaretDownIcon from "@icons/CaretDown";
 import type { OrdenationProps } from "./types";
 import { Box, OrdenationIcon, StyledMenu,MenuItemContainer, MenuItemText } from "./styles";
 
-const Ordenation: FC<OrdenationProps> = ({ intl, list, onChange, composed }) => {
+const Ordenation: FC<OrdenationProps> = ({ intl, list, onChange, composed, orderBy }) => {
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [current, setCurrent] = useState(null);
@@ -44,14 +44,20 @@ const Ordenation: FC<OrdenationProps> = ({ intl, list, onChange, composed }) => 
       }
     }
 
-    if(list && !current) {
+    if(list && !current && !orderBy) {
       const defaultFilter = list.filter((f) => f.name === "identifier");
       if(defaultFilter.length) {
         setCurrent(defaultFilter[0]);
       }
     }
-  }, [composed, currentComposed, list, current]);
 
+    if(list && !current && orderBy) {
+      const splited = orderBy.split(":");
+      setOrderType(splited[1]);
+      setCurrent(list.filter((f) => f.name === splited[0])[0]);
+    }
+  }, [composed, currentComposed, list, current, orderBy]);
+ 
   return (
     <>
       <Box onClick={(event: any) => setAnchorEl(event.currentTarget)}>
@@ -71,13 +77,16 @@ const Ordenation: FC<OrdenationProps> = ({ intl, list, onChange, composed }) => 
       >
         {list
           .filter((elem: any) => elem.orderable)
-          .map((elem: any, index) => (
-          <MenuItemContainer key={`ordenation-${index}`} onClick={() => handleSelect(elem)}>
-            <MenuItemText>
-              {elem?.label || " - "}
-            </MenuItemText>                                
-          </MenuItemContainer>
-        ))}       
+          .map((elem: any, index) => {            
+            return (
+            <MenuItemContainer key={`ordenation-${index}`} onClick={() => handleSelect(elem)}>
+              <MenuItemText>
+                {elem?.label || " - "}
+              </MenuItemText>                                
+            </MenuItemContainer>
+            )
+        })}
+               
       </StyledMenu> 
     </>
   );

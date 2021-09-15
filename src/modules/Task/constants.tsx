@@ -477,6 +477,23 @@ export const resolve = async (task: Task | undefined, intl: IntlShape, callback:
   }
 }
 
+export const notAllowed = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction) => {
+
+  const result = await confirm(
+    intl.formatMessage({
+      id: "task.notAllowed.confirm",
+    }),
+    intl.formatMessage({
+      id: "task.notAllowed.confirm.text",
+    }),
+    <CheckCircleIcon width={48} height={48} color="#0E46D7" />
+  );
+
+  if(result) {
+    callback();
+  }
+}
+
 export const getActionsByType = (type?: any): any => {
   let result: {[key: string] : any} = {};
   if(type === "approval") {

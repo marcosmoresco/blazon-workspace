@@ -104,11 +104,13 @@ export const columns = (theme: Theme) => [
 
 export const filters: FilterType[] = [
   {
+    orderable: true,
     name: 'identifier',
     label: <FormattedMessage id='request.identifier' />,
     type: 'number'
   },
   {
+    orderable: true,
     name: 'type',
     label: <FormattedMessage id='request.type' />,
     type: 'list',
@@ -204,6 +206,7 @@ export const filters: FilterType[] = [
     view: 'label'
   },
   {
+    orderable: true,
     name: 'status',
     label: <FormattedMessage id='request.status' />,
     type: 'list',
@@ -241,6 +244,7 @@ export const filters: FilterType[] = [
     view: 'label'
   },
   {
+    orderable: true,
     name: 'requester',
     label: <FormattedMessage id='request.requester' />,
     type: 'list',
@@ -264,6 +268,7 @@ export const filters: FilterType[] = [
     }
   },
   {
+    orderable: true,
     name: 'beneficiary',
     label: <FormattedMessage id='request.beneficiary' />,
     type: 'list',
@@ -287,6 +292,7 @@ export const filters: FilterType[] = [
     }
   },
   {
+    orderable: true,
     name: 'createdAt',
     label: <FormattedMessage id='createdAt' />,
     type: 'date',
@@ -296,6 +302,7 @@ export const filters: FilterType[] = [
     }
   },
   {
+    orderable: true,
     name: 'finalizedAt',
     label: <FormattedMessage id='finalizedAt' />,
     type: 'date',
@@ -305,6 +312,7 @@ export const filters: FilterType[] = [
     }
   },
   {
+    orderable: true,
     name: 'effectivedAt',
     label: <FormattedMessage id='effectivedAt' />,
     type: 'date',
@@ -313,4 +321,21 @@ export const filters: FilterType[] = [
       end: 'endeffEctivedAt'
     }
   }
+]
+
+export const inProgressStatusList = [
+  "NEW", 
+  "WAITING_APPROVAL",
+  "WAITING_PROVISIONING",
+  "WAITING_SOD_VALIDATION",
+  "ALREADY_TO_EXECUTION"
+]
+
+export const processedStatusList = [
+  "SUCCESS",
+  "DISAPPROVED", 
+  "SOD_NOT_ALLOWED",
+  "FINALIZED",
+  "CANCELED",
+  "ERROR"
 ]

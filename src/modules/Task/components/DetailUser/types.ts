@@ -1,8 +1,10 @@
 import { Task } from  "@modules/Task/types";
+import { Request } from  "@modules/Requests/types";
 import { User } from  "@types";
 
 export type DetailUserProps = {
-  task: Task | undefined; 
+  task?: Task | undefined; 
+  request?: Request | undefined
   title?: string;   
   user?: User;
 };

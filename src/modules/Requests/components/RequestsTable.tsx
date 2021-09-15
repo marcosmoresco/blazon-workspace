@@ -25,10 +25,12 @@ import ArrowsOutIcon from "@icons/ArrowsOut";
 import ArrowClockwiseIcon from "@icons/ArrowClockwise";
 import XCircleIcon from "@icons/XCircle";
 import { confirm } from "@components/Dialog/actions";
+import Section from "@components/Section";
+import RequestList from "./List";
 
 import Tag from "@icons/Tag";
 import CaretRight from "@icons/CaretRight";
-import { getContent } from "@modules/Requests/constants";
+import { getContent, sections } from "@modules/Requests/constants";
 import type { RequestsTableProps } from "./types";
 import { useTheme, themes } from "@theme/index";
 
@@ -40,6 +42,10 @@ import {
   ExpandContent,
 } from "./styles";
 
+import {
+  Content,
+} from "@modules/Requests/styles";
+
 //constants
 import { columns, filters } from "./constants";
 
@@ -48,6 +54,9 @@ import EmptyStateImage from "@images/EmptyStateRequests.svg";
 
 
 const Tasks: FC<RequestsTableProps> = ({ intl }) => {
+
+  const [section, setSection] = useState("IN_PROGRESS");
+
   const router = useRouter();
   const dispatch = useDispatch();
   const { theme } = useTheme();
@@ -180,7 +189,19 @@ const Tasks: FC<RequestsTableProps> = ({ intl }) => {
 
   return (
     <div className="Default-content">
-      <Card>
+      <Content>
+        <Card
+          boxshadow="none">
+          <Section list={sections} defaultValue="IN_PROGRESS" onSelect={(sec: any) => setSection(sec.value)}/>
+          {section === "IN_PROGRESS" && (
+            <RequestList />
+          )}
+          {section === "PROCESSED" && (
+            <RequestList resolved={true}/>
+          )}          
+        </Card>
+      </Content>
+      {/*<Card>
         <div className="Default-header-filter">
           <Filter
             filters={filters}
@@ -218,7 +239,7 @@ const Tasks: FC<RequestsTableProps> = ({ intl }) => {
             type="pagination"
           />
         </div>
-      </Card>
+      </Card>*/}
     </div>
   );
 };

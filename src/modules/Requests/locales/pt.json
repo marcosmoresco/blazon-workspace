@@ -62,5 +62,9 @@
   "request.status.ERROR": "Erro",
   "request.status.CANCELED": "Cancelado",
   "request.status.SOD_NOT_ALLOWED": "SoD não permitido",
-  "request.status.WAITING_PROVISIONING": "Aguardando provisonamento"
+  "request.status.WAITING_PROVISIONING": "Aguardando provisonamento",
+  "request.inProgress": "Em andamento",
+  "request.processed": "Processadas",
+  "request.empty": "Nenhuma requisição",
+  "request.empty.text": "Nenhuma requisição encontrada"
 }

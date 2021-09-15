@@ -85,7 +85,7 @@ export const Actions = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 645px;
+  width: 640px;
   right: 0;
   & button {
     min-width: 179px;

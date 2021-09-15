@@ -97,3 +97,14 @@ export const getContent = (
 
   return template;
 };
+
+export const sections = [
+  {   
+    name: "request.inProgress",
+    value: "IN_PROGRESS",
+  },
+  {   
+    name: "request.processed",
+    value: "PROCESSED",
+  },    
+];

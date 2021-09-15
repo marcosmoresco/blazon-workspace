@@ -5,11 +5,20 @@ export const GET_REQUESTS = gql`
     getRequests(page: $page, size: $size, ord: $ord, filters: $filters) {
       requests {
         identifier
+        requester {
+          links {
+            rel
+            href
+          }
+          identifier
+          displayName
+        }
         beneficiary {
           links {
             rel
             href
           }
+          identifier
           displayName
         }
         user {
@@ -38,9 +47,10 @@ export const GET_REQUESTS = gql`
           name
           description
         }
-        type
+        type        
         createdAt
         effectiveDate
+        finalizedAt
         status
         justification
       }

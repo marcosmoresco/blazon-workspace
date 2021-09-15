@@ -4,10 +4,10 @@ import { makeStyles } from '@material-ui/core/styles';
 
 const useStyles = makeStyles((theme) => ({    
   root: props => ({
-    marginTop: props.marginTop || 23,  
-    marginBottom: props.marginBottom || 23,    
+    marginTop: props.margintop || 23,  
+    marginBottom: props.marginbottom || 23,    
     border: props.border || "none",  
-    boxShadow: props.boxShadow || '0px 0px 28px rgba(0, 0, 0, 0.25)',    
+    boxShadow: props.boxshadow || '0px 0px 28px rgba(0, 0, 0, 0.25)',    
     '& .Card-header': {
       display: 'flex',
       justifyContent: 'space-between',

@@ -34,6 +34,8 @@
   "task.to": "Para mim",
   "task.status": "Status",
   "task.comment.added.success": "Comentário adicionado com sucesso!",
+  "task.notAllowed.confirm": "Não permitir",
+  "task.notAllowed.confirm.text": "Tem certeza que deseja resolver não permitir essa tarefa?",
   "task.resolve.confirm": "Resolver",
   "task.resolve.confirm.text": "Tem certeza que deseja resolver essa tarefa?",
   "task.provision.confirm": "Provisionar",

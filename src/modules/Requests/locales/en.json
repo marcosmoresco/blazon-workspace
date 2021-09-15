@@ -62,5 +62,9 @@
   "request.status.ERROR": "Error",
   "request.status.CANCELED": "Canceled",
   "request.status.SOD_NOT_ALLOWED": "SoD not allowed",
-  "request.status.WAITING_PROVISIONING": "Waiting provisioning"
+  "request.status.WAITING_PROVISIONING": "Waiting provisioning",
+  "request.inProgress": "In progress",
+  "request.processed": "Processed",
+  "request.empty": "No request",
+  "request.empty.text": "No requests were found"
 }
