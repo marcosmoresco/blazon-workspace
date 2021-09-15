@@ -102,3 +102,21 @@ export const isValidCart = (cart: SelfServiceCart | null): boolean => {
   });
   return !invalidItems.length;
 }
+
+const downloadClick = (element: any) => {
+  element.style.display = 'none'
+  document.body.appendChild(element)
+  element.click()    
+  document.body.removeChild(element)
+}
+
+export const download = (data: any, fileName?: string) => {
+  
+  let element = document.createElement("a");
+
+  let filename = `${fileName || "blazon"}-${new Date().getTime()}.csv`;            
+  element.setAttribute('href', 'data:text/plain;charset=utf-8,' + encodeURIComponent(data));
+  element.setAttribute('download', filename);
+
+  downloadClick(element);  
+}

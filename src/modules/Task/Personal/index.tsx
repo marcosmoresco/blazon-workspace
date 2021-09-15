@@ -14,6 +14,7 @@ import DownloadSimpleIcon from "@icons/DownloadSimple";
 import { connect } from "react-redux";
 import { types, filters, generateFilters, queueTypes } from "@modules/Task/constants";
 import type { ListProps, Task } from "@modules/Task/types";
+import { download } from "@utils/index";
 import {
   Box,
   Header,
@@ -45,6 +46,7 @@ import {
   GET_ROLE_RIGHT_APPROVAL_TASK_FILTERS,
   RESUME 
 } from "@modules/Task/queries";
+import axios from "app/node_modules/axios";
 
 const PersonalTasks: FC<ListProps> = ({ resolved }) => {
 
@@ -77,6 +79,7 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
   const [currentCategoryName, setCurrentCategoryName] = useState<string>(intl.formatMessage({id: "task.all"}));  
   const [currentTypeName, setCurrentTypeName] = useState<string>(intl.formatMessage({id: "task.any"}));  
   const [orderBy, setOrderBy] = useState<string>("createdDate:desc");
+  const [loadingDownload, setLoadingDownload] = useState<boolean>(false);
 
   const { loading: loadingResume, data: dataResume, refetch: refetchResume } = useQuery(RESUME, {
     fetchPolicy: "no-cache"
@@ -167,6 +170,13 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
 
   const handleOrderBy = (orderBy: any) => {
     setOrderBy(orderBy);
+  };
+
+  const handleClickDownload = async () => {
+    setLoadingDownload(true);    
+    const resp = await axios.get(`api/reportTasks?type=${type.toLocaleLowerCase().replace("_", "")}&ord=${orderBy}&filter=${JSON.stringify(filtered)}`);
+    download(resp.data, `tasks-${type.toLocaleLowerCase().replace("_", "")}`);
+    setLoadingDownload(false);
   }
 
   return (
@@ -205,7 +215,14 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
           </HeaderFilters>
           <HeaderFilters>
             <Ordenation list={tasksFilters} onChange={handleOrderBy} composed={type+typeValue}/>
-            <Button color="primary" variant="contained" endIcon={<DownloadSimpleIcon width={21} color="#FFFFFF" stroke={1.5}/>}>
+            <Button 
+              color="primary" 
+              variant="contained" 
+              endIcon={<DownloadSimpleIcon width={21} 
+              color="#FFFFFF" 
+              stroke={1.5}/>}
+              onClick={handleClickDownload}
+              isLoading={loadingDownload ? 1 : 0}>
               <FormattedMessage id="downloadCSV" />
             </Button>
           </HeaderFilters>
