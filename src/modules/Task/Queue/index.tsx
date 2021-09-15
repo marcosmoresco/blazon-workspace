@@ -16,6 +16,7 @@ import apolloClient from "@utils/apollo-client";
 import { filters, queueCategories, queueTypes, generateFilters } from "@modules/Task/constants";
 import type { ListProps, Task, TaskFilter, TaskQueue } from "@modules/Task/types";
 import type { FilterType } from "@components/Filter/types";
+import { download } from "@utils/index";
 import { Link } from "@types";
 import {
   Box,
@@ -38,6 +39,7 @@ import {
   GET_TASK_QUEUES,
   GET_TASK_QUEUES_FILTERS,
 } from "@modules/Task/queries";
+import axios from "app/node_modules/axios";
 
 const QueueTasks: FC<ListProps> = ({ dispatch }) => {
   
@@ -56,6 +58,7 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
   const [anchorElCategory, setAnchorElCategory] = useState(null);
   const [anchorElType, setAnchorElType] = useState(null);
   const [currentFilters, setCurrentFilters] = useState<string>("");
+  const [loadingDownload, setLoadingDownload] = useState<boolean>(false);
 
 
   const myCallbacksList = useRef<any[]>([]);
@@ -155,6 +158,13 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
     setQueueIdentifier(queues[0].identifier);    
   }
 
+  const handleClickDownload = async () => {
+    setLoadingDownload(true);    
+    const resp = await axios.get(`api/reportTasks?type=${queueCategoryValue.toLocaleLowerCase().replace("_", "")}&ord=createdData:desc&filter=${JSON.stringify(filtered)}`);
+    download(resp.data, `tasks-${queueCategoryValue.toLocaleLowerCase().replace("_", "")}`);
+    setLoadingDownload(false);
+  }
+
   return (
     <Box>
       {queueIdentifier && (
@@ -202,9 +212,16 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
             {queueIdentifier && <Filter filters={filtersTask} onChange={(f: any) => setFiltered({...filtered, ...f})}/>}            
           </HeaderFilters>
           <HeaderFilters>
-            <Button color="primary" variant="contained" endIcon={<DownloadSimpleIcon width={21} color="#FFFFFF" stroke={1.5}/>}>
+            <Button 
+              color="primary" 
+              variant="contained" 
+              endIcon={<DownloadSimpleIcon width={21} 
+              color="#FFFFFF" 
+              stroke={1.5}/>}
+              onClick={handleClickDownload}
+              isLoading={loadingDownload ? 1 : 0}>
               <FormattedMessage id="downloadCSV" />
-            </Button>
+            </Button>           
           </HeaderFilters>
         </HeaderFiltersContent>        
       </Header>)}

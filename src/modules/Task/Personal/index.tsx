@@ -46,7 +46,7 @@ import {
   GET_ROLE_RIGHT_APPROVAL_TASK_FILTERS,
   RESUME 
 } from "@modules/Task/queries";
-import axios from "app/node_modules/axios";
+import axios from "axios";
 
 const PersonalTasks: FC<ListProps> = ({ resolved }) => {
 
