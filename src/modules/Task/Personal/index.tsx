@@ -1,13 +1,16 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState } from "react";
 import { FormattedMessage, injectIntl, useIntl } from "react-intl";
 import apolloClient from "@utils/apollo-client";
 import { useQuery } from "@apollo/client";
+import Button from "@components/Button";
 import Checkbox from "@components/Checkbox";
 import Loading from "@components/Loading";
 import Filter from "@components/Filter";
+import Ordenation from "@components/Ordenation";
 import ListBulletsIcon from "@icons/ListBullets";
 import CaretDownIcon from "@icons/CaretDown";
 import CaretUpIcon from "@icons/CaretUp";
+import DownloadSimpleIcon from "@icons/DownloadSimple";
 import { connect } from "react-redux";
 import { types, filters, generateFilters, queueTypes } from "@modules/Task/constants";
 import type { ListProps, Task } from "@modules/Task/types";
@@ -15,6 +18,7 @@ import {
   Box,
   Header,
   HeaderFilters,
+  HeaderFiltersContent,
   FilterContent,
   StyledMenu,
   MenuItemContainer,
@@ -63,31 +67,16 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
     ],
     bind: "value",
     view: "label"
-  }] : [...(filters.filter((f) => f.name !== "status")), {
-    name: "status",
-    label: <FormattedMessage id="status" />,
-    type: "list",
-    values: [
-      {
-        label: "TODO",
-        value: "TODO"
-      },      
-      {
-        label: "WAITING_ASSIGN",
-        value: "WAITING_ASSIGN"
-      },
-    ],
-    bind: "value",
-    view: "label"
-  }]);
+  }] : [...(filters.filter((f) => f.name !== "status"))]);
   const [typeValue, setTypeValue] = useState<string>("ANY");
   const [loading, setLoading] = useState(false);
   const [checkAll, setCheckAll] = useState<boolean>(false);
-  const [filtered, setFiltered] = useState<{[key: string]: any}>(resolved ? {status: ["DONE", "CANCELED"]} : {status: ["TODO", "WAITING_ASSIGN"]});
+  const [filtered, setFiltered] = useState<{[key: string]: any}>(resolved ? {status: ["DONE", "CANCELED"]} : {status: ["TODO"]});
   const [anchorElCategory, setAnchorElCategory] = useState(null);
   const [anchorEl, setAnchorEl] = useState(null);
   const [currentCategoryName, setCurrentCategoryName] = useState<string>(intl.formatMessage({id: "task.all"}));  
   const [currentTypeName, setCurrentTypeName] = useState<string>(intl.formatMessage({id: "task.any"}));  
+  const [orderBy, setOrderBy] = useState<string>("createdDate:desc");
 
   const { loading: loadingResume, data: dataResume, refetch: refetchResume } = useQuery(RESUME, {
     fetchPolicy: "no-cache"
@@ -122,7 +111,8 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
         .query({
           query,
           variables: {
-            type: typeFilter
+            type: typeFilter,
+            statusList: resolved ? "DONE,CANCELED" : "TODO"
           },
           fetchPolicy: "no-cache"
         })
@@ -131,7 +121,7 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
             const _filters = [...filters];
             const filtered = _filters.filter((f) => f.name === "status");
             if(filtered?.length) {
-              filtered[0].values = filtered[0].values.filter((f: any) => (resolved ? ["DONE", "CANCELED"] : ["TODO", "WAITING_ASSIGN"]).includes(f.value));
+              filtered[0].values = filtered[0].values.filter((f: any) => (resolved ? ["DONE", "CANCELED"] : ["TODO"]).includes(f.value));
             }            
             setTasksFilters(_filters);
           } else {
@@ -139,7 +129,7 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
               const _filters = generateFilters(intl, data?.getFilters);
               const filtered = _filters.filter((f) => f.name === "status");
               if(filtered?.length) {
-                filtered[0].values = filtered[0].values.filter((f: any) => (resolved ? ["DONE", "CANCELED"] : ["TODO", "WAITING_ASSIGN"]).includes(f.value));
+                filtered[0].values = filtered[0].values.filter((f: any) => (resolved ? ["DONE", "CANCELED"] : ["TODO"]).includes(f.value));
               }           
               setTasksFilters(_filters);
             }
@@ -149,81 +139,95 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
   }
 
   const handleChange = (val: any) => {  
-    setFiltered({status: resolved ? ["DONE", "CANCELED"] : ["TODO", "WAITING_ASSIGN"]});
+    setOrderBy("createdDate:desc");
+    setFiltered({status: resolved ? ["DONE", "CANCELED"] : ["TODO"]});
     getTaskFilters(val, null);
-    setType(val);
+    setType(val);    
   }; 
 
   const handleChangeType = (val: any) => {    
+    setOrderBy("createdDate:desc");
     setTypeValue(val);
     if(val != "ANY") {
-      setFiltered({"taskData.type": val, status: resolved ? ["DONE", "CANCELED"] : ["TODO", "WAITING_ASSIGN"]})
+      setFiltered({"taskData.type": val, status: resolved ? ["DONE", "CANCELED"] : ["TODO"]})
     } else {
       setFiltered({});      
     }        
     setCheckAll(false);
-    getTaskFilters(type, val);  
+    getTaskFilters(type, val);     
   };
 
   const handleChangeFiltered = (f: {[key: string]: any}) => {
     if(!f.status) {      
-      f.status = resolved ? ["DONE", "CANCELED"] : ["TODO", "WAITING_ASSIGN"];
+      f.status = resolved ? ["DONE", "CANCELED"] : ["TODO"];
     }
 
     setFiltered({...f, ...(typeValue !== "ANY" ? {"taskData.type": typeValue} : {})});
-  };
+  };  
+
+  const handleOrderBy = (orderBy: any) => {
+    setOrderBy(orderBy);
+  }
 
   return (
     <Box>
       <Header>
-        <Checkbox value={checkAll} onChange={() => setCheckAll(!checkAll)}/>
-        <HeaderFilters>
-          <FilterContent>            
-            <SelectBoxContainer onClick={(event: any) => {
-              setAnchorElCategory(event.currentTarget);                            
-            }}>
-              <SelectBoxInfo>
-                <SelectBoxInfoIcon>
-                  <ListBulletsIcon width={21} height={21}/>
-                </SelectBoxInfoIcon>
-                {currentCategoryName}
-              </SelectBoxInfo>  
-              {(anchorElCategory === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
-            </SelectBoxContainer>
-          </FilterContent> 
-          {type !== "ALL" && type !== "ROLE_RIGHT" && (
-            <FilterContent>             
-              <SelectBoxContainer onClick={(event: any) => setAnchorEl(event.currentTarget)}>
+        <Checkbox value={checkAll} onChange={() => setCheckAll(!checkAll)}/>        
+        <HeaderFiltersContent>
+          <HeaderFilters>
+            <FilterContent>            
+              <SelectBoxContainer onClick={(event: any) => {
+                setAnchorElCategory(event.currentTarget);                            
+              }}>
                 <SelectBoxInfo>
                   <SelectBoxInfoIcon>
                     <ListBulletsIcon width={21} height={21}/>
                   </SelectBoxInfoIcon>
-                  {currentTypeName}
+                  {currentCategoryName}
                 </SelectBoxInfo>  
-                {(anchorEl === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
+                {(anchorElCategory === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
               </SelectBoxContainer>
-            </FilterContent>
-          )}                            
-          <Filter filters={tasksFilters} onChange={(f: any) => handleChangeFiltered(f)}/>
-        </HeaderFilters>
+            </FilterContent> 
+            {type !== "ALL" && type !== "ROLE_RIGHT" && (
+              <FilterContent>             
+                <SelectBoxContainer onClick={(event: any) => setAnchorEl(event.currentTarget)}>
+                  <SelectBoxInfo>
+                    <SelectBoxInfoIcon>
+                      <ListBulletsIcon width={21} height={21}/>
+                    </SelectBoxInfoIcon>
+                    {currentTypeName}
+                  </SelectBoxInfo>  
+                  {(anchorEl === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
+                </SelectBoxContainer>
+              </FilterContent>
+            )}                            
+            <Filter filters={tasksFilters} onChange={(f: any) => handleChangeFiltered(f)}/>
+          </HeaderFilters>
+          <HeaderFilters>
+            <Ordenation list={tasksFilters} onChange={handleOrderBy} composed={type+typeValue}/>
+            <Button color="primary" variant="contained" endIcon={<DownloadSimpleIcon width={21} color="#FFFFFF" stroke={1.5}/>}>
+              <FormattedMessage id="downloadCSV" />
+            </Button>
+          </HeaderFilters>
+        </HeaderFiltersContent>                           
       </Header>
       {type === "ALL" && (
-        <PersonalTasksAll filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll}/>
+        <PersonalTasksAll filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll} orderBy={orderBy}/>
       )}
       {type === "APPROVAL" && (
-        <PersonalTasksApproval filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll}/>
+        <PersonalTasksApproval filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll} orderBy={orderBy}/>
       )}
       {type === "CERTIFICATION" && (
-        <PersonalTasksCertification filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll}/>
+        <PersonalTasksCertification filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll} orderBy={orderBy}/>
       )}
       {type === "PROVISIONING" && (
-        <PersonalTasksProvisioning filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll}/>
+        <PersonalTasksProvisioning filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll} orderBy={orderBy}/>
       )}
       {type === "ROLE_RIGHT" && (
-        <PersonalTasksRoleRight filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll}/>
+        <PersonalTasksRoleRight filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll} orderBy={orderBy}/>
       )}
        {type === "SOD" && (
-        <PersonalTasksSoD filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll}/>
+        <PersonalTasksSoD filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll} orderBy={orderBy}/>
       )}      
       <StyledMenu        
         anchorEl={anchorElCategory}

@@ -131,7 +131,7 @@ export const TaskQueries = {
   getRequestApprovalTaskFilters: async (parent: any, args: any, context: any) => {
     try {
       const filters = await axios.get(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/requests/approvaltasks/filters?type=${args?.type || "ANY"}`,        
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/requests/approvaltasks/filters?type=${args?.type || "ANY"}&statusList=${args?.statusList}`,        
         { ...config(context) }
       );
       return filters.data;
@@ -177,7 +177,7 @@ export const TaskQueries = {
   getCertificationApprovalTaskFilters: async (parent: any, args: any, context: any) => {
     try {
       const filters = await axios.get(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/certifications/approvaltasks/filters?type=${args?.type || "ANY"}`,        
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/certifications/approvaltasks/filters?type=${args?.type || "ANY"}&statusList=${args?.statusList}`,        
         { ...config(context) }
       );
       return filters.data;
@@ -223,7 +223,7 @@ export const TaskQueries = {
   getSoDApprovalTaskFilters: async (parent: any, args: any, context: any) => {
     try {
       const filters = await axios.get(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/sod/approvaltasks/filters?type=${args?.type || "ANY"}`,        
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/sod/approvaltasks/filters?type=${args?.type || "ANY"}&statusList=${args?.statusList}`,        
         { ...config(context) }
       );
       return filters.data;
@@ -283,7 +283,7 @@ export const TaskQueries = {
   getRoleRightApprovalTaskFilters: async (parent: any, args: any, context: any) => {
     try {
       const filters = await axios.get(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/rolerights/approvaltasks/filters?type=${args?.type || "ANY"}`,        
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/rolerights/approvaltasks/filters?type=${args?.type || "ANY"}&statusList=${args?.statusList}`,        
         { ...config(context) }
       );
       return filters.data;
@@ -329,7 +329,7 @@ export const TaskQueries = {
   getProvisioningTaskFilters: async (parent: any, args: any, context: any) => {
     try {
       const filters = await axios.get(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/provisioning/tasks/filters?type=${args?.type || "ANY"}`,        
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/provisioning/tasks/filters?type=${args?.type || "ANY"}&statusList=${args?.statusList}`,        
         { ...config(context) }
       );
       return filters.data;

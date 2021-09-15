@@ -2,13 +2,15 @@ import styled from "styled-components";
 
 export const Box = styled.div`
   margin: 0 64px;
+  max-width: 1312px;
+  margin-left: auto;
+  margin-right: auto;
 `;
 export const BoxCard = styled.div`
   padding: 32px 24px;
-  background: #ffffff;
-  box-shadow: 0px 0px 28px rgba(27, 32, 42, 0.16);
+  background: #ffffff;  
   border-radius: 8px;
-  margin-bottom: 32px;
+  margin-bottom: 18px;
   & .MuiFormHelperText-contained {
     margin-left: 0px;
   }

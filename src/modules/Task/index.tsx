@@ -27,7 +27,8 @@ const Tasks: FC<ListProps> = ({ dispatch }) => {
         hierarchy={hierarchy} />
       <div className="Default-content">      
         <Content>
-          <Card>
+          <Card
+            boxShadow="none">
             <Section list={sections} defaultValue="TASKS_PERSONAL" onSelect={(sec: any) => setSection(sec.value)}/>
             {section === "TASKS" && (
               <QueueTasks />

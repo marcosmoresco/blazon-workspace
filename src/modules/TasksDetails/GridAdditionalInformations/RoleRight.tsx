@@ -51,7 +51,7 @@ const GridAdditionalInformationsRoleRight: React.FC<AdditionalInformationsProps>
           </MenuDetail>
           <InsideLine />
           <DeitalList>
-            <GridArea>
+            <GridArea style={{boxShadow: "0px 0px 28px rgba(27, 32, 42, 0.06)"}}>
               <Roles task={task}/>
             </GridArea>
           </DeitalList>

@@ -101,7 +101,13 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                   <InfoTextContainer>
                     <FormattedMessage id="status"/>: {task?.headers?.status}
                   </InfoTextContainer>                    
-                </InfoText>                
+                </InfoText>  
+                {task?.headers?.result && 
+                  <InfoText>
+                    <InfoTextContainer>
+                      <FormattedMessage id="result"/>: {task?.headers.result} 
+                    </InfoTextContainer>                    
+                  </InfoText>}                
               </BoxCardHeaderContent>  
             </BoxCardHeader>   
             <BoxCardTitle>
@@ -173,9 +179,29 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                 <FormattedMessage id="tasks.justification" />
               </TitleJustification>
               <BoxJustificationValue>
-                {task?.justification || task?.revokeJustification || task?.itemDetails?.justification || " - "}
+                {task?.justification || task?.itemDetails?.justification || " - "}
               </BoxJustificationValue>
-            </BoxJustification>                                              
+            </BoxJustification>  
+            {task?.disapprovalJustification && (
+              <BoxJustification className="Add-top">
+                <TitleJustification>
+                  <FormattedMessage id={type === "approval" ? "tasks.disapprovalJustification": "tasks.notProvisionedJustification"} />
+                </TitleJustification>
+                <BoxJustificationValue>
+                  {task?.disapprovalJustification || " - "}
+                </BoxJustificationValue>
+              </BoxJustification>
+            )}   
+            {task?.revokeJustification && (
+              <BoxJustification className="Add-top">
+                <TitleJustification>
+                  <FormattedMessage id="tasks.revokeJustification" />
+                </TitleJustification>
+                <BoxJustificationValue>
+                  {task?.revokeJustification || " - "}
+                </BoxJustificationValue>
+              </BoxJustification>
+            )}                                         
           </BoxCardContent>
         </BoxCard>       
       </Box>      

@@ -6,11 +6,12 @@ import Loading from '../Loading'
 import type { ButtonPropsType } from './types'
 
 const useStyles = (theme: Theme) => createStyles({
-  root: {
+  root: {    
     '& button': {
       textTransform: 'initial',
       height: 42,
-      borderRadius: 8
+      borderRadius: 8,
+      whiteSpace: "nowrap"
     },    
     '&.Disabled': {
       cursor: 'not-allowed',

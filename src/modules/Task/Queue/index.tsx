@@ -1,9 +1,11 @@
 import React, { FC, useState, useEffect, useRef } from "react";
 import { useQuery } from "@apollo/client";
 import { FormattedMessage, useIntl } from "react-intl";
+import Button from "@components/Button";
 import Checkbox from "@components/Checkbox";
 import Filter from "@components/Filter";
 import Loading from "@components/Loading";
+import DownloadSimpleIcon from "@icons/DownloadSimple";
 import ListBulletsIcon from "@icons/ListBullets";
 import CaretDownIcon from "@icons/CaretDown";
 import CaretUpIcon from "@icons/CaretUp";
@@ -19,6 +21,7 @@ import {
   Box,
   Header,
   HeaderFilters,
+  HeaderFiltersContent,
   FilterContent,
   StyledMenu,
   MenuItemContainer,
@@ -157,46 +160,53 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
       {queueIdentifier && (
       <Header>
         <Checkbox value={checkAll} onChange={() => setCheckAll(!checkAll)}/>
-        <HeaderFilters>
-          <FilterContent>            
-            <SelectBoxContainer onClick={(event: any) => setAnchorEl(event.currentTarget)}>
-              <SelectBoxInfo>
-                <SelectBoxInfoIcon>
-                  <ListBulletsIcon width={21} height={21}/>
-                </SelectBoxInfoIcon>
-                {queueName}
-              </SelectBoxInfo>  
-              {(anchorEl === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
-            </SelectBoxContainer>
-          </FilterContent> 
-          {queueIdentifier && (
-            <FilterContent>              
-              <SelectBoxContainer onClick={(event: any) => setAnchorElCategory(event.currentTarget)}>
+        <HeaderFiltersContent>
+          <HeaderFilters>
+            <FilterContent>            
+              <SelectBoxContainer onClick={(event: any) => setAnchorEl(event.currentTarget)}>
                 <SelectBoxInfo>
                   <SelectBoxInfoIcon>
                     <ListBulletsIcon width={21} height={21}/>
                   </SelectBoxInfoIcon>
-                  {queueCategoryName}
+                  {queueName}
                 </SelectBoxInfo>  
-                {(anchorElCategory === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
-              </SelectBoxContainer>
-            </FilterContent>
-          )} 
-          {queueCategoryValue !== "ROLE_RIGHT_TASK" && queueIdentifier && (
-            <FilterContent>              
-              <SelectBoxContainer onClick={(event: any) => setAnchorElType(event.currentTarget)}>
-                <SelectBoxInfo>
-                  <SelectBoxInfoIcon>
-                    <ListBulletsIcon width={21} height={21}/>
-                  </SelectBoxInfoIcon>
-                  {queueTypeName}
-                </SelectBoxInfo>  
-                {(anchorElType === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
+                {(anchorEl === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
               </SelectBoxContainer>
             </FilterContent> 
-          )}                                                           
-          {queueIdentifier && <Filter filters={filtersTask} onChange={(f: any) => setFiltered({...filtered, ...f})}/>}
-        </HeaderFilters>
+            {queueIdentifier && (
+              <FilterContent>              
+                <SelectBoxContainer onClick={(event: any) => setAnchorElCategory(event.currentTarget)}>
+                  <SelectBoxInfo>
+                    <SelectBoxInfoIcon>
+                      <ListBulletsIcon width={21} height={21}/>
+                    </SelectBoxInfoIcon>
+                    {queueCategoryName}
+                  </SelectBoxInfo>  
+                  {(anchorElCategory === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
+                </SelectBoxContainer>
+              </FilterContent>
+            )} 
+            {queueCategoryValue !== "ROLE_RIGHT_TASK" && queueIdentifier && (
+              <FilterContent>              
+                <SelectBoxContainer onClick={(event: any) => setAnchorElType(event.currentTarget)}>
+                  <SelectBoxInfo>
+                    <SelectBoxInfoIcon>
+                      <ListBulletsIcon width={21} height={21}/>
+                    </SelectBoxInfoIcon>
+                    {queueTypeName}
+                  </SelectBoxInfo>  
+                  {(anchorElType === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
+                </SelectBoxContainer>
+              </FilterContent> 
+            )}                                                           
+            {queueIdentifier && <Filter filters={filtersTask} onChange={(f: any) => setFiltered({...filtered, ...f})}/>}            
+          </HeaderFilters>
+          <HeaderFilters>
+            <Button color="primary" variant="contained" endIcon={<DownloadSimpleIcon width={21} color="#FFFFFF" stroke={1.5}/>}>
+              <FormattedMessage id="downloadCSV" />
+            </Button>
+          </HeaderFilters>
+        </HeaderFiltersContent>        
       </Header>)}
       {queueCategoryValue === "ANY" && queueIdentifier && (
         <QueueTasksSearch filtered={filtered} id={queueIdentifier} checkAll={checkAll} setCheckAll={setCheckAll}/>

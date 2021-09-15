@@ -16,6 +16,7 @@ export type FilterType = {
   startAdornment?: any
   renderOption?: any
   async?: any
+  orderable?: Boolean
 }
 
 export type FilterPropsType = { 

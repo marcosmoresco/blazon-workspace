@@ -53,11 +53,12 @@ import {
   FORWARD_TO_QUEUE_SOD_APPROVAL_TASK,  
 } from "@modules/Task/mutations";
 
-const PersonalTasksSoD: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = false, setCheckAll }) => {
+const PersonalTasksSoD: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = false, setCheckAll, orderBy = "createdDate:desc" }) => {
 
   const intl = useIntl();
 
-  const [filteredString, setFilteredString] = useState<string>("{}");
+  const [filteredString, setFilteredString] = useState<string>(JSON.stringify(filtered));
+  const [currentOrderBy, setCurrentOrderBy] = useState(orderBy);
   const [size, setSize] = useState<number>(10);
   const [checked, setChecked] = useState<number[]>([]);
   const [checkedAll, setCheckedAll] = useState(checkAll);
@@ -72,7 +73,7 @@ const PersonalTasksSoD: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
     variables: {
       page: 0,
       size: 10,
-      ord: "createdDate:desc",
+      ord: orderBy,
       filters: filteredString
     }, 
     fetchPolicy: "network-only"   
@@ -101,7 +102,7 @@ const PersonalTasksSoD: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
         variables: {          
           page: 0,
           size: 10,
-          ord: "createdDate:desc",
+          ord: orderBy,
           filters: filteredString
         }
       }, {
@@ -128,7 +129,7 @@ const PersonalTasksSoD: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
         variables: {          
           page: 0,
           size: 10,
-          ord: "createdDate:desc",
+          ord: orderBy,
           filters: filteredString
         }
       }, {
@@ -155,7 +156,7 @@ const PersonalTasksSoD: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
         variables: {          
           page: 0,
           size: 10,
-          ord: "createdDate:desc",
+          ord: orderBy,
           filters: filteredString
         }
       }, {
@@ -183,7 +184,7 @@ const PersonalTasksSoD: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
         variables: {          
           page: 0,
           size: 10,
-          ord: "createdDate:desc",
+          ord: orderBy,
           filters: filteredString
         }
       }, {
@@ -211,7 +212,7 @@ const PersonalTasksSoD: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
         variables: {          
           page: 0,
           size: 10,
-          ord: "createdDate:desc",
+          ord: orderBy,
           filters: filteredString
         },
       }, {
@@ -247,7 +248,7 @@ const PersonalTasksSoD: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
       refetch({       
         page: 0,
         size: 10,
-        ord: "createdDate:desc",
+        ord: orderBy,
         filters: JSON.stringify(filtered)
       });
     }
@@ -276,7 +277,17 @@ const PersonalTasksSoD: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
       
       setChecked(newChecked);
     }
-  }, [filteredString, filtered, checkAll, checkedAll, checked, data, refetch, refetchAssignActions, refetchActions]);
+
+    /*if(orderBy !== currentOrderBy) {
+      setCurrentOrderBy(orderBy);
+      refetch({
+        page: 0,
+        size: 10,
+        ord: orderBy,
+        filters: JSON.stringify(filtered)
+      });
+    }*/
+  }, [filteredString, filtered, checkAll, checkedAll, checked, data, refetch, refetchAssignActions, refetchActions, orderBy, currentOrderBy]);
 
   if(loading || loadingActions) {
     return (
@@ -450,7 +461,7 @@ const PersonalTasksSoD: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
               refetch({
                 page: 0,
                 size: size + 10,
-                ord: "createdDate:desc",
+                ord: orderBy,
                 filters: filteredString
               })
             }}

@@ -6,7 +6,6 @@ import Divider from "@material-ui/core/Divider";
 export const BoxCard = styled.div`
   padding: 32px 24px;
   background: #ffffff;
-  box-shadow: 0px 0px 28px rgba(27, 32, 42, 0.16);
   border-radius: 8px;
   margin-bottom: 18px;
 `;
@@ -245,6 +244,9 @@ export const BoxJustification = styled.div`
   border: 1px solid #EDEDEF;
   box-sizing: border-box;
   border-radius: 6px;
+  &.Add-top {
+    margin-top: 14px;
+  }
 `;
 
 export const BoxJustificationValue = styled.div`

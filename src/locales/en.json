@@ -118,5 +118,8 @@
   "message.success": "Success",
   "message.warning": "Warning",
   "message.error": "Error",
-  "viewMore": "Ver mais"
+  "viewMore": "Ver mais",
+  "result": "Result",
+  "orderBy": "Order By",
+  "downloadCSV": "Download CSV"
 }

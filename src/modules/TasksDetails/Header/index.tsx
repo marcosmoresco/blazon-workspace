@@ -552,7 +552,7 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
         open={Boolean(anchorEl)}
         onClose={handleClose}
       >
-        {(data?.getAssignActions || []).includes("UNASSIGN") && (
+        {/*(data?.getAssignActions || []).includes("UNASSIGN") && (
           <MenuItem onClick={() => {
             if(task) {
               unassignTask(task, intl, () => {
@@ -573,7 +573,7 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
               <FormattedMessage id="tasks.unassign" />
             </MenuItemInfo>           
           </MenuItem>
-        )}
+        )*/}
         {(data?.getAssignActions || []).includes("ASSIGN_TO_ME") && (
           <MenuItem onClick={() => {
             if(task) {

@@ -93,6 +93,7 @@ export type Task = {
   identifier: number;
   justification: string;
   revokeJustification: string;
+  disapprovalJustification: string;
   dates: TaskDates;
   headers: TaskHeaders;
   approvalItemDetails: TaskApprovalItemDetails;
@@ -121,7 +122,8 @@ export type ListProps = {
   id?: number;
   isQueue?: boolean;
   resolved?: boolean;
-  task?: Task
+  task?: Task;
+  orderBy?: string;
 };
 
 export type TaskFilterClause = {
@@ -132,6 +134,8 @@ export type TaskFilterClause = {
 };
 
 export type TaskFilter = {
+  orderable: Boolean | undefined;
+  value: string;
   label: string;
   clauses: TaskFilterClause[];
 };

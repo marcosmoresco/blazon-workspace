@@ -5,8 +5,7 @@ export const WorkArea = styled.div`
   margin-left: auto;
   margin-right: auto;
 `;
-export const Grid = styled.div`
-  box-shadow: 0px 0px 28px rgba(27, 32, 42, 0.16);
+export const Grid = styled.div`  
   padding: 0 0 2px;
   margin: 18px 0;
   border-radius: 6px;

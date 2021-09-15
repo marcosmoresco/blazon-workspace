@@ -1,9 +1,7 @@
 import { FormattedMessage, IntlShape } from "react-intl";
 import type { FilterType } from "@components/Filter/types";
-import { Task, TaskFilter, TaskFilterClause } from "./types";
+import { Task, TaskFilter } from "./types";
 import { confirm } from "@components/Dialog/actions";
-import CheckSquareOffsetIcon from "@icons/CheckSquareOffset";
-import UserGearIcon from "@icons/UserGear";
 import XCircleIcon from "@icons/XCircle";
 import CheckCircleIcon from "@icons/CheckCircle";
 import ShareIcon from "@icons/Share";
@@ -62,36 +60,13 @@ import {
 
 export const filters: FilterType[] = [
   {
+    orderable: true,
     name: "identifier",
     label: <FormattedMessage id="identifier" />,
     type: "number",
-  },
+  },  
   {
-    name: "status",
-    label: <FormattedMessage id="status" />,
-    type: "list",
-    values: [
-      {
-        label: "DONE",
-        value: "DONE"
-      },
-      {
-        label: "TODO",
-        value: "TODO"
-      },
-      {
-        label: "WAITING_ASSIGN",
-        value: "WAITING_ASSIGN"
-      },
-      {
-        label: "CANCELED",
-        value: "CANCELED"
-      },
-    ],
-    bind: "value",
-    view: "label"
-  },
-  {
+    orderable: true,
     name: "priority",
     label: <FormattedMessage id="task.priority" />,
     type: "list",
@@ -117,6 +92,7 @@ export const filters: FilterType[] = [
     view: "label"
   },
   {
+    orderable: true,
     name: "requester",
     label: <FormattedMessage id="task.requester" />,
     type: "list",
@@ -140,6 +116,7 @@ export const filters: FilterType[] = [
     }
   },
   {
+    orderable: true,
     name: "recipient",
     label: <FormattedMessage id="task.recipient" />,
     type: "list",
@@ -163,6 +140,7 @@ export const filters: FilterType[] = [
     }
   },
   {
+    orderable: true,
     name: "createdAt",
     label: <FormattedMessage id="createdAt" />,
     type: "date",
@@ -172,6 +150,7 @@ export const filters: FilterType[] = [
     }
   },
   {
+    orderable: true,
     name: "finalizedAt",
     label: <FormattedMessage id="finalizedAt" />,
     type: "date",
@@ -344,7 +323,8 @@ export const generateFilters = (intl: IntlShape, list: TaskFilter[]) => {
       const type = clause.type
       let currentFilter: FilterType = {
         type: "",
-        name: clause.value,
+        orderable: filter.orderable,
+        name: filter.value,
         label: intl.formatMessage({
           id: filter.label
         })              

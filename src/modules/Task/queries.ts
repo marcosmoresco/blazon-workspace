@@ -1,8 +1,10 @@
 import { gql } from "@apollo/client";
 
 export const GET_REQUEST_APPROVAL_TASK_FILTERS = gql`
-  query getRequestApprovalTaskFilters($type: String) {
-    getFilters: getRequestApprovalTaskFilters(type: $type) {
+  query getRequestApprovalTaskFilters($type: String, $statusList: String) {
+    getFilters: getRequestApprovalTaskFilters(type: $type, statusList: $statusList) {
+      orderable
+      value
       label
       clauses {
         label
@@ -15,8 +17,10 @@ export const GET_REQUEST_APPROVAL_TASK_FILTERS = gql`
 `;
 
 export const GET_CERTIFICATION_APPROVAL_TASK_FILTERS = gql`
-  query getCertificationApprovalTaskFilters($type: String) {
-    getFilters: getCertificationApprovalTaskFilters(type: $type) {
+  query getCertificationApprovalTaskFilters($type: String, $statusList: String) {
+    getFilters: getCertificationApprovalTaskFilters(type: $type, statusList: $statusList) {
+      orderable
+      value
       label
       clauses {
         label
@@ -29,8 +33,10 @@ export const GET_CERTIFICATION_APPROVAL_TASK_FILTERS = gql`
 `;
 
 export const GET_SOD_APPROVAL_TASK_FILTERS = gql`
-  query getSoDApprovalTaskFilters($type: String) {
-    getFilters: getSoDApprovalTaskFilters(type: $type) {
+  query getSoDApprovalTaskFilters($type: String, $statusList: String) {
+    getFilters: getSoDApprovalTaskFilters(type: $type, statusList: $statusList) {
+      orderable
+      value
       label
       clauses {
         label
@@ -43,8 +49,10 @@ export const GET_SOD_APPROVAL_TASK_FILTERS = gql`
 `;
 
 export const GET_ROLE_RIGHT_APPROVAL_TASK_FILTERS = gql`
-  query getRoleRightApprovalTaskFilters($type: String) {
-    getFilters: getRoleRightApprovalTaskFilters(type: $type) {
+  query getRoleRightApprovalTaskFilters($type: String, $statusList: String) {
+    getFilters: getRoleRightApprovalTaskFilters(type: $type, statusList: $statusList) {
+      orderable
+      value
       label
       clauses {
         label
@@ -57,8 +65,10 @@ export const GET_ROLE_RIGHT_APPROVAL_TASK_FILTERS = gql`
 `;
 
 export const GET_PROVISIONING_TASK_FILTERS = gql`
-  query getProvisioningTaskFilters($type: String) {
-    getFilters: getProvisioningTaskFilters(type: $type) {
+  query getProvisioningTaskFilters($type: String, $statusList: String) {
+    getFilters: getProvisioningTaskFilters(type: $type, statusList: $statusList) {
+      orderable
+      value
       label
       clauses {
         label
@@ -83,6 +93,7 @@ export const GET_TASKS = gql`
         identifier
         type
         justification
+        disapprovalJustification
         dates {
           createdDate
           resolvedDate
@@ -94,6 +105,7 @@ export const GET_TASKS = gql`
           createdByObjectId
           priority
           status
+          result
           from {
             identifier
             displayName
@@ -175,6 +187,7 @@ export const GET_REQUEST_APPROVAL_TASKS = gql`
         identifier
         type
         justification
+        disapprovalJustification
         dates {
           createdDate
           resolvedDate
@@ -186,6 +199,7 @@ export const GET_REQUEST_APPROVAL_TASKS = gql`
           createdByObjectId
           priority
           status
+          result
           from {
             identifier
             displayName
@@ -233,6 +247,7 @@ export const GET_REQUEST_APPROVAL_TASK = gql`
     getRequestApprovalTask(id: $id) {     
       identifier
       justification
+      disapprovalJustification
       type
       dates {
         createdDate
@@ -245,6 +260,7 @@ export const GET_REQUEST_APPROVAL_TASK = gql`
         createdByObjectId
         priority
         status
+        result
         from {
           identifier
           displayName
@@ -344,6 +360,7 @@ export const GET_CERTIFICATION_APPROVAL_TASKS = gql`
           createdByObjectId
           priority
           status
+          result
           from {
             identifier
             displayName
@@ -493,6 +510,7 @@ export const GET_SOD_APPROVAL_TASKS = gql`
           createdByObjectId
           priority
           status
+          result
           from {
             identifier
             displayName
@@ -548,6 +566,7 @@ export const GET_SOD_APPROVAL_TASK = gql`
         createdByObjectId
         priority
         status
+        result
         from {
           identifier
           displayName
@@ -779,6 +798,7 @@ export const GET_PROVISIONING_TASKS = gql`
         identifier
         type
         justification
+        disapprovalJustification
         dates {
           createdDate
           resolvedDate
@@ -790,6 +810,7 @@ export const GET_PROVISIONING_TASKS = gql`
           createdByObjectId
           priority
           status
+          result
           from {
             identifier
             displayName
@@ -836,6 +857,7 @@ export const GET_PROVISIONING_TASK = gql`
     getProvisioningTask(id: $id) {      
       identifier
       justification
+      disapprovalJustification
       type
       entrySchema
       dates {
@@ -849,6 +871,7 @@ export const GET_PROVISIONING_TASK = gql`
         createdByObjectId
         priority
         status
+        result
         from {
           identifier
           displayName

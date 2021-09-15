@@ -395,12 +395,28 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                     <InfoTextContainer>
                       <FormattedMessage id="createdAt" />: {task?.dates?.createdDate}
                     </InfoTextContainer>
-                  </InfoText>                  
+                    {task?.headers?.status === "TODO" &&                    
+                      <InfoTextContainer>
+                        <FormattedMessage id="deadline" />: {task?.dates?.deadline}
+                      </InfoTextContainer>
+                    }
+                    {task?.headers?.status === "DONE" &&                    
+                      <InfoTextContainer>
+                        <FormattedMessage id="resolvedAt" />: {task?.dates?.resolvedDate}
+                      </InfoTextContainer>
+                    }
+                    {task?.headers?.status === "CANCELED" &&                    
+                      <InfoTextContainer>
+                        <FormattedMessage id="task.status"/>: {task?.headers?.status} 
+                      </InfoTextContainer>
+                    }
+                  </InfoText>                                                                       
+                  {task?.headers?.status !== "CANCELED" && task?.headers?.result && 
                   <InfoText>
                     <InfoTextContainer>
-                      <FormattedMessage id="task.status"/>: {task?.headers?.status} 
+                      <FormattedMessage id="result"/>: {task?.headers.result} 
                     </InfoTextContainer>                    
-                  </InfoText>                                                    
+                  </InfoText>}                                                 
                 </BoxCardFooterInfo>
               </BoxCardHeaderInfo>
             </BoxCardHeader>
@@ -681,7 +697,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
             <FormattedMessage id="details" />
           </MenuItemInfo>           
         </MenuItem>                
-        {(data?.getAssignActions || []).includes("UNASSIGN") && (
+        {/*(data?.getAssignActions || []).includes("UNASSIGN") && (
           <MenuItem onClick={() => {
             if(current) {
               unassignTask(current, intl, () => {
@@ -702,7 +718,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
               <FormattedMessage id="tasks.unassign" />
             </MenuItemInfo>           
           </MenuItem>
-        )}
+        )*/}
         {(data?.getAssignActions || []).includes("ASSIGN_TO_ME") && (
           <MenuItem onClick={() => {
             if(current) {
@@ -725,7 +741,8 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
             </MenuItemInfo>             
           </MenuItem>
         )}
-        <DividerMenu/>
+        {(data?.getAssignActions.includes("FORWARD_TO_USER")  || data?.getAssignActions.includes("FORWARD_TO_QUEUE")) 
+        && <DividerMenu/>}
         {data?.getAssignActions.includes("FORWARD_TO_USER") && 
           <MenuItem onClick={() => setOpenForwardUser(true)}>
             <MenuItemInfo>

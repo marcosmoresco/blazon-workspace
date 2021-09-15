@@ -16,7 +16,7 @@ export const Box = styled.div`
 export const Header = styled.div`
   display: flex;
   align-items: center;
-  margin-top: 50px;
+  margin-top: 24px;
   background: #FBFAFB;
   border-radius: 6px;
   height: 68px;
@@ -30,6 +30,8 @@ export const InfoText = styled.div`
   background: #FBFAFB;
   border-radius: 6px;
   padding: 8px;
+  display: flex;
+  gap: 10px;
 `;
 
 export const InfoTextContainer = styled.div`
@@ -92,6 +94,14 @@ export const HeaderFilters = styled.div`
   display: flex;
   align-items: center;
   gap: 15px;  
+`;
+
+export const HeaderFiltersContent = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  margin-right: 12px;
 `;
 
 export const BoxCard = styled.div`

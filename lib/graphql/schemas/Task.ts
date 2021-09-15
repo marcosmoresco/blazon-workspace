@@ -8,6 +8,8 @@ export const Task = `
   }
   
   type TaskFilter {
+    orderable: Boolean
+    value: String
     label: String
     clauses: [TaskFilterClause]
   }
@@ -121,6 +123,7 @@ export const Task = `
     identifier: Int
     justification: String    
     revokeJustification: String
+    disapprovalJustification: String
     dates: TaskDates
     headers: TaskHeaders
     approvalItemDetails: TaskApprovalItemDetails
@@ -146,24 +149,24 @@ export const Queries = `
   getRequestApprovalTasksAvailableActions(status: String): [String]
   getRequestApprovalTasks(page: Int, size: Int, ord: String, filters: String): TaskRepresentation 
   getRequestApprovalTask(id: Int): Task
-  getRequestApprovalTaskFilters(type: String): [TaskFilter]
+  getRequestApprovalTaskFilters(type: String, statusList: String): [TaskFilter]
   getCertificationApprovalTasksAvailableActions(status: String): [String]
   getCertificationApprovalTasks(page: Int, size: Int, ord: String, filters: String): TaskRepresentation
   getCertificationApprovalTask(id: Int): Task
-  getCertificationApprovalTaskFilters(type: String): [TaskFilter]
+  getCertificationApprovalTaskFilters(type: String, statusList: String): [TaskFilter]
   getSoDApprovalTasksAvailableActions(status: String): [String]
   getSoDApprovalTasks(page: Int, size: Int, ord: String, filters: String): TaskRepresentation
   getSoDApprovalTask(id: Int): Task
-  getSoDApprovalTaskFilters(type: String): [TaskFilter] 
+  getSoDApprovalTaskFilters(type: String, statusList: String): [TaskFilter] 
   getRoleRightApprovalTasksAvailableActions(status: String): [String]
   getRoleRightApprovalTasks(page: Int, size: Int, ord: String, filters: String): TaskRepresentation
   getRoleRightApprovalTask(id: Int): Task
   getRoleRightApprovalTaskItems(id: Int): RoleRightTaskItems
-  getRoleRightApprovalTaskFilters(type: String): [TaskFilter]
+  getRoleRightApprovalTaskFilters(type: String, statusList: String): [TaskFilter]
   getProvisioningTasksAvailableActions(status: String): [String]
   getProvisioningTasks(page: Int, size: Int, ord: String, filters: String): TaskRepresentation
   getProvisioningTask(id: Int): Task
-  getProvisioningTaskFilters(type: String): [TaskFilter]
+  getProvisioningTaskFilters(type: String, statusList: String): [TaskFilter]
 `;
 
 export const Mutations = `

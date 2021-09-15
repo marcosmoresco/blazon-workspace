@@ -94,8 +94,8 @@ export const Actions = styled.div`
 
 export const DrawerDetailUser = withStyles({
   paper: {    
-    minWidth: 645,
-    padding: "20px 30px 20px 30px",    
+    minWidth: 640,
+    padding: "20px 20px 20px 30px",    
   },
 })((props: any) => (
   <Drawer        

@@ -59,6 +59,5 @@ export const DetailValue = styled.div`
 
 export const GridArea = styled.div`
   background: #ffffff;
-  box-shadow: 0px 0px 28px rgba(27, 32, 42, 0.16);
   border-radius: 8px;
 `;
