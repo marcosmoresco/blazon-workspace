@@ -19,7 +19,15 @@ import {
   RequestDetail,
   StyledCards,
   ButtonArea,
+  Spacing
 } from "./styles";
+
+// styles
+import {
+  BoxJustification,
+  BoxJustificationValue,
+  TitleJustification
+} from "@modules/Requests/styles";
 
 // types
 import { FirstTaskProps } from "./types";
@@ -119,10 +127,17 @@ const Info: React.FC<FirstTaskProps> = ({ intl, request, refetch }) => {
           </StyledCards>
           <RequestStatus notification={request?.status || " - "} />
         </UserGrid>
-
-        <JustificationText
-          justificationText={request?.justification || " - "}
-        />
+        
+        <Spacing>
+          <BoxJustification>
+            <TitleJustification>
+              <FormattedMessage id="justification" />  
+            </TitleJustification> 
+            <BoxJustificationValue>
+              {request?.justification || " - "}
+            </BoxJustificationValue>
+          </BoxJustification>
+        </Spacing>                
 
         <ResourceGrid className="Detail">
           <TableHeader request={request} />

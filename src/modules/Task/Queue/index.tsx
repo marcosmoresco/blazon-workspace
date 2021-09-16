@@ -39,7 +39,7 @@ import {
   GET_TASK_QUEUES,
   GET_TASK_QUEUES_FILTERS,
 } from "@modules/Task/queries";
-import axios from "app/node_modules/axios";
+import axios from "axios";
 
 const QueueTasks: FC<ListProps> = ({ dispatch }) => {
   

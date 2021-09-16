@@ -20,6 +20,10 @@ export const Grid = styled.div`
   background: #ffff;
 `;
 
+export const Spacing = styled.div`  
+  padding: 0 25px 32px 24px;
+`;
+
 export const UserGrid = styled.div`
   display: flex;
   align-content: center;

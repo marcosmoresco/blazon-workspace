@@ -1,5 +1,5 @@
 import { Request } from "@modules/Requests/types";
-import { IntlShape } from "react-intl";
+import { IntlShape, FormattedMessage } from "react-intl";
 import TableResource from "@modules/Requests/Detail/Info/TableResource";
 import TableRole from "@modules/Requests/Detail/Info/TableRole";
 import TableUser from "@modules/Requests/Detail/Info/TableUser";
@@ -9,6 +9,7 @@ import TableAccount from "@modules/Requests/Detail/Info/TableAccount";
 // styles
 import { ResourceGrid } from "./Detail/Info/styles";
 import { StyleResource } from "./components/styles";
+import { InfoTextContainer, InfoText } from "./styles";
 
 export const getContent = (
   request: Request | undefined,
@@ -49,7 +50,14 @@ export const getContent = (
           <StyleResource>
             <span>{intl.formatMessage({ id: "resource" })}</span>
           </StyleResource>
-          <TableResource request={request} />
+          <InfoText>
+            <InfoTextContainer>
+              <FormattedMessage id="name"/>: {request?.resource?.name} 
+            </InfoTextContainer>   
+            <InfoTextContainer>
+              <FormattedMessage id="description"/>: {request?.resource?.description || " - "} 
+            </InfoTextContainer>                 
+          </InfoText>          
         </ResourceGrid>
         {addAccount && (
           <ResourceGrid className={isDetail ? "Detail" : ""}>
