@@ -20,6 +20,11 @@ export const Grid = styled.div`
   background: #ffff;
 `;
 
+export const Header = styled.div`  
+  padding: 24px 25px 0px 24px;
+`;
+
+
 export const Spacing = styled.div`  
   padding: 0 25px 32px 24px;
 `;

@@ -15,6 +15,7 @@ export const GET_REQUEST = gql`
             rel
             href
           }
+          identifier
           displayName
         }
       }
@@ -28,6 +29,7 @@ export const GET_REQUEST = gql`
             rel
             href
           }
+          identifier
           displayName
         }
       }
@@ -36,6 +38,7 @@ export const GET_REQUEST = gql`
           rel
           href
         }
+        identifier
         displayName
       }
       beneficiary {
@@ -43,6 +46,7 @@ export const GET_REQUEST = gql`
           rel
           href
         }
+        identifier
         displayName
       }
       user {

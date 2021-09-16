@@ -7,7 +7,10 @@ import Tag from "@icons/Tag";
 import { getLink } from "@utils/index";
 import apolloClient from "@utils/apollo-client";
 import { confirm } from "@components/Dialog/actions";
+import DetailUser from "@modules/Task/components/DetailUser";
 import { addMessage } from "@actions/index";
+import { useTheme, themes } from "@theme/index";
+import { processedStatusList, inProgressStatusList } from "@modules/Requests/components/constants";
 
 // styles
 import {
@@ -19,14 +22,25 @@ import {
   RequestDetail,
   StyledCards,
   ButtonArea,
-  Spacing
+  Spacing,
+  Header
 } from "./styles";
 
 // styles
 import {
   BoxJustification,
   BoxJustificationValue,
-  TitleJustification
+  TitleJustification,
+  BoxCardIdentifier,
+  BoxCardHeaderContent,
+  BoxCardHeader,
+  BoxCardHeaderInfo,
+  InfoText,
+  InfoTextContainer,
+  BoxCardFooterInfo,
+  BoxCardFooter,
+  BoxCardTitle,
+  BoxCardTitleResource
 } from "@modules/Requests/styles";
 
 // types
@@ -50,6 +64,8 @@ const Info: React.FC<FirstTaskProps> = ({ intl, request, refetch }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const { id } = router.query;
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
 
   const content = getContent(request, intl, true);
 
@@ -113,21 +129,100 @@ const Info: React.FC<FirstTaskProps> = ({ intl, request, refetch }) => {
         </Button>
       </ButtonArea>
       <Grid>
-        <MenuGrid type={request?.type || " - "} />
+        <Header>
+          <BoxCardHeader>
+            <BoxCardHeaderContent>
+              <BoxCardIdentifier
+                background="#EDEDEF" 
+                color={currentTheme.palette.primary.main}>
+                ID: {request?.identifier}
+              </BoxCardIdentifier>                                                                                     
+              <BoxCardIdentifier 
+                background="#EDEDEF" 
+                color={currentTheme.palette.primary.main}>
+                <FormattedMessage id="type" />                     
+                : {request?.type}                                                       
+              </BoxCardIdentifier>
+            </BoxCardHeaderContent>
+            <BoxCardHeaderInfo>                                    
+              <BoxCardFooterInfo>
+                <InfoText>
+                  <InfoTextContainer>
+                    <FormattedMessage id="createdAt" />: {request?.createdAt}
+                  </InfoTextContainer>                    
+                  {processedStatusList.includes(request?.status as string) &&                    
+                    <InfoTextContainer>
+                      <FormattedMessage id="finalizedAt" />: {request?.finalizedAt}
+                    </InfoTextContainer>
+                  }
+                  {inProgressStatusList.includes(request?.status as string) &&                    
+                    <InfoTextContainer>
+                      <FormattedMessage id="effectivedAt" />: {request?.effectiveDate}
+                    </InfoTextContainer>
+                  }                                     
+                  <InfoTextContainer>
+                    <FormattedMessage id="task.status"/>: {request?.status} 
+                  </InfoTextContainer>                    
+                </InfoText>                                                                                                                                          
+              </BoxCardFooterInfo>
+            </BoxCardHeaderInfo>
+          </BoxCardHeader>   
+          <BoxCardTitle>
+            {[
+              "CREATE_ACCOUNT", 
+              "UPDATE_ACCOUNT", 
+              "REVOKE_ACCOUNT",
+              "INACTIVATE_ACCOUNT",
+              "ACTIVATE_ACCOUNT",
+              "CHECKIN_ADMIN_ACCOUNT_PASSWORD", 
+              "CHECKOUT_ADMIN_ACCOUNT_PASSWORD", 
+              "CHECKIN_APPLICATION_ACCOUNT_PASSWORD"
+            ].includes(request?.type as string) && (
+              request?.resource.name || " - "
+            )}              
+            {[
+              "REVOKE_ENTITLEMENT", 
+              "ASSIGN_ENTITLEMENT" 
+            ].includes(request?.type as string) && (                                 
+              <>
+                <BoxCardTitleResource>
+                  {request?.resource?.name}
+                </BoxCardTitleResource> / {request?.entitlement?.name}
+              </>  
+            )}   
+            {[
+              "ASSIGN_ROLE", 
+              "REVOKE_ROLE" 
+            ].includes(request?.type as string) && (
+              request?.role?.name || " - "
+            )}        
+          </BoxCardTitle> 
+          {[
+            "UPDATE_ACCOUNT", 
+            "ACTIVATE_ACCOUNT", 
+            "INACTIVATE_ACCOUNT",
+            "REVOKE_ACCOUNT", 
+            "CHECKIN_ADMIN_ACCOUNT_PASSWORD", 
+            "CHECKOUT_ADMIN_ACCOUNT_PASSWORD", 
+            "CHECKIN_APPLICATION_ACCOUNT_PASSWORD",
+            "REVOKE_ENTITLEMENT", 
+            "ASSIGN_ENTITLEMENT"
+          ].includes(request?.type as string) && 
+          <BoxJustification className="Add-top">
+            <TitleJustification>
+              <FormattedMessage id="accountIdentifier" />
+            </TitleJustification>
+            <BoxJustificationValue>
+              {request?.resource?.accountIdentifier || " - "}
+            </BoxJustificationValue>
+          </BoxJustification>}       
+        </Header>                         
         <UserGrid>
-          <StyledCards>
-            <UserRequesterCard
-              UserImage={getLink("thumb", request?.requester?.links || [])}
-              UserName={request?.requester?.displayName || " - "}
-            />
-            <UserBeneficiaryCard
-              UserImage={getLink("thumb", request?.beneficiary?.links || [])}
-              UserName={request?.beneficiary?.displayName || " - "}
-            />
-          </StyledCards>
-          <RequestStatus notification={request?.status || " - "} />
-        </UserGrid>
-        
+          <BoxCardFooterInfo>       
+            <DetailUser request={request} user={request?.requester} title="request.requester"/>                          
+            {request?.beneficiary && <DetailUser request={request} user={request?.beneficiary} title="request.beneficiary"/>}                               
+          </BoxCardFooterInfo>         
+        </UserGrid>        
         <Spacing>
           <BoxJustification>
             <TitleJustification>
@@ -137,26 +232,7 @@ const Info: React.FC<FirstTaskProps> = ({ intl, request, refetch }) => {
               {request?.justification || " - "}
             </BoxJustificationValue>
           </BoxJustification>
-        </Spacing>                
-
-        <ResourceGrid className="Detail">
-          <TableHeader request={request} />
-        </ResourceGrid>
-
-        {content && (
-          <>
-            <InsideLine />
-            <RequestDetail>
-              <div>
-                <Tag height={18} width={18} />
-              </div>
-              <span>
-                {intl.formatMessage({ id: "request.request.detail" })}
-              </span>
-            </RequestDetail>
-            {content}
-          </>
-        )}
+        </Spacing>        
       </Grid>
     </WorkArea>
   );
