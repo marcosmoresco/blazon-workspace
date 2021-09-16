@@ -511,7 +511,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                           resolve({
                             variables: {
                               payload: JSON.stringify([{
-                                taskId: Number(id),
+                                taskId: task?.identifier,
                                 result: "APPROVED"
                               }])
                             }
@@ -524,6 +524,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                   )}
                   {(actions || []).includes("DISAPPROVED") && (
                     <Button variant="contained" color="secondary" onClick={() => {
+                      setCurrent(task);
                       setResult("DISAPPROVED");
                       setOpenDisapprove(true);
                     }}>
@@ -537,7 +538,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                           resolve({
                             variables: {
                               payload: JSON.stringify([{
-                                taskId: Number(id),
+                                taskId: task?.identifier,
                                 result: "CERTIFIED"
                               }])
                             }
@@ -550,6 +551,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                   )}
                   {(actions || []).includes("REVOKED") && (
                     <Button variant="contained" color="secondary" onClick={() => {
+                      setCurrent(task);
                       setResult("REVOKED");
                       setOpenDisapprove(true);
                     }}>
@@ -558,6 +560,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                   )}              
                   {(actions || []).includes("ALLOWED") && (
                     <Button variant="contained" color="default-primary" onClick={() => {
+                      setCurrent(task);
                       setResult("ALLOWED");
                       setOpenDisapprove(true);
                     }}>
@@ -571,7 +574,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                           resolve({
                             variables: {
                               payload: JSON.stringify([{
-                                taskId: Number(id),
+                                taskId: task?.identifier,
                                 result: "NOT_ALLOWED"
                               }])
                             }
@@ -590,7 +593,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                           resolve({
                             variables: {
                               payload: JSON.stringify([{
-                                taskId: Number(id),
+                                taskId: task?.identifier,
                                 result: "PROVISIONED"
                               }])
                             }
@@ -603,6 +606,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                   )}
                   {(actions || []).includes("NOT_PROVISIONED") && (
                     <Button variant="contained" color="secondary" onClick={() => {
+                      setCurrent(task);
                       setResult("NOT_PROVISIONED");
                       setOpenDisapprove(true);
                     }}>
@@ -616,7 +620,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                           resolve({
                             variables: {
                               payload: JSON.stringify([{
-                                taskId: Number(id),                       
+                                taskId: task?.identifier,                       
                               }])
                             }
                           });

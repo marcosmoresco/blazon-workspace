@@ -160,8 +160,8 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
 
   const handleClickDownload = async () => {
     setLoadingDownload(true);    
-    const resp = await axios.get(`api/reportTasks?type=${queueCategoryValue.toLocaleLowerCase().replace("_", "")}&ord=createdData:desc&filter=${JSON.stringify(filtered)}`);
-    download(resp.data, `tasks-${queueCategoryValue.toLocaleLowerCase().replace("_", "")}`);
+    const resp = await axios.get(`api/reportTasks?type=inqueue&id=${queueIdentifier}&ord=createdData:desc&filter=${JSON.stringify(filtered)}`);
+    download(resp.data, `tasks-inqueue`);
     setLoadingDownload(false);
   }
 

@@ -78,7 +78,7 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [currentCategoryName, setCurrentCategoryName] = useState<string>(intl.formatMessage({id: "task.all"}));  
   const [currentTypeName, setCurrentTypeName] = useState<string>(intl.formatMessage({id: "task.any"}));  
-  const [orderBy, setOrderBy] = useState<string>("createdDate:desc");
+  const [orderBy, setOrderBy] = useState<string>("createdAt:desc");
   const [loadingDownload, setLoadingDownload] = useState<boolean>(false);
 
   const { loading: loadingResume, data: dataResume, refetch: refetchResume } = useQuery(RESUME, {
@@ -142,14 +142,14 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
   }
 
   const handleChange = (val: any) => {  
-    setOrderBy("createdDate:desc");
+    setOrderBy("createdAt:desc");
     setFiltered({status: resolved ? ["DONE", "CANCELED"] : ["TODO"]});
     getTaskFilters(val, null);
     setType(val);    
   }; 
 
   const handleChangeType = (val: any) => {    
-    setOrderBy("createdDate:desc");
+    setOrderBy("createdAt:desc");
     setTypeValue(val);
     if(val != "ANY") {
       setFiltered({"taskData.type": val, status: resolved ? ["DONE", "CANCELED"] : ["TODO"]})
@@ -214,7 +214,7 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
             <Filter filters={tasksFilters} onChange={(f: any) => handleChangeFiltered(f)}/>
           </HeaderFilters>
           <HeaderFilters>
-            <Ordenation list={tasksFilters} onChange={handleOrderBy} composed={type+typeValue}/>
+            <Ordenation list={tasksFilters} onChange={handleOrderBy} composed={type+typeValue} orderBy={orderBy}/>
             <Button 
               color="primary" 
               variant="contained" 

@@ -7,10 +7,10 @@ export default async function handler(
   res: NextApiResponse
 ) {
 
-  const { type, ord, filter } = req.query;
+  const { type, ord, filter, id } = req.query;
 
   const report = await axios.get(
-    `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/reports/tasks/${type}?ord=${ord}&filter=${filter}`,        
+    `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/reports/tasks/${type}${(id && `/${id}/`) || ""}?ord=${ord}&filter=${filter}`,        
     {
       headers: {       
         Authorization: `Bearer ${req?.session?.passport?.AccessToken}`,
