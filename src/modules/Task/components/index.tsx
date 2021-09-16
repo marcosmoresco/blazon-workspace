@@ -361,10 +361,10 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
   return (
     <>        
       <Card key={`task-${task?.identifier}`} 
-        boxShadow="0px 4px 16px rgba(27, 32, 42, 0.08)"
+        boxshadow="0px 4px 16px rgba(27, 32, 42, 0.08)"
         border="1px solid #EDEDEF;"
-        marginTop={16}
-        marginBottom={16}>
+        margintop={16}
+        marginbottom={16}>
         <BoxCard>            
           <BoxCardContent>
             <BoxCardHeader>

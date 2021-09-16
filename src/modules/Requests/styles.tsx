@@ -422,6 +422,9 @@ export const BoxJustification = styled.div`
   border: 1px solid #EDEDEF;
   box-sizing: border-box;
   border-radius: 6px;
+  &.Add-bottom {
+    margin-bottom: 24px;
+  }
 `;
 
 export const BoxJustificationValue = styled.div`

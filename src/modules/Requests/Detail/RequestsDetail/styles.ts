@@ -6,9 +6,9 @@ export const WorkArea = styled.div`
   margin-right: auto;
 `;
 export const Grid = styled.div`
-  box-shadow: 0px 0px 28px rgba(27, 32, 42, 0.16);
+  box-shadow: 0px 4px 16px rgba(27, 32, 42, 0.08);
   padding: 22px 0 2px;
-  margin: 32px 0;
+  margin: 18px 0;
   border-radius: 6px;
   background: #ffff;
 `;

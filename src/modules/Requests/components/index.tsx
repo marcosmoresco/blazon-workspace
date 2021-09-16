@@ -108,12 +108,6 @@ const RequestDetail: FC<ListProps> = ({ request, type, id, checked = [], onCheck
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [current, setCurrent] = useState<Request>();
-  const [openForwardUser, setOpenForwardUser] = useState(false);
-  const [openForwardQueue, setOpenForwardQueue] = useState(false);
-  const [openDisapprove, setOpenDisapprove] = useState(false);
-  const [expanded, setExpanded] = useState<number[]>([]);
-  const [result, setResult] = useState("DISAPPROVED");  
-  const [actions, setActions] = useState<string[]>([]);
 
   const handleClick = (event: any) => {   
     setCurrent(request);
@@ -135,9 +129,9 @@ const RequestDetail: FC<ListProps> = ({ request, type, id, checked = [], onCheck
           <BoxCardContent>
             <BoxCardHeader>
               <BoxCardHeaderContent>
-                {inProgressStatusList.includes(request?.status as string) && (
+                {/*inProgressStatusList.includes(request?.status as string) && (
                   <Checkbox value={checked.includes(request?.identifier || -1)} onChange={() => onCheck && onCheck(request?.identifier)}/>
-                )}                  
+                )*/}                  
                 <BoxCardIdentifier
                   background="#EDEDEF" 
                   color={currentTheme.palette.primary.main}>

@@ -151,8 +151,8 @@ export const filters: FilterType[] = [
   },
   {
     orderable: true,
-    name: "finalizedAt",
-    label: <FormattedMessage id="finalizedAt" />,
+    name: "resolvedAt",
+    label: <FormattedMessage id="resolvedAt" />,
     type: "date",
     bind: {
       start: "initFinishedAt",

@@ -23,7 +23,8 @@ import {
   StyledCards,
   ButtonArea,
   Spacing,
-  Header
+  Header,
+  UserContent
 } from "./styles";
 
 // styles
@@ -208,7 +209,7 @@ const Info: React.FC<FirstTaskProps> = ({ intl, request, refetch }) => {
             "REVOKE_ENTITLEMENT", 
             "ASSIGN_ENTITLEMENT"
           ].includes(request?.type as string) && 
-          <BoxJustification className="Add-top">
+          <BoxJustification className="Add-top Add-bottom">
             <TitleJustification>
               <FormattedMessage id="accountIdentifier" />
             </TitleJustification>
@@ -217,12 +218,12 @@ const Info: React.FC<FirstTaskProps> = ({ intl, request, refetch }) => {
             </BoxJustificationValue>
           </BoxJustification>}       
         </Header>                         
-        <UserGrid>
+        <UserContent>
           <BoxCardFooterInfo>       
             <DetailUser request={request} user={request?.requester} title="request.requester"/>                          
             {request?.beneficiary && <DetailUser request={request} user={request?.beneficiary} title="request.beneficiary"/>}                               
           </BoxCardFooterInfo>         
-        </UserGrid>        
+        </UserContent>        
         <Spacing>
           <BoxJustification>
             <TitleJustification>
