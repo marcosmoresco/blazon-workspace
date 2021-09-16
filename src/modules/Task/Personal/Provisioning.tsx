@@ -300,7 +300,7 @@ const PersonalTasksProvisioning: FC<ListProps> = ({ dispatch, filtered = {}, che
     const statusList: string[] = [];
     newChecked.forEach((n) => {
       const ts = (data?.getProvisioningTasks?.representation || []).filter((t: any) => t.identifier === n);
-      if((ts || []).length && !statusList.includes(ts[0]?.headers?.status)) {
+      if((ts || []).length) {
         statusList.push(ts[0]?.headers?.status);
       }
     });
