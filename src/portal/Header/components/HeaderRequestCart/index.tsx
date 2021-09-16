@@ -144,7 +144,9 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
       intl.formatMessage({
         id: "cart.remove.item.confirm",
       }),
-      <XCircleIcon width={48} height={48} color="#FF134A" />
+      <XCircleIcon width={48} height={48} color="#FF134A" />,
+      null,
+      currentTheme  
     );
     if (result) { 
       setLoadingItems([...loadingItems, item.identifier as number]);     

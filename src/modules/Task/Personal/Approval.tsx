@@ -5,6 +5,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { connect } from "react-redux";
 import { addMessage } from "@actions/index";
 import { getLink } from "@utils/index";
+import { useTheme, themes } from "@theme/index";
 
 //components
 import EmptyStateSearchIcon from "@icons/EmptyStateSearch";
@@ -57,6 +58,8 @@ import {
 const PersonalTasksApproval: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = false, setCheckAll, orderBy = "createdDate:desc" }) => {
 
   const intl = useIntl();
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
 
   const [filteredString, setFilteredString] = useState<string>(JSON.stringify(filtered));
   const [currentOrderBy, setCurrentOrderBy] = useState(orderBy);
@@ -388,7 +391,7 @@ const PersonalTasksApproval: FC<ListProps> = ({ dispatch, filtered = {}, checkAl
                 payload: JSON.stringify(payload)
               }
             });
-          });
+          }, currentTheme);
         }}>
           <FormattedMessage id="tasks.approve" />
         </Button>
@@ -413,14 +416,14 @@ const PersonalTasksApproval: FC<ListProps> = ({ dispatch, filtered = {}, checkAl
                   payload: JSON.stringify(payload)
                 }
               });
-            });
+            }, currentTheme);
           }}    
           color="primary"     
           variant="rounded">
             <FormattedMessage id="tasks.assignToMe" />
         </Button>
       )}
-      {(dataAssignActions?.getAssignActions || []).includes("UNASSIGN") && (
+      {/*(dataAssignActions?.getAssignActions || []).includes("UNASSIGN") && (
         <Button 
           onClick={() => {
             unassignTask(undefined, intl, () => {
@@ -432,13 +435,13 @@ const PersonalTasksApproval: FC<ListProps> = ({ dispatch, filtered = {}, checkAl
                   payload: JSON.stringify(payload)
                 }
               });
-            });
+            }, currentTheme);
           }}    
           color="primary"     
           variant="rounded">
             <FormattedMessage id="tasks.unassign" />
         </Button>
-      )}      
+        )*/}      
       <Button 
         onClick={() => setOpenForwardUser(true)}  
         color="primary"      

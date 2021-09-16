@@ -5,6 +5,7 @@ import { useQuery, useMutation } from "@apollo/client";
 import { connect } from "react-redux";
 import { addMessage } from "@actions/index";
 import { getLink } from "@utils/index";
+import { useTheme, themes } from "@theme/index";
 
 //components
 import EmptyStateSearchIcon from "@icons/EmptyStateSearch";
@@ -56,6 +57,8 @@ import {
 const PersonalTasksSoD: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = false, setCheckAll, orderBy = "createdDate:desc" }) => {
 
   const intl = useIntl();
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
 
   const [filteredString, setFilteredString] = useState<string>(JSON.stringify(filtered));
   const [currentOrderBy, setCurrentOrderBy] = useState(orderBy);
@@ -401,7 +404,7 @@ const PersonalTasksSoD: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
                   payload: JSON.stringify(payload)
                 }
               });
-            });
+            }, currentTheme);
           }}    
           color="primary"     
           variant="rounded">
@@ -420,7 +423,7 @@ const PersonalTasksSoD: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
                   payload: JSON.stringify(payload)
                 }
               });
-            });
+            }, currentTheme);
           }}    
           color="primary"     
           variant="rounded">

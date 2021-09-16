@@ -1,5 +1,5 @@
 import React, { FC, useState } from "react";
-import { withStyles, Theme } from "@material-ui/core/styles";
+import { withStyles, makeStyles, Theme, ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { IntlProvider, injectIntl } from "react-intl";
 import Image from "next/image";
 import Button from "../Button";
@@ -99,7 +99,7 @@ const DialogContent = withStyles(stylesContent)(
   })
 );
 
-const stylesActions = () => ({
+const stylesActions = makeStyles({
   root: {
     justifyContent: "space-between",
     paddingTop: 30,
@@ -115,19 +115,21 @@ const stylesActions = () => ({
       minWidth: 140,
     },
     "& .MuiButton-textPrimary": {
-      color: "#0E46D7",
+      color: (props: any) => props.theme?.palette?.primary?.main,
       minWidth: 100,
     },
     "& .MuiButton-containedPrimary": {
-      background: "#0E46D7",
+      background: (props: any) => props.theme?.palette?.primary?.main,
       minWidth: 179,
     },
   },
 });
 
-const DialogActions = withStyles(stylesActions)(
+const DialogActions = (
   injectIntl((props: any) => {
-    const { classes, handleCancel, handleConfirm, intl, ...other } = props;
+    const { handleCancel, handleConfirm, intl, theme, ...other } = props;
+
+    const classes = stylesActions({theme});
 
     return (
       <MuiDialogActions className={classes.root} {...other}>
@@ -153,6 +155,7 @@ export type ConfirmPropsType = {
   template?: any;
   resolve: any;
   reject?: any;
+  theme?: Theme;
 };
 
 export type ConfirmStateType = {
@@ -161,12 +164,21 @@ export type ConfirmStateType = {
   template?: any;
 };
 
+const defaultTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: "#3f51b5"
+    }
+  }
+});
+
 const Confirm: FC<ConfirmPropsType> = ({
   title,
   text,
   icon,
   template,
   resolve,
+  theme
 }) => {
   const [isOpen, setIsOpen] = useState(true);
 
@@ -183,7 +195,8 @@ const Confirm: FC<ConfirmPropsType> = ({
   const { locale = "en", defaultLocale } = useRouter() || {};
 
   return (
-    <IntlProvider locale={locale} messages={messages[locale]}>
+    <ThemeProvider theme={theme || defaultTheme}>
+      <IntlProvider locale={locale} messages={messages[locale]}>
       <Dialog
         open={isOpen}
         onClose={handleCancel}
@@ -204,9 +217,11 @@ const Confirm: FC<ConfirmPropsType> = ({
         <DialogActions
           handleCancel={handleCancel}
           handleConfirm={handleConfirm}
+          theme={theme}
         />
       </Dialog>
     </IntlProvider>
+    </ThemeProvider>    
   );
 };
 

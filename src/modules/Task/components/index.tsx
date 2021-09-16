@@ -516,7 +516,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                               }])
                             }
                           });
-                        });
+                        }, currentTheme);
                       }
                     }}>
                       <FormattedMessage id="tasks.approve" />
@@ -543,7 +543,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                               }])
                             }
                           });
-                        });
+                        }, currentTheme);
                       }
                     }}>
                       <FormattedMessage id="tasks.certify" />
@@ -579,7 +579,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                               }])
                             }
                           });
-                        });
+                        }, currentTheme);
                       }
                     }}>
                     <FormattedMessage id="tasks.deny" />
@@ -598,7 +598,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                               }])
                             }
                           });
-                        });
+                        }, currentTheme);
                       }
                     }}>
                       <FormattedMessage id="tasks.provisioned" />
@@ -745,7 +745,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                     }])
                   }
                 })
-              });
+              }, currentTheme);
             }          
           }}>
             <MenuItemInfo>

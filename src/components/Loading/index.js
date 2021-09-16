@@ -2,6 +2,7 @@ import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import LoadingIcon from "@icons/Loading";
+import { useTheme, themes } from "@theme/index";
 
 const useStyles = makeStyles((theme) => ({
   loading: {
@@ -32,6 +33,8 @@ const useStyles = makeStyles((theme) => ({
 export default function Loading(props) {
   const { type, container, bgColor } = props;
   const classes = useStyles();
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
     
   return container ? (
     <div
@@ -44,7 +47,7 @@ export default function Loading(props) {
     </div>
   ) : (
     <div className={classes.loading}>
-      {type === "blue" ? <LoadingIcon color="#006AC6" width={22} height={22}/> : <LoadingIcon width={22} height={22}/>}
+      {type === "blue" ? <LoadingIcon color={currentTheme.palette.primary.main || "#006AC6"} width={22} height={22}/> : <LoadingIcon width={22} height={22}/>}
     </div>
   );
 }

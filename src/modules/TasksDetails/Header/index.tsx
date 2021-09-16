@@ -365,7 +365,7 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
                       }])
                     }
                   });
-                });
+                }, currentTheme);
               }
             }}>
               <FormattedMessage id="tasks.approve" />
@@ -391,7 +391,7 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
                       }])
                     }
                   });
-                });
+                }, currentTheme);
               }
             }}>
               <FormattedMessage id="tasks.certify" />
@@ -434,7 +434,7 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
                       }])
                     }
                   });
-                });
+                }, currentTheme);
               }
             }}>
               <FormattedMessage id="tasks.provisioned" />
@@ -532,7 +532,7 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
                       }])
                     }
                   });
-                });
+                }, currentTheme);
               }
             }}>
               <FormattedMessage id="tasks.resolve" />
@@ -585,7 +585,7 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
                     }])
                   }
                 })
-              });
+              }, currentTheme);
             }          
           }}>
             <MenuItemInfo>

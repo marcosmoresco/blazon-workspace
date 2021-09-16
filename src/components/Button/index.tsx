@@ -42,7 +42,7 @@ const useStyles = (theme: Theme) => createStyles({
       backgroundColor: theme.palette.primary.main || '#0E46D7',
       '&.Blue': {
         backgroundColor: '#FFFFFF',     
-        color: '#0E46D7',       
+        color: theme.palette.primary.main || '#0E46D7',       
         '&.MuiButton-root:hover': {
           backgroundColor: '#FFFFFF',
         }

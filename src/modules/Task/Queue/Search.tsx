@@ -12,6 +12,7 @@ import Tasks from "@modules/Task/components";
 import { addMessage } from "@actions/index";
 import { useIntl, FormattedMessage } from "react-intl";
 import { getLink } from "@utils/index";
+import { useTheme, themes } from "@theme/index";
 import ForwardUser from "@modules/Task/components/ForwardUser";
 import ForwardQueue from "@modules/Task/components/ForwardQueue";
 
@@ -46,6 +47,9 @@ import {
 const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, checkAll = false, setCheckAll }) => {
 
   const intl = useIntl();
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
+
   const [filteredString, setFilteredString] = useState<string>("{}");
   const [checked, setChecked] = useState<number[]>([]);
   const [queueId, setQueueId] = useState<number>();
@@ -300,7 +304,7 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
                   payload: JSON.stringify(payload)
                 }
               });
-            });
+            }, currentTheme);
           }}
           color="primary"     
           variant="rounded">
@@ -319,7 +323,7 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
                   payload: JSON.stringify(payload)
                 }
               });
-            });
+            }, currentTheme);
           }}    
           color="primary"     
           variant="rounded">

@@ -1,4 +1,5 @@
 import { FormattedMessage, IntlShape } from "react-intl";
+import { Theme } from "@material-ui/core/styles";
 import type { FilterType } from "@components/Filter/types";
 import { Task, TaskFilter } from "./types";
 import { confirm } from "@components/Dialog/actions";
@@ -358,7 +359,7 @@ interface CallbackAction<T1 = void> {
   (): T1;
 }
 
-export const assignToMe = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction) => {
+export const assignToMe = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction, theme: Theme) => {
 
   const result = await confirm(
     intl.formatMessage({
@@ -367,7 +368,9 @@ export const assignToMe = async (task: Task | undefined, intl: IntlShape, callba
     intl.formatMessage({
       id: "task.assignToMe.confirm.text",
     }),
-    <ShareIcon width={48} height={48} color="#0E46D7" />   
+    <ShareIcon width={48} height={48} color={theme.palette.primary.main || "#0E46D7"} /> ,
+    null,
+    theme  
   );
 
   if(result) {
@@ -375,7 +378,7 @@ export const assignToMe = async (task: Task | undefined, intl: IntlShape, callba
   }
 }
 
-export const unassign = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction) => {
+export const unassign = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction, theme: Theme) => {
 
   const result = await confirm(
     intl.formatMessage({
@@ -384,7 +387,9 @@ export const unassign = async (task: Task | undefined, intl: IntlShape, callback
     intl.formatMessage({
       id: "task.unassign.confirm.text",
     }),
-    <XCircleIcon width={48} height={48} color="#FF134A" />
+    <XCircleIcon width={48} height={48} color="#FF134A" />,
+    null,
+    theme
   );
 
   if(result) {
@@ -392,7 +397,7 @@ export const unassign = async (task: Task | undefined, intl: IntlShape, callback
   }
 }
 
-export const approve = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction) => {
+export const approve = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction, theme: Theme) => {
 
   const result = await confirm(
     intl.formatMessage({
@@ -401,7 +406,9 @@ export const approve = async (task: Task | undefined, intl: IntlShape, callback:
     intl.formatMessage({
       id: "task.approve.confirm.text",
     }),
-    <CheckCircleIcon width={48} height={48} color="#0E46D7" />
+    <CheckCircleIcon width={48} height={48} color={theme.palette.primary.main || "#0E46D7"} />,
+    null,
+    theme
   );
 
   if(result) {
@@ -409,7 +416,7 @@ export const approve = async (task: Task | undefined, intl: IntlShape, callback:
   }
 }
 
-export const disapprove = async (task: Task, intl: IntlShape, callback: CallbackAction) => {
+export const disapprove = async (task: Task, intl: IntlShape, callback: CallbackAction, theme: Theme) => {
 
   const result = await confirm(
     intl.formatMessage({
@@ -418,7 +425,9 @@ export const disapprove = async (task: Task, intl: IntlShape, callback: Callback
     intl.formatMessage({
       id: "task.disapprove.confirm.text",
     }),
-    <XCircleIcon width={48} height={48} color="#FF134A" />
+    <XCircleIcon width={48} height={48} color="#FF134A" />,
+    null,
+    theme
   );
 
   if(result) {
@@ -426,7 +435,7 @@ export const disapprove = async (task: Task, intl: IntlShape, callback: Callback
   }
 }
 
-export const certify = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction) => {
+export const certify = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction, theme: Theme) => {
 
   const result = await confirm(
     intl.formatMessage({
@@ -435,7 +444,9 @@ export const certify = async (task: Task | undefined, intl: IntlShape, callback:
     intl.formatMessage({
       id: "task.certify.confirm.text",
     }),
-    <CheckCircleIcon width={48} height={48} color="#0E46D7" />
+    <CheckCircleIcon width={48} height={48} color={theme.palette.primary.main || "#0E46D7"} />,
+    null,
+    theme
   );
 
   if(result) {
@@ -443,7 +454,7 @@ export const certify = async (task: Task | undefined, intl: IntlShape, callback:
   }
 }
 
-export const provision = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction) => {
+export const provision = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction, theme: Theme) => {
 
   const result = await confirm(
     intl.formatMessage({
@@ -452,7 +463,9 @@ export const provision = async (task: Task | undefined, intl: IntlShape, callbac
     intl.formatMessage({
       id: "task.provision.confirm.text",
     }),
-    <CheckCircleIcon width={48} height={48} color="#0E46D7" />
+    <CheckCircleIcon width={48} height={48} color={theme.palette.primary.main || "#0E46D7"} />,
+    null,
+    theme
   );
 
   if(result) {
@@ -460,7 +473,7 @@ export const provision = async (task: Task | undefined, intl: IntlShape, callbac
   }
 }
 
-export const resolve = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction) => {
+export const resolve = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction, theme: Theme) => {
 
   const result = await confirm(
     intl.formatMessage({
@@ -469,7 +482,9 @@ export const resolve = async (task: Task | undefined, intl: IntlShape, callback:
     intl.formatMessage({
       id: "task.resolve.confirm.text",
     }),
-    <CheckCircleIcon width={48} height={48} color="#0E46D7" />
+    <CheckCircleIcon width={48} height={48} color={theme.palette.primary.main || "#0E46D7"} />,
+    null,
+    theme
   );
 
   if(result) {
@@ -477,7 +492,7 @@ export const resolve = async (task: Task | undefined, intl: IntlShape, callback:
   }
 }
 
-export const notAllowed = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction) => {
+export const notAllowed = async (task: Task | undefined, intl: IntlShape, callback: CallbackAction, theme: Theme) => {
 
   const result = await confirm(
     intl.formatMessage({
@@ -486,7 +501,9 @@ export const notAllowed = async (task: Task | undefined, intl: IntlShape, callba
     intl.formatMessage({
       id: "task.notAllowed.confirm.text",
     }),
-    <CheckCircleIcon width={48} height={48} color="#0E46D7" />
+    <CheckCircleIcon width={48} height={48} color={theme.palette.primary.main || "#0E46D7"} />,
+    null,
+    theme
   );
 
   if(result) {

@@ -52,5 +52,6 @@
   "checkout.AddItems": "Add items to cart to proceed.",
   "checkout.SearchItem": "Search item",
   "checkout.select.expiredAt": "Select the expired date",
-  "checkout.select.account": "Select the account"  
+  "checkout.select.account": "Select the account",
+  "checkout.submit": "Submit"
 }

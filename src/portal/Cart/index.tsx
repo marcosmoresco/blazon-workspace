@@ -34,13 +34,13 @@ function Alert(props: any) {
             content: <Box>
               <Header>
                 {m.messageType === "add" && (
-                <HeaderInfo>
-                  <CheckCircleIcon width={21} height={21} color="#3174F6"/>
+                <HeaderInfo style={{color: currentTheme.palette.primary.main}}>
+                  <CheckCircleIcon width={21} height={21} color={currentTheme.palette.primary.main || "#3174F6"}/>
                   <FormattedMessage id="cart.added" />
                 </HeaderInfo>)}
                 {m.messageType === "remove" && (
-                <HeaderInfo>
-                  <CheckCircleIcon width={21} height={21} color="#3174F6"/>
+                <HeaderInfo style={{color: currentTheme.palette.primary.main}}>
+                  <CheckCircleIcon width={21} height={21} color={currentTheme.palette.primary.main || "#3174F6"}/>
                   <FormattedMessage id="cart.removed" />
                 </HeaderInfo>)}
                 <HeaderCloseIcon onClick={() => closeSnackbar(m.id)}>

@@ -20,6 +20,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { confirm } from "@components/Dialog/actions";
 import { iconByType, translateByType } from "@utils/index";
+import { useTheme, themes } from "@theme/index";
 
 // styles
 import {
@@ -63,6 +64,8 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({ item, allowedAssignTypes = [
   const router = useRouter();
   const dispatch = useDispatch();
   const intl = useIntl();
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
   const typeMap: {[key: string]: any} = {
     "TO_ME": "Only me",
     "TO_ME_AND_TO": "Me and someone else",
@@ -363,7 +366,9 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({ item, allowedAssignTypes = [
                 }), intl.formatMessage({
                   id: "checkout.item.instance.delete.message"
                 }), 
-                <XCircleIcon width={48} height={48} color="#FF134A" />);
+                <XCircleIcon width={48} height={48} color="#FF134A" />,
+                null,
+                currentTheme);
                 if(result) {
                   deleteSelfServiceCartItemInstance({
                     variables: {
@@ -390,7 +395,9 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({ item, allowedAssignTypes = [
               }), intl.formatMessage({
                 id: "checkout.item.delete.message"
               }), 
-              <XCircleIcon width={48} height={48} color="#FF134A" />);
+              <XCircleIcon width={48} height={48} color="#FF134A" />,
+              null,
+              currentTheme);
               if(result) {
                 deleteSelfServiceCartItem({
                   variables: {

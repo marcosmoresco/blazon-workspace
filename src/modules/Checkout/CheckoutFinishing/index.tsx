@@ -226,7 +226,7 @@ const CheckoutFinishing: React.FC<ItemProps> = ({ nextStep }) => {
                   //nextStep
                 }}
                 isLoading={loading ? 1 : 0}>
-                  <FormattedMessage id="checkout.save" />
+                  <FormattedMessage id="checkout.submit" />
                 </Button>
               </ButtonArea>
             </>            

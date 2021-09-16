@@ -1,7 +1,7 @@
 {
   "passwordVault.sucessSave": "Your password has been successfully changed!",
   "passwordVault.errorSave": "Your password has not been changed.",
-  "passwordVault.emptyState.title": "No password vault",
+  "passwordVault.emptyState.title": "No credentials",
   "passwordVault.emptyState.description.text": "There are no credentials in your password vault",
   "passwordVault.title": "Password vault",
   "passwordVault.itens": "{amount} items",

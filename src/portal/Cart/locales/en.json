@@ -8,6 +8,6 @@
   "cart.remove.item.confirm": "Are you sure you want to delete this item from your cart?",
   "cart.remove.items": "Delete all items?",
   "cart.remove.items.confirm": "Are you sure you want to delete all cart items?",
-  "cart.added": "Added",
-  "cart.removed": "Removed"
+  "cart.added": "Item added successfully",
+  "cart.removed": "Item removed successfully"
 }
