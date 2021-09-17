@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { FormattedMessage } from "react-intl";
+import { Theme } from "@material-ui/core/styles";
 import styled from "styled-components";
 import Paper from "@material-ui/core/Paper";
 import SquaresFourIcon from "@icons/SquaresFour";
@@ -105,8 +106,8 @@ const HeaderTag = styled.div`
   align-items: center;
   gap: 5px;
   &.Active {
-    background: rgba(90, 151, 250, 0.2);
-    color: #006ac6;
+    background: ${props => props.color};
+    color: #FFFFFF;
   }
 `;
 
@@ -154,7 +155,8 @@ export const AutocompletePaper = ({
   setOpen,
   setFilter,
   goToSearch,
-  list
+  list,
+  theme
 }: {
   children: any;
   refetch: any;
@@ -164,6 +166,7 @@ export const AutocompletePaper = ({
   setFilter: any;
   goToSearch: any;
   list: any;
+  theme: Theme
 }) => {
   const [active, setActive] = useState("");
 
@@ -211,13 +214,14 @@ export const AutocompletePaper = ({
             }
 
             refetch(variables);
-          }}
+          }}          
+          color={theme.palette.primary.main}
           className={`${active === "ROLES" && "Active"}`}
         >
           <PeopleIcon
             width={17}
             height={17}
-            color={(active === "ROLES" && "#006AC6") || "black"}
+            color={(active === "ROLES" && "#FFFFFF") || "black"}
           />
           <FormattedMessage id="roles" />
         </HeaderTag>
@@ -238,12 +242,13 @@ export const AutocompletePaper = ({
 
             refetch(variables);
           }}
+          color={theme.palette.primary.main}
           className={`${active === "ENTITLEMENTS" && "Active"}`}
         >
           <CheckCircleIcon
             width={17}
             height={17}
-            color={(active === "ENTITLEMENTS" && "#006AC6") || "black"}
+            color={(active === "ENTITLEMENTS" && "#FFFFFF") || "black"}
           />
           <FormattedMessage id="entitlements" />
         </HeaderTag>
@@ -263,12 +268,13 @@ export const AutocompletePaper = ({
 
             refetch(variables);
           }}
+          color={theme.palette.primary.main}
           className={`${active === "ADMIN_PASSWORD" && "Active"}`}
         >
           <SecurityUserIcon
             width={17}
             height={17}
-            color={(active === "ADMIN_PASSWORD" && "#006AC6") || "black"}
+            color={(active === "ADMIN_PASSWORD" && "#FFFFFF") || "black"}
           />
           <FormattedMessage id="adminAccounts" />
         </HeaderTag>
@@ -289,12 +295,13 @@ export const AutocompletePaper = ({
 
             refetch(variables);
           }}
+          color={theme.palette.primary.main}
           className={`${active === "RESOURCES" && "Active"}`}
         >
           <SquaresFourIcon
             width={17}
             height={17}
-            color={(active === "RESOURCES" && "#006AC6") || "black"}
+            color={(active === "RESOURCES" && "#FFFFFF") || "black"}
           />
           <FormattedMessage id="resources" />
         </HeaderTag>

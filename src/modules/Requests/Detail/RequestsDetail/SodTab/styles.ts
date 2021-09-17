@@ -44,15 +44,71 @@ export const UserType = styled.span`
   font-size: 16px;
   color: #1b202a;
 `;
-export const Image = styled.img`
-  border-radius: 50%;
-  margin-right: 16px;
-  height: 64px;
-  width: 64px;
-  object-fit: cover;
-`;
 
 export const Name = styled.span`
   font-size: 21px;
   color: #1b202a;
 `;
+
+export const Image = styled.img`
+  border-radius: 50%;
+`;
+
+export const HistoryBox = styled.div`
+  display: flex;
+  justify-content: space-between;
+  padding: 12px;
+  border-radius: 6px;
+  gap: 16px;
+  margin-bottom: 16px;
+  background: #FBFAFB;
+`;
+
+export const HistorySystem = styled.div`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #F4F4F5;
+  border-radius: 56px;
+  width: 32px;
+  height: 32px;
+`;
+
+export const UserHistory = styled.div`
+  display: flex;
+  gap: 16px;
+  background: #FFFFFF;
+  border: 1px solid #D4D3D9;
+  padding: 8px;
+  border-radius: 6px;
+`;
+export const UserName = styled.div`
+  font-size: 12px;
+  font-weight: 400;  
+  color: #26213F;
+  line-height: 17px;
+
+`;
+export const User = styled.div`
+  font-size: 16px;
+  font-weight: 500;
+  color: #26213F;
+`;
+
+export const UserBox = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 18px;
+`;
+export const Info = styled.div`
+  font-size: 14px;
+  font-weight: 400;
+  color: #60636a;
+`;
+export const InfoContent = styled.div`
+  align-items: center;
+  font-size: 14px;
+  font-weight: 500;
+  color: #1b202a;
+`;
+

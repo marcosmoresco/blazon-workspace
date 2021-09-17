@@ -96,7 +96,7 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl, theme 
 
   const list = data?.getSelfService || [];
 
-  AutocompletePaper.defaultProps = { refetch, filter, open, setOpen, setFilter, goToSearch, list };
+  AutocompletePaper.defaultProps = { refetch, filter, open, setOpen, setFilter, goToSearch, list, theme };
 
   return (
     <>

@@ -12,9 +12,7 @@ export const WorkArea = styled.div`
   margin-left: auto;
   margin-right: auto;
 `;
-export const Grid = styled.div`
-  box-shadow: 0px 4px 16px rgba(27, 32, 42, 0.08);
-  border: 1px solid #EDEDEF;  
+export const Grid = styled.div` 
   padding: 0 0 2px;
   margin: 18px 0;
   border-radius: 6px;

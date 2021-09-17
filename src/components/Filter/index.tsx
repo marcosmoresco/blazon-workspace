@@ -378,7 +378,7 @@ class Filter extends Component<FilterPropsType, FilterStateType> {
           <div className="Date-filter">
             <DatePicker
               isTime
-              label="Início"
+              label={<FormattedMessage id="init"/>}
               style={{ marginRight: 15 }}
               value={
                 (!!selectedFilter.value && selectedFilter.value.start) || null
@@ -389,7 +389,7 @@ class Filter extends Component<FilterPropsType, FilterStateType> {
             />
             <DatePicker
               isTime
-              label="Fim"
+              label={<FormattedMessage id="end"/>}
               value={
                 (!!selectedFilter.value && selectedFilter.value.end) || null
               }

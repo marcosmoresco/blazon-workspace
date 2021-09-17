@@ -69,7 +69,16 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
     ],
     bind: "value",
     view: "label"
-  }] : [...(filters.filter((f) => f.name !== "status"))]);
+  }] : [...(filters.filter((f) => f.name !== "status" && f.name !== "resolvedAt")), {
+    orderable: true,
+    name: "deadline",
+    label: <FormattedMessage id="deadline" />,    
+    type: "date",
+    bind: {
+      start: "initDeadline",
+      end: "endDeadline"
+    }
+  }]);
   const [typeValue, setTypeValue] = useState<string>("ANY");
   const [loading, setLoading] = useState(false);
   const [checkAll, setCheckAll] = useState<boolean>(false);

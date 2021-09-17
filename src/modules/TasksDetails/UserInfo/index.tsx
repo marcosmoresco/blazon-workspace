@@ -5,7 +5,7 @@ import { useRouter } from "next/router";
 import { useTheme, themes } from "@theme/index";
 
 // components
-import DetailUser from "@modules/Task/components/DetailUser";
+import DetailUser from "@components/DetailUser";
 
 //types
 import { UserInfoProps } from "./types";

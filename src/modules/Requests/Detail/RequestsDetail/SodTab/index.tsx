@@ -15,11 +15,14 @@ import { ApprovalDetails } from "@modules/Requests/types";
 
 // styles
 import {
-  ApprovalDetailTab,
-  StyledTableResource,
-  UserType,
   Image,
-  Name,
+  HistoryBox,
+  UserBox,
+  UserHistory,
+  UserName,
+  User,
+  InfoContent,
+  Info,
 } from "./styles";
 
 //images
@@ -34,44 +37,38 @@ const SodTab: React.FC<CardProps> = ({ request }) => {
       )}
       {(request?.sodDetails || []).map(
         (approvalDetail: ApprovalDetails, index: number) => (
-          <ApprovalDetailTab key={`sod-details-${index}`}>
-            <div>
-              <Image
-                src={getLink("thumb", approvalDetail?.approver?.links || [])}
-                alt={approvalDetail?.approver?.displayName || " - "}
-              />
-              <span>
-                <UserType>
-                  <FormattedMessage id="request.approver" />
-                </UserType>
-                <Name>{approvalDetail?.approver?.displayName || " - "}</Name>
-              </span>
-            </div>
-            <StyledTableResource>
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <th>
-                      <FormattedMessage id="request.createdAt" />
-                    </th>
-                    <th>
-                      <FormattedMessage id="request.approvedAt" />
-                    </th>                   
-                    <th>
-                      <FormattedMessage id="request.status" />
-                    </th>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  <TableRow>
-                    <td>{approvalDetail?.creation || " - "}</td>
-                    <td>{approvalDetail?.approvalDate || " - "}</td>                   
-                    <td>{approvalDetail?.outcome || " - "}</td>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </StyledTableResource>
-          </ApprovalDetailTab>
+          <HistoryBox key={`task-assign-history-${index}`}>
+            <UserBox>
+              <UserHistory>                
+                { approvalDetail?.approver && (
+                  <>
+                    <Image
+                      src={getLink("thumb",  approvalDetail?.approver?.links)}
+                      width={32}
+                      height={32}
+                      alt={ approvalDetail?.approver?.displayName}
+                    />
+                    <UserName>
+                      <FormattedMessage id="tasks.AssignedFrom" />
+                      <User>{ approvalDetail?.approver?.displayName || " - "}</User>
+                    </UserName>
+                  </>                         
+                )}                        
+              </UserHistory>              
+            </UserBox>
+            <InfoContent>
+              <FormattedMessage id="request.createdAt" />
+              <Info>{approvalDetail?.creation || " - "}</Info>
+            </InfoContent>
+            <InfoContent>
+              <FormattedMessage id="request.approvedAt" />
+              <Info>{approvalDetail?.approvalDate || " - "}</Info>
+            </InfoContent>           
+            <InfoContent>
+              <FormattedMessage id="request.status" />
+              <Info>{approvalDetail?.outcome || " - "}</Info>
+            </InfoContent>
+          </HistoryBox>
         )
       )}
       {!request && (<Progress />)}

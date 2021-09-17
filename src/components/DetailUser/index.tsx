@@ -1,5 +1,5 @@
 //vendors
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import { getLink } from "@utils/index";
 
@@ -24,7 +24,7 @@ import {
   DrawerDetailUser
 } from "./styles";
 
-const DetailUser: React.FC<DetailUserProps> = ({ task, title = "task.requester", user }) => {  
+const DetailUser: React.FC<DetailUserProps> = ({ task, request, title = "task.requester", user }) => {  
 
   const [modalOpen, setModalOpen] = useState(false);
 
@@ -62,7 +62,7 @@ const DetailUser: React.FC<DetailUserProps> = ({ task, title = "task.requester",
         anchor="right" 
         open={modalOpen} 
         onClose={() => setModalOpen(false)}>
-        <UserContent user={currentUser} close={() => setModalOpen(false)}/>                
+        <UserContent user={currentUser} close={() => setModalOpen(false)} type={(task && "task") || "request"}/>                
       </DrawerDetailUser>
     </>    
   );

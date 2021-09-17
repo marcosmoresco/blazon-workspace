@@ -123,5 +123,8 @@
   "orderBy": "Ordenar por",
   "downloadCSV": "Baixar CSV",
   "expand": "Expandir",
-  "refresh": "Recarregar"
+  "refresh": "Recarregar",
+  "init": "Início",
+  "end": "Fim",
+  "user.no.additional.info": "Não há informações adicionais para o usuário"
 }

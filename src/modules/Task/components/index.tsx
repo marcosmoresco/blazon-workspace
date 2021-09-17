@@ -49,7 +49,7 @@ import XIcon from "@icons/X";
 import ForwardUser from "@modules/Task/components/ForwardUser";
 import ForwardQueue from "@modules/Task/components/ForwardQueue";
 import Disapprove from "@modules/Task/components/Disapprove";
-import DetailUser from "@modules/Task/components/DetailUser";
+import DetailUser from "@components/DetailUser";
 
 import {  
   BoxCard,

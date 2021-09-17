@@ -1,5 +1,5 @@
 // vendors
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import { useDispatch } from "react-redux";
@@ -88,7 +88,7 @@ const CheckoutFinishing: React.FC<ItemProps> = ({ nextStep }) => {
   const dispatch = useDispatch();
   const { cart, setCart } = useCart();
   const { theme } = useTheme();
-  const currentTheme = { ...themes[theme] };
+  const currentTheme = { ...themes[theme] };  
 
   const { loading: loadingRequestCart, error, data } = useQuery<{
     getSelfServiceCart: SelfServiceCart;
@@ -154,15 +154,18 @@ const CheckoutFinishing: React.FC<ItemProps> = ({ nextStep }) => {
 
   useEffect(() => {
     if (!loading && !error && !cart) {
-      setCart(data?.getSelfServiceCart || ({} as SelfServiceCart));
+      setCart(data?.getSelfServiceCart || ({} as SelfServiceCart));           
     }
+    if(window) {
+      window.scrollTo(0,document.body.scrollHeight);     
+    }    
   }, [loading, error, cart, setCart, data]);
 
   if(loadingRequestCart) {
     return (
       <Loading container/>
     )
-  }
+  }  
 
   return (
     <>

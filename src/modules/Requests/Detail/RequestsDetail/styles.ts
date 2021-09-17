@@ -5,8 +5,7 @@ export const WorkArea = styled.div`
   margin-left: auto;
   margin-right: auto;
 `;
-export const Grid = styled.div`
-  box-shadow: 0px 4px 16px rgba(27, 32, 42, 0.08);
+export const Grid = styled.div` 
   padding: 22px 0 2px;
   margin: 18px 0;
   border-radius: 6px;
@@ -42,7 +41,7 @@ export const InsideLine = styled.div`
 
 export const DeitalList = styled.div`
   align-items: center;
-  padding: 42px 24px 39px;
+  padding: 33px 24px 7px 24px;
   background: #fff;
 `;
 

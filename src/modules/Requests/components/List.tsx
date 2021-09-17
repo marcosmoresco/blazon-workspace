@@ -19,19 +19,17 @@ const RequestList: FC<ListProps> = ({ resolved }) => {
     name: "status",
     label: <FormattedMessage id="status" />,
     type: "list",
-    values: [
-      {
-        label: "ERROR",
-        value: "ERROR"
-      },      
-      {
-        label: "CANCELED",
-        value: "CANCELED"
-      },
-    ],
+    values: processedStatusList.map((s) => ({label: s, value: s})),
     bind: "value",
     view: "label"
-  }] : [...(filters.filter((f) => f.name !== "status"))]);
+  }] : [...(filters.filter((f) => f.name !== "status" && f.name !== "finalizedAt")), {
+    name: "status",
+    label: <FormattedMessage id="status" />,
+    type: "list",
+    values: inProgressStatusList.map((s) => ({label: s, value: s})),
+    bind: "value",
+    view: "label"
+  }]);
   const [filtered, setFiltered] = useState<{[key: string]: any}>(resolved ? {status: processedStatusList} : {status: inProgressStatusList});
   const [orderBy, setOrderBy] = useState<string>("createdAt:desc");
 

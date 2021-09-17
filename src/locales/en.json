@@ -123,5 +123,8 @@
   "orderBy": "Order By",
   "downloadCSV": "Download CSV",
   "expand": "Expand",
-  "refresh": "Refresh"
+  "refresh": "Refresh",
+  "init": "Init",
+  "end": "End",
+  "user.no.additional.info": "There is no additional informations about user"
 }

@@ -159,7 +159,6 @@ export const HistoryBox = styled.div`
   display: flex;
   justify-content: space-between;
   padding: 12px;
-  border: 1px solid #d4d3d9;
   border-radius: 6px;
   gap: 16px;
   margin-bottom: 16px;

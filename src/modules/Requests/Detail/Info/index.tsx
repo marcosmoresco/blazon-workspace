@@ -7,7 +7,7 @@ import Tag from "@icons/Tag";
 import { getLink } from "@utils/index";
 import apolloClient from "@utils/apollo-client";
 import { confirm } from "@components/Dialog/actions";
-import DetailUser from "@modules/Task/components/DetailUser";
+import DetailUser from "@components/DetailUser";
 import { addMessage } from "@actions/index";
 import { useTheme, themes } from "@theme/index";
 import { processedStatusList, inProgressStatusList } from "@modules/Requests/components/constants";
