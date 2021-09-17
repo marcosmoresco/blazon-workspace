@@ -107,28 +107,16 @@ const Info: React.FC<FirstTaskProps> = ({ intl, request, refetch }) => {
 
   return (
     <WorkArea>
-      <ButtonArea>
+      {["NEW", "WAITING_EXECUTION", "WAITING_APPROVAL"].includes(request?.status as string) &&
+      <ButtonArea>       
         <Button
           variant="contained"
-          color="primary"
-          secondColor="default"
-          onClick={() => router.reload()}
-        >
-          {intl.formatMessage({ id: "request.refresh" })}
-        </Button>
-        <Button
-          variant="contained"
-          color="secondary"
-          disabled={
-            ["NEW", "WAITING_EXECUTION", "WAITING_APPROVAL"].indexOf(
-              request?.status || ""
-            ) === -1
-          }
+          color="secondary"         
           onClick={cancel}
         >
           <FormattedMessage id="request.cancel" />
         </Button>
-      </ButtonArea>
+      </ButtonArea>}
       <Grid>
         <Header>
           <BoxCardHeader>

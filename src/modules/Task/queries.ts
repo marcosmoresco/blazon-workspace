@@ -1054,6 +1054,8 @@ export const GET_TASK_QUEUES_FILTERS = gql`
   query getTaskQueuesFilters($category: String, $type: String) {
     getFilters: getTaskQueuesFilters(category: $category, type: $type) {
       label
+      orderable
+      value
       clauses {
         label
         type

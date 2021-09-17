@@ -61,7 +61,7 @@
   "task.assignToMe.confirm.text": "Tem certeza que deseja encaminhar essa tarefa para você?",
   "task.assignToMe.success": "Tarefa atribuída para você com sucesso!",
   "task.forward.queue.success": "Tarefa encaminhada para a fila com sucesso!",
-  "task.any": "Alguma",
+  "task.any": "Todas",
   "task.newRoleRight": "Novo direito de papel",
   "task.resource": "Recurso",
   "tasks.resolved": "Resolvidas",

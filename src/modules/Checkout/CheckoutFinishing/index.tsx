@@ -156,8 +156,11 @@ const CheckoutFinishing: React.FC<ItemProps> = ({ nextStep }) => {
     if (!loading && !error && !cart) {
       setCart(data?.getSelfServiceCart || ({} as SelfServiceCart));           
     }
-    if(window) {
-      window.scrollTo(0,document.body.scrollHeight);     
+    if(document) {
+      const elem = document.querySelector("#status-checkout");      
+      if(elem) {
+        elem.scrollIntoView();
+      }           
     }    
   }, [loading, error, cart, setCart, data]);
 
@@ -170,7 +173,7 @@ const CheckoutFinishing: React.FC<ItemProps> = ({ nextStep }) => {
   return (
     <>
       <TitlePage onBack={() => router.push("/checkout")} title="checkout" subTitle="checkout.FinishingRequest"/>
-      <StatusCheckoutStyle>
+      <StatusCheckoutStyle id="status-checkout">
         <SymbolStyle>
           <CircleStyle>
             <InfoIcon width={48} height={48} color={currentTheme.palette.primary.main || "#3174F6"} stroke={2}/>

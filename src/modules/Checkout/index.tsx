@@ -1,5 +1,5 @@
 // vendors
-import React from "react";
+import React, { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useQuery } from "@apollo/client";
 import { useRouter } from "next/router";
@@ -38,6 +38,8 @@ const Checkout: React.FC = () => {
   const dispatch = useDispatch();
   const intl = useIntl();
 
+  const [scroll, setScrool] = useState<boolean>(true);
+
   const { loading: loadingRequestCart, error, data } = useQuery<{
     getSelfServiceCart: SelfServiceCart;
   }>(GET_SELF_SERVICE_CART);
@@ -48,10 +50,20 @@ const Checkout: React.FC = () => {
     )
   }
 
+  if(document && scroll) {
+    setTimeout(() => {
+      const elem = document.querySelector("#status-checkout");      
+      if(elem) {
+        elem.scrollIntoView();
+      }  
+      setScrool(false);
+    });           
+  }
+
   return (
     <>
       <TitlePage title="checkout" subTitle="checkout.RequestInformation" />
-      <StatusCheckoutStyle>
+      <StatusCheckoutStyle id="status-checkout">
         <SymbolStyle>
           <CircleStyle>
             <InfoIcon width={48} height={48} color="#514D65" stroke={2} />

@@ -70,10 +70,10 @@ export const useStyles = (theme: Theme) =>
           color: "#777779",
         },
         "&.active": {
-          background: "#C1E2F5",
-          border: "1px solid #5EC2FF",
+          background: theme.palette.primary.main || "#C1E2F5",
+          border: `1px solid ${theme.palette.primary.main || "#5EC2FF"}`,
           "& label": {
-            color: "#0992CC",
+            color: "#FFFFFF",
           },
         },
       },

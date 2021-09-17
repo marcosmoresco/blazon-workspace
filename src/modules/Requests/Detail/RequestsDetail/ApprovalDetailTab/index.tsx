@@ -60,13 +60,9 @@ const ApprovalTab: React.FC<CardProps> = ({ request }) => {
               <Info>{approvalDetail?.creation || " - "}</Info>
             </InfoContent>
             <InfoContent>
-              <FormattedMessage id="request.approvedAt" />
+              <FormattedMessage id="request.resolvedAt" />
               <Info>{approvalDetail?.approvalDate || " - "}</Info>
-            </InfoContent>
-            <InfoContent>
-              <FormattedMessage id="request.task" />
-              <Info>{approvalDetail?.taskId || " - "}</Info>
-            </InfoContent>
+            </InfoContent>           
             <InfoContent>
               <FormattedMessage id="request.status" />
               <Info>{approvalDetail?.outcome || " - "}</Info>

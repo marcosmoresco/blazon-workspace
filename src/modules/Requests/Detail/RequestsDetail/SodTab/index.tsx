@@ -61,7 +61,7 @@ const SodTab: React.FC<CardProps> = ({ request }) => {
               <Info>{approvalDetail?.creation || " - "}</Info>
             </InfoContent>
             <InfoContent>
-              <FormattedMessage id="request.approvedAt" />
+              <FormattedMessage id="request.resolvedAt" />
               <Info>{approvalDetail?.approvalDate || " - "}</Info>
             </InfoContent>           
             <InfoContent>
