@@ -51,7 +51,7 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
   const [queueCategoryName, setQueueCategoryName] = useState<string>(intl.formatMessage({id: "task.any"}));
   const [queueTypeValue, setQueueTypeValue] = useState<string>("ANY");
   const [queueTypeName, setQueueTypeName] = useState<string>(intl.formatMessage({id: "task.any"}));
-  const [filtered, setFiltered] = useState<{[key: string]: any}>({});
+  const [filtered, setFiltered] = useState<{[key: string]: any}>({status: "WAITING_ASSIGN"});
   const [checkAll, setCheckAll] = useState<boolean>(false);
   const [filtersTask, setFiltersTask] = useState<FilterType[]>([]);
   const [anchorEl, setAnchorEl] = useState(null); 
@@ -101,7 +101,7 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
     setQueueCategoryName(intl.formatMessage({id: "task.any"}));
     setQueueTypeValue("ANY");
     setQueueTypeName(intl.formatMessage({id: "task.any"}));
-    setFiltered({});
+    setFiltered({status: "WAITING_ASSIGN"});
     setCheckAll(false);
     getQueueFilters("ANY", "ANY");
     setStateWithCallback([], () => getQueueFilters("ANY", "ANY"));
@@ -112,9 +112,9 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
     setQueueTypeValue("ANY");
     setQueueTypeName(intl.formatMessage({id: "task.any"}));
     if(val != "ANY") {
-      setFiltered({category: val});
+      setFiltered({category: val, status: "WAITING_ASSIGN"});
     } else {
-      setFiltered({});
+      setFiltered({status: "WAITING_ASSIGN"});
     }    
     setCheckAll(false);        
     setStateWithCallback([], () => getQueueFilters(val, "ANY"));
@@ -123,9 +123,9 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
   const handleChangeType = (val: any) => {    
     setQueueTypeValue(val);
     if(val != "ANY") {
-      setFiltered({"category": queueCategoryValue, "taskData.type": val});
+      setFiltered({"category": queueCategoryValue, "taskData.type": val, status: "WAITING_ASSIGN"});
     } else {
-      setFiltered({"category": queueCategoryValue});     
+      setFiltered({"category": queueCategoryValue, status: "WAITING_ASSIGN"});     
     }     
     setCheckAll(false);
     setStateWithCallback([], () => getQueueFilters(queueCategoryValue, val));
@@ -136,12 +136,14 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
     myCallbacksList.current.forEach((callback) => callback())
     myCallbacksList.current = [];
     
-    if(!filtersTask.length) {  
-      setCurrentFilters(JSON.stringify(dataFilters?.getFilters));    
-      setFiltersTask(generateFilters(intl, dataFilters?.getFilters || []))
+    const _filters =   dataFilters?.getFilters.filter((f: any) => f.label !== "task.status");
+
+    if(!filtersTask.length) {      
+      setCurrentFilters(JSON.stringify(_filters));    
+      setFiltersTask(generateFilters(intl, _filters || []));
     }
 
-    if(currentFilters !== JSON.stringify(dataFilters?.getFilters) && filtersTask.length) {
+    if(currentFilters !== JSON.stringify(_filters) && filtersTask.length) {
       setFiltersTask([]);
     }
    
@@ -209,7 +211,7 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
                 </SelectBoxContainer>
               </FilterContent> 
             )}                                                           
-            {queueIdentifier && <Filter filters={filtersTask} onChange={(f: any) => setFiltered({...filtered, ...f})}/>}            
+            {queueIdentifier && <Filter filters={filtersTask} onChange={(f: any) => setFiltered({...filtered, ...f, status: "WAITING_ASSIGN"})}/>}            
           </HeaderFilters>
           <HeaderFilters>
             <Button 

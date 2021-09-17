@@ -50,7 +50,7 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
   const { theme } = useTheme();
   const currentTheme = { ...themes[theme] };
 
-  const [filteredString, setFilteredString] = useState<string>("{}");
+  const [filteredString, setFilteredString] = useState<string>(JSON.stringify(filtered));
   const [checked, setChecked] = useState<number[]>([]);
   const [queueId, setQueueId] = useState<number>();
   const [openForwardUser, setOpenForwardUser] = useState(false);
