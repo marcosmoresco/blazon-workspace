@@ -66,5 +66,6 @@
   "request.inProgress": "In progress",
   "request.processed": "Processed",
   "request.empty": "No request",
-  "request.empty.text": "No requests were found"
+  "request.empty.text": "No requests were found",
+  "request.resolvedAt": "Resolved at"
 }

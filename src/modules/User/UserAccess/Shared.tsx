@@ -66,8 +66,8 @@ const filters = [
         value: "ACTIVE",
       },
       {
-        label: <FormattedMessage id="revoked" />,
-        value: "REVOKED",
+        label: <FormattedMessage id="inactive" />,
+        value: "INACTIVE",
       },
     ],
     bind: "value",

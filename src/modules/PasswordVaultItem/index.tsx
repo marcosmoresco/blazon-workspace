@@ -135,7 +135,10 @@ const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
             id: "passwordVault.remove.confirm"
           }), intl.formatMessage({
             id: "passwordVault.remove.confirm.text"
-          }));
+          }),
+          null,
+          null,
+          currentTheme);
           if(result) {
             deletePasswordVaultEntry({
               variables: {

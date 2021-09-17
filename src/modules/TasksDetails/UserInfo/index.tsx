@@ -64,19 +64,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                   <BoxCardIdentifier
                     background="#EDEDEF" 
                     color={currentTheme.palette.primary.main}>
-                    ID: {["approval", "sod"].includes(type as string) && (
-                      task?.approvalItemDetails?.entitlementIdentifier || 
-                      task?.approvalItemDetails?.roleIdentifier || 
-                      task?.approvalItemDetails?.resourceIdentifier || " - "
-                    )}
-                    {type === "certification" && (
-                      task?.certificationItemDetails?.resourceIdentifier || 
-                      task?.certificationItemDetails?.roleIdentifier || 
-                      task?.certificationItemDetails?.entitlementIdentifier || " - "
-                    )}
-                    {type === "provisioning" && (
-                      task?.provisioningItemDetail?.resource?.identifier || " - "
-                    )}                  
+                    ID: {task?.identifier || " - "}                                      
                   </BoxCardIdentifier>
                   <BoxCardIdentifier
                     background="#EDEDEF" 

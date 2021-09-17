@@ -83,8 +83,8 @@ const UserContent: React.FC<UserContentProps> = ({ user, close, type }) => {
         <HeaderBox>
           <Avatar src={getLink("thumb", user.links || [])} />
           <div>
-            <HeaderDisplayName>{userDetail?.displayName}</HeaderDisplayName>
-            <HeaderUsername>{userDetail?.username || " - "}</HeaderUsername>
+            <HeaderDisplayName>{userDetail?.displayName?.value || " - "}</HeaderDisplayName>
+            <HeaderUsername>{userDetail?.username?.value || " - "}</HeaderUsername>
           </div>
         </HeaderBox>              
       </Header>

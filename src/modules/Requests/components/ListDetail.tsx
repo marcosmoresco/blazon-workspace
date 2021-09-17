@@ -21,12 +21,12 @@ import {
 } from "@modules/Requests/queries";
 
 
-const RequestListDetail: FC<ListProps> = ({ filtered }) => {
+const RequestListDetail: FC<ListProps> = ({ filtered, orderBy = "createdAt:desc" }) => {
 
   const intl = useIntl();
 
   const [checkAll, setCheckAll] = useState<boolean>(false);   
-  const [orderBy, setOrderBy] = useState<string>("createdAt:desc");
+  const [currentOrderBy, setCurrentOrderBy] = useState<string>("createdAt:desc");
   const [filteredString, setFilteredString] = useState<string>(JSON.stringify(filtered));
   const [size, setSize] = useState<number>(10);
   const [checked, setChecked] = useState<number[]>([]);
@@ -81,7 +81,7 @@ const RequestListDetail: FC<ListProps> = ({ filtered }) => {
       setChecked(newChecked);
     }
 
-    /*if(orderBy !== currentOrderBy) {
+    if(orderBy !== currentOrderBy) {
       setCurrentOrderBy(orderBy);
       refetch({
         page: 0,
@@ -89,7 +89,7 @@ const RequestListDetail: FC<ListProps> = ({ filtered }) => {
         ord: orderBy,
         filters: JSON.stringify(filtered)
       });
-    }*/
+    }
 
   }, [filteredString, filtered, checkAll, checkedAll, checked, data, refetch, orderBy]);
 

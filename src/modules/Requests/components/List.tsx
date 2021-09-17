@@ -57,7 +57,7 @@ const RequestList: FC<ListProps> = ({ resolved }) => {
           </HeaderFilters>         
         </HeaderFiltersContent>                           
       </Header>
-      <ListDetail resolved={resolved} filtered={filtered}/>
+      <ListDetail resolved={resolved} filtered={filtered} orderBy={orderBy}/>
     </Box>  
   );
 };
