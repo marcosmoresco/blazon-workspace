@@ -8,7 +8,7 @@ import { getLink } from "@utils/index";
 import { useTheme, themes } from "@theme/index";
 
 //components
-import EmptyStateSearchIcon from "@icons/EmptyStateSearch";
+import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
 import Snackbar from "@components/Snackbar";
 import Tasks from "@modules/Task/components";
 import ForwardUser from "@modules/Task/components/ForwardUser";
@@ -454,7 +454,7 @@ const PersonalTasksRoleRight: FC<ListProps> = ({ dispatch, filtered = {}, checkA
         <Tasks list={data?.getRoleRightApprovalTasks.representation || []} checked={checked} onCheck={handleCheck} type="ROLE_RIGHT_TASK" subType="roleRight" size={size} filteredString={filteredString}/>
       )}
       {(data?.getRoleRightApprovalTasks?.representation || []).length === 0 && (
-        <EmptyState icon={<EmptyStateSearchIcon />} title="task.empty" text="task.empty.text" bgColor="#FFFFFF"/>
+        <EmptyState image={EmptyStateTypeahead} title="task.empty" text="task.empty.text" bgColor="#FFFFFF"/>
       )}
       {getLink("next", data?.getRoleRightApprovalTasks?.links || []) && (
         <LoadMoreContent>

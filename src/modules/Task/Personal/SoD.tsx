@@ -8,7 +8,7 @@ import { getLink } from "@utils/index";
 import { useTheme, themes } from "@theme/index";
 
 //components
-import EmptyStateSearchIcon from "@icons/EmptyStateSearch";
+import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
 import Snackbar from "@components/Snackbar";
 import Tasks from "@modules/Task/components";
 import ForwardUser from "@modules/Task/components/ForwardUser";
@@ -451,7 +451,7 @@ const PersonalTasksSoD: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
         <Tasks list={data?.getSoDApprovalTasks.representation || []} checked={checked} onCheck={handleCheck} type="SOD_TASK" subType="sod" size={size} filteredString={filteredString}/>
       )}
       {(data?.getSoDApprovalTasks?.representation || []).length === 0 && (
-        <EmptyState icon={<EmptyStateSearchIcon />} title="task.empty" text="task.empty.text" bgColor="#FFFFFF"/>
+        <EmptyState image={EmptyStateTypeahead} title="task.empty" text="task.empty.text" bgColor="#FFFFFF"/>
       )}
       {getLink("next", data?.getSoDApprovalTasks?.links || []) && (
         <LoadMoreContent>

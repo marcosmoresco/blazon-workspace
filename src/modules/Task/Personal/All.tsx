@@ -1,24 +1,9 @@
 import React, { FC, useState, useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import apolloClient from "@utils/apollo-client";
 import { useQuery,useMutation } from "@apollo/client";
-import Avatar from "@material-ui/core/Avatar";
 import Button from "@components/Button";
-import Card from "@components/Card";
-import Checkbox from "@components/Checkbox";
 import Loading from "@components/Loading";
-import Filter from "@components/Filter";
-import Section from "@components/Section";
-import Select from "@components/Select";
 import EmptyState from "@components/EmptyState";
-import EmptyStateSearchIcon from "@icons/EmptyStateSearch";
-import ArrowsOutIcon from "@icons/ArrowsOut";
-import ArrowClockwiseIcon from "@icons/ArrowClockwise";
-import CalendarIcon from "@icons/Calendar";
-import CheckSquareOffsetIcon from "@icons/CheckSquareOffset";
-import CirclesFourIcon from "@icons/CirclesFour";
-import DotsThreeIcon from "@icons/DotsThree";
-import UserGearIcon from "@icons/UserGear";
 import { connect } from "react-redux";
 import { addMessage } from "@actions/index";
 import type { ListProps, Task } from "@modules/Task/types";
@@ -32,6 +17,7 @@ import Snackbar from "@components/Snackbar";
 import Tasks from "@modules/Task/components";
 import ForwardUser from "@modules/Task/components/ForwardUser";
 import ForwardQueue from "@modules/Task/components/ForwardQueue";
+import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
 
 //constants
 import {
@@ -368,7 +354,7 @@ const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
       <Tasks list={data?.getTasks.representation || []} checked={checked} onCheck={handleCheck} subType="any" size={size} filteredString={filteredString} refetch={refetch}/>
       )}
       {(data?.getTasks?.representation || []).length === 0 && (
-        <EmptyState icon={<EmptyStateSearchIcon />} title="task.empty" text="task.empty.text" bgColor="#FFFFFF"/>
+        <EmptyState image={EmptyStateTypeahead} title="task.empty" text="task.empty.text" bgColor="#FFFFFF"/>
       )}
       {getLink("next", data?.getTasks?.links || []) && (
         <LoadMoreContent>

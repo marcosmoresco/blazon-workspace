@@ -8,7 +8,6 @@ import { getLink } from "@utils/index";
 import { useTheme, themes } from "@theme/index";
 
 //components
-import EmptyStateSearchIcon from "@icons/EmptyStateSearch";
 import Snackbar from "@components/Snackbar";
 import Tasks from "@modules/Task/components";
 import ForwardUser from "@modules/Task/components/ForwardUser";
@@ -17,6 +16,7 @@ import Disapprove from "@modules/Task/components/Disapprove";
 import Button from "@components/Button";
 import Loading from "@components/Loading";
 import EmptyState from "@components/EmptyState";
+import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
 
 //types
 import type { ListProps, Task } from "@modules/Task/types";
@@ -463,7 +463,7 @@ const PersonalTasksApproval: FC<ListProps> = ({ dispatch, filtered = {}, checkAl
         <Tasks list={data?.getRequestApprovalTasks.representation || []} checked={checked} onCheck={handleCheck} type="APPROVAL_TASK" subType="approval" size={size} filteredString={filteredString}/>
       )}
       {(data?.getRequestApprovalTasks?.representation || []).length === 0 && (
-        <EmptyState icon={<EmptyStateSearchIcon />} title="task.empty" text="task.empty.text" bgColor="#FFFFFF"/>
+        <EmptyState image={EmptyStateTypeahead} title="task.empty" text="task.empty.text" bgColor="#FFFFFF"/>
       )}
       {getLink("next", data?.getRequestApprovalTasks?.links || []) && (
         <LoadMoreContent>

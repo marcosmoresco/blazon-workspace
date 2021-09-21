@@ -8,7 +8,7 @@ import { getLink } from "@utils/index";
 import { useTheme, themes } from "@theme/index";
 
 //components
-import EmptyStateSearchIcon from "@icons/EmptyStateSearch";
+import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
 import Snackbar from "@components/Snackbar";
 import Tasks from "@modules/Task/components";
 import ForwardUser from "@modules/Task/components/ForwardUser";
@@ -17,6 +17,7 @@ import Disapprove from "@modules/Task/components/Disapprove";
 import Button from "@components/Button";
 import Loading from "@components/Loading";
 import EmptyState from "@components/EmptyState";
+
 
 //types
 import type { ListProps, Task } from "@modules/Task/types";
@@ -463,7 +464,7 @@ const PersonalTasksProvisioning: FC<ListProps> = ({ dispatch, filtered = {}, che
         <Tasks list={data?.getProvisioningTasks.representation || []} checked={checked} onCheck={handleCheck} type="PROVISIONING_TASK" subType="provisioning" size={size} filteredString={filteredString}/>
       )}
       {(data?.getProvisioningTasks?.representation || []).length === 0 && (
-        <EmptyState icon={<EmptyStateSearchIcon />} title="task.empty" text="task.empty.text" bgColor="#FFFFFF"/>
+        <EmptyState image={EmptyStateTypeahead} title="task.empty" text="task.empty.text" bgColor="#FFFFFF"/>
       )}
       {getLink("next", data?.getProvisioningTasks?.links || []) && (
         <LoadMoreContent>

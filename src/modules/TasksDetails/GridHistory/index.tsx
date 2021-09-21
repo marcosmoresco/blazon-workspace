@@ -15,7 +15,7 @@ import PaperPlaneTiltIcon from "@icons/PaperPlaneTilt";
 import ArrowRightIcon from "@icons/ArrowRight";
 import ListBulletsIcon from "@icons/ListBullets";
 import EmptyState from "@components/EmptyState";
-import EmptyStateSearchIcon from "@icons/EmptyStateSearch";
+import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
 
 //constants
 import {
@@ -156,7 +156,7 @@ const GridHistory: React.FC<GridHistoryProps> = ({ task }) => {
                   <FormattedMessage id="tasks.comments" />
                 </TitleComments>
                 {(task?.comments || []).length === 0 && (
-                  <EmptyState icon={<EmptyStateSearchIcon />} title="tasks.noComments" text="tasks.noComments.text" bgColor="#FFFFFF"/>
+                  <EmptyState image={EmptyStateTypeahead} title="tasks.noComments" text="tasks.noComments.text" bgColor="#FFFFFF"/>
                 )}
                 {(task?.comments || []).map((comment: TaskComment) => (
                   <CommentsRegister key={`comment-${comment.identifier}`}>

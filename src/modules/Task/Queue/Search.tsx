@@ -4,7 +4,7 @@ import Snackbar from "@components/Snackbar";
 import Loading from "@components/Loading";
 import EmptyState from "@components/EmptyState";
 import Button from "@components/Button";
-import EmptyStateSearchIcon from "@icons/EmptyStateSearch";
+import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
 import { connect } from "react-redux";
 import type { ListProps, Task } from "@modules/Task/types";
 import type { Link } from "@types";
@@ -351,7 +351,7 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
         <Tasks list={data?.getTaskQueueTasks.representation || []} type={type} isQueue={true}  id={id} checked={checked} onCheck={handleCheck} subType="queue"/>
       )}
       {(data?.getTaskQueueTasks?.representation || []).length === 0 && (
-        <EmptyState icon={<EmptyStateSearchIcon />} title="task.empty" text="task.empty.text" bgColor="#FFFFFF"/>
+        <EmptyState image={EmptyStateTypeahead} title="task.empty" text="task.empty.text" bgColor="#FFFFFF"/>
       )}
       {getLink("next", data?.getTaskQueueTasks?.links || []) && (
         <LoadMoreContent>
