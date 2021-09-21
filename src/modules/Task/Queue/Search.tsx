@@ -44,7 +44,7 @@ import {
   FORWARD_TO_QUEUE_TASK,  
 } from "@modules/Task/mutations";
 
-const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, checkAll = false, setCheckAll }) => {
+const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, checkAll = false, setCheckAll, orderBy }) => {
 
   const intl = useIntl();
   const { theme } = useTheme();
@@ -57,6 +57,8 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
   const [openForwardQueue, setOpenForwardQueue] = useState(false);
   const [checkedAll, setCheckedAll] = useState(checkAll); 
   const [size, setSize] = useState<number>(10);
+  const [loadingRefetch, setLoadingRefetch] = useState(false);
+  const [currentOrderBy, setCurrentOrderBy] = useState(orderBy);
 
   const { loading, error, data, refetch } = useQuery<{
     getTaskQueueTasks: { links: Link[], representation: Task[] };
@@ -225,7 +227,16 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
       
       setChecked(newChecked);
     }
-  }, [filteredString, filtered, id, queueId, checkAll, checkedAll, checked, data, refetch, refetchAssignActions])
+    if(orderBy !== currentOrderBy) {
+      setCurrentOrderBy(orderBy);
+      refetch({
+        page: 0,
+        size: 10,
+        ord: orderBy,
+        filters: JSON.stringify(filtered)
+      });
+    }
+  }, [filteredString, filtered, id, queueId, checkAll, checkedAll, checked, data, refetch, refetchAssignActions, currentOrderBy, orderBy])
 
   if(loading || loadingAssignActions) {
     return (
@@ -358,16 +369,19 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
           <Button
             variant="contained"
             color="primary"
-            onClick={() => {
+            isLoading={loadingRefetch ? 1 : 0}
+            onClick={async () => {
               setCheckAll(false);
               setSize(size + 10);
-              refetch({
+              setLoadingRefetch(true);
+              await refetch({
                 id,
                 page: 0,
                 size: size + 10,
                 ord: "createdDate:desc",
                 filters: filteredString
               });
+              setLoadingRefetch(false);
             }}
           >
             <FormattedMessage id="loadMore" />

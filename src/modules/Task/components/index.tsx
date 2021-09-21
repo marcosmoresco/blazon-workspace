@@ -396,7 +396,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                     <InfoTextContainer>
                       <FormattedMessage id="createdAt" />: {task?.dates?.createdDate}
                     </InfoTextContainer>
-                    {task?.headers?.status === "TODO" &&                    
+                    {["TODO", "WAITING_ASSIGN"].includes(task?.headers?.status as string) &&                    
                       <InfoTextContainer>
                         <FormattedMessage id="deadline" />: {task?.dates?.deadline}
                       </InfoTextContainer>

@@ -53,8 +53,9 @@ const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
   const [checkedAll, setCheckedAll] = useState(checkAll);
   const [openForwardUser, setOpenForwardUser] = useState(false);
   const [openForwardQueue, setOpenForwardQueue] = useState(false);
+  const [loadingRefetch, setLoadingRefetch] = useState(false);
   
-  const { loading, error, data, refetch } = useQuery<{
+  const { loading, error, data, refetch,  } = useQuery<{
     getTasks: { links: Link[], representation: Task[] };
   }>(GET_TASKS, {
     variables: {
@@ -63,7 +64,7 @@ const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
       ord: orderBy,
       filters: filteredString
     }, 
-    fetchPolicy: "network-only"   
+    fetchPolicy: "network-only"
   });
 
   const { loading: loadingAssignActions, data: dataAssignActions, refetch: refetchAssignActions } = useQuery<{
@@ -361,15 +362,18 @@ const PersonalTasksAll: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = f
           <Button
             variant="contained"
             color="primary"
-            onClick={() => {
+            isLoading={loadingRefetch ? 1 : 0}
+            onClick={async () => {
               setCheckAll(false);
               setSize(size + 10);
-              refetch({
+              setLoadingRefetch(true);
+              await refetch({
                 page: 0,
                 size: size + 10,
                 ord: orderBy,
                 filters: filteredString
-              })
+              });
+              setLoadingRefetch(false);
             }}
           >
             <FormattedMessage id="loadMore" />

@@ -90,10 +90,29 @@ export const Actions = styled.div`
   cursor: pointer;
 `;
 
+export const HeaderFilterScrollLeft =  styled.div`
+  cursor: pointer;
+  display: flex;
+`;
+
+export const HeaderFilterScrollRight =  styled.div`
+  margin-right: 10px;
+  cursor: pointer;
+  display: flex;
+`;
+
 export const HeaderFilters = styled.div`
   display: flex;
   align-items: center;
-  gap: 15px;  
+  gap: 15px;
+  &.Add-scroll {
+    overflow-x: auto;
+    max-width: 750px;
+    height: 65px;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }  
 `;
 
 export const HeaderFiltersContent = styled.div`
@@ -102,6 +121,12 @@ export const HeaderFiltersContent = styled.div`
   justify-content: space-between;
   width: 100%;
   margin-right: 12px;
+`;
+
+export const HeaderFiltersContentScroll = styled.div`
+  display: flex;
+  align-items: center;  
+  gap: 10px;
 `;
 
 export const BoxCard = styled.div`

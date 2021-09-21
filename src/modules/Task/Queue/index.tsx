@@ -9,10 +9,12 @@ import DownloadSimpleIcon from "@icons/DownloadSimple";
 import ListBulletsIcon from "@icons/ListBullets";
 import CaretDownIcon from "@icons/CaretDown";
 import CaretUpIcon from "@icons/CaretUp";
+import CaretCircleRightIcon from "@icons/CaretCircleRight";
+import CaretCircleLeftIcon from "@icons/CaretCircleLeft";
 import EmptyState from "@components/EmptyState";
 import EmptyStateSearchIcon from "@icons/EmptyStateSearch";
 import { connect } from "react-redux";
-import apolloClient from "@utils/apollo-client";
+import Ordenation from "@components/Ordenation";
 import { filters, queueCategories, queueTypes, generateFilters } from "@modules/Task/constants";
 import type { ListProps, Task, TaskFilter, TaskQueue } from "@modules/Task/types";
 import type { FilterType } from "@components/Filter/types";
@@ -30,7 +32,10 @@ import {
   MenuItemInfo,
   SelectBoxContainer,
   SelectBoxInfo,
-  SelectBoxInfoIcon
+  SelectBoxInfoIcon,
+  HeaderFilterScrollLeft,
+  HeaderFilterScrollRight,
+  HeaderFiltersContentScroll
 } from "@modules/Task/styles";
 import QueueTasksSearch from "./Search";
 
@@ -59,7 +64,9 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
   const [anchorElType, setAnchorElType] = useState(null);
   const [currentFilters, setCurrentFilters] = useState<string>("");
   const [loadingDownload, setLoadingDownload] = useState<boolean>(false);
+  const [orderBy, setOrderBy] = useState<string>("createdAt:desc");
 
+  const scrollContainer = useRef();
 
   const myCallbacksList = useRef<any[]>([]);
 
@@ -160,11 +167,25 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
     setQueueIdentifier(queues[0].identifier);    
   }
 
+  const handleOrderBy = (orderBy: any) => {
+    setOrderBy(orderBy);
+  };
+
   const handleClickDownload = async () => {
     setLoadingDownload(true);    
     const resp = await axios.get(`api/reportTasks?type=inqueue&id=${queueIdentifier}&ord=createdData:desc&filter=${JSON.stringify(filtered)}`);
     download(resp.data, `tasks-inqueue`);
     setLoadingDownload(false);
+  }
+
+  const handlePaginate = (type: string) => {
+    if(scrollContainer?.current) {
+      if(type === 'RIGHT') {
+        scrollContainer.current.scrollLeft += 265
+      } else {
+        scrollContainer.current.scrollLeft -= 265
+      }
+    }   
   }
 
   return (
@@ -173,47 +194,56 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
       <Header>
         <Checkbox value={checkAll} onChange={() => setCheckAll(!checkAll)}/>
         <HeaderFiltersContent>
-          <HeaderFilters>
-            <FilterContent>            
-              <SelectBoxContainer onClick={(event: any) => setAnchorEl(event.currentTarget)}>
-                <SelectBoxInfo>
-                  <SelectBoxInfoIcon>
-                    <ListBulletsIcon width={21} height={21}/>
-                  </SelectBoxInfoIcon>
-                  {queueName}
-                </SelectBoxInfo>  
-                {(anchorEl === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
-              </SelectBoxContainer>
-            </FilterContent> 
-            {queueIdentifier && (
-              <FilterContent>              
-                <SelectBoxContainer onClick={(event: any) => setAnchorElCategory(event.currentTarget)}>
+          <HeaderFiltersContentScroll>
+            <HeaderFilterScrollLeft onClick={() => handlePaginate("LEFT")}>
+              <CaretCircleLeftIcon width={25} height={25}/>
+            </HeaderFilterScrollLeft>
+            <HeaderFilters className="Add-scroll" ref={scrollContainer}>
+              <FilterContent>            
+                <SelectBoxContainer onClick={(event: any) => setAnchorEl(event.currentTarget)}>
                   <SelectBoxInfo>
                     <SelectBoxInfoIcon>
                       <ListBulletsIcon width={21} height={21}/>
                     </SelectBoxInfoIcon>
-                    {queueCategoryName}
+                    {queueName}
                   </SelectBoxInfo>  
-                  {(anchorElCategory === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
-                </SelectBoxContainer>
-              </FilterContent>
-            )} 
-            {queueCategoryValue !== "ROLE_RIGHT_TASK" && queueIdentifier && (
-              <FilterContent>              
-                <SelectBoxContainer onClick={(event: any) => setAnchorElType(event.currentTarget)}>
-                  <SelectBoxInfo>
-                    <SelectBoxInfoIcon>
-                      <ListBulletsIcon width={21} height={21}/>
-                    </SelectBoxInfoIcon>
-                    {queueTypeName}
-                  </SelectBoxInfo>  
-                  {(anchorElType === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
+                  {(anchorEl === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
                 </SelectBoxContainer>
               </FilterContent> 
-            )}                                                           
-            {queueIdentifier && <Filter filters={filtersTask} onChange={(f: any) => setFiltered({...filtered, ...f, status: "WAITING_ASSIGN"})}/>}            
-          </HeaderFilters>
+              {queueIdentifier && (
+                <FilterContent>              
+                  <SelectBoxContainer onClick={(event: any) => setAnchorElCategory(event.currentTarget)}>
+                    <SelectBoxInfo>
+                      <SelectBoxInfoIcon>
+                        <ListBulletsIcon width={21} height={21}/>
+                      </SelectBoxInfoIcon>
+                      {queueCategoryName}
+                    </SelectBoxInfo>  
+                    {(anchorElCategory === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
+                  </SelectBoxContainer>
+                </FilterContent>
+              )} 
+              {queueCategoryValue !== "ROLE_RIGHT_TASK" && queueIdentifier && (
+                <FilterContent>              
+                  <SelectBoxContainer onClick={(event: any) => setAnchorElType(event.currentTarget)}>
+                    <SelectBoxInfo>
+                      <SelectBoxInfoIcon>
+                        <ListBulletsIcon width={21} height={21}/>
+                      </SelectBoxInfoIcon>
+                      {queueTypeName}
+                    </SelectBoxInfo>  
+                    {(anchorElType === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
+                  </SelectBoxContainer>
+                </FilterContent> 
+              )}                                                           
+              {queueIdentifier && <Filter filters={filtersTask} onChange={(f: any) => setFiltered({...filtered, ...f, status: "WAITING_ASSIGN"})}/>}                       
+            </HeaderFilters>
+            <HeaderFilterScrollRight onClick={() => handlePaginate("RIGHT")}>
+              <CaretCircleRightIcon width={25} height={25}/>
+            </HeaderFilterScrollRight>  
+          </HeaderFiltersContentScroll>          
           <HeaderFilters>
+            <Ordenation list={filters} onChange={handleOrderBy} composed={queueName+queueCategoryName+queueTypeName} orderBy={orderBy}/>
             <Button 
               color="primary" 
               variant="contained" 
@@ -228,10 +258,10 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
         </HeaderFiltersContent>        
       </Header>)}
       {queueCategoryValue === "ANY" && queueIdentifier && (
-        <QueueTasksSearch filtered={filtered} id={queueIdentifier} checkAll={checkAll} setCheckAll={setCheckAll}/>
+        <QueueTasksSearch filtered={filtered} id={queueIdentifier} checkAll={checkAll} setCheckAll={setCheckAll} orderBy={orderBy}/>
       )}
       {queueCategoryValue !== "ANY" && queueIdentifier && (
-        <QueueTasksSearch filtered={filtered} id={queueIdentifier} type={queueCategoryValue} checkAll={checkAll} setCheckAll={setCheckAll}/>
+        <QueueTasksSearch filtered={filtered} id={queueIdentifier} type={queueCategoryValue} checkAll={checkAll} setCheckAll={setCheckAll} orderBy={orderBy}/>
       )}   
       {!queueIdentifier && (
         <EmptyState icon={<EmptyStateSearchIcon />} title="task.empty" text="task.empty.text" bgColor="#FFFFFF"/>

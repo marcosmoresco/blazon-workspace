@@ -33,7 +33,6 @@ import {
   assignToMe as assignToMeTask,
   approve,
   getActionsByType,
-  getQueryByType 
 } from "@modules/Task/constants";
 
 import {
@@ -70,6 +69,7 @@ const PersonalTasksApproval: FC<ListProps> = ({ dispatch, filtered = {}, checkAl
   const [openForwardQueue, setOpenForwardQueue] = useState(false);
   const [openDisapprove, setOpenDisapprove] = useState(false);
   const [result, setResult] = useState("DISAPPROVED");
+  const [loadingRefetch, setLoadingRefetch] = useState(false);
 
   const { loading, error, data, refetch } = useQuery<{
     getRequestApprovalTasks: { links: Link[], representation: Task[] };
@@ -80,7 +80,7 @@ const PersonalTasksApproval: FC<ListProps> = ({ dispatch, filtered = {}, checkAl
       ord: orderBy,
       filters: filteredString
     },   
-    fetchPolicy: "network-only"    
+    fetchPolicy: "network-only"
   });
 
   const { loading: loadingAssignActions, data: dataAssignActions, refetch: refetchAssignActions } = useQuery<{
@@ -212,7 +212,7 @@ const PersonalTasksApproval: FC<ListProps> = ({ dispatch, filtered = {}, checkAl
   const [resolve, {}] = useMutation(getActionsByType("approval").resolve, { 
     refetchQueries: [
       {
-        query: getQueryByType("approval"),
+        query: GET_REQUEST_APPROVAL_TASKS,
         variables: {          
           page: 0,
           size: 10,
@@ -470,15 +470,18 @@ const PersonalTasksApproval: FC<ListProps> = ({ dispatch, filtered = {}, checkAl
           <Button
             variant="contained"
             color="primary"
-            onClick={() => {
+            isLoading={loadingRefetch ? 1 : 0}
+            onClick={async () => {
               setCheckAll(false);
               setSize(size + 10);
-              refetch({
+              setLoadingRefetch(true);
+              await refetch({
                 page: 0,
                 size: size + 10,
                 ord: orderBy,
                 filters: filteredString
-              })
+              });
+              setLoadingRefetch(false);
             }}
           >
             <FormattedMessage id="loadMore" />
