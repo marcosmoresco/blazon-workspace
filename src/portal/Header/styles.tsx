@@ -168,6 +168,10 @@ export const HeaderProfileBoxInfo = styled.div`
     line-height: 12px;
     color: #1B202A;
     margin-bottom: 4px;
+    max-width: 83px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 
   .FirstName {
@@ -175,7 +179,10 @@ export const HeaderProfileBoxInfo = styled.div`
     font-size: 16px;
     line-height: 16px;
     color: #1B202A;
-    word-break: break-word;
+    max-width: 83px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
   }
 `;
 

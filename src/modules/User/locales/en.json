@@ -17,7 +17,7 @@
   "applicationdialog.justification.placeholder": "Enter the justification",
   "applicationdialog.justification.required": "Justification is required",
 
-  "administrativedialog.dialog.title": "Section Name",
+  "administrativedialog.dialog.title": "Checkout credentials",
   "administrativedialog.dialog.description": "Enter the effective date and a justification for continuing.",
   "administrativedialog.dialog.effectiveDate": "Effective date",
   "administrativedialog.justification": "Justification",
@@ -83,5 +83,7 @@
   "profile.others": "Others",
   "profile.accounts.application.requestCredentials": "Request credentials",
   "profile.accounts.application.requestCredentials.success": "Request credentials successfully!",
-  "profile.accounts.adminstrative.checkout.success": "Checkout executed successfully!"
+  "profile.accounts.adminstrative.checkout.success": "Checkout executed successfully!",
+  "profile.shared.this.account": "Share this account",
+  "profile.shared.search.user.to.share": "Search a user to share this account" 
 }

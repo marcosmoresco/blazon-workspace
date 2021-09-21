@@ -8,6 +8,7 @@ import { columns } from "./constants";
 import type { Entitlement, ListProps } from "./types";
 import { EntitlementDirectory } from "@portal/Search/types";
 import { GET_DIRECTORY_RESOURCE_ENTITLEMENTS } from "@portal/Search/queries";
+import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
 
 const ResourceEntitlements: FC<ListProps> = ({ dispatch }) => {
  
@@ -35,6 +36,7 @@ const ResourceEntitlements: FC<ListProps> = ({ dispatch }) => {
     <>          
       <div>
         <DataGrid
+          emptyStateImage={EmptyStateTypeahead}
           query={GET_DIRECTORY_RESOURCE_ENTITLEMENTS}
           queryFilters={{id: Number(id)}}
           height={600}

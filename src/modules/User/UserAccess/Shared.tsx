@@ -1,15 +1,17 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import ShareIcon from "@icons/Share";
+import SharedAccountIcon from "@icons/SharedAccount";
 import { FormattedMessage, useIntl } from "react-intl";
 import { useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
 import Button from "@components/Button";
 import CardScreen from "@components/CardScreen";
-import UserIcon from "@icons/User";
 import Dialog from "@components/Dialog";
 import DataGrid from "@components/DataGrid";
 import Filter from "@components/Filter";
+import Tooltip from "@components/Tooltip";
+import Loading from "@components/Loading";
+import ShareIcon from "@icons/Share";
 import { Form, Formik, useFormikContext } from "formik";
 import {
   useStyles,
@@ -43,6 +45,7 @@ import { User } from "@types";
 import { getLink } from "@utils/index";
 import { TitleHierarchy } from "@components/TitlePage/types";
 import EmptyStateSharedAccountImage from "@images/EmptyStateSharedAccount.svg";
+import EmptyStateTypeaheadImage from "@images/EmptyStateTypeahead.svg";
 import { useTheme, themes } from "@theme/index";
 
 const filters = [
@@ -102,15 +105,17 @@ const columns = ({ classes }) => [
     sortable: false,
     renderCell: () => {
       return (
-        <div className={classes.actionIcon}>
-          <ShareIcon height={28} width={28} />
-        </div>
+        <Tooltip title={<FormattedMessage id="profile.shared.this.account" />} placement="bottom">
+          <div className={classes.actionIcon}>
+            <SharedAccountIcon height={28} width={28} />
+          </div>
+        </Tooltip>        
       );
     },
   },
 ];
 
-const SharedDialogContent = ({ current, classes }) => {
+const SharedDialogContent = ({ current, classes, permissions }) => {
   const intl = useIntl();
   const dispatch = useDispatch();
   const { resourceName, accountIdentifier, identifier } = current;
@@ -118,6 +123,11 @@ const SharedDialogContent = ({ current, classes }) => {
   const [open, setOpen] = useState(false);
   const { theme } = useTheme();
   const currentTheme = { ...themes[theme] };
+
+  const [loadingList, setLoadingList] = useState<number[]>([]);
+  const [currentOptionIdentifier, setCurrentOptionIdentifier] = useState<number>();
+  const [listClearValue, setListClearValue] = useState<boolean>(false); 
+  const [permissionList, setPermissionList] =  useState<[]>([]);
 
   const { loading, error, data, refetch } = useQuery<{
     getUserFullText: User[];
@@ -147,6 +157,7 @@ const SharedDialogContent = ({ current, classes }) => {
           )
         );
         setOpen(false);
+        setLoadingList(loadingList.filter((i) => i !== currentOptionIdentifier));
       }        
     },
   });
@@ -168,11 +179,15 @@ const SharedDialogContent = ({ current, classes }) => {
           )
         );
         setOpen(false);
+        setLoadingList(loadingList.filter((i) => i !== currentOptionIdentifier));
       }        
     },
   });
 
-  const share = (e: any, option: any) => {    
+  const share = (e: any, option: any) => { 
+    setListClearValue(true);
+    setCurrentOptionIdentifier(option.identifier);
+    setLoadingList([...loadingList, option.identifier]);   
     e.stopPropagation();
     shareUserSharedAccount({
       variables: {
@@ -190,20 +205,37 @@ const SharedDialogContent = ({ current, classes }) => {
       }),
       intl.formatMessage({
         id: "shareddialog.unshare.warning",
-      })
+      }),
+      null,
+      null,
+      currentTheme
     );
 
     if (result) { 
+      setListClearValue(true);
+      setCurrentOptionIdentifier(option.identifier);
+      setLoadingList([...loadingList, option.identifier]);      
       unshareUserSharedAccount({
         variables: {
           userId: Number(option.identifier),
           accountId: Number(identifier)
         },
-      })  
+      });
+      
     }   
   };
 
   AutocompletePaper.defaultProps = {theme: currentTheme};
+
+  useEffect(() => {
+    if(!permissionList.length && permissions.length) {
+      setPermissionList(permissions);
+    }
+    if(permissionList.length && permissionList.length !== permissions.length) {
+      setPermissionList(permissions);
+      setListClearValue(true);
+    }
+  }, [permissionList, permissions]);
 
   return (
     <Form>
@@ -220,7 +252,7 @@ const SharedDialogContent = ({ current, classes }) => {
       </Grid>
       <Grid className={classes.searchSection}>
         <div className="title">
-          {intl.formatMessage({ id: "shareddialog.information" })}
+          {intl.formatMessage({ id: "profile.shared.search.user.to.share" })}
         </div>
         <AutocompleteUsers
           loading={loading}
@@ -243,9 +275,15 @@ const SharedDialogContent = ({ current, classes }) => {
                 <UserThumb image={getLink("thumb", option?.links || [])} />
                 <div>{option?.displayName || " - "}</div>
               </BoxUserThumb>
-              <div className={`${classes.actionIcon} Shared-action-icon`} onClick={(e: any) => share(e, option)}>
-                <ShareIcon height={28} width={28} />
-              </div>
+              {(loadingList || []).includes(option?.identifier) && (
+                  <div className={`${classes.actionIcon} Shared-action-icon`}>
+                    <Loading type="blue" />
+                  </div>               
+              ) || (
+                <div className={`${classes.actionIcon} Shared-action-icon`} onClick={(e: any) => share(e, option)}>
+                  <ShareIcon height={28} width={28} />
+                </div>
+              )}             
             </BoxAutocompleteOption>
           )}
           renderInput={(params) => (
@@ -288,11 +326,14 @@ const SharedDialogContent = ({ current, classes }) => {
       </Grid>
       <Divider className={classes.divider} />
       <DataGrid
+        listClear={listClearValue}
+        handleListClear={() => setListClearValue(false)}
+        emptyStateImage={EmptyStateTypeaheadImage}
         links={[]}
         page={1}
         size={10000}
         rowsPerPageList={[25, 50, 75, 100]}
-        list={form.values.shareddialog.permissions}
+        list={permissions || []}
         columns={[
           {
             field: "user",
@@ -308,7 +349,6 @@ const SharedDialogContent = ({ current, classes }) => {
               ) : (
                 " - "
               );
-
             },
 
           },
@@ -316,10 +356,14 @@ const SharedDialogContent = ({ current, classes }) => {
             field: "remove",
             headerName: "",
             sortable: false,
-            renderCell: (row: any) => {
+            renderCell: (row: any) => {             
               return (
                 <BoxAction>
-                  <Button color="primary" variant="contained" onClick={(e: any) => unShare(e, row)}>
+                  <Button 
+                    color="primary" 
+                    variant="contained" 
+                    isLoading={loadingList.includes(row?.identifier) ? 1 : 0} 
+                    onClick={(e: any) => unShare(e, row)}>
                     <FormattedMessage id="remove" />
                   </Button>
                 </BoxAction>
@@ -336,7 +380,6 @@ const SharedDialogContent = ({ current, classes }) => {
 
 const ShareDialog = ({ modalOpen, setModalOpen, currentSelected, classes }) => {
   const intl = useIntl();
-
 
   const { loading, error, data, refetch } = useQuery<{
     getUserSharedAccountMembers: User[];
@@ -377,7 +420,7 @@ const ShareDialog = ({ modalOpen, setModalOpen, currentSelected, classes }) => {
           isValid={true}
           noActions
         >
-          <SharedDialogContent current={currentSelected} classes={classes} />
+          <SharedDialogContent current={currentSelected} classes={classes} permissions={permissions}/>
         </Dialog>
       )}
     />

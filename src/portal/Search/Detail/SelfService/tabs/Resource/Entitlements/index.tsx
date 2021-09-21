@@ -2,7 +2,7 @@ import React, { FC, useState, useEffect } from "react";
 import { injectIntl } from "react-intl";
 import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
-import apolloClient from "@utils/apollo-client";
+import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
 import DataGrid from "@components/DataGrid";
 import { connect } from "react-redux";
 import { columns } from "./constants";
@@ -32,6 +32,7 @@ const ResourceEntitlements: FC<ListProps> = ({ dispatch }) => {
     <>
       <div>
         <DataGrid
+          emptyStateImage={EmptyStateTypeahead}
           query={GET_DIRECTORY_RESOURCE_ENTITLEMENTS}
           queryFilters={{ id: resource?.referenceTo?.referenceToIdentifier, page: 0, size: 100 }}
           height={600}                  

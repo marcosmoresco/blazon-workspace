@@ -15,6 +15,7 @@ import {
   GET_DIRECTORY_ROLE_RIGHT_ENTITLEMENTS,
 } from "@portal/Search/queries";
 import { EntitlementsDialog } from "./styles";
+import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
 
 const RoleAccess: FC<ListProps> = () => {
   const router = useRouter();
@@ -42,6 +43,7 @@ const RoleAccess: FC<ListProps> = () => {
     <>
       <div>
         <DataGrid
+          emptyStateImage={EmptyStateTypeahead}
           query={GET_DIRECTORY_ROLE_RIGHTS}         
           queryFilters={{ id: role?.referenceTo?.referenceToIdentifier, page: 0, size: 100 }}
           height={600}         
@@ -62,6 +64,7 @@ const RoleAccess: FC<ListProps> = () => {
       >
         <EntitlementsDialog>
           <DataGrid
+            emptyStateImage={EmptyStateTypeahead}
             query={GET_DIRECTORY_ROLE_RIGHT_ENTITLEMENTS}
             queryFilters={{ id: role?.referenceTo?.referenceToIdentifier, rightId: current?.identifier, page: 0, size: 1000 }}
             height={600}           

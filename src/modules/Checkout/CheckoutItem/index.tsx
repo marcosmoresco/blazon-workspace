@@ -19,7 +19,7 @@ import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import { confirm } from "@components/Dialog/actions";
-import { iconByType, translateByType } from "@utils/index";
+import { iconByType, translateByType, getSelfServiceAttributeValue } from "@utils/index";
 import { useTheme, themes } from "@theme/index";
 
 // styles
@@ -28,6 +28,7 @@ import {
   CheckoutStyle,
   Item,
   ItemStyle,
+  ItemInfo,
   Line,
   TitleItem,
   Ticket,
@@ -42,12 +43,14 @@ import {
 
 //types
 import { CheckouitemProps } from "./types";
-import { SelfServiceCartItemInstance } from "@requestCart/types";
+import { SelfServiceCartItemInstance, SelfServiceCartItem } from "@requestCart/types";
+import { SelfService } from "@portal/Search/types";
 import { User } from "@types";
 
 //queries
 import { GET_USER_FULL_TEXT } from "@modules/User/queries";
 import { GET_SELF_SERVICE_CART } from "@requestCart/queries";
+import { GET_SELF_SERVICE_ITEM } from "@portal/Search/queries";
 
 //mutations
 import {
@@ -76,10 +79,18 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({ item, allowedAssignTypes = [
   const [sel, setSel] = useState(item.assignType);
   const [open, setOpen] = useState(false);
 
+  const { data: dataItem, refetch: refetchItem } = useQuery<{
+    getSelfServiceItem: SelfService;
+  }>(GET_SELF_SERVICE_ITEM, {
+    variables: {
+      id: item?.catalogItemId,
+    },
+  });
+
   useEffect(() => {
     if(item.assignType !== sel) {
       setSel(item.assignType);
-    }
+    }   
   }, [item, sel, setSel]);
 
   const { loading, error, data, refetch } = useQuery<{
@@ -189,7 +200,10 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({ item, allowedAssignTypes = [
       <CheckoutStyle>
         <Item>
           <ItemStyle>
-            <div>              
+            <div>  
+              {item?.catalogItemType === "ENTITLEMENT" && (
+                <ItemInfo>{getSelfServiceAttributeValue("resourceName", dataItem?.getSelfServiceItem?.attributes || []) || " - "} / </ItemInfo>
+              )}            
               <span>{item?.name || " - "}</span>
             </div>
             <TitleItem>{item?.description || " - "}</TitleItem>

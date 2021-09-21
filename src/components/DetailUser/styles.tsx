@@ -85,7 +85,7 @@ export const Actions = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 640px;
+  width: 620px;
   right: 0;
   & button {
     min-width: 179px;
@@ -94,8 +94,8 @@ export const Actions = styled.div`
 
 export const DrawerDetailUser = withStyles({
   paper: {    
-    minWidth: 640,
-    padding: "20px 20px 20px 30px",    
+    minWidth: 620,
+    padding: "20px 30px 20px 30px",    
   },
 })((props: any) => (
   <Drawer        

@@ -33,6 +33,11 @@ export const ItemStyle = styled.div`
     color: #1b202a;
   }
 `;
+
+export const ItemInfo = styled.span`
+  font-size: 13px !important;
+`;
+
 export const CheckBox = styled.input.attrs({ type: "checkbox" })`
   width: 24px;
   height: 24px;
@@ -63,6 +68,7 @@ export const Ticket = styled.div`
     padding-top: 6px;
     font-size: 16px;
     color: #514d65;
+    width: max-content;
   }
 `;
 

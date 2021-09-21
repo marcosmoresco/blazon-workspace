@@ -12,7 +12,7 @@
   "checkout.AccessRequest": "Access Request",
   "checkout.AddAUser": "Add a user",
   "checkout.DeleteItem": "Delete item",
-  "checkout.save": "To save",
+  "checkout.save": "Save",
   "checkout.SelectedItems": "Selected items",
   "checkout.description": "Description",
   "checkout.access": "Access",
@@ -51,7 +51,7 @@
   "checkout.NoResults": "No results",
   "checkout.AddItems": "Add items to cart to proceed.",
   "checkout.SearchItem": "Search item",
-  "checkout.select.expiredAt": "Select the expired date",
-  "checkout.select.account": "Select the account",
+  "checkout.select.expiredAt": "How long do you need this access?",
+  "checkout.select.account": "Choose which account you want to claim this right for",
   "checkout.submit": "Submit"
 }

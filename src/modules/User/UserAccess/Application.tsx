@@ -6,13 +6,14 @@ import { useDispatch } from "react-redux";
 import Button from '@components/Button'
 import * as Yup from 'yup'
 import CardScreen from '@components/CardScreen'
+import Tooltip from '@components/Tooltip'
 import User from '@icons/User'
 import DataGrid from '@components/DataGrid'
 import useMockRequest from '@utils/mockRequest'
 import Filter from '@components/Filter'
 import { useStyles } from './styles'
 import { withStyles } from '@material-ui/core/styles'
-import ShareIcon from '@icons/Share'
+import SharedAccountIcon from "@icons/SharedAccount";
 import { useFormikContext, withFormik } from 'formik'
 import Dialog from '@components/Dialog'
 import DatePicker from '@components/DatePicker'
@@ -50,9 +51,11 @@ const columns = ({ classes }) => [
     sortable: false,
     renderCell: () => {
       return (
-        <div className={classes.actionIcon}>
-          <ShareIcon height={28} width={28} />
-        </div>
+        <Tooltip title={<FormattedMessage id="applicationdialog.dialog.title" />} placement="bottom">
+          <div className={classes.actionIcon}>
+            <SharedAccountIcon height={28} width={28} />
+          </div>
+        </Tooltip>       
       );
     },    
   }

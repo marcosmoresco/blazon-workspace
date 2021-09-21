@@ -16,7 +16,7 @@
   "applicationdialog.justification.placeholder": "Insira a justificativa",
   "applicationdialog.justification.required": "Justificativa é obrigatória",
 
-  "administrativedialog.dialog.title": "Nome da Seção",
+  "administrativedialog.dialog.title": "Checkout das credenciais",
   "administrativedialog.dialog.description": "Insira a data de efetivação e uma justificativa para continuar.",
   "administrativedialog.dialog.effectiveDate": "Data de efetivação",
   "administrativedialog.justification": "Data de efetivação",
@@ -83,5 +83,7 @@
   "profile.others": "Outros",
   "profile.accounts.application.requestCredentials": "Solicitar credenciais",
   "profile.accounts.application.requestCredentials.success": "Solicitação das credenciais feita com sucesso!",
-  "profile.accounts.adminstrative.checkout.success": "Checkout executado com sucesso!"
+  "profile.accounts.adminstrative.checkout.success": "Checkout executado com sucesso!",
+  "profile.shared.this.account": "Compartilhe esta conta",
+  "profile.shared.search.user.to.share": "Pesquise um usuário para compartilhar esta conta"
 }

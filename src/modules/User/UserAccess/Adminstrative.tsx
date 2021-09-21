@@ -5,7 +5,7 @@ import * as Yup from "yup";
 import { useMutation } from "@apollo/client";
 import { useDispatch } from "react-redux";
 import CardScreen from "@components/CardScreen";
-import User from "@icons/User";
+import SharedAccountIcon from "@icons/SharedAccount";
 import DataGrid from "@components/DataGrid";
 import Filter from "@components/Filter";
 import { useStyles } from "./styles";
@@ -15,6 +15,7 @@ import { useFormikContext, Formik, Form } from "formik";
 import Dialog from "@components/Dialog";
 import DatePicker from "@components/DatePicker";
 import TextField from "@components/TextField";
+import Tooltip from "@components/Tooltip";
 import { TitleHierarchy } from "@components/TitlePage/types";
 import { GET_USER_ACCOUNTS } from "@modules/User/queries";
 import { CHECKOUT_ADMIN_ACCOUNT } from "@modules/User/mutations";
@@ -53,9 +54,11 @@ const columns = ({ classes }) => [
     sortable: false,
     renderCell: () => {
       return (
-        <div className={classes.actionIcon}>
-          <ShareIcon height={28} width={28} />
-        </div>
+        <Tooltip title={<FormattedMessage id="administrativedialog.dialog.title" />} placement="bottom">
+          <div className={classes.actionIcon}>
+            <SharedAccountIcon height={28} width={28} />
+          </div>
+        </Tooltip>        
       );
     },
   },

@@ -19,6 +19,7 @@ export const TaskQueuesQueries = {
                 `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/requests/approvaltasks/${item?.identifier}?expand=true`,           
                 { ...config(context) }
               );
+              item.justification = task?.data?.justification;
               item.approvalItemDetails = task?.data?.approvalItemDetails;
               item.type = task?.data?.type;
             } catch(e) {
@@ -30,6 +31,7 @@ export const TaskQueuesQueries = {
                 `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/rolerights/approvaltasks/${item?.identifier}?expand=true`,           
                 { ...config(context) }
               );
+              item.justification = task?.data?.justification;
               item.itemDetails = task?.data?.itemDetails;
               item.type = task?.data?.type;  
             } catch(e) {
@@ -41,6 +43,7 @@ export const TaskQueuesQueries = {
                 `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/certifications/approvaltasks/${item?.identifier}?expand=true`,           
                 { ...config(context) }
               );
+              item.justification = task?.data?.justification;
               item.certificationItemDetails = task?.data?.certificationItemDetails;
               item.type = task?.data?.type;            
             } catch(e) {
@@ -52,6 +55,7 @@ export const TaskQueuesQueries = {
                 `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/provisioning/tasks/${item?.identifier}?expand=true`,           
                 { ...config(context) }
               );
+              item.justification = task?.data?.justification;
               item.provisioningItemDetail = task?.data?.provisioningItemDetail;
               item.type = task?.data?.type;
             } catch(e) {
@@ -63,6 +67,7 @@ export const TaskQueuesQueries = {
                 `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/sod/approvaltasks/${item?.identifier}?expand=true`,           
                 { ...config(context) }
               );
+              item.justification = task?.data?.justification;
               item.approvalItemDetails = task?.data?.approvalItemDetails;
               item.type = task?.data?.type;            
             } catch(e) {

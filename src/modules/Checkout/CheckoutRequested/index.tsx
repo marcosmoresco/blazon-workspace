@@ -1,5 +1,5 @@
 // vendors
-import React from "react";
+import React, { useEffect } from "react";
 import { FormattedMessage } from "react-intl";
 import { useRouter } from "next/router";
 import Image from "next/image";
@@ -40,10 +40,19 @@ const CheckoutRequested: React.FC<ItemProps> = ({ nextStep }) => {
   const { theme } = useTheme();
   const currentTheme = { ...themes[theme] };
 
+  useEffect(() => {     
+    if(document) {
+      const elem = document.querySelector("#status-checkout");      
+      if(elem) {
+        elem.scrollIntoView();
+      }           
+    }
+  }, []); 
+
   return (
     <>
       <TitlePage title="checkout" subTitle="checkout.requested"/>
-      <StatusCheckoutStyle>
+      <StatusCheckoutStyle id="status-checkout">
         <SymbolStyle>
           <CircleStyle>
             <InfoIcon width={48} height={48} color={currentTheme.palette.primary.main || "#3174F6"} stroke={2}/>
