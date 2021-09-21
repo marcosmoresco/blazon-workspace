@@ -1067,8 +1067,8 @@ export const GET_TASK_QUEUES_FILTERS = gql`
 `;
 
 export const RESUME = gql`
-  {
-    getResume {
+  query getResume($listStatus: String) {
+    getResume(listStatus: $listStatus) {
       openApprovalTasks
       openCertificationTasks
       openProvisioningTasks
@@ -1076,7 +1076,7 @@ export const RESUME = gql`
       openSodTasks
       openUserRevalidationTasks
       totalOpenTasks
-    }
+    }    
   }
 `;
 

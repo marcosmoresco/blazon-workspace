@@ -25,6 +25,7 @@
   "task.result": "Result",
   "task.createdAt": "Created At",
   "task.finishedAt": "Finished At",
+  "task.resolvedAt": "Resolved At",
   "task.deadline": "Deadline",
   "task.entitlement": "Entitlement",
   "task.role": "Role",

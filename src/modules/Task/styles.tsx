@@ -156,6 +156,7 @@ export const BoxCardTitle = styled.div`
   line-height: 33px;
   color: #26213f;
   margin-bottom: 7px;
+  white-space: break-spaces;
 `;
 
 export const BoxCardTitleResource = styled.span`

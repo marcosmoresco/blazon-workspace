@@ -91,7 +91,10 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
   const [loadingDownload, setLoadingDownload] = useState<boolean>(false);
 
   const { loading: loadingResume, data: dataResume, refetch: refetchResume } = useQuery(RESUME, {
-    fetchPolicy: "no-cache"
+    fetchPolicy: "no-cache",
+    variables: {
+      listStatus: resolved ? `DONE,CANCELED` : `TODO`
+    }
   });
 
   if(loading) {

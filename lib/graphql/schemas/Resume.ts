@@ -12,5 +12,5 @@ export const Resume = `
 `;
 
 export const Queries = `
-  getResume: Resume
+  getResume(listStatus: String): Resume
 `;

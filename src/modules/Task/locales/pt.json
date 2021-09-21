@@ -25,6 +25,7 @@
   "task.result": "Resultado",
   "task.createdAt": "Criado em",
   "task.finishedAt": "Finalizado em",
+  "task.resolvedAt": "Resolvido em",
   "task.deadline": "Data limite",
   "task.entitlement": "Direito",
   "task.role": "Papel",
