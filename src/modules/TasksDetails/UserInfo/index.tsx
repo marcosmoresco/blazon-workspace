@@ -155,7 +155,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
             <BoxCardFooter>
               <BoxCardFooterInfo>
                 <DetailUser task={task}/>                           
-                <DetailUser task={task} user={task?.headers?.recipient} title="task.recipient"/>                         
+                {task?.headers?.recipient && <DetailUser task={task} user={task?.headers?.recipient} title="task.recipient"/>}                         
               </BoxCardFooterInfo>
               <BoxCardFooterInfo>
                 <BoxCardHeaderInfo>
