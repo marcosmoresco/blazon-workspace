@@ -46,9 +46,7 @@ const useStyles = (theme: Theme) =>
       marginTop: 42,
     },
     divider: {
-      marginTop: 74,
-      marginLeft: -24,
-      marginRight: -24,
+      marginTop: 74,     
     },
   });
 

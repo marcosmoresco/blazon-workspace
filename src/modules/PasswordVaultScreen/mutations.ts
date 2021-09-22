@@ -18,6 +18,18 @@ export const SAVE_PASSWORD_VAULT = gql`
   }
 `;
 
+export const UPDATE_PASSWORD_VAULT = gql`
+  mutation updatePasswordVault(
+    $id: Int
+    $payload: String
+  ) {
+    updatePasswordVault(
+      id: $id
+      payload: $payload    
+    )
+  }
+`;
+
 export const REVOKE_PASSWORD_VAULT_ENTRY = gql`
   mutation revokePasswordVaultEntry(
     $id: Int

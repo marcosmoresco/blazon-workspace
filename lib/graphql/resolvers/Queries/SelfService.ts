@@ -32,7 +32,7 @@ export const SelfServiceQueries = {
         }/blazon-workspace-backend/workspace/selfservice/items/advanced?size=${
           args?.size || 10000
         }${args?.type && args?.type !== "ALL" ? `&type=${args.type}` : ""}${
-          args?.q ? `&q=${args.q}` : ""
+          args?.q ? `&q=${encodeURIComponent(args.q)}` : ""
         }`,
         JSON.parse(args?.filters || "[]"),
         { ...config(context) }
@@ -50,7 +50,7 @@ export const SelfServiceQueries = {
         }/blazon-workspace-backend/workspace/selfservice/items?size=${
           args?.size || 10000
         }${args?.type && args?.type !== "ALL" ? `&type=${args.type}` : ""}${
-          args?.q ? `&q=${args.q}` : ""
+          args?.q ? `&q=${encodeURIComponent(args.q)}` : ""
         }`,
         { ...config(context) }
       );

@@ -14,6 +14,7 @@ import EmptyState from "@components/EmptyState";
 import Section from "@components/Section";
 import Tooltip from "@components/Tooltip";
 import Loading from "@components/Loading";
+import Ordenation from "@components/Ordenation";
 import SharedAccountIcon from "@icons/SharedAccount";
 import ApplicationAccountIcon from "@icons/ApplicationAccount";
 import RegularAccountIcon from "@icons/RegularAccount";
@@ -59,6 +60,8 @@ import { GET_SELF_SERVICE, GET_SELF_SERVICE_ADVANCED } from "./queries";
 import { useTheme, themes } from "@theme/index";
 import WatchIcon from "@icons/Watch";
 
+import { filters } from "@modules/Task/constants";
+
 const Search: FC<SearchProps> = ({ intl, classes }) => {
   const { cart } = useCart();
   const router = useRouter();
@@ -76,6 +79,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
   const [listAdvanced, setListAdvanced] = useState(null);
   const [addedItems, setAddedItems] = useState<string[]>([]); 
   const [loadingItems, setLoadingItems] = useState<string[]>([]);
+  const [orderBy, setOrderBy] = useState<string>("createdAt:desc");
 
   useEffect(() => {
     if(cart && (cart.items || []).length) {
@@ -188,6 +192,10 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
     },
   ];
 
+  const handleOrderBy = (orderBy: any) => {
+    setOrderBy(orderBy);
+  };
+
   return (
     <div className="Default-content">
       <div className={classes.root}>
@@ -274,6 +282,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
               >
                 <Filters onSave={save} activeType={active} />
               </Badge>
+              {/*<Ordenation list={filters} onChange={handleOrderBy} composed={type} orderBy={orderBy}/> */}
             </OptionListFiltersContent>
             </TotalFiltersBox>
             {type === "GRID" && (

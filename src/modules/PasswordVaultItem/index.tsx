@@ -2,6 +2,7 @@ import KeyIcon from "@icons/Key";
 import DotsThreeVerticalIcon from "@icons/DotsThreeVertical";
 import CaretRightIcon from "@icons/CaretRight";
 import Tooltip from "@components/Tooltip";
+import RequestStatusDialog from "@components/RequestStatusDialog";
 import React, { FC, useState, useEffect } from "react";
 import { useMutation } from "@apollo/client";
 import {
@@ -27,6 +28,7 @@ import PasswordVault from "./components";
 import { GET_ENTRIES } from "@modules/PasswordVaultItem/queries";
 import { 
   DELETE_PASSWORD_VAULT_ENTRY,
+  UPDATE_PASSWORD_VAULT
 } from "@modules/PasswordVaultScreen/mutations";
 import { getLink } from "@utils/index";
 
@@ -46,6 +48,8 @@ const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
   const [sharedModalOpen, setSharedModalOpen] = useState<boolean>(false);
   const [openPasswordVault, setOpenPasswordVault] = useState<boolean>(false);
   const [passwordVault, setPasswordVault] = useState(null);
+  const [showSavePasswordStatusModal, setShowSavePasswordStatusModal] = useState<boolean>(false);
+  const [savePasswordStatus, setSavePasswordStatus] = useState<boolean>(false);
 
   const { theme } = useTheme();
   const currentTheme = { ...themes[theme] };
@@ -78,6 +82,27 @@ const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
           )
         );
         handleClose();      
+      }        
+    },
+  });
+
+  const [updatePasswordVault, {}] = useMutation(UPDATE_PASSWORD_VAULT, {
+    refetchQueries: [
+      {
+        query: GET_ENTRIES       
+      },
+    ],
+    onCompleted: ({updatePasswordVault}) => {   
+      if(updatePasswordVault) {
+        dispatch(
+          addMessage(
+            intl.formatMessage({id: "passwordVault.remove.success"})
+          )
+        );
+        handleClose();  
+        setOpenPasswordVault(false); 
+        setShowSavePasswordStatusModal(true);
+        setSavePasswordStatus(true);   
       }        
     },
   });
@@ -174,11 +199,30 @@ const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
           onClose={() => setOpenPasswordVault(false)}
           open={openPasswordVault || false}
           passwordVault={r}            
-          onSave={() => {
-            setOpenPasswordVault(false);              
+          onSave={(values: any) => {
+            if(values) {
+              updatePasswordVault({
+                variables: {
+                  id: r.identifier,
+                  payload: JSON.stringify(values)
+                }
+              })
+            } else {
+              setOpenPasswordVault(false);
+            }                        
           }}
         />
       )}  
+      <RequestStatusDialog
+        open={showSavePasswordStatusModal}
+        success={savePasswordStatus === true}
+        onClose={() => setShowSavePasswordStatusModal(false)}
+        message={
+          savePasswordStatus
+            ? "passwordVault.sucessUpdate"
+            : "passwordVault.errorUpdate"
+        }
+      /> 
     </div>
   );
 };

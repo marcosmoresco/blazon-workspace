@@ -22,7 +22,7 @@ const Section: FC<SectionProps> = ({ classes, list, defaultValue, onSelect, intl
             ...section,
             icon: {
               ...section.icon,
-              props: { ...section.icon.props, with: 21, height: 21, color: (active === section.value && (currentTheme.palette.info.contrastText || "#0E46D7")) || "black" },
+              props: { ...section.icon.props, with: 21, height: 21, color: section?.value === active ? "#FFFFFF" : "#000000", stroke: 1.5},
             },
           })
         } else {

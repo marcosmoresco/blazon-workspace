@@ -1,6 +1,6 @@
 {
-  "passwordVault.sucessSave": "Your password has been successfully changed!",
-  "passwordVault.errorSave": "Your password has not been changed.",
+  "passwordVault.sucessSave": "Your password has been successfully saved!",
+  "passwordVault.errorSave": "Your password has not been saved.",
   "passwordVault.emptyState.title": "No credentials",
   "passwordVault.emptyState.description.text": "There are no credentials in your password vault",
   "passwordVault.title": "Password vault",
@@ -19,6 +19,8 @@
   "passwordvaultform.uername.placeholder": "Enter your username",
   "passwordvaultform.password": "Password",
   "passwordvaultform.password.placeholder": "Enter your password",
+  "passwordvaultform.name": "Name",
+  "passwordvaultform.description": "Description",
 
   "passwordVault.newpassword.access.title": "Login",
   "passwordVault.newpassword.access.description": "Enter the user login details.",

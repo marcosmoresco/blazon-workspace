@@ -1,6 +1,6 @@
 {
-  "passwordVault.sucessSave": "Sua senha foi alterada com sucesso!",
-  "passwordVault.errorSave": "Sua senha não foi alterada.",
+  "passwordVault.sucessSave": "Sua senha foi criada com sucesso!",
+  "passwordVault.errorSave": "Sua senha não foi criada.",
   "passwordVault.emptyState.title": "Nenhuma credencial",
   "passwordVault.emptyState.description.text": "Não existem credenciais no seu cofre de senhas",
   "passwordVault.title": "Cofre de senhas",
@@ -19,6 +19,8 @@
   "passwordvaultform.username.placeholder": "Digite seu nome de usuário",
   "passwordvaultform.password": "Senha",
   "passwordvaultform.password.placeholder": "Digite sua senha",
+  "passwordvaultform.name": "Nome",
+  "passwordvaultform.description": "Descrição",
 
   "passwordVault.newpassword.access.title": "Acesso",
   "passwordVault.newpassword.access.description": "Insira os dados para acesso do usuario.",

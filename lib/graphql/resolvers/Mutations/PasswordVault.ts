@@ -14,6 +14,18 @@ export const PasswordVaultMutations = {
       throw error;
     }
   },
+  updatePasswordVault: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.put(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/passwordvault/entries/${args?.id}`,
+        JSON.parse(args?.payload),
+        { ...config(context) }
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
   revokePasswordVaultEntry: async (parent: any, args: any, context: any) => {
     try {
       await axios.post(
