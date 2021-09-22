@@ -33,7 +33,7 @@ const GridAdditionalInformationsProvisioning: React.FC<AdditionalInformationsPro
       } else if(["ENTITLEMENT", "MEMBERSHIP_ENTITLEMENT"].includes(task?.entrySchema || "")) {
         if(task?.type === "CREATE_ENTITLEMENT") {
           setTab("entitlement" as tabs);
-        } else if(task?.type === "REVOKE_ENTITLEMENT") {
+        } else if(["REVOKE_ENTITLEMENT", "GRANT_ENTITLEMENT"].includes(task?.type as string)) {
           setTab("account" as tabs);
         } else {
           setTab("resource" as tabs);
@@ -73,7 +73,7 @@ const GridAdditionalInformationsProvisioning: React.FC<AdditionalInformationsPro
            >
              <FormattedMessage id="tasks.EntitlementInformations" />
            </StyleApprovalTab>)}
-           {task?.type !== "REVOKE_ENTITLEMENT" && (
+           {!["REVOKE_ENTITLEMENT", "GRANT_ENTITLEMENT"].includes(task?.type as string) && (
            <StyleApprovalTab
               color={currentTheme.palette.primary.main}
               selected={tab === "resource" as tabs}

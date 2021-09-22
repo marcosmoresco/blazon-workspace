@@ -185,7 +185,7 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
 
   const handleClickDownload = async () => {
     setLoadingDownload(true);    
-    const resp = await axios.get(`api/reportTasks?type=${type.toLocaleLowerCase().replace("_", "")}&ord=${orderBy}&filter=${JSON.stringify(filtered)}`);
+    const resp = await axios.get(`api/reportTasks?type=${type.toLocaleLowerCase().replace("_", "")}&ord=${orderBy}&filter=${encodeURIComponent(JSON.stringify(filtered))}`);
     download(resp.data, `tasks-${type.toLocaleLowerCase().replace("_", "")}`);
     setLoadingDownload(false);
   }
