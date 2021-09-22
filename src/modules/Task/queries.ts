@@ -902,6 +902,8 @@ export const GET_PROVISIONING_TASK = gql`
         entitlement {
           name
           description
+          identifier
+          risk
         }
       }
       comments {

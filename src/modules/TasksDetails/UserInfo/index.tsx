@@ -39,6 +39,10 @@ import {
   InfoTextContainer
 } from "./style";
 
+import {
+  BoxCardTitleResource
+} from "@modules/Task/styles";
+
 const UserInfo: React.FC<UserInfoProps> = ({ task }) => { 
 
   const router = useRouter();  
@@ -100,7 +104,13 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
             </BoxCardHeader>   
             <BoxCardTitle>
               {["approval", "sod"].includes(type as string) && (
-                task?.approvalItemDetails?.entitlementName || 
+                 task?.approvalItemDetails?.entitlementName && (
+                  <>
+                    <BoxCardTitleResource>
+                      {task?.approvalItemDetails?.resourceName}
+                    </BoxCardTitleResource> / {task?.approvalItemDetails?.entitlementName}
+                  </>  
+                ) || 
                 task?.approvalItemDetails?.roleName || 
                 task?.approvalItemDetails?.resourceName || " - "
               )}
@@ -110,7 +120,15 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                 task?.certificationItemDetails?.entitlementName || " - "
               )}
               {type === "provisioning" && (
-                task?.provisioningItemDetail?.resource?.name || " - "
+                task?.provisioningItemDetail?.entitlement && (
+                  <>
+                    <BoxCardTitleResource>
+                      {task?.provisioningItemDetail?.resource?.name}
+                    </BoxCardTitleResource> / {task?.provisioningItemDetail?.entitlement?.name}
+                  </>
+                ) || (
+                  task?.provisioningItemDetail?.resource?.name || " - "
+                )
               )}
               {type === "roleRight" && (
                 task?.itemDetails?.roleName || " - "
@@ -160,17 +178,28 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                   </InfoText>
                 </BoxCardHeaderInfo>
               </BoxCardFooterInfo>
-            </BoxCardFooter>
-            <JustificationDivider /> 
-            <BoxJustification>
-              <TitleJustification>
-                <FormattedMessage id="tasks.justification" />
-              </TitleJustification>
-              <BoxJustificationValue>
-                {task?.justification || task?.itemDetails?.justification || " - "}
-              </BoxJustificationValue>
-            </BoxJustification>  
-            {task?.disapprovalJustification && (
+            </BoxCardFooter>            
+            {!["provisioning", "certification"].includes(type as string) && (
+              <>
+                <JustificationDivider /> 
+                <BoxJustification>
+                  <TitleJustification>
+                    <FormattedMessage id="tasks.justification" />
+                  </TitleJustification>
+                  <BoxJustificationValue>
+                    {task?.justification || task?.itemDetails?.justification || " - "}
+                  </BoxJustificationValue>
+                </BoxJustification>
+              </>              
+            )}                                                                              
+          </BoxCardContent>
+        </BoxCard>
+        {task?.disapprovalJustification && (
+          <BoxCard>
+            <BoxCardContent>
+              <BoxCardTitle className="Light">
+                <FormattedMessage id="tasks.accessDenied" />
+              </BoxCardTitle> 
               <BoxJustification className="Add-top">
                 <TitleJustification>
                   <FormattedMessage id={type === "approval" ? "tasks.disapprovalJustification": "tasks.notProvisionedJustification"} />
@@ -179,8 +208,15 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                   {task?.disapprovalJustification || " - "}
                 </BoxJustificationValue>
               </BoxJustification>
-            )}   
-            {task?.revokeJustification && (
+            </BoxCardContent>
+          </BoxCard>
+        )}  
+        {task?.revokeJustification && (
+          <BoxCard>
+            <BoxCardContent>
+              <BoxCardTitle className="Light">
+                <FormattedMessage id="tasks.accessDenied" />
+              </BoxCardTitle>
               <BoxJustification className="Add-top">
                 <TitleJustification>
                   <FormattedMessage id="tasks.revokeJustification" />
@@ -189,9 +225,9 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                   {task?.revokeJustification || " - "}
                 </BoxJustificationValue>
               </BoxJustification>
-            )}                                         
-          </BoxCardContent>
-        </BoxCard>       
+            </BoxCardContent>
+          </BoxCard>  
+        )}                  
       </Box>      
     </>
   );

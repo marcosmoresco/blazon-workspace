@@ -29,7 +29,6 @@ import {
   SelectBoxInfo,
   SelectBoxInfoIcon
 } from "@modules/Task/styles";
-import Tasks from "@modules/Task/components";
 import PersonalTasksAll from "./All"; 
 import PersonalTasksApproval from "./Approval"; 
 import PersonalTasksCertification from "./Certification"; 

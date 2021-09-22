@@ -31,7 +31,13 @@ const GridAdditionalInformationsProvisioning: React.FC<AdditionalInformationsPro
       if(["ACCOUNT"].includes(task?.entrySchema || "")) {
         setTab("account" as tabs);
       } else if(["ENTITLEMENT", "MEMBERSHIP_ENTITLEMENT"].includes(task?.entrySchema || "")) {
-        setTab("resource" as tabs);
+        if(task?.type === "CREATE_ENTITLEMENT") {
+          setTab("entitlement" as tabs);
+        } else if(task?.type === "REVOKE_ENTITLEMENT") {
+          setTab("account" as tabs);
+        } else {
+          setTab("resource" as tabs);
+        }        
       }
     }
   }, [task, tab]);
@@ -58,20 +64,31 @@ const GridAdditionalInformationsProvisioning: React.FC<AdditionalInformationsPro
       {["ENTITLEMENT", "MEMBERSHIP_ENTITLEMENT"].includes(task?.entrySchema || "") && (
          <WorkArea>
          <MenuDetail>
+          
+          {task?.type === "CREATE_ENTITLEMENT" && (
+          <StyleApprovalTab
+              color={currentTheme.palette.primary.main}
+              selected={tab === "entitlement" as tabs}
+              onClick={() => setTab("entitlement" as tabs)}
+           >
+             <FormattedMessage id="tasks.EntitlementInformations" />
+           </StyleApprovalTab>)}
+           {task?.type !== "REVOKE_ENTITLEMENT" && (
            <StyleApprovalTab
               color={currentTheme.palette.primary.main}
               selected={tab === "resource" as tabs}
               onClick={() => setTab("resource" as tabs)}
            >
              <FormattedMessage id="tasks.ResourceInformations" />
-           </StyleApprovalTab>   
+           </StyleApprovalTab>)}   
+           {task?.type !== "CREATE_ENTITLEMENT" && (
            <StyleApprovalTab
               color={currentTheme.palette.primary.main}
               selected={tab === "account" as tabs}
               onClick={() => setTab("account" as tabs)}
            >
              <FormattedMessage id="tasks.AccountInformations" />
-           </StyleApprovalTab>                 
+           </StyleApprovalTab>)}                 
          </MenuDetail>
          <InsideLine /> 
          {tab === "resource" as tabs && (
@@ -89,7 +106,17 @@ const GridAdditionalInformationsProvisioning: React.FC<AdditionalInformationsPro
                 <label><FormattedMessage id="accountIdentifier"/></label> 
                 <DetailValue>{task?.provisioningItemDetail?.account?.accountIdentifier || " - "}</DetailValue>                
             </DeitalList>
-          )}     
+          )}    
+          {tab === "entitlement" as tabs && (
+            <DeitalList>
+              <label><FormattedMessage id="identifier"/></label> 
+              <DetailValue>{task?.provisioningItemDetail?.entitlement?.identifier || " - "}</DetailValue>   
+              <label><FormattedMessage id="name"/></label> 
+              <DetailValue>{task?.provisioningItemDetail?.entitlement?.name || " - "}</DetailValue>     
+              <label><FormattedMessage id="description"/></label> 
+              <DetailValue>{task?.provisioningItemDetail?.entitlement?.description || " - "}</DetailValue>         
+            </DeitalList>
+          )}  
        </WorkArea>
       )}        
     </>

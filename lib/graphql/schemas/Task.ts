@@ -72,7 +72,9 @@ export const Task = `
 
   type TaskProvisioningItemDetailEntitlement {
     name: String
-    description: String    
+    description: String   
+    identifier: Int
+    risk: String
   }
 
   type TaskProvisioningItemDetail {

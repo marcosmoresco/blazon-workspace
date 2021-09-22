@@ -65,9 +65,11 @@ export type TaskProvisioningItemDetailResource = {
   risk: string;
 }
 
-export type TaskProvisioningItemDetailEntitlement = {
+export type TaskProvisioningItemDetailEntitlement = {  
   name: string;
-  description: string;  
+  description: string;
+  identifier: number;
+  risk: string;  
 }
 
 export type TaskProvisioningItemDetail = {

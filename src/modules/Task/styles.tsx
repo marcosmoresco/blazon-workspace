@@ -229,6 +229,10 @@ export const BoxRequesterDisplayName = styled.div`
   font-size: 16px;
   line-height: 16px;
   color: #1b202a;
+  max-width: 200px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 export const BoxRequesterAvatar = styled.div`  

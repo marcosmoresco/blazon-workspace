@@ -26,7 +26,7 @@ export const HeaderDisplayName = styled.div`
   font-size: 24px;
   line-height: 24px;
   text-align: center;
-  color: #FFFFFF;
+  color: #FFFFFF;  
 `;
 
 export const HeaderUsername = styled.div`

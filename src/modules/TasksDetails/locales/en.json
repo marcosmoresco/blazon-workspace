@@ -9,6 +9,7 @@
   "tasks.date": "Date",
   "tasks.AccountInformations": "Account Informations",
   "tasks.ResourceInformations": "Resource Informations",
+  "tasks.EntitlementInformations": "Entitlement Informations",
   "tasks.RoleRights": "Role Rights",
   "tasks.AdditionalInformation": "Additional Information",
   "tasks.AccesClassification": "Acces classification",
@@ -43,5 +44,6 @@
   "tasks.entryName": "Entry name",
   "tasks.approved": "Approved",
   "tasks.item.approved.success": "Item approved successfully!",
-  "tasks.item.disapproved.success": "Item disapproved successfully!"
+  "tasks.item.disapproved.success": "Item disapproved successfully!",
+  "tasks.accessDenied": "Access denied"
 }

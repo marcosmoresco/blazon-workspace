@@ -53,9 +53,14 @@ export const BoxCardHeaderInfo = styled.div`
 export const BoxCardTitle = styled.div`
   font-style: normal;
   font-weight: 500;
-  font-size: 22px;
+  font-size: 16px;
   line-height: 33px;
   color: #26213f;
+  &.Light {
+    font-size: 16px;
+    line-height: 100%;
+    margin-bottom: 24px;
+  }
 `;
 
 interface BoxCardIdentifierProps {
