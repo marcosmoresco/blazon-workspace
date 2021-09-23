@@ -72,5 +72,16 @@ export const UserQueries = {
     } catch (error) {
       throw error;
     }
-  },   
+  },  
+  getUserData: async (parent: any, args: any, context: any) => {
+    try {
+      const user = await axios.get(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/directory/users/userdatas`,
+        { ...config(context) }
+      );
+      return user.data;
+    } catch (error) {
+      throw error;
+    }
+  },  
 };

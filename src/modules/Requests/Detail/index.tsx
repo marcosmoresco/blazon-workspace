@@ -38,7 +38,7 @@ const RequestsDetailing: React.FC<RequestsProps> = () => {
     href: "/requests",
     children: [
       {
-        formatedName: String(id),
+        formatedName: (request?.type && request?.type.replaceAll("_", " ")) || String(request?.identifier)
       },
     ],
   };

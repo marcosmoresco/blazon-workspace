@@ -1,4 +1,6 @@
 import styled from "styled-components";
+import { styled as styledMui } from "@material-ui/core/styles";
+import Divider from '@material-ui/core/Divider';
 
 export const InsideLine = styled.div`
   width: 100%;
@@ -30,6 +32,9 @@ export const Header = styled.div`
 
 export const Spacing = styled.div`  
   padding: 0 25px 32px 24px;
+  &.Add-top {
+    padding-top: 14px;
+  }
 `;
 
 export const UserGrid = styled.div`
@@ -88,3 +93,9 @@ export const ButtonArea = styled.div`
   padding: 32px 0 0 0px;
   gap: 24px;
 `;
+
+export const InfoDivider = styledMui(Divider)({ 
+  marginBottom: 25,
+  marginLeft: 25,
+  marginRight: 25
+}); 

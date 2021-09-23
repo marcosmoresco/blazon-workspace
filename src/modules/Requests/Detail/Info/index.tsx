@@ -24,7 +24,8 @@ import {
   ButtonArea,
   Spacing,
   Header,
-  UserContent
+  UserContent,
+  InfoDivider
 } from "./styles";
 
 // styles
@@ -78,7 +79,9 @@ const Info: React.FC<FirstTaskProps> = ({ intl, request, refetch }) => {
       intl.formatMessage({
         id: "request.cancel.text",
       }),
-      <XCircleIcon width={48} height={48} color="#FF134A"/>
+      <XCircleIcon width={48} height={48} color="#FF134A"/>,
+      null,
+      currentTheme
     );
 
     if (result) {      
@@ -185,33 +188,15 @@ const Info: React.FC<FirstTaskProps> = ({ intl, request, refetch }) => {
             ].includes(request?.type as string) && (
               request?.role?.name || " - "
             )}        
-          </BoxCardTitle> 
-          {[
-            "UPDATE_ACCOUNT", 
-            "ACTIVATE_ACCOUNT", 
-            "INACTIVATE_ACCOUNT",
-            "REVOKE_ACCOUNT", 
-            "CHECKIN_ADMIN_ACCOUNT_PASSWORD", 
-            "CHECKOUT_ADMIN_ACCOUNT_PASSWORD", 
-            "CHECKIN_APPLICATION_ACCOUNT_PASSWORD",
-            "REVOKE_ENTITLEMENT", 
-            "ASSIGN_ENTITLEMENT"
-          ].includes(request?.type as string) && 
-          <BoxJustification className="Add-top Add-bottom">
-            <TitleJustification>
-              <FormattedMessage id="accountIdentifier" />
-            </TitleJustification>
-            <BoxJustificationValue>
-              {request?.resource?.accountIdentifier || " - "}
-            </BoxJustificationValue>
-          </BoxJustification>}       
+          </BoxCardTitle>                 
         </Header>                         
         <UserContent>
           <BoxCardFooterInfo>       
             <DetailUser request={request} user={request?.requester} title="request.requester"/>                          
             {request?.beneficiary && <DetailUser request={request} user={request?.beneficiary} title="request.beneficiary"/>}                               
           </BoxCardFooterInfo>         
-        </UserContent>        
+        </UserContent> 
+        <InfoDivider />       
         <Spacing>
           <BoxJustification>
             <TitleJustification>
@@ -222,7 +207,93 @@ const Info: React.FC<FirstTaskProps> = ({ intl, request, refetch }) => {
             </BoxJustificationValue>
           </BoxJustification>
         </Spacing>        
-      </Grid>
+      </Grid>      
+      {[
+        "UPDATE_ACCOUNT", 
+        "ACTIVATE_ACCOUNT", 
+        "INACTIVATE_ACCOUNT",
+        "REVOKE_ACCOUNT", 
+        "CHECKIN_ADMIN_ACCOUNT_PASSWORD", 
+        "CHECKOUT_ADMIN_ACCOUNT_PASSWORD", 
+        "CHECKIN_APPLICATION_ACCOUNT_PASSWORD",
+        "REVOKE_ENTITLEMENT", 
+        "ASSIGN_ENTITLEMENT"
+      ].includes(request?.type as string) && 
+      <Grid>
+        <Spacing className="Add-top">  
+          <BoxCardTitle>
+            <FormattedMessage id="request.accountInformations" />  
+          </BoxCardTitle>      
+          <BoxJustification>
+            <TitleJustification>
+              <FormattedMessage id="accountIdentifier" />
+            </TitleJustification>
+            <BoxJustificationValue>
+              {request?.account?.accountIdentifier || " - "}
+            </BoxJustificationValue>
+          </BoxJustification>
+        </Spacing>
+      </Grid>} 
+      {[
+        "NEW_USER"      
+      ].includes(request?.type as string) && 
+      <Grid>
+        <Spacing className="Add-top">  
+          <BoxCardTitle>
+            <FormattedMessage id="request.userInformations" />  
+          </BoxCardTitle>      
+          <BoxJustification>
+            <TitleJustification>
+              <FormattedMessage id="firstName" />
+            </TitleJustification>
+            <BoxJustificationValue>
+              {request?.user?.firstName || " - "}
+            </BoxJustificationValue>
+            <TitleJustification className="Add-top">
+              <FormattedMessage id="middleName" />
+            </TitleJustification>
+            <BoxJustificationValue>
+              {request?.user?.middleName || " - "}
+            </BoxJustificationValue>
+            <TitleJustification className="Add-top">
+              <FormattedMessage id="lastName" />
+            </TitleJustification>
+            <BoxJustificationValue>
+              {request?.user?.middleName || " - "}
+            </BoxJustificationValue>
+            <TitleJustification className="Add-top">
+              <FormattedMessage id="displayName" />
+            </TitleJustification>
+            <BoxJustificationValue>
+              {request?.user?.displayName || " - "}
+            </BoxJustificationValue>
+            <TitleJustification className="Add-top">
+              <FormattedMessage id="personalEmail" />
+            </TitleJustification>
+            <BoxJustificationValue>
+              {request?.user?.personalEmail || " - "}
+            </BoxJustificationValue>
+            <TitleJustification className="Add-top">
+              <FormattedMessage id="email" />
+            </TitleJustification>
+            <BoxJustificationValue>
+              {request?.user?.email || " - "}
+            </BoxJustificationValue>
+            <TitleJustification className="Add-top">
+              <FormattedMessage id="phone" />
+            </TitleJustification>
+            <BoxJustificationValue>
+              {request?.user?.phone || " - "}
+            </BoxJustificationValue>
+            <TitleJustification className="Add-top">
+              <FormattedMessage id="mobilePhone" />
+            </TitleJustification>
+            <BoxJustificationValue>
+              {request?.user?.mobilePhone || " - "}
+            </BoxJustificationValue>           
+          </BoxJustification>
+        </Spacing>
+      </Grid>}    
     </WorkArea>
   );
 };

@@ -1,6 +1,8 @@
 {
   "passwordVault.sucessSave": "Sua senha foi criada com sucesso!",
   "passwordVault.errorSave": "Sua senha não foi criada.",
+  "passwordVault.sucessUpdate": "Sua senha foi alterada com sucesso!",
+  "passwordVault.errorUpdate": "Sua senha não foi alterada.",
   "passwordVault.emptyState.title": "Nenhuma credencial",
   "passwordVault.emptyState.description.text": "Não existem credenciais no seu cofre de senhas",
   "passwordVault.title": "Cofre de senhas",

@@ -41,9 +41,9 @@ const PasswordVault: FC<PasswordVaultProps> = ({
     if(!modify && passwordVault && user) {
       const filtered = passwordVault.permissions.filter((permission: any) => Number(permission.user.identifier) === user.identifier);
       if(filtered.length) {
-        //setModify("YES");
+        setModify("YES");
       } else {
-        //setModify("NO");
+        setModify("NO");
       }
     }
   }, [modify, passwordVault, user]);

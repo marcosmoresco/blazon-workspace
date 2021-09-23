@@ -313,7 +313,7 @@ export const filters: FilterType[] = [
   },
   {
     orderable: true,
-    name: 'effectivedAt',
+    name: 'effectiveDate',
     label: <FormattedMessage id='effectivedAt' />,
     type: 'date',
     bind: {
@@ -328,6 +328,7 @@ export const inProgressStatusList = [
   "WAITING_APPROVAL",
   "WAITING_PROVISIONING",
   "WAITING_SOD_VALIDATION",
+  "WAITING_EXECUTION",
   "ALREADY_TO_EXECUTION"
 ]
 

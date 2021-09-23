@@ -29,5 +29,8 @@
   "request.sodDetail.empty": "No sod detail",
   "request.sodDetail.empty.text": "You currently have no sod detail",
   "request.historyStates.empty": "No history states",
-  "request.historyStates.empty.text": "You currently have no history states"  
+  "request.historyStates.empty.text": "You currently have no history states",
+  "request.AssignedFrom": "Approver",
+  "request.accountInformations": "Account Informations",
+  "request.userInformations": "User Informations"
 }

@@ -29,5 +29,8 @@
   "request.sodDetail.empty": "Nenhum detalhamento de SoD",
   "request.sodDetail.empty.text": "No momento você não tem detalhe de SoD",
   "request.historyStates.empty": "Nenhum histórico de estado",
-  "request.historyStates.empty.text": "No momento você não tem histórico de estado"  
+  "request.historyStates.empty.text": "No momento você não tem histórico de estado",
+  "request.AssignedFrom": "Aprovador",
+  "request.accountInformations": "Informações da conta",
+  "request.userInformations": "Informações do usuário"  
 }

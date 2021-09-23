@@ -31,6 +31,15 @@ export const User = `
     links: [Link]
     accounts: [UserAccount]
   }
+
+  type UserData {
+    name: String
+    label: String
+    value: String
+    editable: Boolean
+    required: Boolean
+    type: String
+  }
 `;
 
 export const Queries = `
@@ -39,6 +48,7 @@ export const Queries = `
   getUserRoles(page: Int, size: Int, ord: String, filters: String): UserRolesRepresentation
   getUserAccounts(page: Int, size: Int, ord: String, filters: String): UserAccountsRepresentation
   getUserSharedAccountMembers(id: String): [User]
+  getUserData: [UserData]
 `;
 
 export const Mutations = `  

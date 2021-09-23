@@ -20,13 +20,16 @@ import Dialog from "@components/Dialog";
 import Loading from "@components/Loading";
 import * as Yup from 'yup'
 import EditAvatar from "./EditAvatar";
-import { GET_FORM_DATAS } from "@modules/User/queries";
+import { GET_FORM_DATAS, GET_USER_DATA } from "@modules/User/queries";
 import { useDispatch } from "react-redux";
 import { addMessage } from "@actions/index";
 import {
  CHANGE_USER_THUMB,
  UPDATE_USER
 } from "@modules/User/mutations";
+import type {
+  UserData
+} from "@modules/User/types";
 
 type EditProfileProps = {
   intl: IntlShape;
@@ -69,6 +72,12 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
       schema: "USER",
     },
   });
+
+  const { loading: loadingUserData, data: dataUserData} = useQuery<{
+    getUserData: UserData[]
+  }>(GET_USER_DATA);
+
+  console.log(dataUserData);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [thumbChanged, setThumbChanged] = useState("");

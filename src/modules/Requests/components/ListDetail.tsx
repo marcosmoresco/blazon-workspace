@@ -31,6 +31,7 @@ const RequestListDetail: FC<ListProps> = ({ filtered, orderBy = "createdAt:desc"
   const [size, setSize] = useState<number>(10);
   const [checked, setChecked] = useState<number[]>([]);
   const [checkedAll, setCheckedAll] = useState(checkAll);
+  const [loadingRefetch, setLoadingRefetch] = useState<boolean>(false);
 
   const { loading, error, data, refetch } = useQuery<{
     getRequests: { links: Link[], requests: Request[] };
@@ -91,7 +92,7 @@ const RequestListDetail: FC<ListProps> = ({ filtered, orderBy = "createdAt:desc"
       });
     }
 
-  }, [filteredString, filtered, checkAll, checkedAll, checked, data, refetch, orderBy]);
+  }, [filteredString, filtered, checkAll, checkedAll, checked, data, refetch, orderBy, currentOrderBy]);
 
   if(loading) {
     return (
@@ -110,15 +111,18 @@ const RequestListDetail: FC<ListProps> = ({ filtered, orderBy = "createdAt:desc"
           <Button
             variant="contained"
             color="primary"
-            onClick={() => {
+            isLoading={loadingRefetch ? 1 : 0}
+            onClick={async () => {
               setCheckAll(false);
               setSize(size + 10);
-              refetch({
+              setLoadingRefetch(true);
+              await refetch({
                 page: 0,
                 size: size + 10,
                 ord: orderBy,
                 filters: filteredString
-              })
+              });
+              setLoadingRefetch(false);
             }}
           >
             <FormattedMessage id="loadMore" />

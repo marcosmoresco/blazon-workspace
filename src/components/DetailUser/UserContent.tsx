@@ -89,9 +89,9 @@ const UserContent: React.FC<UserContentProps> = ({ user, close, type }) => {
         </HeaderBox>              
       </Header>
       <InformationsText>
-        <FormattedMessage id="informations" />
+        {(userDetail?.fields || []).length && <FormattedMessage id="informations" />}        
         {(userDetail?.fields || []).map((u: UserDetail) => (
-          <>
+          <>            
             <InformationLabel>
               {u.label}
             </InformationLabel>
@@ -100,8 +100,8 @@ const UserContent: React.FC<UserContentProps> = ({ user, close, type }) => {
             </InformationContent>
           </>
         ))}    
-        {!(userDetail?.fields || []).length && (
-          <FormattedMessage id="user.no.additional.info" />
+        {!(userDetail?.fields || []).length && (         
+          <FormattedMessage id="user.no.additional.info" />                   
         )}   
       </InformationsText>   
       <AppBar

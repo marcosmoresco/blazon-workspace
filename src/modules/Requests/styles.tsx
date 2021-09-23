@@ -414,6 +414,9 @@ export const TitleJustification = styled.div`
   font-size: 14px;
   color: #514D65;
   padding-bottom: 8px;
+  &.Add-top {
+    margin-top: 14px;
+  }
 `;
 
 export const BoxJustification = styled.div`

@@ -93,12 +93,7 @@ const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
       },
     ],
     onCompleted: ({updatePasswordVault}) => {   
-      if(updatePasswordVault) {
-        dispatch(
-          addMessage(
-            intl.formatMessage({id: "passwordVault.remove.success"})
-          )
-        );
+      if(updatePasswordVault) {        
         handleClose();  
         setOpenPasswordVault(false); 
         setShowSavePasswordStatusModal(true);

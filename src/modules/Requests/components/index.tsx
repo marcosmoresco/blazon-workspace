@@ -213,7 +213,7 @@ const RequestDetail: FC<ListProps> = ({ request, type, id, checked = [], onCheck
                 <FormattedMessage id="accountIdentifier" />
               </TitleJustification>
               <BoxJustificationValue>
-                {request?.resource?.accountIdentifier || " - "}
+                {request?.account?.accountIdentifier || " - "}
               </BoxJustificationValue>
             </BoxJustification>}         
             <BoxCardFooter>

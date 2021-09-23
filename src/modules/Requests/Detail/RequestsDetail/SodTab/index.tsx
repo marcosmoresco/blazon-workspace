@@ -49,7 +49,7 @@ const SodTab: React.FC<CardProps> = ({ request }) => {
                       alt={ approvalDetail?.approver?.displayName}
                     />
                     <UserName>
-                      <FormattedMessage id="tasks.AssignedFrom" />
+                      <FormattedMessage id="request.AssignedFrom" />
                       <User>{ approvalDetail?.approver?.displayName || " - "}</User>
                     </UserName>
                   </>                         
