@@ -1,6 +1,7 @@
 import React, { FC, useState } from "react";
 import { withStyles } from "@material-ui/core/styles";
-import { injectIntl, IntlShape } from "react-intl";
+import InputAdornment from "@material-ui/core/InputAdornment";
+import { FormattedMessage, injectIntl, IntlShape } from "react-intl";
 import { Form, Formik } from "formik";
 import { useQuery, useMutation } from "@apollo/client";
 import { parse, format } from "date-fns";
@@ -28,6 +29,7 @@ import {
  UPDATE_USER
 } from "@modules/User/mutations";
 import type {
+  UserDataRepresentation,
   UserData
 } from "@modules/User/types";
 
@@ -66,18 +68,9 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
     },
   });  
 
-  const { loading, error, data, refetch } = useQuery(GET_FORM_DATAS, {
-    variables: {
-      entryId: 1,
-      schema: "USER",
-    },
-  });
-
-  const { loading: loadingUserData, data: dataUserData} = useQuery<{
-    getUserData: UserData[]
+  const { loading, error, data, refetch } = useQuery<{
+    getUserData: UserDataRepresentation
   }>(GET_USER_DATA);
-
-  console.log(dataUserData);
 
   const [modalOpen, setModalOpen] = useState(false);
   const [thumbChanged, setThumbChanged] = useState("");
@@ -108,50 +101,45 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
   
   const initialValues: {[key: string]: any} = { profileeditform: {} };
 
-  const categorizedFields = {} as any;
+  const fields: any[] = [];
   const schema: {[key: string]: any} = {};
-  if (!loading && !error) {
-    const formData = JSON.parse(data?.getModifyEntry);
+  if (!loading && !error) {   
 
-    forOwn(formData?.attributes, function (categoryValue, categoryKey) {
-      categorizedFields[categoryKey] = [] as any;
+    forOwn(data?.getUserData?.fields, (value: UserData, key: string) => {
+      if (["STRING", "NUMBER", "DATE", "CHECKBOX"].includes(value.type)) {  
 
-      forOwn(categoryValue, function (value, key) {
-        if (["STRING", "NUMBER", "DATE", "CHECKBOX"].includes(value.displayType)) {  
-
-          const currentValue = value.displayType === "DATE" && value.value 
-          ? format(parse(value.value.replace(/BRST |BRT /, "").substring(4), "MMM dd HH:mm:ss yyyy", new Date()), "dd/MM/yyyy")
-          : value.value;
-                   
-          initialValues.profileeditform[value.name] = currentValue;                                
-          categorizedFields[categoryKey].push({
-            name: `profileeditform.${value.name}`,
-            label: value.label,
-            defaultValue: currentValue,
-            required: value.required,
-            disabled: !value.writable,
-            value,
-            type: value.displayType === "STRING" ? "text" : value.displayType === "NUMBER" ? "number" : "text",
-          });
-          if(value.required) {
-            const yupObject = Yup
-              .string()
-                .required(
-                  intl.formatMessage({
-                    id: "isRequired"                      
-                  }, {
-                    field: value.label
-                  })
-                ); 
-            schema[value.name] = yupObject; 
-          } else {
-            const yupObject = Yup
-              .string();
-            schema[value.name] = yupObject;
-          }          
-        }
-      });
-    });
+        const currentValue = value.type === "DATE" && value.value 
+        ? format(parse(value.value.replace(/BRST |BRT /, "").substring(4), "MMM dd HH:mm:ss yyyy", new Date()), "dd/MM/yyyy")
+        : value.value;
+                  
+        initialValues.profileeditform[value.name] = currentValue;                                
+        fields.push({
+          name: `profileeditform.${value.name}`,
+          label: value.label,
+          defaultValue: currentValue,
+          required: value.required,
+          disabled: true,
+          value,
+          type: value.type === "STRING" ? "text" : value.type === "NUMBER" ? "number" : "text",
+        });
+        if(value.required) {
+          const yupObject = Yup
+            .string()
+              .required(
+                intl.formatMessage({
+                  id: "isRequired"                      
+                }, {
+                  field: value.label
+                })
+              ); 
+          schema[value.name] = yupObject; 
+        } else {
+          const yupObject = Yup
+            .string();
+          schema[value.name] = yupObject;
+        }          
+      }
+    });   
   }
 
   const formikUser = {
@@ -249,63 +237,62 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
                     </div>
                   </div>
 
-                  <StyledForm className={classes.formControl}>
-                    {Object.keys(categorizedFields).map((key, index) => (
-                      <>
-                        <div
-                          className={`${classes.category} ${
-                            (index > 0 && "Top") || ""
-                          }`}
-                        >
-                          {key}
-                        </div>
-                        {categorizedFields[key].map((field: any, key: any) => {
-                          const fieldValue = get(form.values.profileeditform, field.name);                                                                             
-                          let currentError = null;
-                          if(["DATE"].includes(field.value.displayType)) {                    
-                            currentError = (!form?.values?.profileeditform || !form?.values?.profileeditform[field.name]) && form?.errors?.profileeditform && form?.errors?.profileeditform[field.name];
-                          }                       
+                  <StyledForm className={classes.formControl}>                   
+                    <>
+                      <div
+                        className={`${classes.category}`}
+                      >
+                        <FormattedMessage id="profileedit.title" />
+                      </div>
+                      {fields.map((field: any, key: any) => {
+                        const fieldValue = get(form.values.profileeditform, field.name);                                                                             
+                        let currentError = null;
+                        if(["DATE"].includes(field.value.displayType)) {                    
+                          currentError = (!form?.values?.profileeditform || !form?.values?.profileeditform[field.name]) && form?.errors?.profileeditform && form?.errors?.profileeditform[field.name];
+                        }                       
 
-                          if (field.value.displayType === "DATE") {
-                            return (
-                              <StyledFormElement>
-                                <DatePicker
-                                  {...field}
-                                  key={key}
-                                  value={fieldValue || field.defaultValue}
-                                  onChange={(value: string) => console.log(value)}
-                                  helperText={currentError}
-                                  error={Boolean(currentError) && !Boolean(form?.values?.profileeditform[field.name])}                                 
-                                  onChange={(date: string) => form.setFieldValue("profileeditform." + field.name, date, false)}
-                                />
-                              </StyledFormElement>                          
-                            );
-                          } else if(field.value.displayType === "CHECKBOX") {
-                            return (
+                        if (field.value.displayType === "DATE") {
+                          return (
                             <StyledFormElement>
-                              <Switch  
-                                {...field}  
-                                key={key}                                          
-                                value={fieldValue || field.defaultValue}                                   
+                              <DatePicker
+                                {...field}
+                                key={key}
+                                value={fieldValue || field.defaultValue}
+                                onChange={(value: string) => console.log(value)}
+                                helperText={currentError}
+                                error={Boolean(currentError) && !Boolean(form?.values?.profileeditform[field.name])}                                 
+                                onChange={(date: string) => form.setFieldValue("profileeditform." + field.name, date, false)}
                               />
-                            </StyledFormElement>                        
-                            );
-                          } else {
-                            return (
-                              <StyledFormElement>
-                                <TextField
-                                  form={form}
-                                  {...field}
-                                  value={fieldValue}
-                                  key={key}
-                                  placeholder="profileeditform.field.placeholder"
-                                />
-                              </StyledFormElement>                          
-                            );
-                          }                                     
-                        })}
-                      </>
-                    ))}
+                            </StyledFormElement>                          
+                          );
+                        } else if(field.value.displayType === "CHECKBOX") {
+                          return (
+                          <StyledFormElement>
+                            <Switch  
+                              {...field}  
+                              key={key}                                          
+                              value={fieldValue || field.defaultValue}                                   
+                            />
+                          </StyledFormElement>                        
+                          );
+                        } else {
+                          return (
+                            <StyledFormElement>
+                              <TextField
+                                form={form}
+                                {...field}
+                                value={fieldValue}
+                                key={key}
+                                placeholder="profileeditform.field.placeholder"
+                                inputProps={{
+                                  endAdornment: <InputAdornment position="start">kg</InputAdornment>,
+                                }}
+                              />
+                            </StyledFormElement>                          
+                          );
+                        }                                     
+                      })}
+                    </>                    
                   </StyledForm>
                 </CardScreen>  
               )}           

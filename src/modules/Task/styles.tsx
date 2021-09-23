@@ -241,6 +241,10 @@ export const BoxRequesterAvatar = styled.div`
     height: 32px;
     border-radius: 20px;
   }
+
+  & .MuiAvatar-circle {
+    width: 32px;
+  }
 `;
 
 export const BoxCardFooter = styled.div`

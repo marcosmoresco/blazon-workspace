@@ -128,30 +128,22 @@ const Info: React.FC<FirstTaskProps> = ({ intl, request, refetch }) => {
                 background="#EDEDEF" 
                 color={currentTheme.palette.primary.main}>
                 ID: {request?.identifier}
-              </BoxCardIdentifier>                                                                                     
-              <BoxCardIdentifier 
-                background="#EDEDEF" 
-                color={currentTheme.palette.primary.main}>
-                <FormattedMessage id="type" />                     
-                : {request?.type}                                                       
-              </BoxCardIdentifier>
+              </BoxCardIdentifier>                                                                                                   
             </BoxCardHeaderContent>
             <BoxCardHeaderInfo>                                    
               <BoxCardFooterInfo>
                 <InfoText>
                   <InfoTextContainer>
                     <FormattedMessage id="createdAt" />: {request?.createdAt}
-                  </InfoTextContainer>                    
+                  </InfoTextContainer>                   
+                  <InfoTextContainer>
+                    <FormattedMessage id="effectivedAt" />: {request?.effectiveDate}
+                  </InfoTextContainer>   
                   {processedStatusList.includes(request?.status as string) &&                    
                     <InfoTextContainer>
                       <FormattedMessage id="finalizedAt" />: {request?.finalizedAt}
                     </InfoTextContainer>
-                  }
-                  {inProgressStatusList.includes(request?.status as string) &&                    
-                    <InfoTextContainer>
-                      <FormattedMessage id="effectivedAt" />: {request?.effectiveDate}
-                    </InfoTextContainer>
-                  }                                     
+                  }                                                                                                         
                   <InfoTextContainer>
                     <FormattedMessage id="task.status"/>: {request?.status} 
                   </InfoTextContainer>                    

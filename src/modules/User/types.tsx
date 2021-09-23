@@ -17,3 +17,8 @@ export type UserData = {
   required: boolean;
   type: string;
 };
+
+export type UserDataRepresentation  = {
+  links: [Link]
+  fields: [UserData]
+}

@@ -56,18 +56,20 @@ const SodTab: React.FC<CardProps> = ({ request }) => {
                 )}                        
               </UserHistory>              
             </UserBox>
-            <InfoContent>
-              <FormattedMessage id="request.createdAt" />
-              <Info>{approvalDetail?.creation || " - "}</Info>
-            </InfoContent>
-            <InfoContent>
-              <FormattedMessage id="request.resolvedAt" />
-              <Info>{approvalDetail?.approvalDate || " - "}</Info>
-            </InfoContent>           
-            <InfoContent>
-              <FormattedMessage id="request.status" />
-              <Info>{approvalDetail?.outcome || " - "}</Info>
-            </InfoContent>
+            <UserBox style={{gap: 32}}>
+              <InfoContent>
+                <FormattedMessage id="request.createdAt" />
+                <Info>{approvalDetail?.creation || " - "}</Info>
+              </InfoContent>
+              <InfoContent>
+                <FormattedMessage id="request.resolvedAt" />
+                <Info>{approvalDetail?.approvalDate || " - "}</Info>
+              </InfoContent>           
+              <InfoContent>
+                <FormattedMessage id="request.status" />
+                <Info>{approvalDetail?.outcome || " - "}</Info>
+              </InfoContent>
+            </UserBox>
           </HistoryBox>
         )
       )}

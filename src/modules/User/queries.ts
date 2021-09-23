@@ -110,12 +110,18 @@ export const GET_USER_SHARED_ACCOUNT_MEMBERS = gql`
 export const GET_USER_DATA = gql`
   query getUserData {
     getUserData {
-      name
-      label
-      value
-      editable
-      required
-      type
+      fields {
+        name
+        label
+        value
+        editable
+        required
+        type
+      }   
+      links {
+        rel
+        href
+      }  
     }
   }
 `;
