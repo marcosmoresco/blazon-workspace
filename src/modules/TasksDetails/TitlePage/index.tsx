@@ -20,14 +20,6 @@ const TitlePageTask: React.FC<TitleProps> = ({ intl, onBack, task }) => {
   const router = useRouter();  
   const { id, type } = router.query;
 
-  const hierarchy: TitleHierarchy = {
-    name: "tasks",  
-    href: "/tasks",
-    children: [{
-      formatedName: String(id)
-    }]  
-  };
-
   let subTitle = "";
 
   if(["approval", "sod"].includes(type as string)) {
@@ -58,10 +50,21 @@ const TitlePageTask: React.FC<TitleProps> = ({ intl, onBack, task }) => {
     subTitle = `${task?.itemDetails?.roleName}`;
   }
 
+  const hierarchy: TitleHierarchy = {
+    name: "tasks",  
+    href: "/tasks",
+    children: [{
+      formatedName: intl.formatMessage({id: `task.${type}`}),
+      children: type !== "roleRight" ? [{
+        formatedName: task?.type.replaceAll("_", " ")
+      }] : undefined
+    }]  
+  };
+
   return (
     <>
      <TitlePage 
-        formatedTitle={subTitle}                 
+        title="tasks"                 
         hierarchy={hierarchy} 
         onBack={() => router.push("/tasks")}/>      
     </>

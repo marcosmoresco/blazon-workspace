@@ -69,19 +69,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                     background="#EDEDEF" 
                     color={currentTheme.palette.primary.main}>
                     ID: {task?.identifier || " - "}                                      
-                  </BoxCardIdentifier>
-                  <BoxCardIdentifier
-                    background="#EDEDEF" 
-                    color={currentTheme.palette.primary.main}>                   
-                    <FormattedMessage id="category" />: <FormattedMessage id={`task.${type}`} />                 
-                  </BoxCardIdentifier>   
-                  {type !== "roleRight" && 
-                  <BoxCardIdentifier
-                    background="#EDEDEF" 
-                    color={currentTheme.palette.primary.main}>
-                    <FormattedMessage id="type" />                     
-                    : {task?.type && intl.formatMessage({id: `task.type.${task?.type}`})}                                         
-                  </BoxCardIdentifier>}                 
+                  </BoxCardIdentifier>                                  
                 </>                              
               </BoxCardHeaderContent>
               <BoxCardHeaderContent>
