@@ -74,7 +74,10 @@ const useStyles = (theme: Theme) =>
       "&.Top": {
         marginTop: 24,
       }
-    }
+    },
+    editButton: {
+      cursor: "pointer"
+    }   
   })
 
 export default useStyles

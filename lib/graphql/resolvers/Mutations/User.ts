@@ -88,8 +88,8 @@ export const UserMutations = {
   updateUser: async (parent: any, args: any, context: any) => {
     try {
       await axios.put(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/directory/users/${context.req?.session?.passport?.user?.id}`,
-        {payload: args?.payload},
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/directory/users/userdatas`,
+        JSON.parse(args?.payload),
         { ...config(context)}
       );
       return true;
