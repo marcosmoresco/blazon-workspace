@@ -25,7 +25,7 @@ const ResourceEntitlements: FC<ListProps> = ({ dispatch }) => {
   const resource = data?.getSelfServiceItem;
 
   const handleClickRow = (row: Entitlement) => {
-    router.push(`/search/entitlement/${row.identifier}`);
+    router.push(`/search/directory/entitlement/${row.identifier}`);
   };
 
   return (

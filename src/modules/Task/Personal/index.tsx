@@ -193,7 +193,7 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
   return (
     <Box>
       <Header>
-        <Checkbox value={checkAll} onChange={() => setCheckAll(!checkAll)}/>        
+        {!resolved && <Checkbox value={checkAll} onChange={() => setCheckAll(!checkAll)}/> }       
         <HeaderFiltersContent>
           <HeaderFilters>
             <FilterContent>            

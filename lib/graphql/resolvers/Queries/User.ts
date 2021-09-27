@@ -84,4 +84,37 @@ export const UserQueries = {
       throw error;
     }
   },  
+  getSecretQuestions: async (parent: any, args: any, context: any) => {
+    try {
+      const questions = await axios.get(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/secretquestions`,
+        { ...config(context) }
+      );
+      return questions.data;
+    } catch (error) {
+      throw error;
+    }
+  },  
+  generateOtpToken: async (parent: any, args: any, context: any) => {
+    try {
+      const token = await axios.get(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/otptoken/generate`,
+        { ...config(context) }
+      );
+      return token.data;
+    } catch (error) {
+      throw error;
+    }
+  },  
+  validateOtpToken: async (parent: any, args: any, context: any) => {
+    try {
+      const validate = await axios.get(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/otptoken/validate?code=${args?.code}`,
+        { ...config(context) }
+      );
+      return validate.data;
+    } catch (error) {
+      throw error;
+    }
+  }
 };

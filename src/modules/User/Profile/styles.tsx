@@ -11,6 +11,10 @@ const useStyles = (theme: Theme) =>
       borderRadius: 8
     },
     box: {
+      marginRight: 10,
+      marginLeft: 10,
+      marginTop: 14,
+      marginBottom: 32,
       '& .left .listing': {
         marginLeft: 24,
         marginTop: 32,

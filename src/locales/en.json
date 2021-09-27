@@ -7,6 +7,8 @@
   "app.save": "Save",
   "app.share": "Share",
   "app.cancel": "Cancel",
+  "nextPage": "Next",
+  "confirm": "Confirm",
   "search": "Search",
   "profile": "Profile",
   "suport.blazon": "Suport Blazon",
@@ -126,5 +128,10 @@
   "refresh": "Refresh",
   "init": "Init",
   "end": "End",
-  "user.no.additional.info": "There is no additional informations about user"
+  "user.no.additional.info": "There is no additional informations about user",
+  "questions": "Questions",
+  "question": "Question",
+  "answers": "Answers",
+  "answer": "Answer"
+   
 }

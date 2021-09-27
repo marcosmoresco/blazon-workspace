@@ -337,4 +337,59 @@ export const TaskQueries = {
       throw error;
     }
   }, 
+  getCertificationTasksMergedHistory: async (parent: any, args: any, context: any) => {
+    try {
+      const filters = await axios.get(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/certifications/approvaltasks/${args?.id}/mergedhistory`,        
+        { ...config(context) }
+      );
+      return filters.data;
+    } catch (error) {
+      throw error;
+    }
+  }, 
+  getProvisioningTasksMergedHistory: async (parent: any, args: any, context: any) => {
+    try {
+      const filters = await axios.get(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/provisioning/tasks/${args?.id}/mergedhistory`,        
+        { ...config(context) }
+      );
+      return filters.data;
+    } catch (error) {
+      throw error;
+    }
+  }, 
+  getRoleRightTasksMergedHistory: async (parent: any, args: any, context: any) => {
+    try {
+      const filters = await axios.get(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/rolerights/approvaltasks/${args?.id}/mergedhistory`,        
+        { ...config(context) }
+      );
+      return filters.data;
+    } catch (error) {
+      throw error;
+    }
+  }, 
+  getSoDTasksMergedHistory: async (parent: any, args: any, context: any) => {
+    try {
+      const filters = await axios.get(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/sod/approvaltasks/${args?.id}/mergedhistory`,        
+        { ...config(context) }
+      );
+      return filters.data;
+    } catch (error) {
+      throw error;
+    }
+  }, 
+  getApprovalTasksMergedHistory: async (parent: any, args: any, context: any) => {
+    try {
+      const filters = await axios.get(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/requests/approvaltasks/${args?.id}/mergedhistory`,        
+        { ...config(context) }
+      );
+      return filters.data;
+    } catch (error) {
+      throw error;
+    }
+  }, 
 };

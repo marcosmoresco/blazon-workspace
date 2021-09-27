@@ -69,7 +69,8 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
       size: 10,
       ord: "createdDate:desc",
       filters: filteredString
-    },    
+    },
+    fetchPolicy: "network-only"    
   });
 
   const { loading: loadingAssignActions, data: dataAssignActions, refetch: refetchAssignActions } = useQuery<{

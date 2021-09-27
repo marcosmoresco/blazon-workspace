@@ -125,3 +125,35 @@ export const GET_USER_DATA = gql`
     }
   }
 `;
+
+export const GET_SECRET_QUESTIONS = gql`
+  query getSecretQuestions {
+    getSecretQuestions {
+      identifier
+      userId
+      question
+      answer
+      beanshell
+      links {
+        rel
+        href
+      }
+    }
+  }
+`;
+
+export const GENERATE_OTP_TOKEN = gql`
+  query generateOtpToken {
+    generateOtpToken {
+      otpKey
+    }
+  }
+`;
+
+export const VALIDATE_OTP_TOKEN = gql`
+  query validateOtpToken($code: String) {
+    validateOtpToken(code: $code) {
+      result
+    }
+  }
+`;

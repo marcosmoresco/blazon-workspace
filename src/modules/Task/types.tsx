@@ -42,6 +42,7 @@ export type TaskCertificationItemDetails = {
   entitlementName: string;
   entitlementIdentifier: number;
   entitlementDescription: string;
+  accountIdentifier: string;
 };
 
 export type TaskItemDetails = {
@@ -96,6 +97,7 @@ export type Task = {
   justification: string;
   revokeJustification: string;
   disapprovalJustification: string;
+  allowedJustification: string;
   dates: TaskDates;
   headers: TaskHeaders;
   approvalItemDetails: TaskApprovalItemDetails;
@@ -170,3 +172,17 @@ export type RoleRightTaskItems = {
   identifier: number;
   items: [RoleRightTaskItemsDetail]
 }
+
+export type TaskAssignHistoryType = {
+  name: string;
+  type: string;
+  identifier: number;
+  links: [Link];
+} 
+
+export type TaskAssignHistory = {
+  to: TaskAssignHistoryType;
+  from: TaskAssignHistoryType;
+  date: string;
+  links: [Link];
+} 

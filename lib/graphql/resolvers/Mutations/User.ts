@@ -97,4 +97,64 @@ export const UserMutations = {
       throw error;
     }
   },
+  changePhone: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.put(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/directory/users/mobilephone`,
+        JSON.parse(args?.payload),
+        { ...config(context)}
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  changeEmail: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.put(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/directory/users/personalemail`,
+        JSON.parse(args?.payload),
+        { ...config(context)}
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  saveSecretQuestion: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/secretquestions`,
+        JSON.parse(args?.payload),
+        { ...config(context) }
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }, 
+  updateSecretQuestion: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.put(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/secretquestions/${args?.id}`,
+        JSON.parse(args?.payload),
+        { ...config(context) }
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }, 
+  deleteSecretQuestions: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/secretquestions/deleteall`,
+        JSON.parse(args?.payload),
+        { ...config(context) }
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  }, 
 };

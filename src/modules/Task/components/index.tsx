@@ -458,7 +458,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                 task?.itemDetails?.roleName || " - "
               ) || ""}
             </BoxCardTitle>
-            {!["PROVISIONING_TASK", "CERTIFICATION_TASK"].includes(task?.headers?.category || "") && !["PROVISIONING_TASK", "CERTIFICATION_TASK"].includes(type || "") && 
+            {!["PROVISIONING_TASK", "CERTIFICATION_TASK", "SOD_TASK"].includes(task?.headers?.category || "") && !["PROVISIONING_TASK", "CERTIFICATION_TASK", "SOD_TASK"].includes(type || "") && 
             <BoxJustification>
               <TitleJustification>
                 <FormattedMessage id="tasks.justification" />

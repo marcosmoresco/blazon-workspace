@@ -56,6 +56,7 @@ export const Task = `
     entitlementName: String
     entitlementIdentifier: Int
     entitlementDescription: String
+    accountIdentifier: String
   }
 
   type TaskProvisioningItemDetailAccount {    
@@ -126,6 +127,7 @@ export const Task = `
     justification: String    
     revokeJustification: String
     disapprovalJustification: String
+    allowedJustification: String
     dates: TaskDates
     headers: TaskHeaders
     approvalItemDetails: TaskApprovalItemDetails
@@ -142,6 +144,20 @@ export const Task = `
   type TaskRepresentation {
     links: [Link]
     representation: [Task]
+  } 
+
+  type TaskAssignHistoryType {
+    name: String
+    type: String
+    identifier: Int
+    links: [Link]
+  } 
+
+  type TaskAssignHistory {
+    to: TaskAssignHistoryType
+    from: TaskAssignHistoryType
+    date: String
+    links: [Link]
   } 
 `;
 
@@ -169,6 +185,11 @@ export const Queries = `
   getProvisioningTasks(page: Int, size: Int, ord: String, filters: String): TaskRepresentation
   getProvisioningTask(id: Int): Task
   getProvisioningTaskFilters(type: String, statusList: String): [TaskFilter]
+  getApprovalTasksMergedHistory(id: Int): [TaskAssignHistory]
+  getCertificationTasksMergedHistory(id: Int): [TaskAssignHistory]
+  getProvisioningTasksMergedHistory(id: Int): [TaskAssignHistory]
+  getRoleRightTasksMergedHistory(id: Int): [TaskAssignHistory]
+  getSoDTasksMergedHistory(id: Int): [TaskAssignHistory]
 `;
 
 export const Mutations = `

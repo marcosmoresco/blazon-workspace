@@ -25,10 +25,10 @@ const GridAdditionalInformationsCertification: React.FC<AdditionalInformationsPr
     const { theme } = useTheme();
     const currentTheme = { ...themes[theme] };
 
-    useEffect(() => {
-      if (task?.type && !tab) {
+    useEffect(() => {     
+      if (task) {       
         if (
-          ["CREATE_ACCOUNT", "CHECKIN_ADMIN_ACCOUNT_PASSWORD"].includes(
+          ["ACCOUNT", "MEMBERSHIP_ENTITLEMENT"].includes(
             task?.type || ""
           )
         ) {
@@ -40,7 +40,7 @@ const GridAdditionalInformationsCertification: React.FC<AdditionalInformationsPr
     }, [task, tab]);
     return (
       <>
-        {["CREATE_ACCOUNT", "CHECKIN_ADMIN_ACCOUNT_PASSWORD"].includes(
+        {["ACCOUNT", "MEMBERSHIP_ENTITLEMENT"].includes(
           task?.type || ""
         ) && (
           <WorkArea>
@@ -59,65 +59,11 @@ const GridAdditionalInformationsCertification: React.FC<AdditionalInformationsPr
                 <FormattedMessage id="accountIdentifier" />
               </label>
               <DetailValue>
-                {task?.approvalItemDetails?.account?.accountIdentifier || " - "}
+                {task?.certificationItemDetails?.accountIdentifier || " - "}
               </DetailValue>
             </DeitalList>
           </WorkArea>
-        )}
-        {task?.type === "ASSIGN_ENTITLEMENT" && (
-          <WorkArea>
-            <MenuDetail>
-              <StyleApprovalTab
-                color={currentTheme.palette.primary.main}
-                selected={tab === ("resource" as tabs)}
-                onClick={() => setTab("resource" as tabs)}
-              >
-                <FormattedMessage id="tasks.ResourceInformations" />
-              </StyleApprovalTab>
-              <StyleApprovalTab
-                color={currentTheme.palette.primary.main}
-                selected={tab === ("account" as tabs)}
-                onClick={() => setTab("account" as tabs)}
-              >
-                <FormattedMessage id="tasks.AccountInformations" />
-              </StyleApprovalTab>
-            </MenuDetail>
-            <InsideLine />
-            {tab === ("resource" as tabs) && (
-              <DeitalList>
-                <label>
-                  <FormattedMessage id="identifier" />
-                </label>
-                <DetailValue>
-                  {task?.approvalItemDetails?.resourceIdentifier || " - "}
-                </DetailValue>
-                <label>
-                  <FormattedMessage id="name" />
-                </label>
-                <DetailValue>
-                  {task?.approvalItemDetails?.resourceName || " - "}
-                </DetailValue>
-                <label>
-                  <FormattedMessage id="description" />
-                </label>
-                <DetailValue>
-                  {task?.approvalItemDetails?.resourceDescription || " - "}
-                </DetailValue>
-              </DeitalList>
-            )}
-            {tab === ("account" as tabs) && (
-              <DeitalList>
-                <label>
-                  <FormattedMessage id="accountIdentifier" />
-                </label>
-                <DetailValue>
-                  {task?.approvalItemDetails?.account?.accountIdentifier ||
-                    " - "}
-                </DetailValue>
-              </DeitalList>
-            )}
-          </WorkArea>
-        )}
+        )}        
       </>
     );
   };

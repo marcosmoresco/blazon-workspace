@@ -14,7 +14,6 @@ import EmptyState from "@components/EmptyState";
 import Section from "@components/Section";
 import Tooltip from "@components/Tooltip";
 import Loading from "@components/Loading";
-import Ordenation from "@components/Ordenation";
 import SharedAccountIcon from "@icons/SharedAccount";
 import ApplicationAccountIcon from "@icons/ApplicationAccount";
 import RegularAccountIcon from "@icons/RegularAccount";

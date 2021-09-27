@@ -276,6 +276,8 @@ export const InfoText = styled.div`
   background: #FBFAFB;
   border-radius: 6px;
   padding: 8px;
+  display: flex;
+  gap: 10px;
 `;
 
 export const InfoTextContainer = styled.div`

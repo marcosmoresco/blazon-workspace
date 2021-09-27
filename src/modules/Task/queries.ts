@@ -94,6 +94,7 @@ export const GET_TASKS = gql`
         type
         justification
         disapprovalJustification
+        allowedJustification
         dates {
           createdDate
           resolvedDate
@@ -149,6 +150,7 @@ export const GET_TASKS = gql`
           entitlementName
           entitlementIdentifier
           entitlementDescription
+          accountIdentifier
         }
         itemDetails {    
           roleName
@@ -389,6 +391,7 @@ export const GET_CERTIFICATION_APPROVAL_TASKS = gql`
           entitlementName
           entitlementIdentifier
           entitlementDescription
+          accountIdentifier
         }
       }
       links {
@@ -446,6 +449,7 @@ export const GET_CERTIFICATION_APPROVAL_TASK = gql`
         entitlementName
         entitlementIdentifier
         entitlementDescription
+        accountIdentifier
       }
       comments {
         comment
@@ -553,7 +557,7 @@ export const GET_SOD_APPROVAL_TASK = gql`
   query getSoDApprovalTask($id: Int) {
     getSoDApprovalTask(id: $id) {     
       identifier
-      justification
+      allowedJustification
       type
       dates {
         createdDate
@@ -1027,6 +1031,7 @@ export const GET_TASK_QUEUE_TASKS = gql`
           entitlementName
           entitlementIdentifier
           entitlementDescription
+          accountIdentifier
         }
         itemDetails {    
           roleName
@@ -1089,6 +1094,136 @@ export const GET_DIRECTORY_RESOURCE = gql`
       name
       description
       passwordVaultEnabled
+    }
+  }
+`;
+
+export const GET_APPROVAL_MERGED_HISTORY = gql`
+  query getApprovalTasksMergedHistory($id: Int) {
+    getHistory: getApprovalTasksMergedHistory(id: $id) {
+      from {
+        name
+        type
+        identifier
+        links {
+          rel
+          href
+        }
+      }
+      to {
+        name
+        type
+        identifier
+        links {
+          rel
+          href
+        }
+      }
+      date
+    }
+  }
+`;
+
+export const GET_CERTIFICATION_MERGED_HISTORY = gql`
+  query getCertificationTasksMergedHistory($id: Int) {
+    getHistory: getCertificationTasksMergedHistory(id: $id) {
+      from {
+        name
+        type
+        identifier
+        links {
+          rel
+          href
+        }
+      }
+      to {
+        name
+        type
+        identifier
+        links {
+          rel
+          href
+        }
+      }
+      date
+    }
+  }
+`;
+
+export const GET_PROVISIONING_MERGED_HISTORY = gql`
+  query getProvisioningTasksMergedHistory($id: Int) {
+    getHistory: getProvisioningTasksMergedHistory(id: $id) {
+      from {
+        name
+        type
+        identifier
+        links {
+          rel
+          href
+        }
+      }
+      to {
+        name
+        type
+        identifier
+        links {
+          rel
+          href
+        }
+      }
+      date
+    }
+  }
+`;
+
+export const GET_ROLE_RIGHT_MERGED_HISTORY = gql`
+  query getRoleRightTasksMergedHistory($id: Int) {
+    getHistory: getRoleRightTasksMergedHistory(id: $id) {
+      from {
+        name
+        type
+        identifier
+        links {
+          rel
+          href
+        }
+      }
+      to {
+        name
+        type
+        identifier
+        links {
+          rel
+          href
+        }
+      }
+      date
+    }
+  }
+`;
+
+export const GET_SOD_MERGED_HISTORY = gql`
+  query getSoDTasksMergedHistory($id: Int) {
+    getHistory: getSoDTasksMergedHistory(id: $id) {
+      from {
+        name
+        type
+        identifier
+        links {
+          rel
+          href
+        }
+      }
+      to {
+        name
+        type
+        identifier
+        links {
+          rel
+          href
+        }
+      }
+      date
     }
   }
 `;

@@ -58,7 +58,7 @@ function Row(props) {
         }     
       } 
       setDisabled(props.disabled)    
-    } else if(row.id !== props.row.id) {
+    } else if(row.id !== props.row.id || JSON.stringify(row) !== JSON.stringify(props.row)) {
       setRow(props.row)
     }                
   }, [expandAll, beforeExpand, handleExpand, expandedAll, row, open, props])

@@ -22,3 +22,12 @@ export type UserDataRepresentation  = {
   links: [Link]
   fields: [UserData]
 }
+
+export type SecretQuestion = {
+  identifier: number;
+  userId: number;
+  question: string;
+  answer: string;
+  beanshell: boolean;
+  links: [Link];
+}

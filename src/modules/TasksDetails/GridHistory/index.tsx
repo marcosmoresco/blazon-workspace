@@ -1,7 +1,7 @@
 // vendors
 import React, { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { useDispatch } from "react-redux";
 import { addMessage } from "@actions/index";
 import { useRouter } from "next/router";
@@ -20,12 +20,22 @@ import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
 //constants
 import {
   getQueryByType,
-  addCommentByType
+  addCommentByType,
+  getHistoryByType
 } from "./constants";
 
 //types
 import type { GridHistoryProps } from "./types";
-import type { TaskComment, TaskHistory } from "@modules/Task/types";
+import type { TaskComment, TaskHistory, TaskAssignHistory } from "@modules/Task/types";
+
+//queries
+import {
+  GET_APPROVAL_MERGED_HISTORY,
+  GET_CERTIFICATION_MERGED_HISTORY,
+  GET_PROVISIONING_MERGED_HISTORY,
+  GET_ROLE_RIGHT_MERGED_HISTORY,
+  GET_SOD_MERGED_HISTORY
+} from "@modules/Task/queries";
 
 // styles
 import {
@@ -70,6 +80,14 @@ const GridHistory: React.FC<GridHistoryProps> = ({ task }) => {
   const [tab, setTab] = useState<"Comments" | "history">("Comments");
   const [currentComment, setCurrentComment] = useState<string>("");
 
+  const { loading, error, data, refetch } = useQuery<{
+    getHistory: [TaskAssignHistory];
+  }>(getHistoryByType(type), {
+    variables: {
+      id: Number(id)
+    },
+    fetchPolicy: "network-only"
+  });
 
   const [addComment, {}] = useMutation(addCommentByType(type || "approval"), { 
     refetchQueries: [
@@ -186,7 +204,7 @@ const GridHistory: React.FC<GridHistoryProps> = ({ task }) => {
               </>
             ) : tab === "history" ? (
               <div>
-                {(task?.assignHistory || []).map((history: TaskHistory, index: number) => (
+                {(data?.getHistory || []).map((history: TaskAssignHistory, index: number) => (
                   <HistoryBox key={`task-assign-history-${index}`}>
                     <UserBox>
                       <UserHistory>
@@ -197,38 +215,62 @@ const GridHistory: React.FC<GridHistoryProps> = ({ task }) => {
                             </HistorySystem>
                             <UserName>
                               <FormattedMessage id="tasks.AssignedFrom" />
-                              <User>{history?.from?.displayName || intl.formatMessage({id: "tasks.system"})}</User>
+                              <User>{history?.from?.name || intl.formatMessage({id: "tasks.system"})}</User>
                             </UserName>
                           </>                          
                         )}
-                        {history?.from && (
+                        {history?.from && history.from.type === "USER" && (
                           <>
                             <Image
                               src={getLink("thumb", history?.from?.links)}
                               width={32}
                               height={32}
-                              alt={history?.from?.displayName}
+                              alt={history?.from?.name}
                             />
                             <UserName>
                               <FormattedMessage id="tasks.AssignedFrom" />
-                              <User>{history?.from?.displayName || " - "}</User>
+                              <User>{history?.from?.name || " - "}</User>
+                            </UserName>
+                          </>                         
+                        )} 
+                        {history?.from && history.from.type === "QUEUE" && (
+                          <>
+                           <HistorySystem>
+                              <ListBulletsIcon width={21} height={21}/>
+                            </HistorySystem>
+                            <UserName>
+                              <FormattedMessage id="tasks.AssignedFrom" />
+                              <User>{intl.formatMessage({id: "queue"})} {history.from.name}</User>
                             </UserName>
                           </>                         
                         )}                        
                       </UserHistory>
                       <ArrowRightIcon color="#26213F" stroke={2} width={21} height={21}/>
-                      <UserHistory>
-                        <Image
-                          src={getLink("thumb", history?.to?.links)}
-                          width={32}
-                          height={32}
-                          alt={history?.to?.displayName}
-                        />
-                        <UserName>
-                          <FormattedMessage id="tasks.AssignedTo" />
-                          <User>{history?.to?.displayName}</User>
-                        </UserName>
-                      </UserHistory>
+                      {history?.to && history.to.type === "USER" && (
+                        <UserHistory>
+                          <Image
+                            src={getLink("thumb", history?.to?.links)}
+                            width={32}
+                            height={32}
+                            alt={history?.to?.name}
+                          />
+                          <UserName>
+                            <FormattedMessage id="tasks.AssignedTo" />
+                            <User>{history?.to?.name}</User>
+                          </UserName>
+                        </UserHistory>
+                      )}                      
+                      {history?.to && history.to.type === "QUEUE" && (                        
+                        <UserHistory>
+                          <HistorySystem>
+                            <ListBulletsIcon width={21} height={21}/>
+                          </HistorySystem>
+                          <UserName>
+                            <FormattedMessage id="tasks.AssignedTo" />
+                            <User>{intl.formatMessage({id: "queue"})} {history.to.name}</User>
+                          </UserName>
+                        </UserHistory>                         
+                        )} 
                     </UserBox>
                     <DataHistories>
                       <FormattedMessage id="tasks.date" />

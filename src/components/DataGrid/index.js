@@ -74,7 +74,7 @@ const DataGridBlazon = (props) => {
   const [currentQueryFilters, setCurrentQueryFilters] = React.useState(""); 
 
   useEffect(() => {  
-    if(!!list && (!rows.length || listClear)) {
+    if(!!list && list.length && (!rows.length || listClear)) {
       if(listClear) {
         handleListClear();
       }
@@ -107,6 +107,9 @@ const DataGridBlazon = (props) => {
           setOpen(false)
         }
       }                
+    } else if(!query && fetching !== isFetching && list) {
+      setRows(list.map((u) => ({...u, id: (bindId && bindId(u)) || u.identifier})));
+      setIsFetching(fetching);
     } else if(expand && props.expandAll !== expandAll) {
       setExpanded([]);
       setExpandAll(props.expandAll);
@@ -135,6 +138,7 @@ const DataGridBlazon = (props) => {
       });
     }
   }, [
+    isFetching,
     listClear,
     handleListClear,
     currentQueryFilters,

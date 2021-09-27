@@ -103,9 +103,15 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                 task?.approvalItemDetails?.resourceName || " - "
               )}
               {type === "certification" && (
-                task?.certificationItemDetails?.resourceName || 
+                 task?.certificationItemDetails?.entitlementName && (
+                  <>
+                    <BoxCardTitleResource>
+                      {task?.certificationItemDetails?.resourceName}
+                    </BoxCardTitleResource> / {task?.certificationItemDetails?.entitlementName}
+                  </>  
+                ) || 
                 task?.certificationItemDetails?.roleName || 
-                task?.certificationItemDetails?.entitlementName || " - "
+                task?.certificationItemDetails?.resourceName || " - "
               )}
               {type === "provisioning" && (
                 task?.provisioningItemDetail?.entitlement && (
@@ -151,23 +157,19 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                     <InfoTextContainer>
                       <FormattedMessage id="createdAt" />: {task?.dates?.createdDate}
                     </InfoTextContainer>
-                  </InfoText> 
-                  {task?.headers?.status === "DONE" && (
-                    <InfoText>
+                    {task?.headers?.status === "DONE" && (                   
                       <InfoTextContainer>
                         <FormattedMessage id="resolvedAt" />: {task?.dates?.resolvedDate}
-                      </InfoTextContainer>
-                    </InfoText>
-                  )}                                                     
-                  <InfoText>
+                      </InfoTextContainer>                    
+                    )} 
                     <InfoTextContainer>
                       <FormattedMessage id="deadline" />: {task?.dates?.deadline}
-                    </InfoTextContainer>
-                  </InfoText>
+                    </InfoTextContainer> 
+                  </InfoText>                  
                 </BoxCardHeaderInfo>
               </BoxCardFooterInfo>
             </BoxCardFooter>            
-            {!["provisioning", "certification"].includes(type as string) && (
+            {!["provisioning", "certification", "sod"].includes(type as string) && (
               <>
                 <JustificationDivider /> 
                 <BoxJustification>
@@ -215,7 +217,24 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
               </BoxJustification>
             </BoxCardContent>
           </BoxCard>  
-        )}                  
+        )}     
+        {task?.allowedJustification && (
+          <BoxCard>
+            <BoxCardContent>
+              <BoxCardTitle className="Light">
+                <FormattedMessage id="tasks.accessDenied" />
+              </BoxCardTitle>
+              <BoxJustification className="Add-top">
+                <TitleJustification>
+                  <FormattedMessage id="tasks.allowedJustification" />
+                </TitleJustification>
+                <BoxJustificationValue>
+                  {task?.allowedJustification || " - "}
+                </BoxJustificationValue>
+              </BoxJustification>
+            </BoxCardContent>
+          </BoxCard>  
+        )}               
       </Box>      
     </>
   );

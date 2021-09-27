@@ -24,6 +24,7 @@
   "tasks.disapprovalJustification": "Justificativa de reprovação",
   "tasks.revokeJustification": "Justificativa de revogação",
   "tasks.notProvisionedJustification": "Justificativa do não provisionamento",
+  "tasks.allowedJustification": "Justificativa de permissão",
   "tasks.noComments": "Nenhum comentário",
   "tasks.noComments.text": "Nenhum comentário adicionado",
   "tasks.add.comment.here": "Insira um comentário aqui",

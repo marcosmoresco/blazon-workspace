@@ -57,3 +57,33 @@ export const UPDATE_USER = gql`
     updateUser(payload: $payload)
   }
 `;
+
+export const CHANGE_EMAIL = gql`
+  mutation changeEmail($payload: String) {
+    changeEmail(payload: $payload)
+  }
+`;
+
+export const CHANGE_PHONE = gql`
+  mutation changePhone($payload: String) {
+    changePhone(payload: $payload)
+  }
+`;
+
+export const SAVE_SECRET_QUESTION = gql`
+  mutation saveSecretQuestion($payload: String) {
+    saveSecretQuestion(payload: $payload)
+  }
+`;
+
+export const UPDATE_SECRET_QUESTION = gql`
+  mutation updateSecretQuestion($id: Int, $payload: String) {
+    updateSecretQuestion(id: $id, payload: $payload)
+  }
+`;
+
+export const DELETE_SECRET_QUESTIONS = gql`
+  mutation deleteSecretQuestions($payload: String) {
+    deleteSecretQuestions(payload: $payload)
+  }
+`;

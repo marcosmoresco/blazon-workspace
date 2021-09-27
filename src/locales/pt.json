@@ -7,6 +7,8 @@
   "app.save": "Salvar",
   "app.share": "Compartilhar",
   "app.cancel": "Cancelar",
+  "nextPage": "Próxima",
+  "confirm": "Confirmar",
   "search": "Busca",
   "profile": "Perfil",
   "suport.blazon": "Suporte Blazon",
@@ -126,5 +128,9 @@
   "refresh": "Recarregar",
   "init": "Início",
   "end": "Fim",
-  "user.no.additional.info": "Não há informações adicionais para o usuário"
+  "user.no.additional.info": "Não há informações adicionais para o usuário",
+  "questions": "Perguntas",
+  "question": "Pergunta",
+  "answers": "Respostas",
+  "answer": "Resposta"
 }

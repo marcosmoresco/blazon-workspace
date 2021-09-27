@@ -45,6 +45,23 @@ export const User = `
     links: [Link]
     fields: [UserData]
   }
+
+  type SecretQuestion {
+    identifier: Int
+    userId: Int
+    question: String
+    answer: String
+    beanshell: Boolean
+    links: [Link]
+  }
+
+  type OtpToken {
+    otpKey: String
+  }
+
+  type OtpTokenValidate {
+    result: Boolean
+  }
 `;
 
 export const Queries = `
@@ -54,6 +71,9 @@ export const Queries = `
   getUserAccounts(page: Int, size: Int, ord: String, filters: String): UserAccountsRepresentation
   getUserSharedAccountMembers(id: String): [User]
   getUserData: UserDataRepresentation
+  getSecretQuestions: [SecretQuestion]
+  generateOtpToken: OtpToken
+  validateOtpToken(code: String): OtpTokenValidate
 `;
 
 export const Mutations = `  
@@ -64,4 +84,9 @@ export const Mutations = `
   changePassword(currentPassword: String, newPassword: String, newPasswordConfirm: String): Boolean
   checkoutAdminAccount(payload: String): Boolean
   updateUser(payload: String): Boolean
+  changePhone(payload: String): Boolean
+  changeEmail(payload: String): Boolean
+  saveSecretQuestion(payload: String): Boolean
+  updateSecretQuestion(id: Int, payload: String): Boolean
+  deleteSecretQuestions(payload: String): Boolean
 `;

@@ -3,5 +3,11 @@
   "search.tutorial.text": "Use as tags abaixo para filtrar sua pesquisa e ganhar tempo.",
   "search.filters.clear.all": "Limpar todos",
   "search.filters.clear": "Limpar filtros",
-  "search.selfService.added": "adicionado"
+  "search.selfService.added": "adicionado",
+  "search.detail.rights.resource.empty.title": "Nenhum recurso",
+  "search.detail.rights.resource.empty.text": "Nenhum recurso encontrado",
+  "search.detail.rights.resource.noSelect.entitlement.title": "Selecione um recurso ao lado",
+  "search.detail.rights.resource.noSelect.entitlement.text": "Aqui você vê os direitos do recurso selecionado.",
+  "search.detail.rights.entitlement.empty.title": "Nenhum entitlement",
+  "search.detail.rights.entitlement.empty.text": "Nenhum direito encontrado"
 }

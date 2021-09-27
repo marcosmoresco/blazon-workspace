@@ -24,8 +24,7 @@ export const HeaderBox = styled.div`
 export const HeaderDisplayName = styled.div`
   font-weight: 500;
   font-size: 24px;
-  line-height: 24px;
-  text-align: center;
+  line-height: 28px;  
   color: #FFFFFF;  
 `;
 

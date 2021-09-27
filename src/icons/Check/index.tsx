@@ -19,9 +19,7 @@ function CheckIcon(props: IconProps) {
     >
       <path
         d="M27 9.00098L13 23.0004L6 16.001"
-        stroke={color}
-        stroke-linecap="round"
-        stroke-linejoin="round"
+        stroke={color}       
       />
     </svg>
   );

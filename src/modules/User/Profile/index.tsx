@@ -11,7 +11,10 @@ import AdministrativeAccountIcon from "@icons/AdministrativeAccount";
 import TemporaryAccountIcon from "@icons/Watch";
 import CheckCircleIcon from "@icons/CheckCircle";
 import PeopleIcon from "@icons/People";
-import Key from '@icons/Key'
+import Key from "@icons/Key";
+import EnvelopeIcon from "@icons/Envelope";
+import PhoneIcon from "@icons/Phone";
+import ChatsCircleIcon from "@icons/ChatsCircle";
 import { useRouter } from 'next/router'
 import User from '@icons/User'
 import Listing from '@components/Listing'
@@ -23,6 +26,7 @@ import PencilIcon from '@icons/Pencil'
 import { useUser } from "@hooks";
 import { useTheme, themes } from '@theme/index'
 import { CHECKOUT_ADMIN_ACCOUNT } from "@modules/User/mutations";
+import KeyIcon from '@icons/Key'
 
 type ProfileProps = {
   intl: IntlShape
@@ -94,16 +98,7 @@ const Profile: FC<ProfileProps> = ({ classes, intl }) => {
                 </Grid>
               </Grid>
             </Grid>
-            <Grid item xs={4}>
-              <Listing title='profile.login'>
-                <ListingItem
-                  label='profile.login.changepassword'
-                  subtitle='profile.login.changepassword.subtitle'
-                  icon={<Key width={21} height={21} color="#FFFFFF" />}
-                  iconBg={currentTheme.palette.primary.main || '#0E46D7'}
-                  action={() => router.push('/profile/change-password')}
-                />
-              </Listing>
+            <Grid item xs={4}>              
             </Grid>
             <Grid item xs={4}>
               <Listing title='profile.options'>
@@ -124,7 +119,7 @@ const Profile: FC<ProfileProps> = ({ classes, intl }) => {
           </Grid>
           <Divider />
           <Grid container spacing={4} className={classes.box}>
-            <Grid item xs={6} className='left'>
+            <Grid item xs={4}>
               <div>
                 <BoxListing title='profile.accounts'>
                   <BoxListingItem
@@ -155,7 +150,36 @@ const Profile: FC<ProfileProps> = ({ classes, intl }) => {
                 </BoxListing>
               </div>{' '}
             </Grid>
-            <Grid item xs={6} className='right'>
+            <Grid item xs={4}>
+              <BoxListing title='profile.security'>
+                <BoxListingItem
+                  label='profile.changepassword'
+                  action={() => router.push('/profile/change-password')}
+                  icon={<KeyIcon color="#FFFFFF" width={23}/>}
+                />
+                <BoxListingItem
+                  label='profile.changeemail'
+                  action={() => router.push('/profile/change-email')}
+                  icon={<EnvelopeIcon color="#FFFFFF" width={23}/>}
+                />
+                <BoxListingItem
+                  label='profile.changephone'
+                  action={() => router.push('/profile/change-phone')}
+                  icon={<PhoneIcon color="#FFFFFF" width={23}/>}
+                />
+                <BoxListingItem
+                  label='profile.googleauthenticator'
+                  action={() => router.push('/profile/google-authenticator')}
+                  icon={<PhoneIcon color="#FFFFFF" width={23}/>}
+                />
+                 <BoxListingItem
+                  label='profile.secretquestions'
+                  action={() => router.push('/profile/secret-questions')}
+                  icon={<ChatsCircleIcon color="#FFFFFF" width={23}/>}
+                />
+              </BoxListing>
+            </Grid>
+            <Grid item xs={4}>
               <BoxListing title='profile.others'>
                 <BoxListingItem
                   label='profile.accounts.roles'
