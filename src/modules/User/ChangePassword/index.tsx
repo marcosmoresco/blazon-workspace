@@ -66,9 +66,9 @@ const ChangePassword: FC<ChangePasswordScreenProps> = ({ classes, intl }) => {
   const dispatch = useDispatch();
   const [user, thumb, {mutate, loading: loadingUser}] = useUser();
 
-  const [changeUserPassword, {}] = useMutation(CHANGE_USER_PASSWORD, {    
-    onCompleted: ({changeUserPassword}) => {   
-      if(changeUserPassword) {
+  const [changePassword, {}] = useMutation(CHANGE_USER_PASSWORD, {    
+    onCompleted: ({changePassword}) => {   
+      if(changePassword) {
         dispatch(
           addMessage(
             <FormattedMessage id="changepassword.success" />
@@ -92,7 +92,7 @@ const ChangePassword: FC<ChangePasswordScreenProps> = ({ classes, intl }) => {
     enableReinitialize: true,
     isInitialValid: false,
     onSubmit: (values: any) => {      
-      changeUserPassword({
+      changePassword({
         variables: values.changePassword
       });
     },
