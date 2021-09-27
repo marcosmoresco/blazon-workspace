@@ -111,7 +111,8 @@ const RoleAccess: FC<ListProps> = () => {
                   key={`resource-${right?.resource?.identifier}`} 
                   className={`${selected?.resource?.identifier === right?.resource?.identifier && "Active"}`}
                   onClick={async () => { 
-                    setLoadingEntitlements(true);                  
+                    setEntitlementFilter("");
+                    setLoadingEntitlements(true);                
                     const result = await refetchEntitlementRights({
                       id: data?.getSelfServiceItem?.referenceTo?.referenceToIdentifier, 
                       rightId: right?.identifier, 
