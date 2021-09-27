@@ -9,6 +9,7 @@ import Loading from "@components/Loading";
 import ShoppingCartIcon from "@icons/ShoppingCart";
 import CheckCircleIcon from "@icons/CheckCircle";
 import CaretRightIcon from "@icons/CaretRight";
+import LinkIcon from "@icons/Link";
 import {
   Box,
   BoxCartItem,
@@ -21,6 +22,8 @@ import {
   BoxCart,
   Label,
   BoxLoading,
+  BoxExternalReference,
+  ExternalReference,
 } from "./styles";
 import { useCart } from "@requestCart/index";
 import { addCartItemMessage } from "@actions/index";
@@ -29,10 +32,13 @@ import { GET_SELF_SERVICE_ITEM } from "@portal/Search/queries";
 import { ADD_SELF_SERVICE_CART_ITEM } from "@requestCart/mutations";
 import { GET_SELF_SERVICE_CART } from "@requestCart/queries";
 import { iconByType, getSelfServiceAttributeValue } from "@utils/index";
+import { useTheme, themes } from "@theme/index";
 
 export default function ResourceDetails() {
   const { cart } = useCart();
   const router = useRouter();
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
   const dispatch = useDispatch();
   const { id } = router.query;
   const [addedItems, setAddedItems] = useState<string[]>([]);
@@ -101,7 +107,21 @@ export default function ResourceDetails() {
                 </Label>
                 <BoxDescription>
                   {resource?.description || " - "}
-                </BoxDescription>
+                </BoxDescription>                
+                <BoxExternalReference>
+                  <Label>
+                    <FormattedMessage id="externalReference" />
+                  </Label>
+                  {!getSelfServiceAttributeValue("externalReference", resource?.attributes || []) && <div>
+                    <FormattedMessage id="search.detail.no.external.reference" />
+                  </div>}
+                  {getSelfServiceAttributeValue("externalReference", resource?.attributes || []) && <ExternalReference 
+                    href={getSelfServiceAttributeValue("externalReference", resource?.attributes || [])}
+                    target="__blank"
+                    color={currentTheme.palette.primary.main}>
+                    {getSelfServiceAttributeValue("externalReference", resource?.attributes || [])} <LinkIcon color={currentTheme.palette.primary.main}/>
+                  </ExternalReference>}
+                </BoxExternalReference>              
               </FormControl>
             </BoxContent>
           </Box>

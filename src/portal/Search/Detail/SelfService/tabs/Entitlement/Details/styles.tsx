@@ -83,3 +83,16 @@ export const BoxCartItemIcon = styled.div`
   width: 32px;
   height: 32px;
 `;
+
+export const BoxExternalReference = styled.div`
+  margin-top: 24px;    
+`;
+
+export const ExternalReference = styled.a`  
+  color: ${props => props.color || "#0E46D7"};
+  text-decoration-line: underline;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;  
+`;

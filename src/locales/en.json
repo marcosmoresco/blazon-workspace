@@ -132,6 +132,6 @@
   "questions": "Questions",
   "question": "Question",
   "answers": "Answers",
-  "answer": "Answer"
-   
+  "answer": "Answer",
+  "externalReference": "External reference"   
 }

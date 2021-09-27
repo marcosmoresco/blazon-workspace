@@ -8,6 +8,7 @@ import SharedAccountIcon from "@icons/SharedAccount";
 import ApplicationAccountIcon from "@icons/ApplicationAccount";
 import RegularAccountIcon from "@icons/RegularAccount";
 import AdministrativeAccountIcon from "@icons/AdministrativeAccount";
+import DeviceMobileIcon from "@icons/DeviceMobile";
 import TemporaryAccountIcon from "@icons/Watch";
 import CheckCircleIcon from "@icons/CheckCircle";
 import PeopleIcon from "@icons/People";
@@ -38,7 +39,8 @@ const BoxListing = withStyles(() => ({
     backgroundColor: '#F4F4F5',
     borderRadius: 8,
     paddingTop: 24,
-    paddingBottom: 24
+    paddingBottom: 24,
+    minHeight: "100%"
   },
   title: {
     paddingLeft: 32,
@@ -123,25 +125,25 @@ const Profile: FC<ProfileProps> = ({ classes, intl }) => {
               <div>
                 <BoxListing title='profile.accounts'>
                   <BoxListingItem
-                    label='profile.accounts.shared'
-                    action={() => router.push('/profile/access/shared')}
-                    icon={<SharedAccountIcon color="#FFFFFF"/>}
+                    label='profile.accounts.regular'
+                    action={() => router.push('/profile/access/regular')}
+                    icon={<RegularAccountIcon color="#FFFFFF"/>}
                   />
-                  <BoxListingItem
+                   <BoxListingItem
                     label='profile.accounts.temporary'
                     action={() => router.push('/profile/access/temporary')}
                     icon={<TemporaryAccountIcon color="#FFFFFF" width={23}/>}
                   />
                   <BoxListingItem
+                    label='profile.accounts.shared'
+                    action={() => router.push('/profile/access/shared')}
+                    icon={<SharedAccountIcon color="#FFFFFF"/>}
+                  />                 
+                  <BoxListingItem
                     label='profile.accounts.application'
                     action={() => router.push('/profile/access/application')}
                     icon={<ApplicationAccountIcon color="#FFFFFF"/>}
-                  />
-                  <BoxListingItem
-                    label='profile.accounts.regular'
-                    action={() => router.push('/profile/access/regular')}
-                    icon={<RegularAccountIcon color="#FFFFFF"/>}
-                  />
+                  />                  
                   <BoxListingItem
                     label='profile.accounts.adminstrative'
                     action={() => router.push('/profile/access/adminstrative')}
@@ -149,6 +151,20 @@ const Profile: FC<ProfileProps> = ({ classes, intl }) => {
                   />
                 </BoxListing>
               </div>{' '}
+            </Grid>            
+            <Grid item xs={4}>
+              <BoxListing title='profile.others'>
+                <BoxListingItem
+                  label='profile.accounts.roles'
+                  action={() => router.push('/profile/access/roles')}
+                  icon={<PeopleIcon color="#FFFFFF" width={23}/>}
+                />
+                <BoxListingItem
+                  label='profile.accounts.entitlements'
+                  action={() => router.push('/profile/access/entitlements')}
+                  icon={<CheckCircleIcon color="#FFFFFF" width={23}/>}
+                />
+              </BoxListing>
             </Grid>
             <Grid item xs={4}>
               <BoxListing title='profile.security'>
@@ -170,26 +186,12 @@ const Profile: FC<ProfileProps> = ({ classes, intl }) => {
                 <BoxListingItem
                   label='profile.googleauthenticator'
                   action={() => router.push('/profile/google-authenticator')}
-                  icon={<PhoneIcon color="#FFFFFF" width={23}/>}
+                  icon={<DeviceMobileIcon color="#FFFFFF" width={23}/>}
                 />
                  <BoxListingItem
                   label='profile.secretquestions'
                   action={() => router.push('/profile/secret-questions')}
                   icon={<ChatsCircleIcon color="#FFFFFF" width={23}/>}
-                />
-              </BoxListing>
-            </Grid>
-            <Grid item xs={4}>
-              <BoxListing title='profile.others'>
-                <BoxListingItem
-                  label='profile.accounts.roles'
-                  action={() => router.push('/profile/access/roles')}
-                  icon={<PeopleIcon color="#FFFFFF" width={23}/>}
-                />
-                <BoxListingItem
-                  label='profile.accounts.entitlements'
-                  action={() => router.push('/profile/access/entitlements')}
-                  icon={<CheckCircleIcon color="#FFFFFF" width={23}/>}
                 />
               </BoxListing>
             </Grid>

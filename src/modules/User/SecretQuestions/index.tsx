@@ -19,6 +19,7 @@ import { useDispatch } from "react-redux";
 import { addMessage } from "@actions/index";
 import { useTheme, themes } from "@theme/index";
 import { confirm } from "@components/Dialog/actions";
+import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
 
 const columns = [
   {
@@ -248,6 +249,7 @@ const SecretQuestions = () => {
         </div>
         <div>
           <DataGrid  
+            emptyStateImage={EmptyStateTypeahead}
             actions={actions}        
             fetching={loading || refetchLoading}
             list={data?.getSecretQuestions || []}         

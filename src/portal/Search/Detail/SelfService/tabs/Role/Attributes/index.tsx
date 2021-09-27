@@ -8,6 +8,7 @@ import Loading from "@components/Loading";
 import CheckCircleIcon from "@icons/CheckCircle";
 import ShoppingCartIcon from "@icons/ShoppingCart";
 import CaretRightIcon from "@icons/CaretRight";
+import LinkIcon from "@icons/Link";
 import {
   Box,
   BoxHeader,
@@ -19,6 +20,8 @@ import {
   BoxCartItem,
   BoxCartItemIcon,
   Label,
+  BoxExternalReference,
+  ExternalReference,
 } from "./styles";
 import { useCart } from "@requestCart/index";
 import { addCartItemMessage } from "@actions/index";
@@ -26,11 +29,14 @@ import { SelfService } from "@portal/Search/types";
 import { GET_SELF_SERVICE_ITEM } from "@portal/Search/queries";
 import { ADD_SELF_SERVICE_CART_ITEM } from "@requestCart/mutations";
 import { GET_SELF_SERVICE_CART } from "@requestCart/queries";
-import { iconByType } from "@utils/index";
+import { iconByType, getSelfServiceAttributeValue } from "@utils/index";
+import { useTheme, themes } from "@theme/index";
 
 export default function RoleAttributes() {
   const { cart } = useCart();
   const router = useRouter();
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
   const dispatch = useDispatch();
   const { id } = router.query;
 
@@ -96,6 +102,20 @@ export default function RoleAttributes() {
             <BoxDescription>
               {role?.description || " - "}
             </BoxDescription>
+            <BoxExternalReference>
+              <Label>
+                <FormattedMessage id="externalReference" />
+              </Label>
+              {!getSelfServiceAttributeValue("externalReference", role?.attributes || []) && <div>
+                <FormattedMessage id="search.detail.no.external.reference" />
+              </div>}
+              {getSelfServiceAttributeValue("externalReference", role?.attributes || []) && <ExternalReference 
+                href={getSelfServiceAttributeValue("externalReference", role?.attributes || [])}
+                target="__blank"
+                color={currentTheme.palette.primary.main}>
+                {getSelfServiceAttributeValue("externalReference", role?.attributes || [])} <LinkIcon color={currentTheme.palette.primary.main}/>
+              </ExternalReference>}
+            </BoxExternalReference>
           </FormControl>
         </BoxContent>
       </Box>
