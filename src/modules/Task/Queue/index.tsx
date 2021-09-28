@@ -243,7 +243,7 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
             </HeaderFilterScrollRight>  
           </HeaderFiltersContentScroll>          
           <HeaderFilters>
-            <Ordenation list={filters} onChange={handleOrderBy} composed={queueName+queueCategoryName+queueTypeName} orderBy={orderBy}/>
+            <Ordenation list={filtersTask} onChange={handleOrderBy} composed={queueName+queueCategoryName+queueTypeName} orderBy={orderBy}/>
             <Button 
               color="primary" 
               variant="contained" 
