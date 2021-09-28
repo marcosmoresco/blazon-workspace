@@ -31,7 +31,7 @@ const GridAdditionalInformationsProvisioning: React.FC<AdditionalInformationsPro
       if(["ACCOUNT"].includes(task?.entrySchema || "")) {
         setTab("account" as tabs);
       } else if(["ENTITLEMENT", "MEMBERSHIP_ENTITLEMENT"].includes(task?.entrySchema || "")) {
-        if(task?.type === "CREATE_ENTITLEMENT") {
+        if(["CREATE_ENTITLEMENT", "UPDATE_ENTITLEMENT", "REMOVE_ENTITLEMENT"].includes(task?.type as string)) {
           setTab("entitlement" as tabs);
         } else if(["REVOKE_ENTITLEMENT", "GRANT_ENTITLEMENT"].includes(task?.type as string)) {
           setTab("account" as tabs);
@@ -65,7 +65,7 @@ const GridAdditionalInformationsProvisioning: React.FC<AdditionalInformationsPro
          <WorkArea>
          <MenuDetail>
           
-          {task?.type === "CREATE_ENTITLEMENT" && (
+          {["CREATE_ENTITLEMENT", "UPDATE_ENTITLEMENT", "REMOVE_ENTITLEMENT"].includes(task?.type as string) && (
           <StyleApprovalTab
               color={currentTheme.palette.primary.main}
               selected={tab === "entitlement" as tabs}
@@ -81,7 +81,7 @@ const GridAdditionalInformationsProvisioning: React.FC<AdditionalInformationsPro
            >
              <FormattedMessage id="tasks.ResourceInformations" />
            </StyleApprovalTab>)}   
-           {task?.type !== "CREATE_ENTITLEMENT" && (
+           {!["CREATE_ENTITLEMENT", "UPDATE_ENTITLEMENT", "REMOVE_ENTITLEMENT"].includes(task?.type as string) && (
            <StyleApprovalTab
               color={currentTheme.palette.primary.main}
               selected={tab === "account" as tabs}
