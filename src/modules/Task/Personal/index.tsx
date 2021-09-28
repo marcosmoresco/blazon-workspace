@@ -165,7 +165,7 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
     if(val != "ANY") {
       setFiltered({"taskData.type": val, status: resolved ? ["DONE", "CANCELED"] : ["TODO"]})
     } else {
-      setFiltered({});      
+      setFiltered({status: resolved ? ["DONE", "CANCELED"] : ["TODO"]});      
     }        
     setCheckAll(false);
     getTaskFilters(type, val);     
