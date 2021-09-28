@@ -123,7 +123,7 @@ const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
               </Tooltip>             
             </RecentPasswordCardContentHeaderBox>
           </RecentPasswordCardContentHeader>
-          <Tooltip title={r.description || `description-${r.name}`} placement="bottom">
+          <Tooltip title={r.description || " - "} placement="bottom">
             <RecentPasswordCardContentHeaderText>           
               {r.description || " - "}                        
             </RecentPasswordCardContentHeaderText>

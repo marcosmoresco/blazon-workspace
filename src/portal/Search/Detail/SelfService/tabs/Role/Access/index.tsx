@@ -19,8 +19,7 @@ import {
   GET_DIRECTORY_ROLE_RIGHTS,
   GET_DIRECTORY_ROLE_RIGHT_ENTITLEMENTS,
 } from "@portal/Search/queries";
-import { 
-  EntitlementsDialog, 
+import {   
   Box, 
   Input, 
   Label, 
