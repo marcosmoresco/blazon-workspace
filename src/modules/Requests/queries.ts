@@ -11,6 +11,7 @@ export const GET_REQUESTS = gql`
             href
           }
           identifier
+          username
           displayName
         }
         beneficiary {
@@ -19,6 +20,7 @@ export const GET_REQUESTS = gql`
             href
           }
           identifier
+          username
           displayName
         }
         user {

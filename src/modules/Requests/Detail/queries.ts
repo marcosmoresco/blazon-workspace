@@ -40,6 +40,7 @@ export const GET_REQUEST = gql`
         }
         identifier
         displayName
+        username
       }
       beneficiary {
         links {
@@ -48,6 +49,7 @@ export const GET_REQUEST = gql`
         }
         identifier
         displayName
+        username
       }
       user {
         firstName
