@@ -56,7 +56,7 @@ const TitlePageTask: React.FC<TitleProps> = ({ intl, onBack, task }) => {
     children: [{
       formatedName: intl.formatMessage({id: `task.${type}`}),
       children: type !== "roleRight" ? [{
-        formatedName: task?.type.replaceAll("_", " ")
+        formatedName: intl.formatMessage({id: `task.type.${task?.type}`})
       }] : undefined
     }]  
   };

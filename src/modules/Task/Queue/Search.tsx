@@ -81,7 +81,7 @@ const QueueTasksSearch: FC<ListProps> = ({ dispatch, filtered = {}, id, type, ch
     },
   });
 
-  const [assignToMe, {}] = useMutation(ASSIGN_TO_ME_TASK, { 
+  const [assignToMe, {}] = useMutation(ASSIGN_TO_ME_TASK, {
     refetchQueries: [
       {
         query: GET_TASK_QUEUE_TASKS,

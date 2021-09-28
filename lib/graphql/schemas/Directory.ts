@@ -9,6 +9,7 @@ export const Directory = `
     identifier: Int
     name: String
     description: String
+    externalReference: String
     type: String
     category: ResourceCategoryDirectory
     creationDate: String
@@ -28,6 +29,7 @@ export const Directory = `
     identifier: Int
     name: String
     description: String
+    externalReference: String
     resource: ResourceDirectory
     account: AccountDirectory
     createdAt: Int
@@ -40,6 +42,7 @@ export const Directory = `
     identifier: Int
     name: String
     description: String  
+    externalReference: String
     risk: String  
     totalResources: Int
     totalUsers: Int

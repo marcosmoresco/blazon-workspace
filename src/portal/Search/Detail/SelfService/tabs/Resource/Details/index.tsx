@@ -24,6 +24,7 @@ import {
   BoxLoading,
   BoxExternalReference,
   ExternalReference,
+  NoExternalReference,
 } from "./styles";
 import { useCart } from "@requestCart/index";
 import { addCartItemMessage } from "@actions/index";
@@ -112,9 +113,9 @@ export default function ResourceDetails() {
                   <Label>
                     <FormattedMessage id="externalReference" />
                   </Label>
-                  {!getSelfServiceAttributeValue("externalReference", resource?.attributes || []) && <div>
+                  {!getSelfServiceAttributeValue("externalReference", resource?.attributes || []) && <NoExternalReference>
                     <FormattedMessage id="search.detail.no.external.reference" />
-                  </div>}
+                  </NoExternalReference>}
                   {getSelfServiceAttributeValue("externalReference", resource?.attributes || []) && <ExternalReference 
                     href={getSelfServiceAttributeValue("externalReference", resource?.attributes || [])}
                     target="__blank"

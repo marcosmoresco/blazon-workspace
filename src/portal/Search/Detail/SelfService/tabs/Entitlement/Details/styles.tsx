@@ -96,3 +96,7 @@ export const ExternalReference = styled.a`
   align-items: center;
   gap: 10px;  
 `;
+
+export const NoExternalReference = styled.div`  
+  color: #A8A6B2; 
+`;

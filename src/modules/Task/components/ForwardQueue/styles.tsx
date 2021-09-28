@@ -133,28 +133,30 @@ export const BoxAutocompleteOption = styled.div`
   width: 100%;
 `;
 
-export const BoxAutocomplete = styled(Paper)({
+export const BoxAutocomplete = styled(Paper)(({ color }) => ({
   backgroundColor: "#FFFFFF !important", 
   borderRadius: 8,
   marginTop: 15,  
   "& .MuiAutocomplete-option[data-focus=\"true\"]": {
     "& .Shared-action-icon": {
-      background: "#3174f6" 
+      background: color || "#3174f6" 
     },
     "& svg": {
       filter: "invert(100%) sepia(0%) saturate(0%) hue-rotate(276deg) brightness(103%) contrast(101%)"
     }
   }
-});
+}));
 
 export const AutocompletePaper = ({
   children,
+  currentTheme,
 }: {
   children: any;
+  currentTheme: any;
 }) => {
 
   return (
-    <BoxAutocomplete>
+    <BoxAutocomplete color={currentTheme?.palette?.primary?.main}>
       {children}
     </BoxAutocomplete>
   );

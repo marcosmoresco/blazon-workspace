@@ -8,9 +8,9 @@ export const BoxRoot = styled.div`
 
 export const RecentPasswordCard = styled.div`
   background: #FFFFFF;
-  border: 1px solid #D4D3D9;
+  border: 1px solid rgb(237, 237, 239);
   box-sizing: border-box;
-  box-shadow: 0px 0px 24px rgba(39, 36, 52, 0.12);
+  box-shadow: rgb(27 32 42 / 8%) 0px 4px 16px;
   border-radius: 8px;
   cursor: pointer;
   position: relative;

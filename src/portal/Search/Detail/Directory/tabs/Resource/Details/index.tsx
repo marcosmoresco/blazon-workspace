@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import FormControl from "@material-ui/core/FormControl";
 import Progress from "@components/Progress";
+import LinkIcon from "@icons/Link";
 import {
   Box,
   BoxHeader,
@@ -10,17 +11,22 @@ import {
   BoxHeaderTitle,
   BoxContent,
   BoxDescription,
-  BoxCart,
   Label,
   BoxLoading,
+  BoxExternalReference,
+  ExternalReference,
+  NoExternalReference,
 } from "./styles";
 import { ResourceDirectory } from "@portal/Search/types";
 import { GET_DIRECTORY_RESOURCE } from "@portal/Search/queries";
 import { iconByType } from "@utils/index";
+import { useTheme, themes } from "@theme/index";
 
 export default function ResourceDetails() {
   const router = useRouter();
   const { id } = router.query;
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
 
   const { loading, error, data, refetch } = useQuery<{
     getDirectoryResource: ResourceDirectory;
@@ -57,6 +63,20 @@ export default function ResourceDetails() {
                 <BoxDescription>
                   {resource?.description || " - "}
                 </BoxDescription>
+                <BoxExternalReference>
+                  <Label>
+                    <FormattedMessage id="externalReference" />
+                  </Label>
+                  {!resource?.externalReference && <NoExternalReference>
+                    <FormattedMessage id="search.detail.no.external.reference" />
+                  </NoExternalReference>}
+                  {resource?.externalReference && <ExternalReference 
+                    href={resource?.externalReference}
+                    target="__blank"
+                    color={currentTheme.palette.primary.main}>
+                    {resource?.externalReference} <LinkIcon color={currentTheme.palette.primary.main}/>
+                  </ExternalReference>}
+                </BoxExternalReference> 
               </FormControl>
             </BoxContent>
           </Box>          

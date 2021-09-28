@@ -110,6 +110,7 @@ export const GET_TASKS = gql`
           from {
             identifier
             displayName
+            username
             links {
               rel
               href
@@ -118,6 +119,7 @@ export const GET_TASKS = gql`
           recipient {
             identifier
             displayName
+            username
             links {
               rel
               href
@@ -205,6 +207,7 @@ export const GET_REQUEST_APPROVAL_TASKS = gql`
           from {
             identifier
             displayName
+            username
             links {
               rel
               href
@@ -213,6 +216,7 @@ export const GET_REQUEST_APPROVAL_TASKS = gql`
           recipient {
             identifier
             displayName
+            username
             links {
               rel
               href
@@ -266,6 +270,7 @@ export const GET_REQUEST_APPROVAL_TASK = gql`
         from {
           identifier
           displayName
+          username
           links {
             rel
             href
@@ -274,6 +279,7 @@ export const GET_REQUEST_APPROVAL_TASK = gql`
         recipient {
           identifier
           displayName
+          username
           links {
             rel
             href
@@ -366,6 +372,7 @@ export const GET_CERTIFICATION_APPROVAL_TASKS = gql`
           from {
             identifier
             displayName
+            username
             links {
               rel
               href
@@ -374,6 +381,7 @@ export const GET_CERTIFICATION_APPROVAL_TASKS = gql`
           recipient {
             identifier
             displayName
+            username
             links {
               rel
               href
@@ -424,6 +432,7 @@ export const GET_CERTIFICATION_APPROVAL_TASK = gql`
         from {
           identifier
           displayName
+          username
           links {
             rel
             href
@@ -432,6 +441,7 @@ export const GET_CERTIFICATION_APPROVAL_TASK = gql`
         recipient {
           identifier
           displayName
+          username
           links {
             rel
             href
@@ -518,6 +528,7 @@ export const GET_SOD_APPROVAL_TASKS = gql`
           from {
             identifier
             displayName
+            username
             links {
               rel
               href
@@ -526,6 +537,7 @@ export const GET_SOD_APPROVAL_TASKS = gql`
           recipient {
             identifier
             displayName
+            username
             links {
               rel
               href
@@ -574,6 +586,7 @@ export const GET_SOD_APPROVAL_TASK = gql`
         from {
           identifier
           displayName
+          username
           links {
             rel
             href
@@ -582,6 +595,7 @@ export const GET_SOD_APPROVAL_TASK = gql`
         recipient {
           identifier
           displayName
+          username
           links {
             rel
             href
@@ -666,6 +680,7 @@ export const GET_ROLE_RIGHT_APPROVAL_TASKS = gql`
           from {
             identifier
             displayName
+            username
             links {
               rel
               href
@@ -674,6 +689,7 @@ export const GET_ROLE_RIGHT_APPROVAL_TASKS = gql`
           recipient {
             identifier
             displayName
+            username
             links {
               rel
               href
@@ -714,6 +730,7 @@ export const GET_ROLE_RIGHT_APPROVAL_TASK = gql`
         from {
           identifier
           displayName
+          username
           links {
             rel
             href
@@ -722,6 +739,7 @@ export const GET_ROLE_RIGHT_APPROVAL_TASK = gql`
         recipient {
           identifier
           displayName
+          username
           links {
             rel
             href
@@ -818,6 +836,7 @@ export const GET_PROVISIONING_TASKS = gql`
           from {
             identifier
             displayName
+            username
             links {
               rel
               href
@@ -826,6 +845,7 @@ export const GET_PROVISIONING_TASKS = gql`
           recipient {
             identifier
             displayName
+            username
             links {
               rel
               href
@@ -879,6 +899,7 @@ export const GET_PROVISIONING_TASK = gql`
         from {
           identifier
           displayName
+          username
           links {
             rel
             href
@@ -887,6 +908,7 @@ export const GET_PROVISIONING_TASK = gql`
         recipient {
           identifier
           displayName
+          username
           links {
             rel
             href
@@ -991,6 +1013,7 @@ export const GET_TASK_QUEUE_TASKS = gql`
           from {
             identifier
             displayName
+            username
             links {
               rel
               href
@@ -999,6 +1022,7 @@ export const GET_TASK_QUEUE_TASKS = gql`
           recipient {
             identifier
             displayName
+            username
             links {
               rel
               href

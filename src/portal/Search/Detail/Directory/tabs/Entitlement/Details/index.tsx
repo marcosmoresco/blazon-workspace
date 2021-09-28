@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { useQuery } from "@apollo/client";
 import FormControl from "@material-ui/core/FormControl";
 import TextField from "@material-ui/core/TextField";
+import LinkIcon from "@icons/Link";
 import {
   Box,
   BoxHeader,
@@ -12,14 +13,20 @@ import {
   BoxDescription,
   BoxCart,
   Label,
+  BoxExternalReference,
+  ExternalReference,
+  NoExternalReference,
 } from "./styles";
 import { EntitlementDirectory } from "@portal/Search/types";
 import { GET_DIRECTORY_ENTITLEMENT } from "@portal/Search/queries";
 import { iconByType } from "@utils/index";
+import { useTheme, themes } from "@theme/index";
 
 export default function EntitlementDetails() {
   const router = useRouter();
   const { id } = router.query;
+  const { theme } = useTheme();
+  const currentTheme = { ...themes[theme] };
 
   const { loading, error, data, refetch } = useQuery<{
     getDirectoryEntitlement: EntitlementDirectory;
@@ -57,6 +64,20 @@ export default function EntitlementDetails() {
               <FormattedMessage id="resource" />
             </Label>
             <TextField value={entitlement?.resource?.name || " - "} variant="outlined" />
+            <BoxExternalReference>
+              <Label>
+                <FormattedMessage id="externalReference" />
+              </Label>
+              {!entitlement?.externalReference && <NoExternalReference>
+                <FormattedMessage id="search.detail.no.external.reference" />
+              </NoExternalReference>}
+              {entitlement?.externalReference && <ExternalReference 
+                href={entitlement?.externalReference}
+                target="__blank"
+                color={currentTheme.palette.primary.main}>
+                {entitlement?.externalReference} <LinkIcon color={currentTheme.palette.primary.main}/>
+              </ExternalReference>}
+            </BoxExternalReference>
           </FormControl>
         </BoxContent>
       </Box>      

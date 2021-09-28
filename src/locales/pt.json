@@ -133,5 +133,6 @@
   "question": "Pergunta",
   "answers": "Respostas",
   "answer": "Resposta",
-  "externalReference": "Referência externa"
+  "externalReference": "Referência externa",
+  "accounts": "Contas"  
 }

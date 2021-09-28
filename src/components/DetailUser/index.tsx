@@ -33,13 +33,16 @@ const DetailUser: React.FC<DetailUserProps> = ({ task, request, title = "task.re
   return (
     <>
       <BoxRequester onClick={() => setModalOpen(true)}>
+        <div>
+          <FormattedMessage id={title} />
+        </div>
         <Info>
           <BoxRequesterAvatar>
             <Avatar src={getLink("thumb", currentUser?.links || [])} />
           </BoxRequesterAvatar>                     
           <BoxRequesterContent>
             <BoxRequesterTitle>
-              <FormattedMessage id={title} />
+              {currentUser?.username || " - "}
             </BoxRequesterTitle>
             <BoxRequesterDisplayName>
               {currentUser?.displayName || " - "}

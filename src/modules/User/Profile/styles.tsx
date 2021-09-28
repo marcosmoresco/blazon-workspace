@@ -33,7 +33,10 @@ const useStyles = (theme: Theme) =>
     userInfo: {
       padding: 24,
       backgroundColor: '#1B202A',
-      borderRadius: 8
+      borderRadius: 8,
+      display: "flex",
+      alignItems: "center",
+      gap: 16
     },
     userTitle: {
       color: '#FFFFFF',
@@ -42,7 +45,8 @@ const useStyles = (theme: Theme) =>
     userName: {
       color: '#FFFFFF',
       fontSize: 24,
-      fontWeight: 'bold'
+      fontWeight: 'bold',
+      maxWidth: 350
     },
     editProfile: {
       color: '#BBBDC0',

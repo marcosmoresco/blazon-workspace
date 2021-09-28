@@ -12,6 +12,7 @@ import { TitleHierarchy } from "@components/TitlePage/types";
 import TitlePage from "@components/TitlePage";
 import Info from "./Info";
 import RequestsDetail from "./RequestsDetail";
+import Loading from "@components/Loading";
 
 // queries
 import { GET_REQUEST } from "./queries";
@@ -31,6 +32,12 @@ const RequestsDetailing: React.FC<RequestsProps> = () => {
     },
   });
 
+  if(loading) {
+    return (
+      <Loading container />
+    )
+  }
+  
   const request = data?.getRequest;
 
   const hierarchy: TitleHierarchy = {

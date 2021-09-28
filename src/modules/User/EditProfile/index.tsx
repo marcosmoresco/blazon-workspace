@@ -77,7 +77,9 @@ const EditProfile: FC<EditProfileProps> = ({ classes, intl }) => {
 
   const { loading, error, data, refetch } = useQuery<{
     getUserData: UserDataRepresentation
-  }>(GET_USER_DATA);
+  }>(GET_USER_DATA, {
+    fetchPolicy: "no-cache"
+  });
 
   const [modalOpen, setModalOpen] = useState(false);
   const [editModalOpen, setEditModalOpen] = useState(false);

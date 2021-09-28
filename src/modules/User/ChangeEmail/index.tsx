@@ -34,12 +34,6 @@ type ChangeEmailScreenProps = {
   classes: any;
 };
 
-const initialValues = {
-  changeemail: {
-    newEmail: "",
-  },
-};
-
 const validationSchema = Yup.object({
   changeemail: Yup.object({
     newEmail: Yup.string()      
@@ -54,6 +48,12 @@ const ChangeEmail: FC<ChangeEmailScreenProps> = ({ classes, intl }) => {
   const router = useRouter();
   const dispatch = useDispatch();
   const [user, thumb, {mutate, loading: loadingUser}] = useUser();
+
+  const initialValues = {
+    changeemail: {
+      newEmail: user?.personalEmail,
+    },
+  };
 
   const [changeEmail, {}] = useMutation(CHANGE_EMAIL, {    
     onCompleted: ({changeEmail}) => {   

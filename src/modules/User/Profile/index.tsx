@@ -67,18 +67,14 @@ const Profile: FC<ProfileProps> = ({ classes, intl }) => {
       <CardScreen title='profile' icon={<User height={24} width={24} onBack={() => router.push("/")}/>}>      
         <Grid container>
           <Grid container className={classes.userBox} spacing={5}>
-            <Grid item xs={4}>
-              <Grid
-                container
-                direction='row'
-                justify='center'
-                alignItems='center'
+            <Grid item xs={5}>
+              <div               
                 className={classes.userInfo}
               >
-                <Grid item xs={4}>
+                <div>
                   <Avatar src={thumb} className={classes.avatar}></Avatar>
-                </Grid>
-                <Grid item xs={8}>
+                </div>
+                <div>
                   <Typography noWrap className={classes.userTitle}>
                     {user?.username}
                   </Typography>
@@ -97,10 +93,10 @@ const Profile: FC<ProfileProps> = ({ classes, intl }) => {
                       {intl.formatMessage({ id: 'profile.edit' })}
                     </span>
                   </Typography>
-                </Grid>
-              </Grid>
+                </div>
+              </div>
             </Grid>
-            <Grid item xs={4}>              
+            <Grid item xs={3}>              
             </Grid>
             <Grid item xs={4}>
               <Listing title='profile.options'>

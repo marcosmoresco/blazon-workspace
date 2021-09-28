@@ -59,7 +59,9 @@ const PasswordVaultScreen: FC<PasswordVaultScreenProps> = ({
   const [showShareDialogModal, setShowShareDialogModal] =
     useState<boolean>(false);
 
-  const { loading, error: errorEntries, data } = useQuery(GET_ENTRIES);
+  const { loading, error: errorEntries, data } = useQuery(GET_ENTRIES, {
+    fetchPolicy: "network-only"
+  });
 
   if (loading) {
     return <Loading container={true} />;

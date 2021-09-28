@@ -23,6 +23,7 @@ import {
   Label,
   BoxExternalReference,
   ExternalReference,
+  NoExternalReference,
 } from "./styles";
 import { useCart } from "@requestCart/index";
 import { addCartItemMessage } from "@actions/index";
@@ -112,9 +113,9 @@ export default function EntitlementDetails() {
               <Label>
                 <FormattedMessage id="externalReference" />
               </Label>
-              {!getSelfServiceAttributeValue("externalReference", entitlement?.attributes || []) && <div>
+              {!getSelfServiceAttributeValue("externalReference", entitlement?.attributes || []) && <NoExternalReference>
                 <FormattedMessage id="search.detail.no.external.reference" />
-              </div>}
+              </NoExternalReference>}
               {getSelfServiceAttributeValue("externalReference", entitlement?.attributes || []) && <ExternalReference 
                 href={getSelfServiceAttributeValue("externalReference", entitlement?.attributes || [])}
                 target="__blank"

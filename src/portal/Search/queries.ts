@@ -85,6 +85,7 @@ export const GET_DIRECTORY_RESOURCE = gql`
       identifier
       name
       description
+      externalReference
     }
   }
 `;
@@ -111,6 +112,7 @@ export const GET_DIRECTORY_ENTITLEMENT = gql`
       identifier
       name
       description
+      externalReference
       resource {
         name
       }
@@ -124,6 +126,7 @@ export const GET_DIRECTORY_ROLE = gql`
       identifier
       name
       description
+      externalReference
     }
   }
 `;

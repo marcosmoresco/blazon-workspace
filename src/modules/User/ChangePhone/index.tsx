@@ -35,12 +35,6 @@ type ChangePhoneScreenProps = {
   classes: any;
 };
 
-const initialValues = {
-  changephone: {
-    newPhone: "",
-  },
-};
-
 const validationSchema = Yup.object({
   changephone: Yup.object({
     newPhone: Yup.string()    
@@ -100,6 +94,13 @@ const ChangePhone: FC<ChangePhoneScreenProps> = ({ classes, intl }) => {
       );     
     }
   });
+
+  const initialValues = {
+    changephone: {
+      newPhone: user?.mobilePhone,
+    },
+  };
+  
 
   const formik = {
     initialValues,

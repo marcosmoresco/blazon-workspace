@@ -208,9 +208,7 @@ export const BoxCardIdentifier = styled.div<BoxCardIdentifierProps>`
   }
 `;
 
-export const BoxRequester = styled.div`
-  display: flex;
-  align-items: center;
+export const BoxRequester = styled.div` 
   cursor: pointer;
 `;
 

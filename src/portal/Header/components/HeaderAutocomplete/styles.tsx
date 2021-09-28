@@ -206,24 +206,24 @@ export const AutocompletePaper = ({
               type: "",
             };
 
-            if (active !== "ROLES") {
-              setActive("ROLES");
-              variables.type = "ROLE";
+            if (active !== "RESOURCES") {
+              setActive("RESOURCES");
+              variables.type = "RESOURCE";
             } else {
               setActive("");
             }
 
             refetch(variables);
-          }}          
+          }}
           color={theme.palette.primary.main}
-          className={`${active === "ROLES" && "Active"}`}
+          className={`${active === "RESOURCES" && "Active"}`}
         >
-          <PeopleIcon
+          <SquaresFourIcon
             width={17}
             height={17}
-            color={(active === "ROLES" && "#FFFFFF") || "black"}
+            color={(active === "RESOURCES" && "#FFFFFF") || "black"}
           />
-          <FormattedMessage id="roles" />
+          <FormattedMessage id="resources" />
         </HeaderTag>
         <HeaderTag
           onClick={() => {
@@ -259,6 +259,33 @@ export const AutocompletePaper = ({
               q: filter || "",
               type: "",
             };
+
+            if (active !== "ROLES") {
+              setActive("ROLES");
+              variables.type = "ROLE";
+            } else {
+              setActive("");
+            }
+
+            refetch(variables);
+          }}          
+          color={theme.palette.primary.main}
+          className={`${active === "ROLES" && "Active"}`}
+        >
+          <PeopleIcon
+            width={17}
+            height={17}
+            color={(active === "ROLES" && "#FFFFFF") || "black"}
+          />
+          <FormattedMessage id="roles" />
+        </HeaderTag>       
+        <HeaderTag
+          onClick={() => {
+            const variables = {
+              size: 5,
+              q: filter || "",
+              type: "",
+            };
             if (active !== "ADMIN_PASSWORD") {
               setActive("ADMIN_PASSWORD");
               variables.type = "ADMIN_PASSWORD";
@@ -277,34 +304,7 @@ export const AutocompletePaper = ({
             color={(active === "ADMIN_PASSWORD" && "#FFFFFF") || "black"}
           />
           <FormattedMessage id="adminAccounts" />
-        </HeaderTag>
-        <HeaderTag
-          onClick={() => {
-            const variables = {
-              size: 5,
-              q: filter || "",
-              type: "",
-            };
-
-            if (active !== "RESOURCES") {
-              setActive("RESOURCES");
-              variables.type = "RESOURCE";
-            } else {
-              setActive("");
-            }
-
-            refetch(variables);
-          }}
-          color={theme.palette.primary.main}
-          className={`${active === "RESOURCES" && "Active"}`}
-        >
-          <SquaresFourIcon
-            width={17}
-            height={17}
-            color={(active === "RESOURCES" && "#FFFFFF") || "black"}
-          />
-          <FormattedMessage id="resources" />
-        </HeaderTag>
+        </HeaderTag>        
       </HeaderTags>
       {!!list.length && (<HeaderResults>
         <FormattedMessage id="results" />

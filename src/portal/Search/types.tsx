@@ -50,12 +50,14 @@ export type ResourceDirectory = {
   identifier: number;
   name: string;
   description: string;
+  externalReference: string;
 };
 
-export type EntitlementDirectory = {
+export type EntitlementDirectory = {  
   identifier: number;
   name: string;
   description: string;
+  externalReference: string;
   resource: ResourceDirectory;
   account: AccountDirectory;
 };
@@ -64,6 +66,7 @@ export type RoleDirectory = {
   identifier: number;
   name: string;
   description: string;
+  externalReference: string;
 };
 
 export type RoleDirectoryRight = {

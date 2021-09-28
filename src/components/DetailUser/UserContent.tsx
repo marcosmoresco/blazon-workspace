@@ -89,7 +89,7 @@ const UserContent: React.FC<UserContentProps> = ({ user, close, type }) => {
         </HeaderBox>              
       </Header>
       <InformationsText>
-        {(userDetail?.fields || []).length && <FormattedMessage id="informations" />}        
+        {(userDetail?.fields || []).length > 0 && <FormattedMessage id="informations" />}        
         {(userDetail?.fields || []).map((u: UserDetail) => (
           <>            
             <InformationLabel>

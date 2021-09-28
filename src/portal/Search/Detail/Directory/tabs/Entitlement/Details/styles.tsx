@@ -59,3 +59,20 @@ export const BoxCart = styled.div`
   border-top: 1px solid #E9E9EA;
   padding-right: 37px;
 `;
+
+export const BoxExternalReference = styled.div`
+  margin-top: 24px;    
+`;
+
+export const ExternalReference = styled.a`  
+  color: ${props => props.color || "#0E46D7"};
+  text-decoration-line: underline;
+  font-size: 16px;
+  display: flex;
+  align-items: center;
+  gap: 10px;  
+`;
+
+export const NoExternalReference = styled.div`  
+  color: #A8A6B2; 
+`;

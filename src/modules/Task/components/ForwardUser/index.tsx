@@ -26,36 +26,25 @@ import {
   TableUsersTh,
   TableUsersTr
 } from "./styles";
-import XCircleIcon from "@icons/XCircle";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import KeyIcon from "@icons/Key";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import MagnifyingGlassIcon from "@icons/MagnifyingGlass";
 import UserThumb from "@components/UserThumb";
 import { confirm } from "@components/Dialog/actions";
-import { addMessage } from "@actions/index";
-import { GET_ENTRIES } from "@modules/PasswordVaultItem/queries";
 import {
   GET_USER_FULL_TEXT,
-  GET_USER_SHARED_ACCOUNT_MEMBERS,
 } from "@modules/User/queries";
-import {
-  SHARE_USER_SHARED_ACCOUNT,
-  UNSHARE_USER_SHARED_ACCOUNT,
-} from "@modules/User/mutations";
-import { 
-  REVOKE_PASSWORD_VAULT_ENTRY, 
-  GRANT_PASSWORD_VAULT_ENTRY
-} from "@modules/PasswordVaultScreen/mutations";
 import { User } from "@types";
 import { getLink } from "@utils/index";
 import { ForwardDialogProps, ForwardDialogContentProps } from "./types";
+import { useTheme, themes } from "@theme/index";
 
 const ForwardDialogContent: React.FC<ForwardDialogContentProps> = ({ execute }) => {
   const intl = useIntl();
-  const [open, setOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const currentTheme = themes[theme];
 
   const { loading, error, data, refetch } = useQuery<{
     getUserFullText: User[];
@@ -77,13 +66,17 @@ const ForwardDialogContent: React.FC<ForwardDialogContentProps> = ({ execute }) 
     }, {
       user: option.displayName || " - "
     }),
-    <ShareIcon width={48} height={48} color="#0E46D7" />);
+    <ShareIcon width={48} height={48} color="#0E46D7" />,
+    null,
+    currentTheme);
     
     if(result) {
       execute(Number(option.identifier));  
     }    
      
   };
+
+  AutocompletePaper.defaultProps = {currentTheme: currentTheme};
 
   return (
     <Form>          

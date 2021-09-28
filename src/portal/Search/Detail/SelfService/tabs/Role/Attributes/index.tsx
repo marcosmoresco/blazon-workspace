@@ -22,6 +22,7 @@ import {
   Label,
   BoxExternalReference,
   ExternalReference,
+  NoExternalReference,
 } from "./styles";
 import { useCart } from "@requestCart/index";
 import { addCartItemMessage } from "@actions/index";
@@ -106,9 +107,9 @@ export default function RoleAttributes() {
               <Label>
                 <FormattedMessage id="externalReference" />
               </Label>
-              {!getSelfServiceAttributeValue("externalReference", role?.attributes || []) && <div>
+              {!getSelfServiceAttributeValue("externalReference", role?.attributes || []) && <NoExternalReference>
                 <FormattedMessage id="search.detail.no.external.reference" />
-              </div>}
+              </NoExternalReference>}
               {getSelfServiceAttributeValue("externalReference", role?.attributes || []) && <ExternalReference 
                 href={getSelfServiceAttributeValue("externalReference", role?.attributes || [])}
                 target="__blank"

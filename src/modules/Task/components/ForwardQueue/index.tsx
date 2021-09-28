@@ -46,10 +46,13 @@ import {
 import { Link } from "@types";
 import { getLink } from "@utils/index";
 import { ForwardDialogProps, ForwardDialogContentProps } from "./types";
+import { useTheme, themes } from "@theme/index";
 
 const ForwardDialogContent: React.FC<ForwardDialogContentProps> = ({ execute }) => {
   const intl = useIntl();
   const [open, setOpen] = useState(false);
+  const { theme, setTheme } = useTheme();
+  const currentTheme = themes[theme];
 
   const { loading, error, data, refetch } = useQuery<{
     getTaskQueues: { links: Link[], representation: Task[] };
@@ -66,12 +69,16 @@ const ForwardDialogContent: React.FC<ForwardDialogContentProps> = ({ execute }) 
     }, {
       queue: option.name || " - "
     }),
-    <ShareIcon width={48} height={48} color="#0E46D7" />);
+    <ShareIcon width={48} height={48} color="#0E46D7" />,
+    null,
+    currentTheme);
     
     if(result) {
       execute(Number(option.identifier));  
     }     
   };
+
+  AutocompletePaper.defaultProps = {currentTheme: currentTheme};
 
   return (
     <Form>          

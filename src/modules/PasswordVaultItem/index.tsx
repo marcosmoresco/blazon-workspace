@@ -63,7 +63,7 @@ const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
   };
 
   useEffect(() => {
-    if(!passwordVault) {
+    if(!passwordVault || JSON.stringify(r) !== JSON.stringify(passwordVault)) {
       setPasswordVault(r);
     }
   }, [passwordVault, setPasswordVault, r]);
@@ -123,9 +123,9 @@ const PasswordVaultItem: FC<PasswordVaultItemProps> = ({
               </Tooltip>             
             </RecentPasswordCardContentHeaderBox>
           </RecentPasswordCardContentHeader>
-          <Tooltip title={r.description} placement="bottom">
+          <Tooltip title={r.description || `description-${r.name}`} placement="bottom">
             <RecentPasswordCardContentHeaderText>           
-              {r.description}                        
+              {r.description || " - "}                        
             </RecentPasswordCardContentHeaderText>
           </Tooltip>
         </RecentPasswordCardContent>

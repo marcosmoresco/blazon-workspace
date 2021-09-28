@@ -178,16 +178,16 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
       icon: <CheckCircleIcon />,
       name: "entitlements",
       value: "ENTITLEMENT",
+    },   
+    {
+      icon: <PeopleIcon />,
+      name: "roles",
+      value: "ROLE",
     },
     {
       icon: <SecurityUserIcon />,
       name: "adminAccounts",
       value: "ADMIN_PASSWORD",
-    },
-    {
-      icon: <PeopleIcon />,
-      name: "roles",
-      value: "ROLE",
     },
   ];
 

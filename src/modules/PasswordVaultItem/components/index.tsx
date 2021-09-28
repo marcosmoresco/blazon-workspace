@@ -35,6 +35,7 @@ const PasswordVault: FC<PasswordVaultProps> = ({
     variables: {
       id: Number(passwordVault.identifier)
     },
+    fetchPolicy: "network-only"
   });
 
   useEffect(() => {

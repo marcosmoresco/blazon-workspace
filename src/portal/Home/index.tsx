@@ -6,6 +6,8 @@ import SharedAccountIcon from "@icons/SharedAccount";
 import ApplicationAccountIcon from "@icons/ApplicationAccount";
 import RegularAccountIcon from "@icons/RegularAccount";
 import AdministrativeAccountIcon from "@icons/AdministrativeAccount";
+import CheckCircleIcon from "@icons/CheckCircle";
+import PeopleIcon from "@icons/People";
 import Grid from "@material-ui/core/Grid";
 import PasswordVaultItem from "@modules/PasswordVaultItem";
 import Progress from "@components/Progress";
@@ -55,7 +57,9 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
     loading: loadingEntries,
     error: errorEntries,
     data: dataEntries,
-  } = useQuery(GET_ENTRIES);
+  } = useQuery(GET_ENTRIES, {
+    fetchPolicy: "network-only"
+  });
 
   const { loading: loadingOpenStatus, data: dataOpenStatus } = useQuery<{
     getOpenStatus: string[]
@@ -109,15 +113,15 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
             </BoxHeaderAccessTitle>
             <Grid container spacing={4}>
               <Grid item xs={6}>
-                <BoxHeaderAccess onClick={() => router.push("/profile/access/shared")}>
+                <BoxHeaderAccess onClick={() => router.push("/profile/access/regular")}>
                   <BoxHeaderAccessItem>
                     <BoxHeaderAccessItemIcon color={currentTheme.palette.primary.main}>
-                      <SharedAccountIcon                       
+                      <RegularAccountIcon                       
                         color="#FFFFFF"
-                        stroke={1.2}
+                        stroke={1.3}
                       />
                     </BoxHeaderAccessItemIcon>
-                    <FormattedMessage id="account.shared" />
+                    <FormattedMessage id="accounts" />
                   </BoxHeaderAccessItem>
                   <CaretRightIcon
                     width={25}
@@ -126,15 +130,17 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                     color="#1B202A"
                   />
                 </BoxHeaderAccess>
-                <BoxHeaderAccess onClick={() => router.push("/profile/access/application")}>
+                <BoxHeaderAccess onClick={() => router.push("/profile/access/entitlements")}>
                   <BoxHeaderAccessItem>
                     <BoxHeaderAccessItemIcon color={currentTheme.palette.primary.main}>
-                      <ApplicationAccountIcon                        
+                      <CheckCircleIcon                        
                         color="#FFFFFF"
-                        stroke={1.2}
+                        width={25}
+                        height={25}
+                        stroke={1.4}
                       />
                     </BoxHeaderAccessItemIcon>
-                    <FormattedMessage id="account.application" />
+                    <FormattedMessage id="entitlements" />
                   </BoxHeaderAccessItem>
                   <CaretRightIcon
                     width={25}
@@ -145,15 +151,17 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                 </BoxHeaderAccess>
               </Grid>
               <Grid item xs={6}>
-                <BoxHeaderAccess onClick={() => router.push("/profile/access/regular")}>
+                <BoxHeaderAccess onClick={() => router.push("/profile/access/roles")}>
                   <BoxHeaderAccessItem>
                     <BoxHeaderAccessItemIcon color={currentTheme.palette.primary.main}>
-                      <RegularAccountIcon                       
-                        color="#FFFFFF"
-                        stroke={1.3}
+                      <PeopleIcon  
+                        width={25}
+                        height={25}    
+                        stroke={1}                 
+                        color="#FFFFFF"                        
                       />
                     </BoxHeaderAccessItemIcon>
-                    <FormattedMessage id="account.regular" />
+                    <FormattedMessage id="roles" />
                   </BoxHeaderAccessItem>
                   <CaretRightIcon
                     width={25}
@@ -162,16 +170,8 @@ const Home: FC<HomeProps> = ({ classes, intl }) => {
                     color="#1B202A"
                   />
                 </BoxHeaderAccess>
-                <BoxHeaderAccess onClick={() => router.push("/profile/access/adminstrative")}>
-                  <BoxHeaderAccessItem>
-                    <BoxHeaderAccessItemIcon color={currentTheme.palette.primary.main}>
-                      <AdministrativeAccountIcon                        
-                        color="#FFFFFF"
-                        stroke={1.3}
-                      />
-                    </BoxHeaderAccessItemIcon>
-                    <FormattedMessage id="account.administrative" />
-                  </BoxHeaderAccessItem>
+                <BoxHeaderAccess onClick={() => router.push("/profile")}>
+                  <FormattedMessage id="home.view.more" />
                   <CaretRightIcon
                     width={25}
                     height={25}

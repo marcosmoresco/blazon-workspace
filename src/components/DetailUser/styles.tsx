@@ -5,7 +5,7 @@ import Drawer from '@material-ui/core/Drawer';
 export const Header = styled.div`
   background: #1B202A;
   border-radius: 8px;
-  width: 570px;
+  width: 455px;
   min-height: 166px;
   display: flex;
   padding-left: 20px;
@@ -50,7 +50,7 @@ export const InformationContent = styled.div`
   border: 1px solid #E9E8EB;
   box-sizing: border-box;
   border-radius: 8px;
-  width: 570px;
+  width: 455px;
   height: 60px;
   display: flex;
   align-items: center;
@@ -84,7 +84,7 @@ export const Actions = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;
-  width: 620px;
+  width: 515px;
   right: 0;
   & button {
     min-width: 179px;
@@ -93,7 +93,7 @@ export const Actions = styled.div`
 
 export const DrawerDetailUser = withStyles({
   paper: {    
-    minWidth: 620,
+    minWidth: 515,
     padding: "20px 30px 20px 30px",    
   },
 })((props: any) => (
