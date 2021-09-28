@@ -317,8 +317,8 @@ export const filters: FilterType[] = [
     label: <FormattedMessage id='effectivedAt' />,
     type: 'date',
     bind: {
-      start: 'initEffectivedAt',
-      end: 'endeffEctivedAt'
+      start: 'initEffectiveAt',
+      end: 'endEffectiveAt'
     }
   }
 ]
