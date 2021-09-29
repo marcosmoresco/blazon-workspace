@@ -5,7 +5,7 @@ import { GraphQLError } from 'graphql';
 import router from 'next/router';
 
 const httpLink = new HttpLink({
-  uri: "http://localhost:3000/api/graphql",
+  uri: `${process.env.GRAPHQL_SERVER}/api/graphql`,
   credentials: "same-origin",
 });
 

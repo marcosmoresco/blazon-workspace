@@ -11,7 +11,6 @@ import {
   BoxHeaderTitle,
   BoxContent,
   BoxDescription,
-  BoxCart,
   Label,
   BoxExternalReference,
   ExternalReference,

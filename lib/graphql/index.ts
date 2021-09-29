@@ -1,4 +1,6 @@
 import http from "http";
+import https from "https";
+import fs from "fs";
 import app from "../app";
 import { typeDefs } from "./schemas";
 import { resolvers } from "./resolvers";
@@ -18,7 +20,16 @@ const graphql = async function () {
   const path = "/api/graphql";
   server.applyMiddleware({ app, path });
 
-  const httpServer = http.createServer(app);
+  let httpServer;
+
+  if(process.env.ENABLE_HTTPS === "true") {
+    httpServer = https.createServer({
+      key: fs.readFileSync("config/ssl/host.key"),
+      cert: fs.readFileSync("config/ssl/host.cert"),
+    }, app);
+  } else {
+    httpServer = http.createServer(app);
+  }  
 
   const port = process.env.PORT || 3000;
 
@@ -27,9 +38,9 @@ const graphql = async function () {
   ##################### ❇ Blazon ❇ #######################
   #########################################################\n`);
   httpServer.listen(port, () => {
-    info(`> Server ready on http://localhost:${port}`);
+    info(`> Server ready on ${((process.env.ENABLE_HTTPS === "true") && "https") || "http"}://localhost:${port}`);
     info(
-      `🚀 Server graphql ready at http://localhost:${port}${server.graphqlPath}`
+      `🚀 Server graphql ready at ${process.env.GRAPHQL_SERVER}:${server.graphqlPath}`
     );
   });
   return { server, app };

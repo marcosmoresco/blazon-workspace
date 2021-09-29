@@ -5,6 +5,7 @@ mkdir app/config;
 yarn build;
 cp -R build app;
 cp .env.production app/config/.env;
+cp -R config/ssl app/config;
 cp package.json app;
 cp next.config.js app;
 cp tsconfig.json app;
