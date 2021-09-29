@@ -10,12 +10,11 @@ passport.deserializeUser(function (user: any, done: any) {
 });
 
 const samlConfig = {
-  path: process.env.SAML_CONSUMERURL,
+  callbackUrl: process.env.SAML_CONSUMERURL,  
   entryPoint: process.env.SAML_ENTRYPOINT,
   issuer: process.env.SAML_ISSUER,
   logoutUrl: process.env.SAML_LOGOUTURL,
-  acceptedClockSkewMs: -1,
-  protocol: process.env.ENABLE_HTTPS === "true" ? "https://" : "http://"
+  acceptedClockSkewMs: -1  
 };
 
 const samlStrategy = new SamlStrategy(samlConfig, function (
