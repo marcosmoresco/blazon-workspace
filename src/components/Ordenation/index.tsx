@@ -30,8 +30,7 @@ const Ordenation: FC<OrdenationProps> = ({ intl, list, onChange, composed, order
     }   
   }
 
-  useEffect(() => {
-    console.log(list);
+  useEffect(() => { 
     if(composed) {
       if(!currentComposed) {
         setCurrentComposed(composed);

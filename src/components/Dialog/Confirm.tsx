@@ -1,7 +1,6 @@
 import React, { FC, useState } from "react";
 import { withStyles, makeStyles, Theme, ThemeProvider, createMuiTheme } from "@material-ui/core/styles";
 import { IntlProvider, injectIntl } from "react-intl";
-import Image from "next/image";
 import Button from "../Button";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogActions from "@material-ui/core/DialogActions";
@@ -10,7 +9,6 @@ import MuiDialogTitle from "@material-ui/core/DialogTitle";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import infoIcon from "./images/information.svg";
 import { useRouter } from "next/router";
 import type { LocalesType } from "../../locales/types";
 
@@ -192,7 +190,8 @@ const Confirm: FC<ConfirmPropsType> = ({
     resolve(true);
   };
 
-  const { locale = "en", defaultLocale } = useRouter() || {};
+  const locales = Object.keys(messages).filter(key=> window.location.pathname.includes(`/${key}/`));
+  const locale = locales.length ? locales[0] : "en";
 
   return (
     <ThemeProvider theme={theme || defaultTheme}>

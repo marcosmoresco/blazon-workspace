@@ -248,6 +248,9 @@ export const queueTypes: {[key: string]: any} = {
   }, {
     label:  <FormattedMessage id="task.type.ASSIGN_ROLE" />,
     value: 'ASSIGN_ROLE'
+  }, {
+    label:  <FormattedMessage id="task.type.CHECKIN_ADMIN_ACCOUNT_PASSWORD" />,
+    value: 'CHECKIN_ADMIN_ACCOUNT_PASSWORD'
   }],
   'CERTIFICATION_TASK': [{
     label:  <FormattedMessage id="task.any" />,

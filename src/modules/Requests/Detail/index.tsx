@@ -37,7 +37,7 @@ const RequestsDetailing: React.FC<RequestsProps> = () => {
       <Loading container />
     )
   }
-  
+
   const request = data?.getRequest;
 
   const hierarchy: TitleHierarchy = {
@@ -45,7 +45,7 @@ const RequestsDetailing: React.FC<RequestsProps> = () => {
     href: "/requests",
     children: [
       {
-        formatedName: (request?.type && request?.type.replaceAll("_", " ")) || String(request?.identifier)
+        name: `request.type.${request?.type}`
       },
     ],
   };
