@@ -17,5 +17,12 @@ module.exports = {
   },
   env: {
     customKey: 'my-value',
-  }
+  },
+  serverRuntimeConfig: {   
+    graphqlUrl: process.env.NEXT_PUBLIC_GRAPHQL_SERVER,
+  },
+  publicRuntimeConfig: {
+    // Will be available on both server and client
+    graphqlUrl: process.env.NEXT_PUBLIC_GRAPHQL_SERVER,
+  },
 }

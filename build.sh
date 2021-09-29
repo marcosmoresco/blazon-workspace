@@ -13,4 +13,5 @@ cp tsconfig.server.json app;
 cp server.ts app;
 cp -R pages app;
 cp -R lib app;
+cp -R public app;
 cp -R node_modules app;

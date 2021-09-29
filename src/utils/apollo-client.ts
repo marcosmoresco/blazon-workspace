@@ -1,8 +1,10 @@
 import { ApolloClient, InMemoryCache, from, HttpLink } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
 import router from 'next/router';
+import getConfig from "next/config";
+const { publicRuntimeConfig } = getConfig();
 
-const uri = process.env.NEXT_PUBLIC_GRAPHQL_SERVER;
+const uri = publicRuntimeConfig.graphqlUrl;
 
 const httpLink = new HttpLink({
   uri,

@@ -15,6 +15,8 @@ import { ModulesLocalesPt, ModulesLocalesEn } from "../src/modules/locales";
 import messages_en from "../src/locales/en.json";
 import messages_pt from "../src/locales/pt.json";
 
+import getConfig from "next/config";
+
 const messages: LocalesType = {
   en: {
     ...messages_en,
@@ -30,6 +32,7 @@ const messages: LocalesType = {
 
 //Redux
 import { storeWrapper } from "../src/store";
+
 function App(props: any) {
   const { Component, pageProps } = props;
   const router = useRouter();
@@ -50,11 +53,7 @@ function App(props: any) {
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
-        />
-        <meta
-          name="grapql-endpoint"
-          content={`${process.env.GRAPHQL_SERVER}`}
-        />
+        />       
       </Head>
       <ApolloProvider client={apolloClient}>
         <IntlProvider
@@ -73,9 +72,14 @@ function App(props: any) {
   );
 }
 
+App.getInitialProps = async (ctx: any) => { 
+  return {
+    config: getConfig()
+  };
+}
+
 App.propTypes = {
-  Component: PropTypes.elementType.isRequired,
-  pageProps: PropTypes.object.isRequired,
+  Component: PropTypes.elementType.isRequired 
 };
 
 export default storeWrapper.withRedux(App);
