@@ -40,7 +40,7 @@ const graphql = async function () {
   httpServer.listen(port, () => {
     info(`> Server ready on ${((process.env.ENABLE_HTTPS === "true") && "https") || "http"}://localhost:${port}`);
     info(
-      `🚀 Server graphql ready at ${process.env.GRAPHQL_SERVER}`
+      `🚀 Server graphql ready at ${process.env.NEXT_PUBLIC_GRAPHQL_SERVER}`
     );
   });
   return { server, app };

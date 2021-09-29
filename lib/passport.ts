@@ -15,6 +15,7 @@ const samlConfig = {
   issuer: process.env.SAML_ISSUER,
   logoutUrl: process.env.SAML_LOGOUTURL,
   acceptedClockSkewMs: -1,
+  protocol: process.env.ENABLE_HTTPS === "true" ? "https://" : "http://"
 };
 
 const samlStrategy = new SamlStrategy(samlConfig, function (
@@ -25,7 +26,7 @@ const samlStrategy = new SamlStrategy(samlConfig, function (
     nameID: profile.nameID,
     nameIDFormat: profile.nameIDFormat,
     id: profile.userID,
-    sessionIndex: profile.sessionIndex,
+    sessionIndex: profile.sessionIndex    
   });
 });
 
