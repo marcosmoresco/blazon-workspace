@@ -33,7 +33,7 @@
   "request.cancel.text": "Deseja realmente cancelar essa requisição?",
   "request.cancel.success": "Requisição cancelada com sucesso!",
   "requests.in.progress": "Solicitações em andamento",
-  "requests.no.progress": "Não há nenhum request aberto",
+  "requests.no.progress": "Nenhuma requisição está em andamento",
   "requests.cancel.error": "Erro ao cancelar requisição(ões)!",
   "requests.cancel.success": "Requisição(ões) cancelada(s) com sucesso!",
   "request.type.NEW_USER": "Novo usuário",

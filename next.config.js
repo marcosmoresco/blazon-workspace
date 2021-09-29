@@ -15,4 +15,7 @@ module.exports = {
   images: {
     domains: ["i.ibb.co", "localhost"],
   },
+  env: {
+    customKey: 'my-value',
+  }
 }

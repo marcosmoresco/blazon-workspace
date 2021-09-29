@@ -1,11 +1,11 @@
-import { from, HttpLink } from "@apollo/client";
-import { ApolloClient, InMemoryCache } from "@apollo/client";
+import { ApolloClient, InMemoryCache, from, HttpLink } from "@apollo/client";
 import { onError } from "@apollo/client/link/error";
-import { GraphQLError } from 'graphql';
 import router from 'next/router';
 
+const uri = process.env.NEXT_PUBLIC_GRAPHQL_SERVER;
+
 const httpLink = new HttpLink({
-  uri: `${process.env.GRAPHQL_SERVER}/api/graphql`,
+  uri,
   credentials: "same-origin",
 });
 
