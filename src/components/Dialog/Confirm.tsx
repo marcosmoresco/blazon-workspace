@@ -190,7 +190,7 @@ const Confirm: FC<ConfirmPropsType> = ({
     resolve(true);
   };
 
-  const locales = Object.keys(messages).filter(key=> window.location.pathname.includes(`/${key}/`));
+  const locales = Object.keys(messages).filter(key=> window.location.pathname.includes(`/${key}`));
   const locale = locales.length ? locales[0] : "en";
 
   return (
