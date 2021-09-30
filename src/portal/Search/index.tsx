@@ -198,16 +198,18 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
           <OutlinedInputSearch
             value={filter}
             placeholder={intl.formatMessage({id: "search.found.message"})}
-            onChange={(e: any) => {
+            onChange={async (e: any) => {
               setFilter(e?.target?.value);
               setPage(0);
               setTotal(20);
-              refetch({
+              setLoadingAdvanced(true);
+              await refetch({
                 q: e?.target?.value || "",
                 type: active,
                 filters: filtered,
                 size: 100
               });              
+              setLoadingAdvanced(false);
             }}            
             startAdornment={
               <InputAdornment position="start">
