@@ -3,8 +3,8 @@ import { useDispatch } from "react-redux";
 import { injectIntl } from "react-intl";
 import { useRouter } from "next/router";
 import { useQuery, useMutation } from "@apollo/client";
-import { GET_SELF_SERVICE } from "@portal/Search/queries";
-import { SelfService } from "@portal/Search/types";
+import { GET_SELF_SERVICE, GET_SELF_SERVICE_ADVANCED } from "@portal/Search/queries";
+import { SelfServiceRepresentation } from "@portal/Search/types";
 import Autocomplete from "@material-ui/lab/Autocomplete";
 import TextField from "@material-ui/core/TextField";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -82,11 +82,14 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl, theme 
   });  
 
   const { loading, error, data, refetch } = useQuery<{
-    getSelfService: SelfService[];
-  }>(GET_SELF_SERVICE, {
+    getSelfServiceAdvanced: SelfServiceRepresentation;
+  }>(GET_SELF_SERVICE_ADVANCED, {
     variables: {
       size: 5,
+      q: "",
+      filters: "[]"
     },
+    fetchPolicy: "network-only"
   });
   
   const goToSearch = () => {
@@ -94,7 +97,7 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl, theme 
     router.push(`/search?q=${filter}`);
   };
 
-  const list = data?.getSelfService || [];
+  const list = data?.getSelfServiceAdvanced?.representation || [];
 
   AutocompletePaper.defaultProps = { refetch, filter, open, setOpen, setFilter, goToSearch, list, theme };
 

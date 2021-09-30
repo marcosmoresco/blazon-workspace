@@ -111,7 +111,7 @@ export const BoxRequesterAvatar = styled.div`
 
 export const BoxCardFooter = styled.div`
   display: flex;
-  align-items: center;
+  align-items: end;
   justify-content: space-between;
   margin-top: 15px;
   gap: 15px;

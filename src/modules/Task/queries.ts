@@ -1071,6 +1071,10 @@ export const GET_TASK_QUEUE_TASKS = gql`
             description
             identifier
           }
+          entitlement {
+            name
+            description
+          }
         }
       }
       links {

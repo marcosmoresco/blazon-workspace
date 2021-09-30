@@ -173,7 +173,7 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
 
   const handleClickDownload = async () => {
     setLoadingDownload(true);    
-    const resp = await axios.get(`api/reportTasks?type=inqueue&id=${queueIdentifier}&ord=createdData:desc&filter=${encodeURIComponent(JSON.stringify(filtered))}`);
+    const resp = await axios.get(`/api/reportTasks?type=inqueue&id=${queueIdentifier}&ord=createdData:desc&filter=${encodeURIComponent(JSON.stringify(filtered))}`);
     download(resp.data, `tasks-inqueue`);
     setLoadingDownload(false);
   }

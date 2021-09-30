@@ -1,5 +1,6 @@
 import { IntlShape } from "react-intl";
 import { NumberSchema } from "yup";
+import type { Link } from "@types";
 
 export type SearchProps = {
   intl: IntlShape,
@@ -40,6 +41,11 @@ export type SelfService = {
   identifier: string;
   referenceTo: ReferenceTo;
   attributes: SelfServiceAttribute[]
+};
+
+export type SelfServiceRepresentation = {
+  representation: SelfService[];
+  links: Link[];
 };
 
 export type AccountDirectory = {

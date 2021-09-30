@@ -375,19 +375,18 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                 <BoxCardIdentifier
                   background="#EDEDEF" 
                   color={currentTheme.palette.primary.main}>
-                  ID: {task?.identifier}
+                  {task?.identifier}
                 </BoxCardIdentifier>                                  
                 <BoxCardIdentifier
                   background="#EDEDEF" 
                   color={currentTheme.palette.primary.main}>                   
-                  <FormattedMessage id="category" />: {(task?.headers?.category || type) && intl.formatMessage({id: `task.category.${task?.headers?.category || type}`}) || " - "}                    
+                  {(task?.headers?.category || type) && intl.formatMessage({id: `task.category.${task?.headers?.category || type}`}) || " - "}                    
                 </BoxCardIdentifier>                   
                 {(task?.headers?.category !== "ROLE_RIGHT_TASK" && type !== "ROLE_RIGHT_TASK") && 
                 <BoxCardIdentifier 
                   background="#EDEDEF" 
                   color={currentTheme.palette.primary.main}>
-                  <FormattedMessage id="type" />                     
-                  : {task?.type && intl.formatMessage({id: `task.type.${task?.type}`})}                                                       
+                  {task?.type && intl.formatMessage({id: `task.type.${task?.type}`})}                                                       
                 </BoxCardIdentifier>}  
               </BoxCardHeaderContent>                  
               <BoxCardHeaderInfo>                                    
@@ -415,7 +414,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                   {task?.headers?.status !== "CANCELED" && task?.headers?.result && 
                   <InfoText>
                     <InfoTextContainer>
-                      <FormattedMessage id="result"/>: {task?.headers.result} 
+                      {task?.headers.result} 
                     </InfoTextContainer>                    
                   </InfoText>}                                                 
                 </BoxCardFooterInfo>

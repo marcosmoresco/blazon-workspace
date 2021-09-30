@@ -10,5 +10,6 @@
   "search.detail.rights.resource.noSelect.entitlement.text": "Aqui você vê os direitos do recurso selecionado.",
   "search.detail.rights.entitlement.empty.title": "Nenhum entitlement",
   "search.detail.rights.entitlement.empty.text": "Nenhum direito encontrado",
-  "search.detail.no.external.reference": "Não há referência externa"
+  "search.detail.no.external.reference": "Não há referência externa",
+  "search.items.found": "Itens encontrados"
 }

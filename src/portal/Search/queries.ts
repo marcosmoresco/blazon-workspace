@@ -28,19 +28,25 @@ export const GET_SELF_SERVICE_ADVANCED = gql`
     $filters: String
   ) {
     getSelfServiceAdvanced(q: $q, size: $size, type: $type, filters: $filters) {
-      name
-      description
-      type
-      identifier
-      referenceTo {
-        referenceToIdentifier
-        referenceToName
-        referenceToType
-      }
-      attributes {
+      representation {
         name
-        value
+        description
+        type
+        identifier
+        referenceTo {
+          referenceToIdentifier
+          referenceToName
+          referenceToType
+        }
+        attributes {
+          name
+          value
+        }
       }
+      links {
+        rel
+        href
+      }      
     }
   }
 `;

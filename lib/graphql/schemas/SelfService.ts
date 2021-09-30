@@ -32,6 +32,11 @@ export const SelfService = `
     attributes: [SelfServiceAttribute]   
   }
 
+  type SelfServiceRepresentation {
+    representation: [SelfService]   
+    links: [Link]
+  }
+
   type SelfServiceCartItemInstanceValidation { 
     status: Boolean
     relatedCatalogItemName: String
@@ -81,7 +86,7 @@ export const SelfService = `
 export const Queries = `
   getSelfServiceCart: SelfServiceCart 
   getSelfService(q: String, size: Int, type: String): [SelfService]  
-  getSelfServiceAdvanced(q: String, size: Int, type: String, filters: String): [SelfService] 
+  getSelfServiceAdvanced(q: String, size: Int, type: String, filters: String): SelfServiceRepresentation 
   getSelfServiceFilters(type: String): [SelfServiceFilter]
   getSelfServiceItem(id: String): SelfService
 `;

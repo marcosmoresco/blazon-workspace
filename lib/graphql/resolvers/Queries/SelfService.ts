@@ -37,7 +37,7 @@ export const SelfServiceQueries = {
         JSON.parse(args?.filters || "[]"),
         { ...config(context) }
       );
-      return items.data?.representation;
+      return items.data;
     } catch (error) {
       throw error;
     }

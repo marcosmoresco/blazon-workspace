@@ -68,7 +68,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                   <BoxCardIdentifier
                     background="#EDEDEF" 
                     color={currentTheme.palette.primary.main}>
-                    ID: {task?.identifier || " - "}                                      
+                    {task?.identifier || " - "}                                      
                   </BoxCardIdentifier>                                  
                 </>                              
               </BoxCardHeaderContent>
@@ -85,7 +85,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                 {task?.headers?.result && 
                   <InfoText>
                     <InfoTextContainer>
-                      <FormattedMessage id="result"/>: {task?.headers.result} 
+                      {task?.headers.result} 
                     </InfoTextContainer>                    
                   </InfoText>}                
               </BoxCardHeaderContent>  

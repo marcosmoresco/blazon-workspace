@@ -37,7 +37,7 @@ import {
   GET_SELF_SERVICE_CART
 } from "@requestCart/queries";
 import { paginate, getSelfServiceAttributeValue } from "@utils/index";
-import type { SearchProps, SelfService } from "./types";
+import type { SearchProps, SelfServiceRepresentation } from "./types";
 import {
   useStyles,
   DividerSearch,
@@ -72,7 +72,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
   const [filtered, setFiltered] = useState("[]");
   const [type, setType] = useState("LIST");
   const [page, setPage] = useState(0);
-  const [total, setTotal] = useState(12);
+  const [total, setTotal] = useState(20);
   const [loadingAdvanced, setLoadingAdvanced] = useState<boolean>(false);
   const [filteredTotal, setTotalFiltered] = useState(0);
   const [listAdvanced, setListAdvanced] = useState(null);
@@ -110,14 +110,17 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
   });  
 
   const { loading, error, data, refetch } = useQuery<{
-    getSelfService: SelfService[];
-  }>(GET_SELF_SERVICE, {
+    getSelfServiceAdvanced: SelfServiceRepresentation;
+  }>(GET_SELF_SERVICE_ADVANCED, {
     variables: {
       q: router.query.q || "",
+      size: 100,     
+      filters: "[]"
     },
+    fetchPolicy: "network-only"
   });
 
-  const list = data?.getSelfService || [];
+  const list = data?.getSelfServiceAdvanced?.representation || [];
 
   if(loading) {
     return (
@@ -127,7 +130,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
     )
   }
 
-  const save = (filteredMapReference: any, total: number) => {    
+  const save = async (filteredMapReference: any, total: number) => {    
     setTotalFiltered(total);    
     const _filters: any[] = [];
     Object.keys(filteredMapReference).forEach((f: any) => {
@@ -135,21 +138,14 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
     });
 
     setLoadingAdvanced(true);
-    apolloClient
-      .query({
-        query: GET_SELF_SERVICE_ADVANCED,
-        variables: {
-          q: filter,
-          type: active,
-          filters: JSON.stringify(_filters),
-        },
-        fetchPolicy: "network-only"
-      })
-      .then(({ data }) => {
-        setFiltered(JSON.stringify(_filters));
-        setListAdvanced(data?.getSelfServiceAdvanced);
-        setLoadingAdvanced(false);
-      });
+    await refetch({
+      q: filter,
+      type: active,
+      filters: JSON.stringify(_filters),
+      size: 100
+    });
+    setLoadingAdvanced(false);
+    setFiltered(JSON.stringify(_filters));   
   };
 
   const iconByType: { [key: string]: any } = {
@@ -205,19 +201,13 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
             onChange={(e: any) => {
               setFilter(e?.target?.value);
               setPage(0);
-              setTotal(12);
-              apolloClient
-                .query({
-                  query: GET_SELF_SERVICE_ADVANCED,
-                  variables: {
-                    q: e?.target?.value || "",
-                    type: active,
-                    filters: filtered,
-                  },
-                })
-                .then(({ data }) => {
-                  setListAdvanced(data?.getSelfServiceAdvanced);
-                });
+              setTotal(20);
+              refetch({
+                q: e?.target?.value || "",
+                type: active,
+                filters: filtered,
+                size: 100
+              });              
             }}            
             startAdornment={
               <InputAdornment position="start">
@@ -230,31 +220,26 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
         <Section
           list={sections}
           defaultValue="ALL"
-          onSelect={(section) => {
+          onSelect={async (section) => {
             setActive(section.value);
             setPage(0);
-            setTotal(12);
+            setTotal(20);
             setLoadingAdvanced(true);
-            apolloClient
-              .query({
-                query: GET_SELF_SERVICE_ADVANCED,
-                variables: {
-                  q: filter,
-                  type: section.value,
-                  filters: filtered,
-                },
-              })
-              .then(({ data }) => {
-                setListAdvanced(data?.getSelfServiceAdvanced);
-                setLoadingAdvanced(false);
-              });
+
+            await refetch({
+              q: filter,
+              type: section.value,
+              filters: filtered,
+              size: 100
+            });  
+            setLoadingAdvanced(false);            
           }}
         />
         <DividerSearch />          
           <>
             <TotalFiltersBox>
             <div className={classes.totalItens}>
-              {(listAdvanced || list)?.length || 0} Itens found
+              {(listAdvanced || list)?.length > 20 && "20+" || (listAdvanced || list)?.length} <FormattedMessage id="search.items.found" />
             </div>
             <OptionListFiltersContent>
               <OptionListContent>
@@ -456,14 +441,14 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                 ))}
               </>
             )}
-            {!loadingAdvanced && paginate(listAdvanced || list, 12, page + 1).length > 0 && (
+            {!loadingAdvanced && paginate(listAdvanced || list, 20, page + 1).length > 0 && (
               <LoadMoreContent>
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={() => {
+                  onClick={async () => {                   
                     setPage(page + 1);
-                    setTotal(total + 12);
+                    setTotal(total + 20);
                   }}
                 >
                   <FormattedMessage id="loadMore" />
