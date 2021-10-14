@@ -615,7 +615,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                     </Button>
                   )}     
                   {(actions || []).includes("KEEP") && (
-                    <Button variant="contained" color="primary" onClick={() => {
+                    <Button variant="contained" color="default-primary" onClick={() => {
                       setCurrent(task);
                       setResult("KEEP");
                       setOpenDisapprove(true);

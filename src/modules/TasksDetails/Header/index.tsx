@@ -539,7 +539,7 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
             </Button>
           )}
           {(dataActions?.getActions || []).includes("KEEP") && !stage && (
-            <Button variant="contained" color="primary" onClick={() => {
+            <Button variant="contained" color="default-primary" onClick={() => {
               setResult("KEEP");
               setOpenDisapprove(true);
             }}>
