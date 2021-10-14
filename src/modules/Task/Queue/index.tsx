@@ -223,7 +223,7 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
                   </SelectBoxContainer>
                 </FilterContent>
               )} 
-              {queueCategoryValue !== "ROLE_RIGHT_TASK" && queueIdentifier && (
+              {!["ROLE_RIGHT_TASK", "USER_REVALIDATION_TASK"].includes(queueCategoryValue || "") && queueIdentifier && (
                 <FilterContent>              
                   <SelectBoxContainer onClick={(event: any) => setAnchorElType(event.currentTarget)}>
                     <SelectBoxInfo>
@@ -305,7 +305,7 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
          </MenuItemContainer>
         ))}       
       </StyledMenu>       
-      {queueCategoryValue !== "ROLE_RIGHT_TASK" && (
+      {!["ROLE_RIGHT_TASK", "USER_REVALIDATION_TASK"].includes(queueCategoryValue || "") && (
         <StyledMenu        
           anchorEl={anchorElType}
           keepMounted

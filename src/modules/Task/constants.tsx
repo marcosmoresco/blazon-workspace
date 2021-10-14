@@ -18,11 +18,13 @@ import {
   GET_ROLE_RIGHT_APPROVAL_TASK,
   GET_SOD_APPROVAL_TASK,
   GET_PROVISIONING_TASK, 
+  GET_USER_REVALIDATION_TASK, 
   GET_REQUEST_APPROVAL_TASKS,
   GET_CERTIFICATION_APPROVAL_TASKS,
   GET_PROVISIONING_TASKS,
   GET_ROLE_RIGHT_APPROVAL_TASKS,
   GET_SOD_APPROVAL_TASKS,
+  GET_USER_REVALIDATION_TASKS,
   GET_TASK_QUEUE_TASKS
 } from "@modules/Task/queries";
 
@@ -56,7 +58,12 @@ import {
   UNASSIGN_PROVISIONING_TASK,
   FORWARD_TO_USER_PROVISIONING_TASK,
   FORWARD_TO_QUEUE_PROVISIONING_TASK,
-  RESOLVE_PROVISIONING_TASK 
+  RESOLVE_PROVISIONING_TASK,
+  ASSIGN_TO_ME_USER_REVALIDATION_TASK,
+  UNASSIGN_USER_REVALIDATION_TASK,
+  FORWARD_TO_USER_USER_REVALIDATION_TASK,
+  FORWARD_TO_QUEUE_USER_REVALIDATION_TASK,
+  RESOLVE_USER_REVALIDATION_TASK  
 } from "@modules/Task/mutations";
 
 export const filters: FilterType[] = [
@@ -187,6 +194,10 @@ export const types = [
     label:<FormattedMessage id="task.roleRight" />,
     value: "ROLE_RIGHT",
   },
+  {
+    label:<FormattedMessage id="task.userRevalidation" />,
+    value: "USER_REVALIDATION",
+  },
 ];
 
 export const sections = [
@@ -228,6 +239,10 @@ export const queueCategories = [
   {
     label:<FormattedMessage id="task.roleRight" />,
     value: "ROLE_RIGHT_TASK",
+  },
+  {
+    label:<FormattedMessage id="task.userRevalidation" />,
+    value: "USER_REVALIDATION_TASK",
   },
 ];
 
@@ -546,6 +561,12 @@ export const getActionsByType = (type?: any): any => {
     result.forwardToUser = FORWARD_TO_USER_SOD_APPROVAL_TASK;
     result.forwardToQueue = FORWARD_TO_QUEUE_SOD_APPROVAL_TASK;
     result.resolve = RESOLVE_SOD_APPROVAL_TASK; 
+  } else if(type === "userRevalidation") {
+    result.assignToMe = ASSIGN_TO_ME_USER_REVALIDATION_TASK;
+    result.unassign = UNASSIGN_USER_REVALIDATION_TASK;
+    result.forwardToUser = FORWARD_TO_USER_USER_REVALIDATION_TASK;
+    result.forwardToQueue = FORWARD_TO_QUEUE_USER_REVALIDATION_TASK;
+    result.resolve = RESOLVE_USER_REVALIDATION_TASK; 
   } else {
     result.assignToMe = ASSIGN_TO_ME_TASK;
     result.unassign = UNASSIGN_TASK;
@@ -568,6 +589,8 @@ export const getQueryByType = (type: any): any => {
     query = GET_ROLE_RIGHT_APPROVAL_TASK;
   } else if(type === "sod") {
     query = GET_SOD_APPROVAL_TASK;
+  } else if(type === "userRevalidation") {
+    query = GET_USER_REVALIDATION_TASK;
   }
   
   return query;
@@ -585,6 +608,8 @@ export const getQueryListByType = (type: any): any => {
     query = GET_ROLE_RIGHT_APPROVAL_TASKS;
   } else if(type === "sod") {
     query = GET_SOD_APPROVAL_TASKS;
+  } else if(type === "userRevalidation") {
+    query = GET_USER_REVALIDATION_TASKS;
   } else if(type === "any") {
     query = GET_TASKS;
   } else {

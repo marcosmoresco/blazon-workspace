@@ -169,7 +169,7 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                 </BoxCardHeaderInfo>
               </BoxCardFooterInfo>
             </BoxCardFooter>            
-            {!["provisioning", "certification", "sod"].includes(type as string) && (
+            {!["provisioning", "certification", "sod", "userRevalidation"].includes(type as string) && (
               <>
                 <JustificationDivider /> 
                 <BoxJustification>
@@ -230,6 +230,23 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                 </TitleJustification>
                 <BoxJustificationValue>
                   {task?.allowedJustification || " - "}
+                </BoxJustificationValue>
+              </BoxJustification>
+            </BoxCardContent>
+          </BoxCard>  
+        )} 
+        {["userRevalidation"].includes(type as string) && task?.itemDetails?.justification && (
+          <BoxCard>
+            <BoxCardContent>
+              <BoxCardTitle className="Light">
+                <FormattedMessage id={`tasks.access.${task?.headers.result}`} />
+              </BoxCardTitle>
+              <BoxJustification className="Add-top">
+                <TitleJustification>
+                  <FormattedMessage id="tasks.resolveJustification" />
+                </TitleJustification>
+                <BoxJustificationValue>
+                  {task?.itemDetails?.justification || " - "}
                 </BoxJustificationValue>
               </BoxJustification>
             </BoxCardContent>

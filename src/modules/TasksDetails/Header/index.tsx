@@ -538,6 +538,30 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
               <FormattedMessage id="tasks.resolve" />
             </Button>
           )}
+          {(dataActions?.getActions || []).includes("KEEP") && !stage && (
+            <Button variant="contained" color="primary" onClick={() => {
+              setResult("KEEP");
+              setOpenDisapprove(true);
+            }}>
+             <FormattedMessage id="task.keep" />
+            </Button>
+          )}
+          {(dataActions?.getActions || []).includes("INACTIVATE") && !stage && (
+            <Button variant="contained" color="secondary" onClick={() => {
+              setResult("INACTIVATE");
+              setOpenDisapprove(true);
+            }}>
+              <FormattedMessage id="task.inactivate" />
+            </Button>
+          )}
+          {(dataActions?.getActions || []).includes("REVOKE") && !stage && (
+            <Button variant="contained" color="secondary" onClick={() => {
+              setResult("REVOKE");
+              setOpenDisapprove(true);
+            }}>
+              <FormattedMessage id="task.revoke" />
+            </Button>
+          )}
           {task?.headers?.status !== "DONE" && (type !== "provisioning" || !stage) && (
             <Actions onClick={handleClick}>
              <DotsThreeIcon height={24} width={24}/>

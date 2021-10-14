@@ -8,6 +8,7 @@
   "task.provisioning": "Provisionamento",
   "task.sod": "SoD",
   "task.roleRight": "Direito de papel",
+  "task.userRevalidation": "Revalidação de usuário",
   "task.status.DONE": "Concluída",
   "task.status.TODO": "Pendente",
   "task.status.WAITING_ASSIGN": "Aguardando atribuição",
@@ -68,6 +69,9 @@
   "tasks.resolved": "Resolvidas",
   "tasks.waitingResolution": "Aguardando resolução",
   "tasks.waitingAssignment": "Aguardando atribuição",
+  "task.keep": "Manter",
+  "task.revoke": "Revogar",
+  "task.inactivate": "Inativar",
 
   "task.category.APPROVAL_TASK": "Aprovação",
   "task.category.CERTIFICATION_TASK": "Certificação",

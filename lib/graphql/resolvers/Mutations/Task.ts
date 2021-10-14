@@ -499,4 +499,84 @@ export const TaskMutations = {
       throw error;
     }
   },
+  addUserRevalidationTaskComment: async (parent: any, args: any, context: any) => {
+    try {
+      const result = await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/${args.id}/comments`,
+        {
+          task: {
+            identifier: args.id,
+          },
+          user: {
+            identifier: context.req?.session?.passport?.user?.id,
+          },
+          comment: args.comment,
+        },
+        { ...config(context) }
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  assignToMeUserRevalidationTask: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/assigntasktome`,
+         JSON.parse(args?.payload),
+         { ...config(context) }
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  unassignUserRevalidationTask: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/unassigntask`,
+         JSON.parse(args?.payload),
+         { ...config(context) }
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  forwardToUserUserRevalidationTask: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/forwardtasktouser`,
+         JSON.parse(args?.payload),
+         { ...config(context) }
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  forwardToQueueUserRevalidationTask: async (parent: any, args: any, context: any) => {
+    try {
+      await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/forwardtasktoqueue`,
+         JSON.parse(args?.payload),
+         { ...config(context) }
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
+  resolveUserRevalidationTask: async (parent: any, args: any, context: any) => {
+    try {     
+      await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/resolve`,
+        JSON.parse(args?.payload),
+        { ...config(context) }
+      );
+      return true;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

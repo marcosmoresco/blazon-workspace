@@ -23,8 +23,9 @@
   "tasks.justification": "Justification",
   "tasks.disapprovalJustification": "Disapproval Justification",
   "tasks.revokeJustification": "Revoke Justification",
-  "tasks.notProvisionedJustification": "Not provisioned justification",
-  "tasks.allowedJustification": "Allowed justification",
+  "tasks.notProvisionedJustification": "Not Provisioned Justification",
+  "tasks.allowedJustification": "Allowed Justification",
+  "tasks.resolveJustification": "Resolve Justification",
   "tasks.noComments": "No comments",
   "tasks.noComments.text": "No comments added",
   "tasks.add.comment.here": "Insert a comment here",
@@ -46,5 +47,8 @@
   "tasks.approved": "Approved",
   "tasks.item.approved.success": "Item approved successfully!",
   "tasks.item.disapproved.success": "Item disapproved successfully!",
-  "tasks.accessDenied": "Access denied"
+  "tasks.accessDenied": "Access denied",
+  "tasks.access.KEEPED": "Access keeped",
+  "tasks.access.INACTIVATED": "Access inactivated",
+  "tasks.access.REVOKED": "Access revoked"
 }

@@ -971,6 +971,148 @@ export const GET_PROVISIONING_TASK = gql`
   }
 `;
 
+export const GET_USER_REVALIDATION_TASKS_AVAILABLE_ACTIONS = gql`
+  query getUserRevalidationTasksAvailableActions($status: String) {
+    getActions: getUserRevalidationTasksAvailableActions(status: $status)
+  }
+`;
+
+export const GET_USER_REVALIDATION_TASKS = gql`
+  query getUserRevalidationTasks($page: Int, $size: Int, $ord: String, $filters: String) {
+    getUserRevalidationTasks(page: $page, size: $size, ord: $ord, filters: $filters) {   
+      representation {
+        identifier
+        type
+        justification
+        disapprovalJustification
+        dates {
+          createdDate
+          resolvedDate
+          deadline
+        }
+        headers {
+          category
+          createdBy
+          createdByObjectId
+          priority
+          status
+          result
+          from {
+            identifier
+            displayName
+            username
+            links {
+              rel
+              href
+            }
+          }
+          recipient {
+            identifier
+            displayName
+            username
+            links {
+              rel
+              href
+            }
+          }
+        }
+        itemDetails {  
+          justification     
+          roleName       
+          roleDescription
+        }
+      }
+      links {
+        rel
+        href
+      }
+    }
+  }
+`;
+
+export const GET_USER_REVALIDATION_TASK = gql`
+  query getUserRevalidationTask($id: Int) {
+    getUserRevalidationTask(id: $id) {      
+      identifier
+      justification
+      disapprovalJustification
+      type
+      entrySchema
+      dates {
+        createdDate
+        resolvedDate
+        deadline
+      }
+      headers {
+        category
+        createdBy
+        createdByObjectId
+        priority
+        status
+        result
+        from {
+          identifier
+          displayName
+          username
+          links {
+            rel
+            href
+          }
+        }
+        recipient {
+          identifier
+          displayName
+          username
+          links {
+            rel
+            href
+          }
+        }
+      }  
+      itemDetails {  
+        justification     
+        roleName       
+        roleDescription
+      }
+      comments {
+        comment
+        date   
+        identifier
+        user {
+          displayName
+          links {
+            rel
+            href
+          }
+        }
+      }  
+      assignHistory {
+        date
+        to {
+          identifier
+          displayName
+          links {
+            rel
+            href
+          }
+        }
+        from {
+          identifier
+          displayName
+          links {
+            rel
+            href
+          }
+        }
+      }  
+      links {
+        rel
+        href
+      }
+    }
+  }
+`;
+
 export const GET_TASK_QUEUES = gql`
   query getTaskQueues {
     getTaskQueues {
@@ -1233,6 +1375,32 @@ export const GET_ROLE_RIGHT_MERGED_HISTORY = gql`
 export const GET_SOD_MERGED_HISTORY = gql`
   query getSoDTasksMergedHistory($id: Int) {
     getHistory: getSoDTasksMergedHistory(id: $id) {
+      from {
+        name
+        type
+        identifier
+        links {
+          rel
+          href
+        }
+      }
+      to {
+        name
+        type
+        identifier
+        links {
+          rel
+          href
+        }
+      }
+      date
+    }
+  }
+`;
+
+export const GET_USER_REVALIDATION_MERGED_HISTORY = gql`
+  query getUserRevalidationMergedHistory($id: Int) {
+    getHistory: getUserRevalidationMergedHistory(id: $id) {
       from {
         name
         type

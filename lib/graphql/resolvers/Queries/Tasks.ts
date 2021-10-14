@@ -337,6 +337,52 @@ export const TaskQueries = {
       throw error;
     }
   }, 
+  getUserRevalidationTasksAvailableActions: async (parent: any, args: any, context: any) => {
+    try {
+      const availableActions = await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/availableactions`,   
+        JSON.parse(args?.status || "[]"),     
+        { ...config(context) }
+      );
+      return availableActions.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  getUserRevalidationTasks: async (parent: any, args: any, context: any) => {
+    try {
+      const tasks = await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/filter?expand=true&page=${args?.page}&size=${args?.size}${args?.ord ? `&ord=${args.ord}` : ""}`,   
+        {...(JSON.parse(args?.filters || "{}"))},     
+        { ...config(context) }
+      );
+      return tasks.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  getUserRevalidationTask: async (parent: any, args: any, context: any) => {
+    try {
+      const task = await axios.get(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/${args?.id}?expand=true`,          
+        { ...config(context) }
+      );
+      return task.data;
+    } catch (error) {
+      throw error;
+    }
+  },
+  getUserRevalidationTaskFilters: async (parent: any, args: any, context: any) => {
+    try {
+      const filters = await axios.get(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/filters?type=${args?.type || "ANY"}&statusList=${args?.statusList}`,        
+        { ...config(context) }
+      );
+      return filters.data;
+    } catch (error) {
+      throw error;
+    }
+  },
   getCertificationTasksMergedHistory: async (parent: any, args: any, context: any) => {
     try {
       const filters = await axios.get(
@@ -392,4 +438,15 @@ export const TaskQueries = {
       throw error;
     }
   }, 
+  getUserRevalidationMergedHistory: async (parent: any, args: any, context: any) => {
+    try {
+      const filters = await axios.get(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/${args?.id}/mergedhistory`,        
+        { ...config(context) }
+      );
+      return filters.data;
+    } catch (error) {
+      throw error;
+    }
+  },
 };

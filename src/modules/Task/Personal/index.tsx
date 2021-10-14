@@ -35,6 +35,7 @@ import PersonalTasksCertification from "./Certification";
 import PersonalTasksProvisioning from "./Provisioning"; 
 import PersonalTasksRoleRight from "./RoleRight"; 
 import PersonalTasksSoD from "./SoD"; 
+import PersonalTaskUserRevalidation from "./UserRevalidation";
 
 //queries
 import { 
@@ -254,8 +255,11 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
       {type === "ROLE_RIGHT" && (
         <PersonalTasksRoleRight filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll} orderBy={orderBy}/>
       )}
-       {type === "SOD" && (
+      {type === "SOD" && (
         <PersonalTasksSoD filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll} orderBy={orderBy}/>
+      )}
+      {type === "USER_REVALIDATION" && (
+        <PersonalTaskUserRevalidation filtered={filtered} checkAll={checkAll} setCheckAll={setCheckAll} orderBy={orderBy}/>
       )}      
       <StyledMenu        
         anchorEl={anchorElCategory}
@@ -280,7 +284,8 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
                (type.value === "CERTIFICATION" && dataResume?.getResume?.openCertificationTasks) ||
                (type.value === "PROVISIONING" && dataResume?.getResume?.openProvisioningTasks) ||
                (type.value === "ROLE_RIGHT" && dataResume?.getResume?.openRoleRightsTasks) || 
-               (type.value === "SOD" && dataResume?.getResume?.openSodTasks) || 0}
+               (type.value === "SOD" && dataResume?.getResume?.openSodTasks) || 
+               (type.value === "USER_REVALIDATION" && dataResume?.getResume?.openUserRevalidationTasks) || 0}               
             </MenuItemInfo>                  
           </MenuItemContainer>
         ))}       

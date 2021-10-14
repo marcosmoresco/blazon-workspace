@@ -185,11 +185,16 @@ export const Queries = `
   getProvisioningTasks(page: Int, size: Int, ord: String, filters: String): TaskRepresentation
   getProvisioningTask(id: Int): Task
   getProvisioningTaskFilters(type: String, statusList: String): [TaskFilter]
+  getUserRevalidationTasksAvailableActions(status: String): [String]
+  getUserRevalidationTasks(page: Int, size: Int, ord: String, filters: String): TaskRepresentation
+  getUserRevalidationTask(id: Int): Task
+  getUserRevalidationTaskFilters(type: String, statusList: String): [TaskFilter]
   getApprovalTasksMergedHistory(id: Int): [TaskAssignHistory]
   getCertificationTasksMergedHistory(id: Int): [TaskAssignHistory]
   getProvisioningTasksMergedHistory(id: Int): [TaskAssignHistory]
   getRoleRightTasksMergedHistory(id: Int): [TaskAssignHistory]
   getSoDTasksMergedHistory(id: Int): [TaskAssignHistory]
+  getUserRevalidationMergedHistory(id: Int): [TaskAssignHistory]
 `;
 
 export const Mutations = `
@@ -231,4 +236,10 @@ export const Mutations = `
   defineAccountIdentifierProvisioningTask(id: Int, accountIdentifier: String): Boolean
   defineUsernamePasswordProvisioningTask(id: Int, username: String, password: String): Boolean
   changePasswordProvisioningTask(id: Int, password: String): Boolean
+  addUserRevalidationTaskComment(id: Int, comment: String): Boolean
+  assignToMeUserRevalidationTask(payload: String): Boolean
+  unassignUserRevalidationTask(payload: String): Boolean
+  forwardToUserUserRevalidationTask(payload: String): Boolean
+  forwardToQueueUserRevalidationTask(payload: String): Boolean
+  resolveUserRevalidationTask(payload: String): Boolean
 `;

@@ -106,6 +106,8 @@ const getType = (task?: Task, type?: string): string => {
     _type = "sod";
   } else if(task?.headers?.category === "ROLE_RIGHT_TASK" || type === "ROLE_RIGHT_TASK") {
     _type = "roleRight";
+  } else if(task?.headers?.category === "USER_REVALIDATION_TASK" || type === "USER_REVALIDATION_TASK") {
+    _type = "userRevalidation";
   }
   return _type;
 };
@@ -382,7 +384,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                   color={currentTheme.palette.primary.main}>                   
                   {(task?.headers?.category || type) && intl.formatMessage({id: `task.category.${task?.headers?.category || type}`}) || " - "}                    
                 </BoxCardIdentifier>                   
-                {(task?.headers?.category !== "ROLE_RIGHT_TASK" && type !== "ROLE_RIGHT_TASK") && 
+                {!(["ROLE_RIGHT_TASK", "USER_REVALIDATION_TASK"].includes(task?.headers?.category || "")) && !(["ROLE_RIGHT_TASK", "USER_REVALIDATION_TASK"].includes(type || "")) && 
                 <BoxCardIdentifier 
                   background="#EDEDEF" 
                   color={currentTheme.palette.primary.main}>
@@ -457,7 +459,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                 task?.itemDetails?.roleName || " - "
               ) || ""}
             </BoxCardTitle>
-            {!["PROVISIONING_TASK", "CERTIFICATION_TASK", "SOD_TASK"].includes(task?.headers?.category || "") && !["PROVISIONING_TASK", "CERTIFICATION_TASK", "SOD_TASK"].includes(type || "") && 
+            {!["PROVISIONING_TASK", "CERTIFICATION_TASK", "SOD_TASK", "USER_REVALIDATION_TASK"].includes(task?.headers?.category || "") && !["PROVISIONING_TASK", "CERTIFICATION_TASK", "SOD_TASK", "USER_REVALIDATION_TASK"].includes(type || "") && 
             <BoxJustification>
               <TitleJustification>
                 <FormattedMessage id="tasks.justification" />
@@ -611,7 +613,34 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                     }}>
                     <FormattedMessage id="tasks.notProvisioned" />
                     </Button>
-                  )}                  
+                  )}     
+                  {(actions || []).includes("KEEP") && (
+                    <Button variant="contained" color="primary" onClick={() => {
+                      setCurrent(task);
+                      setResult("KEEP");
+                      setOpenDisapprove(true);
+                    }}>
+                    <FormattedMessage id="task.keep" />
+                    </Button>
+                  )}
+                  {(actions || []).includes("INACTIVATE") && (
+                    <Button variant="contained" color="secondary" onClick={() => {
+                      setCurrent(task);
+                      setResult("INACTIVATE");
+                      setOpenDisapprove(true);
+                    }}>
+                      <FormattedMessage id="task.inactivate" />
+                    </Button>
+                  )}
+                  {(actions || []).includes("REVOKE") && (
+                    <Button variant="contained" color="secondary" onClick={() => {
+                      setCurrent(task);
+                      setResult("REVOKE");
+                      setOpenDisapprove(true);
+                    }}>
+                      <FormattedMessage id="task.revoke" />
+                    </Button>
+                  )}             
                   {/*(actions || []).includes("RESOLVE") && (
                     <Button variant="contained" color="default-primary" onClick={() => {
                       if(task) {
@@ -701,6 +730,8 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
             _type = "sod";
           } else if(current?.headers.category === "ROLE_RIGHT_TASK" || type === "ROLE_RIGHT_TASK") {
             _type = "roleRight";
+          } else if(current?.headers.category === "USER_REVALIDATION_TASK" || type === "USER_REVALIDATION_TASK") {
+            _type = "userRevalidation";
           }
           router.push(`/tasks/${_type}/${current?.identifier}`)
         }}>

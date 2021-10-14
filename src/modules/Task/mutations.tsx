@@ -210,6 +210,42 @@ export const RESOLVE_PROVISIONING_TASK = gql`
   }
 `;
 
+export const ADD_USER_REVALIDATION_TASK_COMMENT = gql`
+  mutation addUserRevalidationTaskComment($id: Int, $comment: String) {
+    addComment: addUserRevalidationTaskComment(id: $id, comment: $comment)
+  }
+`;
+
+export const ASSIGN_TO_ME_USER_REVALIDATION_TASK = gql`
+  mutation assignToMeUserRevalidationTask($payload: String) {
+    assignToMe: assignToMeUserRevalidationTask(payload: $payload)
+  }
+`;
+
+export const UNASSIGN_USER_REVALIDATION_TASK = gql`
+  mutation unassignUserRevalidationTask($payload: String) {
+    unassign: unassignUserRevalidationTask(payload: $payload)
+  }
+`;
+
+export const FORWARD_TO_USER_USER_REVALIDATION_TASK = gql`
+  mutation forwardToUserUserRevalidationTask($payload: String) {
+    forwardToUser: forwardToUserUserRevalidationTask(payload: $payload)
+  }
+`;
+
+export const FORWARD_TO_QUEUE_USER_REVALIDATION_TASK = gql`
+  mutation forwardToQueueUserRevalidationTask($payload: String) {
+    forwardToQueue: forwardToQueueUserRevalidationTask(payload: $payload)
+  }
+`;
+
+export const RESOLVE_USER_REVALIDATION_TASK = gql`
+  mutation resolveUserRevalidationTask($payload: String) {
+    resolve: resolveUserRevalidationTask(payload: $payload)
+  }
+`;
+
 export const DEFINE_ACCOUNT_IDENTIFIER_PROVISIONING_TASK = gql`
   mutation defineAccountIdentifierProvisioningTask($id: Int, $accountIdentifier: String) {
     defineAccountIdentifierProvisioningTask(id: $id, accountIdentifier: $accountIdentifier)
