@@ -93,7 +93,10 @@ export const AddDados = styled.div`
   input {
     background-color: #FFFFFF;
     padding: 11.5px 8px;
-  },   
+  }
+  .MuiInputBase-root {
+    background: #fff;
+  }
 `;
 export const Text = styled.div`
   width: 100%;

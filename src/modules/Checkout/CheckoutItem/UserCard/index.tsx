@@ -173,7 +173,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
   
   const [formDatas, setFormDatas] = useState<{[key: string]: any}>();  
 
-  if(item?.catalogItemType === "USER" && !formDatas) {
+  if(["USER", "RESOURCE"].includes(item?.catalogItemType) && !formDatas) {
     const formId = getSelfServiceAttributeValue("formId", data?.getSelfServiceItem?.attributes || []);
         
     if(formId) {
