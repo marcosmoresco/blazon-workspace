@@ -137,17 +137,9 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
     instance: {}
   };
 
-  if(instance.payload) {    
-    const payload = JSON.parse(instance.payload);  
-    let additionalFields = {...payload?.additionalFields};
-    if(payload?.expireAt) {
-      additionalFields = {...additionalFields, expireAt: payload?.expireAt};
-    } 
-    if(payload?.accountId) {
-      additionalFields = {...additionalFields, accountId: String(payload?.accountId)};
-    }
+  if(instance.payload) {  
     initialValues = {
-      instance: additionalFields
+      instance: JSON.parse(instance.payload)
     };   
   }
 
