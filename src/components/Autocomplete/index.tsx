@@ -16,6 +16,7 @@ const useStyles = makeStyles(() => ({
       paddingTop: 4,
       paddingBottom: 4,
       height: 42,
+      backgroundColor: "#fff",
       "& .MuiButtonBase-root": {
         bottom: 4
       }

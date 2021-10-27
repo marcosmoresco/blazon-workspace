@@ -14,3 +14,9 @@ export const GET_APPLICATION_ACCOUNTS_BY_ENTITLEMENT = gql`
     }
   }
 `;
+
+export const FORM_RENDER = gql`
+  query formFieldRender($formId: Int) {
+    formFieldRender(formId: $formId)
+  }
+`;

@@ -31,6 +31,9 @@ import {
   TaskQueue,
   Queries as TaskQueueQueries,  
 } from "./TaskQueue";
+import {
+  Queries as FormFieldsQueries
+} from "./FormFields";
 
 export const typeDefs = gql`
   ${Link}
@@ -57,6 +60,7 @@ export const typeDefs = gql`
     ${NotificatonQueries}
     ${TaskQueries}
     ${TaskQueueQueries}
+    ${FormFieldsQueries}
   }
 
   type Mutation {

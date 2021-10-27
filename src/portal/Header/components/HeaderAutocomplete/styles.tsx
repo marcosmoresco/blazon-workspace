@@ -7,6 +7,7 @@ import SquaresFourIcon from "@icons/SquaresFour";
 import CheckCircleIcon from "@icons/CheckCircle";
 import SecurityUserIcon from "@icons/SecurityUser";
 import PeopleIcon from "@icons/People";
+import UserIcon from "@icons/User";
 import CaretRightIcon from "@icons/CaretRight";
 import EmptyState from "@components/EmptyState";
 import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
@@ -278,7 +279,34 @@ export const AutocompletePaper = ({
             color={(active === "ROLES" && "#FFFFFF") || "black"}
           />
           <FormattedMessage id="roles" />
-        </HeaderTag>       
+        </HeaderTag>     
+        <HeaderTag
+          onClick={() => {
+            const variables = {
+              size: 5,
+              q: filter || "",
+              type: "",
+            };
+
+            if (active !== "USERS") {
+              setActive("USERS");
+              variables.type = "USER";
+            } else {
+              setActive("");
+            }
+
+            refetch(variables);
+          }}          
+          color={theme.palette.primary.main}
+          className={`${active === "USERS" && "Active"}`}
+        >
+          <UserIcon
+            width={17}
+            height={17}
+            color={(active === "USERS" && "#FFFFFF") || "black"}
+          />
+          <FormattedMessage id="users" />
+        </HeaderTag>         
         <HeaderTag
           onClick={() => {
             const variables = {

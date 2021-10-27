@@ -22,7 +22,7 @@ export interface TextFieldProps extends InputProps {
 
 export const WhiteMuiTextField = withStyles(() => ({
   root: {
-    backgroundColor: '#FFFFFF'
+    backgroundColor: '#FFFFFF',    
   }
 }))(MuiTextField)
 

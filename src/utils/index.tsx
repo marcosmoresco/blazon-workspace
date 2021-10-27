@@ -10,6 +10,7 @@ import CheckCircleIcon from "@icons/CheckCircle";
 import SecurityUserIcon from "@icons/SecurityUser";
 import PeopleIcon from "@icons/People";
 import SquaresFourIcon from "@icons/SquaresFour";
+import UserIcon from "@icons/User";
 
 export const deepCopyFunction = (inObject: any) => {
   let outObject: any, value, key;
@@ -72,6 +73,7 @@ export const iconByType = (color: string, size: number): any =>  ({
   ENTITLEMENT: <CheckCircleIcon width={size || 24} height={size || 24} color={color || "black"} />,
   ROLE: <PeopleIcon width={size || 24} height={size || 24} color={color || "black"} />,
   ADMIN_PASSWORD: <SecurityUserIcon width={size || 24} height={size || 24} color={color || "black"} />,
+  USER: <UserIcon width={size || 24} height={size || 24} color={color || "black"} />
 });
 
 export const translateByType: {[key: string] : any} = { 
@@ -79,6 +81,7 @@ export const translateByType: {[key: string] : any} = {
   ENTITLEMENT: <FormattedMessage id="entitlement" />,
   ROLE: <FormattedMessage id="role" />,
   ADMIN_PASSWORD: <FormattedMessage id="adminAccount" />,
+  USER: <FormattedMessage id="user" />,
 };
 
 export const isValidCart = (cart: SelfServiceCart | null): boolean => {

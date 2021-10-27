@@ -22,6 +22,7 @@ import PeopleIcon from "@icons/People";
 import TrashIcon from "@icons/Trash";
 import XIcon from "@icons/X";
 import XCircleIcon from "@icons/XCircle";
+import UserIcon from "@icons/User";
 import Empty from "./Empty";
 import { addMessage, addCartItemMessage } from "@actions/index";
 import { GET_OPEN_REQUESTS } from "@modules/Requests/queries";
@@ -189,6 +190,7 @@ const HeaderRequestCart: FC<HeaderRequestCartProps> = ({
     ENTITLEMENT: <CheckCircleIcon width={24} height={24} color={currentTheme.palette.primary.main || "#3174F6"} />,
     ROLE: <PeopleIcon width={24} height={24} color={currentTheme.palette.primary.main || "#3174F6"} />,
     ADMIN_PASSWORD: <SecurityUserIcon width={24} height={24} color={currentTheme.palette.primary.main || "#3174F6"} />,
+    USER: <UserIcon width={24} height={24} color={currentTheme.palette.primary.main || "#3174F6"} />
   };  
 
   return (
