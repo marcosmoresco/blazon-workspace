@@ -1,7 +1,7 @@
 // venders
 import React, { useState } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
-import { getLink, getSelfServiceAttributeValue } from "@utils/index";
+import { getLink, getSelfServiceAttributeValue, deepCopyFunction } from "@utils/index";
 import { Form, Formik, withFormik, useFormikContext } from "formik";
 import { useQuery, useMutation } from "@apollo/client";
 import apolloClient from "@utils/apollo-client";
@@ -19,6 +19,7 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
 import Loading from "@components/Loading";
 import MinusCircleIcon from "@icons/MinusCircle";
+import InfoIcon from "@icons/Info/index";
 import Status from "./Status";
 import Autocomplete from "@components/Autocomplete";
 import Button from "@components/Button";
@@ -26,6 +27,7 @@ import DatePicker from "@components/DatePicker";
 import Switch from "@components/Switch";
 import UserThumb from "@components/UserThumb";
 import TextField from "@components/TextField";
+import Tooltip from "@components/Tooltip";
 import { addMessage } from "@actions/index";
 import { useUser } from "@hooks";
 
@@ -45,8 +47,8 @@ import {
   UserBottomArea,
   Category,
   DateType,
+  Help,
 } from "./styles";
-import { CheckOutlined } from "@material-ui/icons";
 
 //types
 import { CheckouitemIstanceProps } from "./types";
@@ -62,7 +64,6 @@ import { GET_FORM_DATAS, GET_APPLICATION_ACCOUNTS_BY_ENTITLEMENT, FORM_RENDER } 
 
 //mutations
 import { UPDATE_SELF_SERVICE_CART_ITEM_INSTANCE, VALIDATE_FORM_FIELD } from "@modules/Checkout/mutations";
-
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -210,14 +211,21 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     const yupObject = Yup
                       .string();                     
                     schema[attribute.name] = yupObject;
-                  } 
+                  }
+                  
+                  let TextMaskCustomItem = deepCopyFunction(TextMaskCustom);
+                  if(attribute.mask) {
+                    TextMaskCustomItem.defaultProps = {mask: attribute.mask};
+                  }                                   
+
                   extraFormDatas[category].push({
                     displayType: attribute.type,
                     name: attribute.name,
                     label: attribute.label,  
                     writable: !attribute.disabled,
                     identifier: attribute.identifier,
-                    mask: attribute.mask,                  
+                    mask: attribute.mask && TextMaskCustomItem,    
+                    help: attribute.help,              
                     options: attribute.listValues || []
                   });                                                               
                 } else if (attribute.type === "NUMBER") {                 
@@ -493,7 +501,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
         type      
       },
     })
-    .then(async ({ data }) => { 
+    .then(async ({ data }) => {
       if(type === "USER") {
         callback(data.searchItems.representation.map((item: SelfService) => ({
           identifier: item.referenceTo.referenceToIdentifier,
@@ -508,23 +516,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
           type: getSelfServiceAttributeValue("organizationType", item.attributes),
         })));
       }         
-    });
-
-    /*dispatch(search(query || '', 10, 'USER', 'displayName;email;personalEmail;username'))
-      .then((resp) => {
-        if(resp.error) {
-          dispatch(addMessage((resp.payload.response && resp.payload.response.message) || <FormattedMessage id="app.internal.error"/>, 'error'))
-          return
-        }
-
-        callback(resp.payload.representation.map((u) => ({
-          identifier: u.referenceTo.referenceToIdentifier,
-          displayName: getAttribute(u.attributes, 'displayName'),
-          links: [{
-            href: `/provisionmanager/public/images/${getAttribute(u.attributes, 'thumbImageId')}`
-          }]
-        })))
-      })*/
+    });   
   }
 
   return (
@@ -672,35 +664,36 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     let currentError = null;
                     if(["DATE", "DATETIME", "RADIOBUTTON"].includes(attribute.displayType)) {                    
                       currentError = (!form?.values?.instance || !form?.values?.instance[attribute.name]) && form?.errors?.instance && form?.errors?.instance[attribute.name];
-                    }                  
-
-                    let TextMaskCustomItem = TextMaskCustom;
-
-                    if(["STRING", "TEXTAREA", "NUMBER"].includes(attribute.displayType) && attribute.mask) {
-                      TextMaskCustomItem.defaultProps = {mask: attribute.mask};
-                    }
+                    }                                     
 
                     return (
                     <div key={`form-datas-attribute-${index}-${key}`}>
                       <AddDados>                                     
                         {["STRING", "TEXTAREA", "NUMBER"].includes(attribute.displayType) && (
-                        <TextField
-                          className="Add-dados-textField"
-                          form={form}
-                          label={attribute.label}
-                          type={attribute.displayType === "NUMBER" ? "number" : "text"}
-                          name={"instance." + attribute.name}
-                          required={attribute.required}
-                          disabled={!attribute.writable}
-                          value={fieldValue}
-                          key={index}  
-                          multiline={"TEXTAREA" === attribute.displayType} 
-                          rows={"TEXTAREA" === attribute.displayType ? 3 : 0} 
-                          inputComponent={attribute.mask && TextMaskCustomItem as any}  
-                          onBlur={async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-                            handleValidateFormField(attribute, event.target.value, form);                            
-                          }}                                    
-                        />)}
+                        <>
+                          <Help>
+                            <label>{attribute.label}</label>
+                            {attribute.help && <Tooltip title={attribute.help}><InfoIcon width={18} height={18} stroke={2}/></Tooltip>}
+                          </Help>                          
+                          <TextField
+                            className="Add-dados-textField"
+                            form={form}
+                            hideLabel={true}
+                            type={attribute.displayType === "NUMBER" ? "number" : "text"}
+                            name={"instance." + attribute.name}
+                            required={attribute.required}
+                            disabled={!attribute.writable}
+                            value={fieldValue}
+                            key={index}  
+                            multiline={"TEXTAREA" === attribute.displayType} 
+                            rows={"TEXTAREA" === attribute.displayType ? 3 : 0} 
+                            inputComponent={attribute.mask && attribute.mask as any}  
+                            onBlur={async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+                              handleValidateFormField(attribute, event.target.value, form);                            
+                            }}                                    
+                          />
+                        </>  
+                        )}
                         {["LIST"].includes(attribute.displayType) && (
                         <div>
                           <label>{attribute?.label}</label>

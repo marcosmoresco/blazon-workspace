@@ -144,3 +144,9 @@ export const Category = styled.div`
 export const DateType = styled.div`
   width: 300px;
 `;
+
+export const Help = styled.div`
+  display: flex;
+  gap: 5px;
+  align-items: center;
+`;
