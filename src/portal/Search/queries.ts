@@ -1,5 +1,27 @@
 import { gql } from "@apollo/client";
 
+export const SEARCH_ITEMS = gql`
+  query searchItems($q: String, $size: Int, $type: String, $payload: String) {
+    searchItems(q: $q, size: $size, type: $type, payload: $payload) {
+      representation {
+        name
+        description
+        type
+        identifier
+        referenceTo {
+          referenceToIdentifier
+          referenceToName
+          referenceToType
+        }
+        attributes {
+          name
+          value
+        }
+      }      
+    }
+  }
+`;
+
 export const GET_SELF_SERVICE = gql`
   query getSelfService($q: String, $size: Int, $type: String) {
     getSelfService(q: $q, size: $size, type: $type) {

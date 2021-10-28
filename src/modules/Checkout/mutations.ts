@@ -35,3 +35,9 @@ export const UPDATE_SELF_SERVICE_CART_ITEM = gql`
     updateSelfServiceCartItem(identifier: $identifier, assignType: $assignType)
   }
 `;
+
+export const VALIDATE_FORM_FIELD = gql`
+  mutation validateFormField($fieldId: Int, $payload: String) {
+    validateFormField(fieldId: $fieldId, payload: $payload)
+  }
+`;

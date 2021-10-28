@@ -134,5 +134,8 @@
   "answers": "Answers",
   "answer": "Answer",
   "externalReference": "External reference",
-  "accounts": "Accounts"   
+  "accounts": "Accounts",
+  "organization.COST_CENTER": "Cost center",
+  "organization.DEPARTMENT": "Department",
+  "organization.ORGANIZATION": "Organization" 
 }

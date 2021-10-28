@@ -10,6 +10,7 @@ import { NotificationQueries } from "./Notification";
 import { TaskQueries } from "./Tasks";
 import { TaskQueuesQueries } from "./TaskQueues";
 import { FormFieldsQueries } from "./FormFields";
+import { ItemsQueries } from "./Items";
 
 export const Queries = {
   getResume: async (parent: any, args: any, context: any) => {
@@ -22,7 +23,7 @@ export const Queries = {
     } catch (error) {
       throw error;
     }
-  },
+  },  
   ...PasswordVaultQueries,
   ...RequestQueries,
   ...SelfServiceQueries,
@@ -32,5 +33,6 @@ export const Queries = {
   ...NotificationQueries,
   ...TaskQueries,
   ...TaskQueuesQueries,
-  ...FormFieldsQueries
+  ...FormFieldsQueries,
+  ...ItemsQueries,
 };

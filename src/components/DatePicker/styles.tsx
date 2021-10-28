@@ -15,9 +15,7 @@ export const Box = styled.div`
   & label {
     font-size: 14px;
     font-style: normal;
-    font-weight: 600;
-    line-height: 14px;
-    text-transform: uppercase;
+    line-height: 14px;    
   }  
   & .MuiFormHelperText-root {
     text-transform: initial;

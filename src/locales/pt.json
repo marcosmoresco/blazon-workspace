@@ -134,5 +134,8 @@
   "answers": "Respostas",
   "answer": "Resposta",
   "externalReference": "Referência externa",
-  "accounts": "Contas"  
+  "accounts": "Contas",
+  "organization.COST_CENTER": "Centro de custo",
+  "organization.DEPARTMENT": "Departamento",
+  "organization.ORGANIZATION": "Organização"  
 }

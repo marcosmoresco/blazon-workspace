@@ -32,8 +32,12 @@ import {
   Queries as TaskQueueQueries,  
 } from "./TaskQueue";
 import {
-  Queries as FormFieldsQueries
+  Queries as FormFieldsQueries,
+  Mutations as FormFieldsMutations,
 } from "./FormFields";
+import {
+  Queries as ItemsQueries, 
+} from "./Items";
 
 export const typeDefs = gql`
   ${Link}
@@ -61,6 +65,7 @@ export const typeDefs = gql`
     ${TaskQueries}
     ${TaskQueueQueries}
     ${FormFieldsQueries}
+    ${ItemsQueries}
   }
 
   type Mutation {
@@ -68,5 +73,6 @@ export const typeDefs = gql`
     ${UserMutations}
     ${PasswordVaultMutations}
     ${TaskMutations}
+    ${FormFieldsMutations}
   }
 `;

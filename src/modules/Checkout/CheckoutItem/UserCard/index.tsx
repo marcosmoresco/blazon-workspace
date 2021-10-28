@@ -56,12 +56,12 @@ import { SelfService } from "@portal/Search/types";
 import { findItemByCatalogItemId } from "./constants";
 
 //queries
-import { GET_SELF_SERVICE_ITEM } from "@portal/Search/queries";
+import { GET_SELF_SERVICE_ITEM, SEARCH_ITEMS } from "@portal/Search/queries";
 import { GET_SELF_SERVICE_CART } from "@requestCart/queries";
 import { GET_FORM_DATAS, GET_APPLICATION_ACCOUNTS_BY_ENTITLEMENT, FORM_RENDER } from "@modules/Checkout/queries";
 
 //mutations
-import { UPDATE_SELF_SERVICE_CART_ITEM_INSTANCE } from "@modules/Checkout/mutations";
+import { UPDATE_SELF_SERVICE_CART_ITEM_INSTANCE, VALIDATE_FORM_FIELD } from "@modules/Checkout/mutations";
 
 
 interface CustomProps {
@@ -76,10 +76,7 @@ const TextMaskCustom = React.forwardRef<HTMLElement, CustomProps>(
     return (
       <IMaskInput
         {...other}
-        mask={mask}
-        definitions={{
-          '#': /[1-9]/,
-        }}
+        mask={mask}            
         inputRef={ref}
         onAccept={(value: any) => onChange({ target: { name: props.name, value } })}
         overwrite
@@ -106,6 +103,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
   const intl = useIntl(); 
   const { cart } = useCart();
   const [ user ] = useUser();
+
+  const [validateFormField, {}] = useMutation(VALIDATE_FORM_FIELD);
 
   const [updateSelfServiceCartItemInstance, {}] = useMutation(UPDATE_SELF_SERVICE_CART_ITEM_INSTANCE, {   
     refetchQueries: [
@@ -195,7 +194,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                 if(!extraFormDatas[category]) {
                   extraFormDatas[category] = [];
                 }                             
-                if(["STRING", "TEXTAREA", "DATE"].includes(attribute.type)) {
+                if(["STRING", "TEXTAREA", "DATE"].includes(attribute.type)) {                  
                   if(attribute.required) {
                     const yupObject = Yup
                       .string()
@@ -217,6 +216,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     name: attribute.name,
                     label: attribute.label,  
                     writable: !attribute.disabled,
+                    identifier: attribute.identifier,
                     mask: attribute.mask,                  
                     options: attribute.listValues || []
                   });                                                               
@@ -242,14 +242,23 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     displayType: attribute.type,
                     name: attribute.name,
                     label: attribute.label,       
-                    writable: !attribute.disabled,             
+                    writable: !attribute.disabled,    
+                    identifier: attribute.identifier,
+                    mask: attribute.mask,          
                     options: attribute.listValues || []
                   });                
                 } else if (attribute.type === "CHECKBOX") {
                   const yupObject = Yup
                   .bool();                     
                   schema[attribute.name] = yupObject;
-                } else if (attribute.type === "LIST") {
+                  extraFormDatas[category].push({
+                    displayType: attribute.type,
+                    name: attribute.name,
+                    label: attribute.label,       
+                    writable: !attribute.disabled,
+                    identifier: attribute.identifier                                   
+                  }); 
+                } else if (["USER", "ORGANIZATION", "LIST"].includes(attribute.type)) {
                   if(attribute.required) {
                     const yupObject = Yup
                       .object()
@@ -267,12 +276,13 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     schema[attribute.name] = yupObject;
                   }                                                  
                   extraFormDatas[category].push({
-                    displayType: "LIST",
+                    displayType: attribute.type,
                     name: attribute.name,
                     label: attribute.label,                    
-                    options: attribute.listValues || []
+                    options: attribute.listValues || [],
+                    identifier: attribute.identifier                     
                   });
-                }                                
+                }                               
               });
             });                                        
           }
@@ -447,6 +457,76 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
       });
   }
 
+  const handleValidateFormField = async (attribute: any, value: any, form: any) => {
+    if(attribute?.identifier) {
+      const _field: {[key: string]: any} = {};
+      _field[attribute.name] = value;
+      const result: any = await validateFormField({
+        variables: {
+          fieldId: attribute.identifier,
+          payload: JSON.stringify(_field)
+        }                              
+      })
+
+      if(result?.data?.validateFormField) {
+        const resp: any = JSON.parse(result?.data?.validateFormField);
+        if(!resp.result) {
+          const _error: {[key: string]: any} = {
+            instance: {...form.errors.instance}
+          };
+          _error["instance"][attribute.name] = "Invalid field";
+          form.setErrors(_error); 
+        }               
+      }
+    }    
+  }
+
+  const async = (type: string, query: string, callback: any) => {
+    
+    apolloClient
+    .query({
+      query: SEARCH_ITEMS,
+      variables: { 
+        payload: "[]",         
+        q: query || "",
+        size: 10,
+        type      
+      },
+    })
+    .then(async ({ data }) => { 
+      if(type === "USER") {
+        callback(data.searchItems.representation.map((item: SelfService) => ({
+          identifier: item.referenceTo.referenceToIdentifier,
+          displayName: getSelfServiceAttributeValue("displayName", item.attributes),
+          username: getSelfServiceAttributeValue("username", item.attributes),
+          image: `/api/images?url=http://localhost:8087/blazon-workspace-backend/public/workspace/images/${getSelfServiceAttributeValue("thumbImageId", item.attributes)}`        
+        })));
+      } else {
+        callback(data.searchItems.representation.map((item: SelfService) => ({
+          identifier: item.referenceTo.referenceToIdentifier,
+          name: item.name,
+          type: getSelfServiceAttributeValue("organizationType", item.attributes),
+        })));
+      }         
+    });
+
+    /*dispatch(search(query || '', 10, 'USER', 'displayName;email;personalEmail;username'))
+      .then((resp) => {
+        if(resp.error) {
+          dispatch(addMessage((resp.payload.response && resp.payload.response.message) || <FormattedMessage id="app.internal.error"/>, 'error'))
+          return
+        }
+
+        callback(resp.payload.representation.map((u) => ({
+          identifier: u.referenceTo.referenceToIdentifier,
+          displayName: getAttribute(u.attributes, 'displayName'),
+          links: [{
+            href: `/provisionmanager/public/images/${getAttribute(u.attributes, 'thumbImageId')}`
+          }]
+        })))
+      })*/
+  }
+
   return (
     <UserCardStyle>
       <UserCardTitle>
@@ -594,6 +674,12 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                       currentError = (!form?.values?.instance || !form?.values?.instance[attribute.name]) && form?.errors?.instance && form?.errors?.instance[attribute.name];
                     }                  
 
+                    let TextMaskCustomItem = TextMaskCustom;
+
+                    if(["STRING", "TEXTAREA", "NUMBER"].includes(attribute.displayType) && attribute.mask) {
+                      TextMaskCustomItem.defaultProps = {mask: attribute.mask};
+                    }
+
                     return (
                     <div key={`form-datas-attribute-${index}-${key}`}>
                       <AddDados>                                     
@@ -609,7 +695,11 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                           value={fieldValue}
                           key={index}  
                           multiline={"TEXTAREA" === attribute.displayType} 
-                          rows={"TEXTAREA" === attribute.displayType ? 3 : 0}                                          
+                          rows={"TEXTAREA" === attribute.displayType ? 3 : 0} 
+                          inputComponent={attribute.mask && TextMaskCustomItem as any}  
+                          onBlur={async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+                            handleValidateFormField(attribute, event.target.value, form);                            
+                          }}                                    
                         />)}
                         {["LIST"].includes(attribute.displayType) && (
                         <div>
@@ -666,6 +756,59 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                             <FormHelperText error>{currentError}</FormHelperText>                        
                           </RadioGroup>
                         )}
+                        {["ORGANIZATION"].includes(attribute.displayType) && (
+                        <div>
+                          <label>{attribute?.label}</label>
+                          <Autocomplete
+                            async={(query: string, callback: any) => async("ORGANIZATION_UNIT", query, callback)}
+                            filterSelectedOptions                            
+                            label="name"                         
+                            name={"instance." + attribute.name}                         
+                            value={fieldValue}
+                            renderOption={(option: any) => (
+                              <div>
+                                <div><b><FormattedMessage id={`organization.${option.type}`}/></b></div>
+                                <div>{option.name}</div>
+                              </div>
+                            )} 
+                            onChange={(event: any, value: string) => form.setFieldValue("instance." + attribute.name, value, false)}
+                            key={index}                                          
+                          />
+                        </div>)} 
+                        {["USER"].includes(attribute.displayType) && (
+                        <div>
+                          <label>{attribute?.label}</label>
+                          <Autocomplete
+                            async={(query: string, callback: any) => async("USER", query, callback)}
+                            filterSelectedOptions                           
+                            label="displayName"                         
+                            name={"instance." + attribute.name}                         
+                            value={fieldValue}
+                            renderOption={(option: any) => (
+                              <React.Fragment>
+                                <div style={{display: "flex", gap: 10, alignItems: "center"}}>
+                                  <div>
+                                    <UserThumb user={option} image={option.image} />
+                                  </div>
+                                  <div>
+                                    <div><b>{option.username}</b></div>
+                                    <div>{option.displayName}</div>
+                                  </div>                                   
+                                </div>
+                              </React.Fragment>
+                            )}          
+                            inputprops={{
+                              startAdornment: (
+                                fieldValue && 
+                                <div style={{marginRight: 10}}>
+                                  <UserThumb user={fieldValue} image={fieldValue?.image} notShowDisplayName isSmall/>   
+                                </div>                         
+                              )
+                            }}
+                            onChange={(event: any, value: string) => form.setFieldValue("instance." + attribute.name, value, false)}
+                            key={index}                                          
+                          />
+                        </div>)}
                       </AddDados>
                     </div>              
                   )})} 
