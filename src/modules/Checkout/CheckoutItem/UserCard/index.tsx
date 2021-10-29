@@ -269,7 +269,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     identifier: attribute.identifier,
                     help: attribute.help,                                   
                   }); 
-                } else if (["USER", "ORGANIZATION", "LIST"].includes(attribute.type)) {
+                } else if (["USER", "ORGANIZATION", "LIST", "USERNAME"].includes(attribute.type)) {
                   if(attribute.required) {
                     const yupObject = Yup
                       .object()
@@ -494,7 +494,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
     }    
   }
 
-  const async = (type: string, query: string, callback: any, orgType: string) => {
+  const async = (type: string, query: string, callback: any, orgType: string | null) => {
     
     apolloClient
     .query({
@@ -708,7 +708,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                           />
                         </>  
                         )}
-                        {["LIST"].includes(attribute.displayType) && (
+                        {["LIST", "USERNAME"].includes(attribute.displayType) && (
                         <div>
                           <Help>
                             <label>{attribute.label}</label>
@@ -807,7 +807,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                             {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
                           </Help>
                           <Autocomplete
-                            async={(query: string, callback: any) => async("USER", query, callback)}
+                            async={(query: string, callback: any) => async("USER", query, callback, null)}
                             filterSelectedOptions                           
                             label="displayName"                         
                             name={"instance." + attribute.name}                         
