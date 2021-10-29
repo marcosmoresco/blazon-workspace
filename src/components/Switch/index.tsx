@@ -32,8 +32,8 @@ const useStyles = makeStyles((theme) => ({
 const CustomizedSwitch = (props: any) => {
     
     const classes = useStyles()
-    const { label, value, onChange, height, isLoading, intl, ...other } = props   
-    const [ checked, setChecked ] = React.useState(value || false)
+    const { label, value, defaultValue, onChange, height, isLoading, intl, ...other } = props   
+    const [ checked, setChecked ] = React.useState(defaultValue !== null && defaultValue !== undefined && (value === null || value === undefined) ? defaultValue : (value || false))
     
     React.useEffect(() => {  
       setChecked(!!value)       
