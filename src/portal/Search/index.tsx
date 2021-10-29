@@ -26,6 +26,7 @@ import SearchIcon from "@icons/Search";
 import SquaresFourIcon from "@icons/SquaresFour";
 import ListBulletsIcon from "@icons/ListBullets";
 import CheckCircleIcon from "@icons/CheckCircle";
+import UserIcon from "@icons/UserAdd";
 import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
 import Filters from "./components/Filters";
 import { useCart } from "@requestCart/index";
@@ -157,6 +158,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
     ENTITLEMENT: <CheckCircleIcon width={24} height={24} color={currentTheme.palette.primary.main} />,
     ROLE: <PeopleIcon width={24} height={24} color={currentTheme.palette.primary.main} />,
     ADMIN_PASSWORD: <SecurityUserIcon width={24} height={24} color={currentTheme.palette.primary.main} />,
+    USER: <UserIcon width={24} height={24} color={currentTheme.palette.primary.main} />,
   };
 
   const sections = [
@@ -185,6 +187,11 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
       name: "adminAccounts",
       value: "ADMIN_PASSWORD",
     },
+    {
+      icon: <UserIcon />,
+      name: "users",
+      value: "USER",
+    },    
   ];
 
   const handleOrderBy = (orderBy: any) => {

@@ -18,6 +18,7 @@ import CaretRightIcon from "@icons/CaretRight";
 import FilterIcon from "@icons/Filter";
 import XIcon from "@icons/X";
 import SearchIcon from "@icons/Search";
+import UserIcon from "@icons/UserAdd";
 import { isDefined } from '@utils/index';
 import type { FilterProps, FilterType, FilterValueType } from "./types";
 import { deepCopyFunction } from "@utils/index";
@@ -194,6 +195,10 @@ const Filters: FC<FilterProps> = ({ classes, intl, activeType, onSave }) => {
       icon: <SquaresFourIcon width={18} height={18}/>,
       text: <FormattedMessage id="resources" />,
     },
+    USER: {
+      icon: <UserIcon width={18} height={18}/>,
+      text: <FormattedMessage id="users" />,
+    }
   };
 
   return (

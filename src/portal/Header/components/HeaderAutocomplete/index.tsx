@@ -18,6 +18,7 @@ import CheckCircleIcon from "@icons/CheckCircle";
 import SecurityUserIcon from "@icons/SecurityUser";
 import PeopleIcon from "@icons/People";
 import ShoppingCart from "@icons/ShoppingCart";
+import UserIcon from "@icons/UserAdd";
 import Loading from "@components/Loading";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import { useCart } from "@requestCart/index";
@@ -126,7 +127,7 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl, theme 
         options={list}
         loading={loading}
         onChange={(event: any, value: any) => {
-          if(value?.type) {
+          if(value?.type && value?.type !== "USER") {
             setOpen(false);
             router.push(
               `/search/selfService/${value.type
@@ -163,6 +164,9 @@ const HeaderAutocomplete: FC<HeaderAutocompleteProps> = ({ classes, intl, theme 
               )}
               {option?.type === "ADMIN_PASSWORD" && (
                 <SecurityUserIcon width={17} height={17} color="black"/>
+              )}
+              {option?.type === "USER" && (
+                <UserIcon width={17} height={17} color="black"/>
               )}
               <BoxAutocompleteContent>
                 <BoxAutocompleteContentInfo>

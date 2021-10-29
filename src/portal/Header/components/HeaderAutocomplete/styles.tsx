@@ -7,7 +7,7 @@ import SquaresFourIcon from "@icons/SquaresFour";
 import CheckCircleIcon from "@icons/CheckCircle";
 import SecurityUserIcon from "@icons/SecurityUser";
 import PeopleIcon from "@icons/People";
-import UserIcon from "@icons/User";
+import UserIcon from "@icons/UserAdd";
 import CaretRightIcon from "@icons/CaretRight";
 import EmptyState from "@components/EmptyState";
 import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
@@ -279,7 +279,33 @@ export const AutocompletePaper = ({
             color={(active === "ROLES" && "#FFFFFF") || "black"}
           />
           <FormattedMessage id="roles" />
-        </HeaderTag>     
+        </HeaderTag>                    
+        <HeaderTag
+          onClick={() => {
+            const variables = {
+              size: 5,
+              q: filter || "",
+              type: "",
+            };
+            if (active !== "ADMIN_PASSWORD") {
+              setActive("ADMIN_PASSWORD");
+              variables.type = "ADMIN_PASSWORD";
+            } else {
+              setActive("");
+            }
+
+            refetch(variables);
+          }}
+          color={theme.palette.primary.main}
+          className={`${active === "ADMIN_PASSWORD" && "Active"}`}
+        >
+          <SecurityUserIcon
+            width={17}
+            height={17}
+            color={(active === "ADMIN_PASSWORD" && "#FFFFFF") || "black"}
+          />
+          <FormattedMessage id="adminAccounts" />
+        </HeaderTag>   
         <HeaderTag
           onClick={() => {
             const variables = {
@@ -306,33 +332,7 @@ export const AutocompletePaper = ({
             color={(active === "USERS" && "#FFFFFF") || "black"}
           />
           <FormattedMessage id="users" />
-        </HeaderTag>         
-        <HeaderTag
-          onClick={() => {
-            const variables = {
-              size: 5,
-              q: filter || "",
-              type: "",
-            };
-            if (active !== "ADMIN_PASSWORD") {
-              setActive("ADMIN_PASSWORD");
-              variables.type = "ADMIN_PASSWORD";
-            } else {
-              setActive("");
-            }
-
-            refetch(variables);
-          }}
-          color={theme.palette.primary.main}
-          className={`${active === "ADMIN_PASSWORD" && "Active"}`}
-        >
-          <SecurityUserIcon
-            width={17}
-            height={17}
-            color={(active === "ADMIN_PASSWORD" && "#FFFFFF") || "black"}
-          />
-          <FormattedMessage id="adminAccounts" />
-        </HeaderTag>        
+        </HeaderTag>     
       </HeaderTags>
       {!!list.length && (<HeaderResults>
         <FormattedMessage id="results" />

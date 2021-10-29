@@ -22,7 +22,7 @@ import PeopleIcon from "@icons/People";
 import TrashIcon from "@icons/Trash";
 import XIcon from "@icons/X";
 import XCircleIcon from "@icons/XCircle";
-import UserIcon from "@icons/User";
+import UserIcon from "@icons/UserAdd";
 import Empty from "./Empty";
 import { addMessage, addCartItemMessage } from "@actions/index";
 import { GET_OPEN_REQUESTS } from "@modules/Requests/queries";

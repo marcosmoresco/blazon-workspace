@@ -149,4 +149,15 @@ export const Help = styled.div`
   display: flex;
   gap: 5px;
   align-items: center;
+  position: relative;
+  &.Add {
+    height: 12px;
+  }  
+`;
+
+export const CheckboxContent = styled.div`
+  display: flex; 
+  .MuiFormControlLabel-root {
+    margin-right: 0;
+  }
 `;

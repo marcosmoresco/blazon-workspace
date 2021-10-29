@@ -10,7 +10,7 @@ import CheckCircleIcon from "@icons/CheckCircle";
 import SecurityUserIcon from "@icons/SecurityUser";
 import PeopleIcon from "@icons/People";
 import SquaresFourIcon from "@icons/SquaresFour";
-import UserIcon from "@icons/User";
+import UserIcon from "@icons/UserAdd";
 
 export const deepCopyFunction = (inObject: any) => {
   let outObject: any, value, key;

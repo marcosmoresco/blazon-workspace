@@ -48,6 +48,7 @@ import {
   Category,
   DateType,
   Help,
+  CheckboxContent
 } from "./styles";
 
 //types
@@ -252,7 +253,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     label: attribute.label,       
                     writable: !attribute.disabled,    
                     identifier: attribute.identifier,
-                    mask: attribute.mask,          
+                    mask: attribute.mask,    
+                    help: attribute.help,      
                     options: attribute.listValues || []
                   });                
                 } else if (attribute.type === "CHECKBOX") {
@@ -264,7 +266,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     name: attribute.name,
                     label: attribute.label,       
                     writable: !attribute.disabled,
-                    identifier: attribute.identifier                                   
+                    identifier: attribute.identifier,
+                    help: attribute.help,                                   
                   }); 
                 } else if (["USER", "ORGANIZATION", "LIST"].includes(attribute.type)) {
                   if(attribute.required) {
@@ -288,7 +291,9 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     name: attribute.name,
                     label: attribute.label,                    
                     options: attribute.listValues || [],
-                    identifier: attribute.identifier                     
+                    identifier: attribute.identifier,
+                    help: attribute.help,
+                    orgType: attribute.orgType                     
                   });
                 }                               
               });
@@ -489,13 +494,22 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
     }    
   }
 
-  const async = (type: string, query: string, callback: any) => {
+  const async = (type: string, query: string, callback: any, orgType: string) => {
     
     apolloClient
     .query({
       query: SEARCH_ITEMS,
       variables: { 
-        payload: "[]",         
+        payload: orgType && JSON.stringify([
+          {
+            "name": "organizationType",
+            "values": [
+              {
+                "value": orgType
+              }	
+            ]
+          }	
+        ]) || "[]",         
         q: query || "",
         size: 10,
         type      
@@ -673,7 +687,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                         <>
                           <Help>
                             <label>{attribute.label}</label>
-                            {attribute.help && <Tooltip title={attribute.help}><InfoIcon width={18} height={18} stroke={2}/></Tooltip>}
+                            {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
                           </Help>                          
                           <TextField
                             className="Add-dados-textField"
@@ -696,7 +710,10 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                         )}
                         {["LIST"].includes(attribute.displayType) && (
                         <div>
-                          <label>{attribute?.label}</label>
+                          <Help>
+                            <label>{attribute.label}</label>
+                            {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
+                          </Help>                           
                           <Autocomplete
                             filterSelectedOptions
                             options={attribute?.options}
@@ -708,29 +725,41 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                           />
                         </div>)}                        
                         {["DATE", "DATETIME"].includes(attribute.displayType) && (
-                          <DateType>
-                            <DatePicker       
-                              isTime={"DATETIME" === attribute.displayType}                    
-                              label={attribute.label}
-                              key={index}
-                              helperText={currentError}
-                              error={Boolean(currentError) && !Boolean(form?.values?.instance[attribute.name])}
-                              name={"instance." + attribute.name}                            
-                              value={fieldValue}
-                              onChange={(date: string) => form.setFieldValue("instance." + attribute.name, date, false)}
-                            />
-                          </DateType>                        
+                          <>
+                            <Help className={`${attribute.help && "Add"}`}>
+                              <label>{attribute.label}</label>
+                              {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
+                            </Help>
+                            <DateType>                            
+                              <DatePicker       
+                                isTime={"DATETIME" === attribute.displayType}                    
+                                label=""
+                                key={index}
+                                helperText={currentError}
+                                error={Boolean(currentError) && !Boolean(form?.values?.instance[attribute.name])}
+                                name={"instance." + attribute.name}                            
+                                value={fieldValue}
+                                onChange={(date: string) => form.setFieldValue("instance." + attribute.name, date, false)}
+                              />
+                            </DateType>                        
+                          </>
                         )}
                         {["CHECKBOX"].includes(attribute.displayType) && (
-                          <Switch
-                            label={attribute.label}
-                            value={fieldValue}
-                            checked={fieldValue}
-                            onChange={(val: any) => form.setFieldValue("instance." + attribute.name, val, false)}
-                            name={"instance." + attribute.name}
-                            lab
-                            color="primary"
-                          />                                              
+                          <CheckboxContent>                                                       
+                            <Switch                             
+                              label=""
+                              value={fieldValue}
+                              checked={fieldValue}
+                              onChange={(val: any) => form.setFieldValue("instance." + attribute.name, val, false)}
+                              name={"instance." + attribute.name}
+                              lab
+                              color="primary"
+                            />
+                            <Help>
+                              <label>{attribute.label}</label>
+                              {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
+                            </Help> 
+                          </CheckboxContent>                                              
                         )}
                         {["RADIOBUTTON"].includes(attribute.displayType) && (
                           <RadioGroup  
@@ -751,9 +780,12 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                         )}
                         {["ORGANIZATION"].includes(attribute.displayType) && (
                         <div>
-                          <label>{attribute?.label}</label>
+                          <Help>
+                            <label>{attribute.label}</label>
+                            {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
+                          </Help>                          
                           <Autocomplete
-                            async={(query: string, callback: any) => async("ORGANIZATION_UNIT", query, callback)}
+                            async={(query: string, callback: any) => async("ORGANIZATION_UNIT", query, callback, attribute.orgType)}
                             filterSelectedOptions                            
                             label="name"                         
                             name={"instance." + attribute.name}                         
@@ -770,7 +802,10 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                         </div>)} 
                         {["USER"].includes(attribute.displayType) && (
                         <div>
-                          <label>{attribute?.label}</label>
+                          <Help>
+                            <label>{attribute.label}</label>
+                            {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
+                          </Help>
                           <Autocomplete
                             async={(query: string, callback: any) => async("USER", query, callback)}
                             filterSelectedOptions                           
