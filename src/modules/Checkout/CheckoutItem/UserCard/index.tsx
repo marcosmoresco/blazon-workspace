@@ -227,6 +227,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     identifier: attribute.identifier,
                     mask: attribute.mask && TextMaskCustomItem,    
                     help: attribute.help,              
+                    defaultValue: attribute.defaultValue,
                     options: attribute.listValues || []
                   });                                                               
                 } else if (attribute.type === "NUMBER") {                 
@@ -254,7 +255,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     writable: !attribute.disabled,    
                     identifier: attribute.identifier,
                     mask: attribute.mask,    
-                    help: attribute.help,      
+                    help: attribute.help,    
+                    defaultValue: attribute.defaultValue,  
                     options: attribute.listValues || []
                   });                
                 } else if (attribute.type === "CHECKBOX") {
@@ -267,7 +269,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     label: attribute.label,       
                     writable: !attribute.disabled,
                     identifier: attribute.identifier,
-                    help: attribute.help,                                   
+                    help: attribute.help,       
+                    defaultValue: attribute.defaultValue,                            
                   }); 
                 } else if (["USER", "ORGANIZATION", "LIST", "USERNAME"].includes(attribute.type)) {
                   if(attribute.required) {
