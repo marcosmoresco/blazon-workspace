@@ -270,7 +270,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     writable: !attribute.disabled,
                     identifier: attribute.identifier,
                     help: attribute.help,       
-                    defaultValue: attribute.defaultValue,                            
+                    defaultValue: new Boolean(attribute.defaultValue),                            
                   }); 
                 } else if (["USER", "ORGANIZATION", "LIST", "USERNAME"].includes(attribute.type)) {
                   if(attribute.required) {
