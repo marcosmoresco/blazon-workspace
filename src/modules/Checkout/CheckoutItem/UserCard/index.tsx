@@ -754,7 +754,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                               label=""
                               defaultValue={!fieldValue && attribute.defaultValue ? attribute.defaultValue : fieldValue}
                               value={fieldValue}
-                              checked={fieldValue}
+                              checked={!fieldValue && attribute.defaultValue ? attribute.defaultValue : fieldValue}
                               onChange={(val: any) => form.setFieldValue("instance." + attribute.name, val, false)}
                               name={"instance." + attribute.name}
                               lab
