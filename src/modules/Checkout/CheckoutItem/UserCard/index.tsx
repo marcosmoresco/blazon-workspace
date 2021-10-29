@@ -697,6 +697,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                             name={"instance." + attribute.name}
                             required={attribute.required}
                             disabled={!attribute.writable}
+                            defaultValue={!fieldValue && attribute.defaultValue ? attribute.defaultValue : fieldValue}
                             value={fieldValue}
                             key={index}  
                             multiline={"TEXTAREA" === attribute.displayType} 
