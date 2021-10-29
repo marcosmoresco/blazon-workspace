@@ -752,6 +752,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                           <CheckboxContent>                                                       
                             <Switch                             
                               label=""
+                              defaultValue={!fieldValue && attribute.defaultValue ? attribute.defaultValue : fieldValue}
                               value={fieldValue}
                               checked={fieldValue}
                               onChange={(val: any) => form.setFieldValue("instance." + attribute.name, val, false)}
