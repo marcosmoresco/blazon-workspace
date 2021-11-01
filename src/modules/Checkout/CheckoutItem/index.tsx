@@ -43,6 +43,7 @@ import {
   AutocompleteUsers,
   AutocompletePaper,
   BoxAutocompleteOption,
+  Space
 } from "./styles";
 
 //types
@@ -78,11 +79,12 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({
   const dispatch = useDispatch();
   const intl = useIntl();
   const { theme } = useTheme();
-  const currentTheme = { ...themes[theme] };
+  const currentTheme = { ...themes[theme] }; 
+  
   const typeMap: { [key: string]: any } = {
-    TO_ME: "Only me",
-    TO_ME_AND_TO: "Me and someone else",
-    TO: "Another person",
+    TO_ME: intl.formatMessage({id: "checkout.OnlyMe"}),
+    TO_ME_AND_TO: intl.formatMessage({id: "checkout.MeAndSomeoneElse"}),
+    TO: intl.formatMessage({id: "checkout.AnotherPerson"}),
   };
   const types = allowedAssignTypes.map((a) => ({ name: typeMap[a], value: a }));
 
@@ -240,11 +242,11 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({
 
         <Line />
 
+        {item?.catalogItemType !== "USER" && (    
         <AcessRequest>
           <span>
             <FormattedMessage id="checkout.AccessRequest" />
-          </span>
-          {item?.catalogItemType !== "USER" && (
+          </span>         
             <>
               <Select
                 onChange={(e: any) => {
@@ -368,9 +370,9 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({
                   </AddAUser>
                 </>
               )}
-            </>
-          )}
+            </>          
         </AcessRequest>
+        ) || <Space />}
 
         {item?.instances.map(
           (instance: SelfServiceCartItemInstance, index: number) => (

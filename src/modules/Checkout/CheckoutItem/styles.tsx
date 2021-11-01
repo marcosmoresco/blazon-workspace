@@ -122,6 +122,10 @@ export const BoxUserThumb = styled.div`
   gap: 10px; 
 `;
 
+export const Space = styled.div`
+  padding: 0px 24px 25px; 
+`;
+
 export const AutocompleteUsers = styledMui(Autocomplete)({ 
   borderRadius: 8,
   background: "#FFFFFF",

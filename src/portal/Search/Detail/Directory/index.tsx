@@ -1,4 +1,5 @@
 import { useRouter } from "next/router";
+import { useIntl } from "react-intl";
 import Card from "@components/Card";
 import TitlePage from "@components/TitlePage";
 import Tabs from "@components/Tabs";
@@ -13,6 +14,7 @@ import type { SearchDetailProps } from "./types";
 export default function PageSearchDetail() {
 
   const router = useRouter();
+  const int = useIntl();
 
   let tabs: SearchDetailProps[] = [];
 
@@ -20,12 +22,12 @@ export default function PageSearchDetail() {
     tabs = [
       {
         id: 1,
-        name: "Details",
+        name: int.formatMessage({id: "details"}),
         content: <ResourceDetails />,
       },
       {
         id: 2,
-        name: "Entitlements",
+        name: int.formatMessage({id: "entitlements"}),
         content: <ResourceEntitlements />,
       },
     ];
@@ -33,7 +35,7 @@ export default function PageSearchDetail() {
     tabs = [
       {
         id: 1,
-        name: "Details",
+        name: int.formatMessage({id: "details"}),
         content: <EntitlementDetails />,
       },
     ]
@@ -41,12 +43,12 @@ export default function PageSearchDetail() {
     tabs = [
       {
         id: 1,
-        name: "Attributes",
+        name: int.formatMessage({id: "attributes"}),
         content: <RoleAttributes />,
       },
       {
         id: 2,
-        name: "Access",
+        name: int.formatMessage({id: "access"}),
         content: <RoleAccess />,
       },
     ]

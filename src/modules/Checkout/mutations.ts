@@ -41,3 +41,9 @@ export const VALIDATE_FORM_FIELD = gql`
     validateFormField(fieldId: $fieldId, payload: $payload)
   }
 `;
+
+export const VALIDATE_FORM = gql`
+  mutation validateForm($formId: Int, $payload: String) {
+    validateForm(formId: $formId, payload: $payload)
+  }
+`;

@@ -137,5 +137,7 @@
   "accounts": "Contas",
   "organization.COST_CENTER": "Centro de custo",
   "organization.DEPARTMENT": "Departamento",
-  "organization.ORGANIZATION": "Organização"  
+  "organization.ORGANIZATION": "Organização",
+  "attributes": "Atributos",
+  "access": "Acessos" 
 }

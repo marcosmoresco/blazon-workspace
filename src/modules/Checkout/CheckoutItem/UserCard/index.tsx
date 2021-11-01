@@ -64,7 +64,11 @@ import { GET_SELF_SERVICE_CART } from "@requestCart/queries";
 import { GET_FORM_DATAS, GET_APPLICATION_ACCOUNTS_BY_ENTITLEMENT, FORM_RENDER } from "@modules/Checkout/queries";
 
 //mutations
-import { UPDATE_SELF_SERVICE_CART_ITEM_INSTANCE, VALIDATE_FORM_FIELD } from "@modules/Checkout/mutations";
+import { 
+  UPDATE_SELF_SERVICE_CART_ITEM_INSTANCE, 
+  VALIDATE_FORM_FIELD,
+  VALIDATE_FORM 
+} from "@modules/Checkout/mutations";
 
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
@@ -106,7 +110,11 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
   const { cart } = useCart();
   const [ user ] = useUser();
 
+  const [ messages, setMessages ] = useState<string[]>();
+
   const [validateFormField, {}] = useMutation(VALIDATE_FORM_FIELD);
+
+  const [validateForm, {}] = useMutation(VALIDATE_FORM);
 
   const [updateSelfServiceCartItemInstance, {}] = useMutation(UPDATE_SELF_SERVICE_CART_ITEM_INSTANCE, {   
     refetchQueries: [
@@ -150,25 +158,35 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
     initialValues,
     enableReinitialize: true,
     isInitialValid: false,
-    onSubmit: (values: any) => {    
-      
-      let expireAt = values?.instance?.expireAt;
-      let accountId = values?.instance?.accountId && Number(values?.instance?.accountId) || null;
-      const payload = {...values?.instance};
-      delete payload.expireAt;
-      delete payload.accountId;
+    onSubmit: (values: any) => {   
 
-      const variables = {
-        itemId: item.identifier,
-        identifier: instance.identifier,
-        payload: JSON.stringify(payload),
-        expireAt,
-        accountId
-      }
+      const submit = () => {
+        let expireAt = values?.instance?.expireAt;
+        let accountId = values?.instance?.accountId && Number(values?.instance?.accountId) || null;
+        const payload = {...values?.instance};
+        delete payload.expireAt;
+        delete payload.accountId;
 
-      updateSelfServiceCartItemInstance({
-        variables
-      });
+        const variables = {
+          itemId: item.identifier,
+          identifier: instance.identifier,
+          payload: JSON.stringify(payload),
+          expireAt,
+          accountId
+        }
+
+        updateSelfServiceCartItemInstance({
+          variables
+        });
+      };
+
+      if(values.formId) {
+        handleValidateForm(values, () => {
+          submit();
+        }); 
+      } else {
+        submit();
+      }                      
     },
   });
   
@@ -177,7 +195,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
   if(["USER", "RESOURCE"].includes(item?.catalogItemType) && !formDatas) {
     const formId = getSelfServiceAttributeValue("formId", data?.getSelfServiceItem?.attributes || []);
         
-    if(formId) {
+    if(formId) {         
       apolloClient
         .query({
           query: FORM_RENDER,
@@ -188,7 +206,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
         .then(async ({ data }) => {
           const formFields = JSON.parse(data?.formFieldRender);              
           const schema: {[key: string]: any} = {}; 
-          const extraFormDatas: {[key: string]: any} = {};
+          const extraFormDatas: {[key: string]: any} = {formId};
 
           if(formFields) {                       
             Object.keys(formFields?.attributes).map(async (category: any, index: number) => {
@@ -210,7 +228,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     schema[attribute.name] = yupObject;                       
                   } else {
                     const yupObject = Yup
-                      .string();                     
+                      .string()
+                      .nullable();                     
                     schema[attribute.name] = yupObject;
                   }
                   
@@ -224,6 +243,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     name: attribute.name,
                     label: attribute.label,  
                     writable: !attribute.disabled,
+                    required: attribute.required,
                     identifier: attribute.identifier,
                     mask: attribute.mask && TextMaskCustomItem,    
                     help: attribute.help,              
@@ -245,14 +265,16 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     schema[attribute.name] = yupObject;
                   } else {
                     const yupObject = Yup
-                      .number();                     
+                      .number()
+                      .nullable();                     
                     schema[attribute.name] = yupObject;
                   }  
                   extraFormDatas[category].push({
                     displayType: attribute.type,
                     name: attribute.name,
                     label: attribute.label,       
-                    writable: !attribute.disabled,    
+                    writable: !attribute.disabled,  
+                    required: attribute.required,  
                     identifier: attribute.identifier,
                     mask: attribute.mask,    
                     help: attribute.help,    
@@ -268,6 +290,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     name: attribute.name,
                     label: attribute.label,       
                     writable: !attribute.disabled,
+                    required: attribute.required,
                     identifier: attribute.identifier,
                     help: attribute.help,       
                     defaultValue: new Boolean(attribute.defaultValue),                            
@@ -276,6 +299,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                   if(attribute.required) {
                     const yupObject = Yup
                       .object()
+                      .nullable()
                       .required(
                         intl.formatMessage({
                           id: "isRequired"                      
@@ -286,7 +310,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     schema[attribute.name] = yupObject;
                   } else {
                     const yupObject = Yup
-                    .object();                    
+                    .object()
+                    .nullable();                    
                     schema[attribute.name] = yupObject;
                   }                                                  
                   extraFormDatas[category].push({
@@ -296,7 +321,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     options: attribute.listValues || [],
                     identifier: attribute.identifier,
                     help: attribute.help,
-                    orgType: attribute.orgType                     
+                    orgType: attribute.orgType,
+                    required: attribute.required                   
                   });
                 }                               
               });
@@ -475,8 +501,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
 
   const handleValidateFormField = async (attribute: any, value: any, form: any) => {
     if(attribute?.identifier) {
-      const _field: {[key: string]: any} = {};
-      _field[attribute.name] = value;
+      const _field: {[key: string]: any} = {value};      
       const result: any = await validateFormField({
         variables: {
           fieldId: attribute.identifier,
@@ -490,10 +515,32 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
           const _error: {[key: string]: any} = {
             instance: {...form.errors.instance}
           };
-          _error["instance"][attribute.name] = "Invalid field";
-          form.setErrors(_error); 
+          _error["instance"][attribute.name] = resp.errorMessage || "Invalid field";
+          form.setErrors(_error);
         }               
       }
+    }    
+  }
+
+  const handleValidateForm = async (values: any, callback: any) => {    
+    if(values && values.formId) {   
+      let errorMessages: string[] = [];         
+      const result: any = await validateForm({
+        variables: {
+          formId: Number(values.formId),
+          payload: JSON.stringify(values?.instance)
+        }                           
+      })
+
+      if(result?.data?.validateForm) {
+        const resp = JSON.parse(result?.data?.validateForm);
+        if(!resp?.result) {
+          errorMessages = resp?.errorMessages;
+        } else {
+          callback();
+        }            
+      }
+      setMessages(errorMessages);
     }    
   }
 
@@ -524,7 +571,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
           identifier: item.referenceTo.referenceToIdentifier,
           displayName: getSelfServiceAttributeValue("displayName", item.attributes),
           username: getSelfServiceAttributeValue("username", item.attributes),
-          image: `/api/images?url=http://localhost:8087/blazon-workspace-backend/public/workspace/images/${getSelfServiceAttributeValue("thumbImageId", item.attributes)}`        
+          image: `/api/images?url=${getSelfServiceAttributeValue("thumbImageLink", item.attributes)}`        
         })));
       } else {
         callback(data.searchItems.representation.map((item: SelfService) => ({
@@ -563,13 +610,13 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
         )}
       </UserCardTitle>
       {formDatas && !!Object.keys(formDatas).length && <Line />}
-      {(instance.schemaValidatedError.status ||
+      {((instance.schemaValidatedError.status ||
        instance.alreadyRequestInProgressError.status || 
        instance.accessAlreadyExistError.status || 
        instance.adminAccountLockedError.status || 
        instance.needExpirationDateError.status || 
        instance.needSelectAccountError.status || 
-       instance.relatedAccountNotFoundError.status ) && (
+       instance.relatedAccountNotFoundError.status ) || messages?.length) && (
       <ObservationArea>
         <Observation>
           <TextArea>
@@ -659,6 +706,12 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                 />              
               </div>
             )}
+            {messages?.map((message: string, index: number) => (
+              <div key={`${instance?.identifier}-message-${index}`}>
+                -{" "}
+                {message}
+              </div>
+            ))}
           </TextArea>
           <Status
             notification={<FormattedMessage id="checkout.item.invalid.title" />}
@@ -672,7 +725,17 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
           render={(form) => {
           return (
             <Form>
-              {Object.keys(formDatas).map((category: any, index: number) => (
+              {Object.keys(formDatas)
+              .filter((category: any) => {               
+                if(category === "formId") {
+                  const fieldValue = get(form.values, "formId"); 
+                  if(!fieldValue) {
+                    form.setFieldValue("formId", formDatas[category]);
+                  }                  
+                }
+                return "formId" !== category;
+              }) 
+              .map((category: any, index: number) => (
                 <>
                   <Category>{category}</Category>
                   {formDatas[category].map((attribute: any, key: number) => {                 
@@ -697,7 +760,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                             name={"instance." + attribute.name}
                             required={attribute.required}
                             disabled={!attribute.writable}
-                            error={Boolean(currentError) && !Boolean(form?.values?.instance[attribute.name])} 
+                            error={Boolean(currentError)} 
+                            helperText={currentError}
                             defaultValue={!fieldValue && attribute.defaultValue ? attribute.defaultValue : fieldValue}
                             value={fieldValue}
                             key={index}  
@@ -724,7 +788,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                             value={fieldValue}
                             required={attribute.required}                           
                             helperText={currentError}
-                            error={Boolean(currentError) && !Boolean(form?.values?.instance[attribute.name])}                                                       
+                            error={Boolean(currentError)}                                                       
                             onChange={(event: any, value: string) => form.setFieldValue("instance." + attribute.name, value, false)}
                             key={index}                                          
                           />
@@ -741,7 +805,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                                 label=""
                                 key={index}
                                 helperText={currentError}
-                                error={Boolean(currentError) && !Boolean(form?.values?.instance[attribute.name])}
+                                error={Boolean(currentError)}
                                 name={"instance." + attribute.name}                            
                                 value={fieldValue}
                                 onChange={(date: string) => form.setFieldValue("instance." + attribute.name, date, false)}
@@ -796,7 +860,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                             name={"instance." + attribute.name}                         
                             value={fieldValue}
                             helperText={currentError}
-                            error={Boolean(currentError) && !Boolean(form?.values?.instance[attribute.name])} 
+                            error={Boolean(currentError)} 
                             renderOption={(option: any) => (
                               <div>
                                 <div><b><FormattedMessage id={`organization.${option.type}`}/></b></div>
@@ -820,7 +884,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                             name={"instance." + attribute.name}                         
                             value={fieldValue}
                             helperText={currentError}
-                            error={Boolean(currentError) && !Boolean(form?.values?.instance[attribute.name])} 
+                            error={Boolean(currentError)} 
                             renderOption={(option: any) => (
                               <React.Fragment>
                                 <div style={{display: "flex", gap: 10, alignItems: "center"}}>
@@ -856,9 +920,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                 <Button                    
                   variant="contained"
                   color="primary"
-                  onClick={() => {
-                    console.log(form)
-                    form.submitForm()
+                  onClick={async () => {                                      
+                    form.submitForm();                                   
                   }}
                 >
                   <FormattedMessage id="checkout.save" />

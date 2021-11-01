@@ -137,5 +137,7 @@
   "accounts": "Accounts",
   "organization.COST_CENTER": "Cost center",
   "organization.DEPARTMENT": "Department",
-  "organization.ORGANIZATION": "Organization" 
+  "organization.ORGANIZATION": "Organization",
+  "attributes": "Attributes",
+  "access": "Access" 
 }
