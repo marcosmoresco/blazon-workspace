@@ -32,12 +32,12 @@ const useStyles = makeStyles((theme) => ({
 const CustomizedSwitch = (props: any) => {
     
     const classes = useStyles()
-    const { label, value, defaultValue, onChange, height, isLoading, intl, ...other } = props   
-    const [ checked, setChecked ] = React.useState(defaultValue !== null && defaultValue !== undefined && (value === null || value === undefined) ? defaultValue : (value || false))
+    const { label, value, defaultValue, onChange, height, isLoading, intl, ...other } = props     
+    const [ checked, setChecked ] = React.useState((defaultValue !== null && defaultValue !== undefined && (value === null || value === undefined)) ? defaultValue : (value || false))
     
-    React.useEffect(() => {  
-      setChecked(!!value)       
-    }, [value])
+    React.useEffect(() => {       
+      setChecked((defaultValue !== null && defaultValue !== undefined && (value === null || value === undefined)) ? defaultValue : !!value)       
+    }, [value, defaultValue])
 
     const handleChange = (event) => {
       setChecked(event.target.checked)

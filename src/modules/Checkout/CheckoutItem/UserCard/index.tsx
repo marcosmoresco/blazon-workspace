@@ -678,11 +678,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                   {formDatas[category].map((attribute: any, key: number) => {                 
                 
                     const fieldValue = get(form.values.instance, attribute.name);                                                      
-                    let currentError = null;
-                    if(["DATE", "DATETIME", "RADIOBUTTON"].includes(attribute.displayType)) {                    
-                      currentError = (!form?.values?.instance || !form?.values?.instance[attribute.name]) && form?.errors?.instance && form?.errors?.instance[attribute.name];
-                    }                                     
-
+                    let currentError: any = (!form?.values?.instance || !form?.values?.instance[attribute.name]) && form?.errors?.instance && form?.errors?.instance[attribute.name];
+                                            
                     return (
                     <div key={`form-datas-attribute-${index}-${key}`}>
                       <AddDados>                                     
@@ -700,6 +697,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                             name={"instance." + attribute.name}
                             required={attribute.required}
                             disabled={!attribute.writable}
+                            error={Boolean(currentError) && !Boolean(form?.values?.instance[attribute.name])} 
                             defaultValue={!fieldValue && attribute.defaultValue ? attribute.defaultValue : fieldValue}
                             value={fieldValue}
                             key={index}  
@@ -724,6 +722,9 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                             label="label"                         
                             name={"instance." + attribute.name}                         
                             value={fieldValue}
+                            required={attribute.required}                           
+                            helperText={currentError}
+                            error={Boolean(currentError) && !Boolean(form?.values?.instance[attribute.name])}                                                       
                             onChange={(event: any, value: string) => form.setFieldValue("instance." + attribute.name, value, false)}
                             key={index}                                          
                           />
@@ -751,13 +752,12 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                         {["CHECKBOX"].includes(attribute.displayType) && (
                           <CheckboxContent>                                                       
                             <Switch                             
-                              label=""
-                              defaultValue={!fieldValue && attribute.defaultValue ? attribute.defaultValue : fieldValue}
-                              value={fieldValue}
-                              checked={!fieldValue && attribute.defaultValue ? attribute.defaultValue : fieldValue}
+                              label=""    
+                              defaultValue={!fieldValue && attribute.defaultValue ? attribute.defaultValue : fieldValue}                         
+                              value={fieldValue}                              
                               onChange={(val: any) => form.setFieldValue("instance." + attribute.name, val, false)}
                               name={"instance." + attribute.name}
-                              lab
+                              lab="true"
                               color="primary"
                             />
                             <Help>
@@ -795,6 +795,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                             label="name"                         
                             name={"instance." + attribute.name}                         
                             value={fieldValue}
+                            helperText={currentError}
+                            error={Boolean(currentError) && !Boolean(form?.values?.instance[attribute.name])} 
                             renderOption={(option: any) => (
                               <div>
                                 <div><b><FormattedMessage id={`organization.${option.type}`}/></b></div>
@@ -817,6 +819,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                             label="displayName"                         
                             name={"instance." + attribute.name}                         
                             value={fieldValue}
+                            helperText={currentError}
+                            error={Boolean(currentError) && !Boolean(form?.values?.instance[attribute.name])} 
                             renderOption={(option: any) => (
                               <React.Fragment>
                                 <div style={{display: "flex", gap: 10, alignItems: "center"}}>

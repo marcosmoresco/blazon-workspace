@@ -21,6 +21,9 @@ const useStyles = makeStyles(() => ({
         bottom: 4
       }
     },
+    "& .Mui-error": {
+      marginLeft: 0
+    }
   },
   inputFilter: {
     padding: "0 !important",
@@ -35,7 +38,7 @@ type Ref = {
 
 export default function CustomizedAutocomplete(props: any) {
   const classes = useStyles();
-  const { label, async, getOptionLabel, ...other } = props;
+  const { label, async, getOptionLabel, helperText, error, ...other } = props;
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState(props.options || []);
   const [query, setQuery] = React.useState(null);
@@ -119,9 +122,11 @@ export default function CustomizedAutocomplete(props: any) {
         <div ref={params.InputProps.ref}>
           <TextField
             {...params}
+            helperText={helperText}
+            error={Boolean(error)} 
             InputProps={{
               ...params.InputProps,
-              ...props.inputprops,
+              ...props.inputprops,              
               classes: { input: classes.inputFilter },
               onChange: handleChange,
               endAdornment: (
