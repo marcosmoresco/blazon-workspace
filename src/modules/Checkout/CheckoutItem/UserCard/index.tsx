@@ -597,7 +597,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
             </div>
           </div>
         </UserId>
-        {["TO_ME_AND_TO", "TO"].includes(item?.assignType) && Number(instance.userId) !== user?.identifier && (
+        {((["TO_ME_AND_TO", "TO"].includes(item?.assignType) && Number(instance.userId) !== user?.identifier) || 
+        item?.catalogItemType === "USER" && index > 1) && (
         <>
           {loadingDeleteItemInstance && (
             <Loading type="blue"/>
@@ -616,7 +617,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
        instance.adminAccountLockedError.status || 
        instance.needExpirationDateError.status || 
        instance.needSelectAccountError.status || 
-       instance.relatedAccountNotFoundError.status ) || messages?.length) && (
+       instance.relatedAccountNotFoundError.status ) || (messages || []).length > 0) && (
       <ObservationArea>
         <Observation>
           <TextArea>

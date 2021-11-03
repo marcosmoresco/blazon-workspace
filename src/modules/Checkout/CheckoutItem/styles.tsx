@@ -126,6 +126,10 @@ export const Space = styled.div`
   padding: 0px 24px 25px; 
 `;
 
+export const ButtonNew = styled.div`
+  margin: 20px 24px 20px;  
+`;
+
 export const AutocompleteUsers = styledMui(Autocomplete)({ 
   borderRadius: 8,
   background: "#FFFFFF",

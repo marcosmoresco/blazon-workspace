@@ -53,5 +53,6 @@
   "checkout.SearchItem": "Buscar item",
   "checkout.select.expiredAt": "Até quando você precisa deste acesso?",
   "checkout.select.account": "Choose which account you want to claim this right for",
-  "checkout.submit": "Submeter"
+  "checkout.submit": "Submeter",
+  "checkout.addNewUser": "Adicionar novo usuário"
 }

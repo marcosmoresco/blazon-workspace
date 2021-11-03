@@ -15,6 +15,7 @@ import UserThumb from "@components/UserThumb";
 import UserCard from "./UserCard";
 import MagnifyingGlassIcon from "@icons/MagnifyingGlass";
 import XCircleIcon from "@icons/XCircle";
+import PlusIcon from "@icons/PlusSimple";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import CircularProgress from "@material-ui/core/CircularProgress";
@@ -25,6 +26,7 @@ import {
   getSelfServiceAttributeValue,
 } from "@utils/index";
 import { useTheme, themes } from "@theme/index";
+import { useUser } from "@hooks"
 
 // styles
 import {
@@ -43,7 +45,8 @@ import {
   AutocompleteUsers,
   AutocompletePaper,
   BoxAutocompleteOption,
-  Space
+  Space,
+  ButtonNew
 } from "./styles";
 
 //types
@@ -70,6 +73,7 @@ import {
   ADD_SELF_SERVICE_CART_ITEM,
   DELETE_SELF_SERVICE_CART_ITEM,
 } from "@requestCart/mutations";
+import XIcon from "@icons/X";
 
 const CheckoutItem: React.FC<CheckouitemProps> = ({
   item,
@@ -80,6 +84,7 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({
   const intl = useIntl();
   const { theme } = useTheme();
   const currentTheme = { ...themes[theme] }; 
+  const [user] = useUser();
   
   const typeMap: { [key: string]: any } = {
     TO_ME: intl.formatMessage({id: "checkout.OnlyMe"}),
@@ -241,7 +246,7 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({
         </Item>
 
         <Line />
-
+          
         {item?.catalogItemType !== "USER" && (    
         <AcessRequest>
           <span>
@@ -372,7 +377,22 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({
               )}
             </>          
         </AcessRequest>
-        ) || <Space />}
+        ) || 
+        <ButtonNew>
+          <Button 
+            variant="contained"                            
+            color="default-primary"
+            startIcon={<PlusIcon color={currentTheme?.palette?.primary?.main} stroke={2} width={23} height={23}/>}
+            onClick={() => {
+              addSelfServiceCartItemInstance({
+                variables: {
+                  itemId: item.identifier,
+                  userId: Number(user?.identifier),
+                },
+              });
+            }}
+          ><FormattedMessage id="checkout.addNewUser"/></Button>
+        </ButtonNew>}
 
         {item?.instances.map(
           (instance: SelfServiceCartItemInstance, index: number) => (
