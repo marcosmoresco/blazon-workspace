@@ -22,7 +22,7 @@
   "checkout.item.invalid.schemaValidatedError": "Existem atributos preenchidos de forma inválida.",
   "checkout.item.invalid.alreadyRequestInProgressError": "Já existe uma requisição em aberto para este mesmo acesso.",
   "checkout.item.invalid.accessAlreadyExistError": "Este usuário já possui este acesso.",
-  "checkout.item.invalid.relatedAccountNotFoundError": "Este direito precisa de uma conta no recurso '{resourceName}', clique {link} para adicioná-lo.",   
+  "checkout.item.invalid.relatedAccountNotFoundError": "Este direito precisa de uma conta no recurso {resourceName}, clique {link} para adicioná-lo.",   
   "checkout.item.invalid.relatedAccountNotFoundError.here": "aqui",
   "checkout.item.invalid.relatedResourceNotExist": "Este direito requer uma conta no recurso, mas este recurso não está disponível neste momento no self-service.",
   "checkout.item.invalid.adminAccountLockedError": "Está conta já está bloqueada.",
