@@ -112,6 +112,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
 
   const [ messages, setMessages ] = useState<string[]>();
 
+  const [ formCategoryHelp, setFormCategoryHelp ] = useState<{[key: string]: any}>({});
+
   const [validateFormField, {}] = useMutation(VALIDATE_FORM_FIELD);
 
   const [validateForm, {}] = useMutation(VALIDATE_FORM);
@@ -207,10 +209,12 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
           const formFields = JSON.parse(data?.formFieldRender);              
           const schema: {[key: string]: any} = {}; 
           const extraFormDatas: {[key: string]: any} = {formId};
+          const _formCategoryHelp: {[key: string]: any} = {};
 
           if(formFields) {                       
             Object.keys(formFields?.attributes).map(async (category: any, index: number) => {
-              formFields?.attributes[category].forEach(async (attribute: any) => {  
+              _formCategoryHelp[category] = formFields?.attributes[category].help;
+              formFields?.attributes[category].fields.forEach(async (attribute: any) => {  
                 if(!extraFormDatas[category]) {
                   extraFormDatas[category] = [];
                 }                             
@@ -245,7 +249,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     writable: !attribute.disabled,
                     required: attribute.required,
                     identifier: attribute.identifier,
-                    mask: attribute.mask && TextMaskCustomItem,    
+                    mask: (attribute.mask && TextMaskCustomItem) || null,    
                     help: attribute.help,              
                     defaultValue: attribute.defaultValue,
                     options: attribute.listValues || []
@@ -340,6 +344,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                
           setFormik(formik);
           setFormDatas({...extraFormDatas});
+          setFormCategoryHelp(_formCategoryHelp);
         });
     }    
   } else if(item?.catalogItemType === "ENTITLEMENT" && item?.resourceType === "APPLICATION" && !formDatas) {
@@ -738,7 +743,11 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
               }) 
               .map((category: any, index: number) => (
                 <>
-                  <Category>{category}</Category>
+                  <Help className="Help-category">
+                    <Category>{category}</Category>
+                    {formCategoryHelp[category] && <Tooltip title={formCategoryHelp[category]} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
+                  </Help>
+
                   {formDatas[category].map((attribute: any, key: number) => {                 
                 
                     const fieldValue = get(form.values.instance, attribute.name);                                                      
@@ -768,7 +777,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                             key={index}  
                             multiline={"TEXTAREA" === attribute.displayType} 
                             rows={"TEXTAREA" === attribute.displayType ? 3 : 0} 
-                            inputComponent={attribute.mask && attribute.mask as any}  
+                            inputComponent={attribute.mask && attribute.mask as any || undefined}  
                             onBlur={async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
                               handleValidateFormField(attribute, event.target.value, form);                            
                             }}                                    

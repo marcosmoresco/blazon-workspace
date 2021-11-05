@@ -12,17 +12,20 @@ export const FormFieldsQueries = {
         attributes: {}
       };
       for( const category of Object.keys(formFields.data?.attributes) ) {     
-        result["attributes"][category] = [];
-        for( const attribute of formFields.data?.attributes[category] ) {        
+        result["attributes"][category] = {
+          fields: [],
+          help: formFields.data?.attributes[category].help
+        };
+        for( const attribute of formFields.data?.attributes[category]?.fields ) {        
           let _att = {...attribute};
-          if (attribute.type === "LIST") {            
+          if (attribute.type === "LIST") {          
             const listValues = await axios.get(
               attribute?.listValues,
               { ...config(context) }
             );
             _att.listValues = listValues.data || [];
           }
-          result["attributes"][category].push(_att);      
+          result["attributes"][category].fields.push(_att);      
         }
       }
       return JSON.stringify(result);

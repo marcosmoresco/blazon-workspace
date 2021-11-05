@@ -137,8 +137,7 @@ export const Category = styled.div`
   font-size: 18px;
   line-height: 100%;
   color: #1B202A;
-  margin-left: 24px;
-  margin-top: 24px;
+  margin-left: 24px;   
 `;
 
 export const DateType = styled.div`
@@ -153,6 +152,9 @@ export const Help = styled.div`
   &.Add {
     height: 12px;
   }  
+  &.Help-category {
+    margin-top: 24px;
+  }
 `;
 
 export const CheckboxContent = styled.div`
