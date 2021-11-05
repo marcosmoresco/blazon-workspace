@@ -37,7 +37,7 @@ const TextField: FC<TextFieldProps> = ({
   const intl = useIntl()
   const formHook = useFormikContext()
   const finalForm = form || formHook
-  const { setFieldValue, values, errors, touched } = finalForm
+  const { setFieldValue, values, errors, touched, submitCount } = finalForm
   const { name, fullWidth } = inputProps
 
   const labelText = hideLabel
@@ -70,7 +70,7 @@ const TextField: FC<TextFieldProps> = ({
         InputProps={inputProps}
         variant='outlined'
       />
-      <FormHelperText error={true}>{get(errors, name)}</FormHelperText>
+      <FormHelperText error={true}>{submitCount > 0 && get(errors, name)}</FormHelperText>
     </FormControl>
   )
 }

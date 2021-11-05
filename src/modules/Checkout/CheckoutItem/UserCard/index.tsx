@@ -159,7 +159,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
     validationSchema: {},
     initialValues,
     enableReinitialize: true,
-    isInitialValid: false,
+    isInitialValid: true,
     onSubmit: (values: any) => {   
 
       const submit = () => {
@@ -749,9 +749,9 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                   </Help>
 
                   {formDatas[category].map((attribute: any, key: number) => {                 
-                
+                    
                     const fieldValue = get(form.values.instance, attribute.name);                                                      
-                    let currentError: any = (!form?.values?.instance || !form?.values?.instance[attribute.name]) && form?.errors?.instance && form?.errors?.instance[attribute.name];
+                    let currentError: any = form.submitCount > 0 && (!form?.values?.instance || !form?.values?.instance[attribute.name]) && form?.errors?.instance && form?.errors?.instance[attribute.name];
                                             
                     return (
                     <div key={`form-datas-attribute-${index}-${key}`}>
@@ -759,7 +759,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                         {["STRING", "TEXTAREA", "NUMBER"].includes(attribute.displayType) && (
                         <>
                           <Help>
-                            <label>{attribute.label}</label>
+                            <label>{attribute.label}{attribute.required && "*"}</label>
                             {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
                           </Help>                          
                           <TextField
@@ -787,7 +787,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                         {["LIST", "USERNAME"].includes(attribute.displayType) && (
                         <div>
                           <Help>
-                            <label>{attribute.label}</label>
+                            <label>{attribute.label}{attribute.required && "*"}</label>
                             {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
                           </Help>                           
                           <Autocomplete
@@ -806,7 +806,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                         {["DATE", "DATETIME"].includes(attribute.displayType) && (
                           <>
                             <Help className={`${attribute.help && "Add"}`}>
-                              <label>{attribute.label}</label>
+                              <label>{attribute.label}{attribute.required && "*"}</label>
                               {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
                             </Help>
                             <DateType>                            
@@ -835,7 +835,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                               color="primary"
                             />
                             <Help>
-                              <label>{attribute.label}</label>
+                              <label>{attribute.label}{attribute.required && "*"}</label>
                               {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
                             </Help> 
                           </CheckboxContent>                                              
@@ -860,7 +860,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                         {["ORGANIZATION"].includes(attribute.displayType) && (
                         <div>
                           <Help>
-                            <label>{attribute.label}</label>
+                            <label>{attribute.label}{attribute.required && "*"}</label>
                             {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
                           </Help>                          
                           <Autocomplete
@@ -884,7 +884,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                         {["USER"].includes(attribute.displayType) && (
                         <div>
                           <Help>
-                            <label>{attribute.label}</label>
+                            <label>{attribute.label}{attribute.required && "*"}</label>
                             {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
                           </Help>
                           <Autocomplete

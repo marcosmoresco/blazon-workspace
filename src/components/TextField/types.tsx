@@ -8,6 +8,7 @@ export type TextFieldPropsType = {
   variant?: any
   intl?: any
   required?: any
+  helperText?: any
   classes: {
     root: string   
   }
