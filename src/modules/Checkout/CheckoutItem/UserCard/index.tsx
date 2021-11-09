@@ -1,5 +1,5 @@
 // venders
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FormattedMessage, useIntl } from "react-intl";
 import { getLink, getSelfServiceAttributeValue, deepCopyFunction } from "@utils/index";
 import { Form, Formik, withFormik, useFormikContext } from "formik";
@@ -113,6 +113,8 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
   const [ messages, setMessages ] = useState<string[]>();
 
   const [ formCategoryHelp, setFormCategoryHelp ] = useState<{[key: string]: any}>({});
+
+  const [ showMessage, setShowMessage ] = useState<boolean>(false);
 
   const [validateFormField, {}] = useMutation(VALIDATE_FORM_FIELD);
 
@@ -528,7 +530,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
   }
 
   const handleValidateForm = async (values: any, callback: any) => {    
-    if(values && values.formId) {   
+    if(values && values.formId) { 
       let errorMessages: string[] = [];         
       const result: any = await validateForm({
         variables: {
@@ -541,6 +543,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
         const resp = JSON.parse(result?.data?.validateForm);
         if(!resp?.result) {
           errorMessages = resp?.errorMessages;
+          setShowMessage(false);
         } else {
           callback();
         }            
@@ -548,6 +551,16 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
       setMessages(errorMessages);
     }    
   }
+
+  useEffect(() => {
+    if((messages || []).length > 0 && !showMessage) {
+      setShowMessage(true);
+      const elem = document.querySelector(`#instance-validations-${instance?.identifier}`);      
+      if(elem) {
+        elem.scrollIntoView();
+      } 
+    }
+  }, [messages, showMessage, instance]);
 
   const async = (type: string, query: string, callback: any, orgType: string | null) => {
     
@@ -623,7 +636,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
        instance.needExpirationDateError.status || 
        instance.needSelectAccountError.status || 
        instance.relatedAccountNotFoundError.status ) || (messages || []).length > 0) && (
-      <ObservationArea>
+      <ObservationArea id={`instance-validations-${instance?.identifier}`}>
         <Observation>
           <TextArea>
             <span>
