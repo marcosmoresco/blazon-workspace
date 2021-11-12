@@ -272,8 +272,8 @@ const Team: React.FC<TeamProps> = ({ intl }) => {
       .filter((team: ResponsibleTeam) => !filter || team?.user?.displayName.toLocaleUpperCase().includes(filter.toLocaleUpperCase())).length === 0 && (
           <EmptyState
             image={EmptyStateImage}
-            title="passwordVault.emptyState.title"
-            text="passwordVault.emptyState.description.text"
+            title="team.emptyState.title"
+            text="team.emptyState.description.text"
           />
       )}
       {paginate((data?.getResponsibleTeam?.representation || []), total, page + 1)

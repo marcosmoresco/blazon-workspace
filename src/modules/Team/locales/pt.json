@@ -5,5 +5,7 @@
   "team.INACTIVATE_USER": "Inativar usuário",
   "team.message.REVOKE_USER": "Requisição(ões) para revogação de usuário(s) criada(s) com sucesso!",
   "team.message.ACTIVATE_USER": "Requisição(ões) para ativição de usuário(s) criada(s) com sucesso!",
-  "team.message.INACTIVATE_USER": "Requisição(ões) para inativação de usuário(s) criada(s) com sucesso!"  
+  "team.message.INACTIVATE_USER": "Requisição(ões) para inativação de usuário(s) criada(s) com sucesso!",
+  "team.emptyState.title": "Nenhum usuário",
+  "team.emptyState.description.text": "Não foi encontrado nenhum usuário" 
 }

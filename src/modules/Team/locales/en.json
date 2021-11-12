@@ -5,5 +5,7 @@
   "team.INACTIVATE_USER": "Inactivate user", 
   "team.message.REVOKE_USER": "Request(s) to revoke user(s) created(s) successfully!",
   "team.message.ACTIVATE_USER": "Request(s) for user(s) activation successfully created!",
-  "team.message.INACTIVATE_USER": "Request(s) for inactivation of user(s) created(s) successfully!"
+  "team.message.INACTIVATE_USER": "Request(s) for inactivation of user(s) created(s) successfully!",
+  "team.emptyState.title": "No users",
+  "team.emptyState.description.text": "No users found" 
 }
