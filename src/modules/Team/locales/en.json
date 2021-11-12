@@ -1,0 +1,9 @@
+{  
+  "team.find.member": "Find a member of your time...",
+  "team.REVOKE_USER": "Revoke user",
+  "team.ACTIVATE_USER": "Activate user",
+  "team.INACTIVATE_USER": "Inactivate user", 
+  "team.message.REVOKE_USER": "Request(s) to revoke user(s) created(s) successfully!",
+  "team.message.ACTIVATE_USER": "Request(s) for user(s) activation successfully created!",
+  "team.message.INACTIVATE_USER": "Request(s) for inactivation of user(s) created(s) successfully!"
+}

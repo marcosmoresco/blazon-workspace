@@ -101,6 +101,8 @@ export default function CustomizedDialogs(props) {
     onClose,
     isValid,
     header,
+    actions,
+    content,
     noActions,
     maxWidth,
     isLoading,
@@ -140,31 +142,39 @@ export default function CustomizedDialogs(props) {
             )}
           </DialogTitle>
         )}
-        <DialogContent dividers>{props.children}</DialogContent>
+        {content ? (
+          content
+        ) : <DialogContent dividers>{props.children}</DialogContent>}        
         {!noActions ? (
-          <DialogActions>
-            {cancelButton && (
-              <Button
-                variant='contained'
-                onClick={onClose}
-                className='buttonCancel'
-                isLoading={isLoading ? 1 : 0}
-              >
-                <FormattedMessage id='app.cancel' />
-              </Button>
-            )}
-            <div style={{ flex: '1 0 0' }} />
-            <Button
-              variant='contained'
-              color='primary'
-              onClick={save}
-              className='buttonSave'
-              disabled={!isValid}
-              isLoading={isLoading ? 1 : 0}
-            >
-              {(saveLabel && saveLabel) || <FormattedMessage id='app.save' />}
-            </Button>
-          </DialogActions>
+          <>
+            {actions ? (
+              actions
+            ) : (
+              <DialogActions>
+                {cancelButton && (
+                  <Button
+                    variant='contained'
+                    onClick={onClose}
+                    className='buttonCancel'
+                    isLoading={isLoading ? 1 : 0}
+                  >
+                    <FormattedMessage id='app.cancel' />
+                  </Button>
+                )}
+                <div style={{ flex: '1 0 0' }} />
+                <Button
+                  variant='contained'
+                  color='primary'
+                  onClick={save}
+                  className='buttonSave'
+                  disabled={!isValid}
+                  isLoading={isLoading ? 1 : 0}
+                >
+                  {(saveLabel && saveLabel) || <FormattedMessage id='app.save' />}
+                </Button>
+              </DialogActions>
+            )}            
+          </>
         ) : null}
       </Dialog>
     </div>

@@ -25,6 +25,7 @@ import CaretRightIcon from '@icons/CaretRight'
 import UserIcon from '@icons/User'
 import InfoIcon from '@icons/Info'
 import SignOutIcon from '@icons/SignOut'
+import ProfileUserIcon from '@icons/ProfileUser'
 import Message from '@portal/Message/index'
 import Cart from '@portal/Cart/index'
 import Tooltip from '@components/Tooltip'
@@ -178,6 +179,22 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                   currentTheme={currentTheme}
                   classes={classes}
                 />
+                <Tooltip
+                  title={intl.formatMessage({id: 'team'})}
+                  placement='Bottom'>
+                    <div
+                    className={`${classes.optionImage} ${
+                      router.pathname === '/team' && 'Active'
+                    }`}
+                    onClick={() => router.push('/team')}
+                    >
+                      <ProfileUserIcon 
+                        width={21}
+                        height={21}
+                        stroke={1}
+                      />
+                    </div>                      
+                </Tooltip>
               </div>
             )}            
             <Button

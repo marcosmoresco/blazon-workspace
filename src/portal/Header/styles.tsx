@@ -17,7 +17,7 @@ export const useStyles = (theme: Theme) =>
       marginRight: "auto",
       paddingLeft: 0,
       paddingRight: 0,
-      gap: 104
+      gap: 55
     },
     logoSearchInput: {
       display: 'flex',

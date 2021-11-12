@@ -25,8 +25,12 @@ import UserPt from "./User/locales/pt.json";
 import UserEn from "./User/locales/en.json";
 
 //Checkout
-import CheckoutPt from './Checkout/Locales/pt.json'
-import CheckoutEn from './Checkout/Locales/en.json'
+import CheckoutPt from "./Checkout/Locales/pt.json";
+import CheckoutEn from "./Checkout/Locales/en.json";
+
+//Team
+import TeamPt from "./Team/locales/pt.json";
+import TeamEn from "./Team/locales/en.json";
 
 export const ModulesLocalesPt: LocalesType = {
   ...TaskPt,
@@ -36,6 +40,7 @@ export const ModulesLocalesPt: LocalesType = {
   ...RequestsDatailingPt,
   ...UserPt,
   ...CheckoutPt,
+  ...TeamPt,
 }
 
 export const ModulesLocalesEn: LocalesType = {
@@ -46,6 +51,7 @@ export const ModulesLocalesEn: LocalesType = {
   ...RequestsDatailingEn,
   ...UserEn,
   ...CheckoutEn,
+  ...TeamEn,
 };
 
 const Locales = {

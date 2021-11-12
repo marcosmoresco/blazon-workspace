@@ -38,6 +38,11 @@ import {
 import {
   Queries as ItemsQueries, 
 } from "./Items";
+import {
+  Team,
+  Queries as TeamQueries, 
+  Mutations as TeamMutations,
+} from "./Team";
 
 export const typeDefs = gql`
   ${Link}
@@ -52,7 +57,8 @@ export const typeDefs = gql`
   ${Notification}
   ${Task}
   ${TaskQueue}
-
+  ${Team}
+  
   type Query {
     ${ResumeQueries}      
     ${UserQueries}
@@ -66,6 +72,7 @@ export const typeDefs = gql`
     ${TaskQueueQueries}
     ${FormFieldsQueries}
     ${ItemsQueries}
+    ${TeamQueries}
   }
 
   type Mutation {
@@ -74,5 +81,6 @@ export const typeDefs = gql`
     ${PasswordVaultMutations}
     ${TaskMutations}
     ${FormFieldsMutations}
+    ${TeamMutations}
   }
 `;

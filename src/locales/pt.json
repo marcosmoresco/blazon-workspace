@@ -139,5 +139,9 @@
   "organization.DEPARTMENT": "Departamento",
   "organization.ORGANIZATION": "Organização",
   "attributes": "Atributos",
-  "access": "Acessos" 
+  "access": "Acessos",
+  "team": "Time",
+  "revoke": "Revogar",
+  "inactivate": "Inativar",
+  "activate": "Ativar" 
 }
