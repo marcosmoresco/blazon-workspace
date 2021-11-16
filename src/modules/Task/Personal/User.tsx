@@ -32,6 +32,8 @@ import {
   unassign as unassignTask,
   assignToMe as assignToMeTask,
   resolve as resolveTask,
+  approve,
+  disapprove,
   getActionsByType,
 } from "@modules/Task/constants";
 
@@ -41,20 +43,20 @@ import {
 
 //queries
 import { 
-  GET_USER_REVALIDATION_TASKS,
+  GET_USER_TASKS,
   GET_ASSIGN_ACTIONS,
   GET_TASK_QUEUES 
 } from "@modules/Task/queries";
 
 //mutations
 import { 
-  ASSIGN_TO_ME_USER_REVALIDATION_TASK,
-  UNASSIGN_USER_REVALIDATION_TASK,
-  FORWARD_TO_USER_USER_REVALIDATION_TASK,
-  FORWARD_TO_QUEUE_USER_REVALIDATION_TASK,  
+  ASSIGN_TO_ME_USER_TASK,
+  UNASSIGN_USER_TASK,
+  FORWARD_TO_USER_USER_TASK,
+  FORWARD_TO_QUEUE_USER_TASK,  
 } from "@modules/Task/mutations";
 
-const PersonalTasksUserRevalidation: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = false, setCheckAll, orderBy = "createdDate:desc" }) => {
+const PersonalTasksUser: FC<ListProps> = ({ dispatch, filtered = {}, checkAll = false, setCheckAll, orderBy = "createdDate:desc" }) => {
 
   const intl = useIntl();
   const { theme } = useTheme();
@@ -72,8 +74,8 @@ const PersonalTasksUserRevalidation: FC<ListProps> = ({ dispatch, filtered = {},
   const [loadingRefetch, setLoadingRefetch] = useState(false);
 
   const { loading, error, data, refetch } = useQuery<{
-    getUserRevalidationTasks: { links: Link[], representation: Task[] };
-  }>(GET_USER_REVALIDATION_TASKS, {
+    getUserTasks: { links: Link[], representation: Task[] };
+  }>(GET_USER_TASKS, {
     variables: {
       page: 0,
       size: 10,
@@ -93,16 +95,20 @@ const PersonalTasksUserRevalidation: FC<ListProps> = ({ dispatch, filtered = {},
 
   const { loading: loadingActions, data: dataActions,  refetch: refetchActions } = useQuery<{
     getActions: string[]
-  }>(getAvailableActionsByType("userRevalidation"), {
+  }>(getAvailableActionsByType("user"), {
     variables: {
-      status: `["TODO"]`
-    },  
+      payload: JSON.stringify({
+        typeList: [],
+        statusList: ["TODO"]
+      })
+    }, 
+    fetchPolicy: "network-only" 
   });
 
-  const [assignToMe, {}] = useMutation(ASSIGN_TO_ME_USER_REVALIDATION_TASK, { 
+  const [assignToMe, {}] = useMutation(ASSIGN_TO_ME_USER_TASK, { 
     refetchQueries: [
       {
-        query: GET_USER_REVALIDATION_TASKS,
+        query: GET_USER_TASKS,
         variables: {          
           page: 0,
           size: 10,
@@ -126,10 +132,10 @@ const PersonalTasksUserRevalidation: FC<ListProps> = ({ dispatch, filtered = {},
     },
   });
 
-  const [unassign, {}] = useMutation(UNASSIGN_USER_REVALIDATION_TASK, { 
+  const [unassign, {}] = useMutation(UNASSIGN_USER_TASK, { 
     refetchQueries: [
       {
-        query: GET_USER_REVALIDATION_TASKS,
+        query: GET_USER_TASKS,
         variables: {          
           page: 0,
           size: 10,
@@ -153,10 +159,10 @@ const PersonalTasksUserRevalidation: FC<ListProps> = ({ dispatch, filtered = {},
     },
   });
 
-  const [forwardToUser, {}] = useMutation(FORWARD_TO_USER_USER_REVALIDATION_TASK, { 
+  const [forwardToUser, {}] = useMutation(FORWARD_TO_USER_USER_TASK, { 
     refetchQueries: [
       {
-        query: GET_USER_REVALIDATION_TASKS,
+        query: GET_USER_TASKS,
         variables: {          
           page: 0,
           size: 10,
@@ -181,10 +187,10 @@ const PersonalTasksUserRevalidation: FC<ListProps> = ({ dispatch, filtered = {},
     },
   });
 
-  const [forwardToQueue, {}] = useMutation(FORWARD_TO_QUEUE_USER_REVALIDATION_TASK, { 
+  const [forwardToQueue, {}] = useMutation(FORWARD_TO_QUEUE_USER_TASK, { 
     refetchQueries: [
       {
-        query: GET_USER_REVALIDATION_TASKS,
+        query: GET_USER_TASKS,
         variables: {          
           page: 0,
           size: 10,
@@ -209,10 +215,10 @@ const PersonalTasksUserRevalidation: FC<ListProps> = ({ dispatch, filtered = {},
     },
   });
 
-  const [resolve, {}] = useMutation(getActionsByType("userRevalidation").resolve, { 
+  const [resolve, {}] = useMutation(getActionsByType("user").resolve, { 
     refetchQueries: [
       {
-        query: GET_USER_REVALIDATION_TASKS,
+        query: GET_USER_TASKS,
         variables: {          
           page: 0,
           size: 10,
@@ -261,12 +267,16 @@ const PersonalTasksUserRevalidation: FC<ListProps> = ({ dispatch, filtered = {},
       setCheckedAll(checkAll);
       let newChecked: number[] = [];
       let statusChecked: string[] = [];
+      let typeList: string[] = [];
       if(checkAll) {
-        (data?.getUserRevalidationTasks?.representation || [])
+        (data?.getUserTasks?.representation || [])
           .filter((t) => t?.headers?.status !== "DONE")
           .forEach((t) => {
             newChecked.push(t?.identifier);
-            statusChecked.push(t?.headers?.status);            
+            statusChecked.push(t?.headers?.status);  
+            if(!typeList.includes(t?.type)) {
+              typeList.push(t?.type); 
+            }                     
           });
       }    
       
@@ -275,7 +285,10 @@ const PersonalTasksUserRevalidation: FC<ListProps> = ({ dispatch, filtered = {},
           status: JSON.stringify(statusChecked)
         });
         refetchActions({
-          status: JSON.stringify(statusChecked)
+          payload: JSON.stringify({
+            typeList,
+            statusList: statusChecked
+          })
         });     
       } 
       
@@ -301,10 +314,14 @@ const PersonalTasksUserRevalidation: FC<ListProps> = ({ dispatch, filtered = {},
 
   const checkAssignActions = (newChecked: number[]) => {
     const statusList: string[] = [];
+    let typeList: string[] = [];
     newChecked.forEach((n) => {
-      const ts = (data?.getUserRevalidationTasks?.representation || []).filter((t: any) => t.identifier === n);
+      const ts = (data?.getUserTasks?.representation || []).filter((t: any) => t.identifier === n);
       if((ts || []).length) {
         statusList.push(ts[0]?.headers?.status);
+        if(!typeList.includes(ts[0]?.type)) {
+          typeList.push(ts[0]?.type);
+        }
       }
     });
 
@@ -313,7 +330,10 @@ const PersonalTasksUserRevalidation: FC<ListProps> = ({ dispatch, filtered = {},
         status: JSON.stringify(statusList)
       });
       refetchActions({
-        status: JSON.stringify(statusList)
+        payload: JSON.stringify({
+          typeList,
+          statusList
+        })
       }); 
       refetch
     }      
@@ -376,7 +396,50 @@ const PersonalTasksUserRevalidation: FC<ListProps> = ({ dispatch, filtered = {},
   };
 
   const actions = (
-    <>   
+    <>  
+      {(dataActions?.getActions || []).includes("KEEPED") && (
+          <Button variant="rounded" color="default-primary" onClick={() => {
+            setResult("KEEPED");
+            setOpenDisapprove(true);
+          }}>
+            <FormattedMessage id="task.keep" />
+          </Button>
+      )} 
+      {(dataActions?.getActions || []).includes("REVOKED") && (
+          <Button variant="rounded" color="secondary" onClick={() => {
+            setResult("REVOKED");
+            setOpenDisapprove(true);
+          }}>
+            <FormattedMessage id="task.revoke" />
+          </Button>
+      )} 
+      {(dataActions?.getActions || []).includes("APPROVED") && (
+        <Button variant="rounded" color="default-primary" onClick={() => {
+          
+          const payload = checked.map((taskId) => ({
+            taskId,  
+            result: "APPROVED"         
+          }));
+
+          approve(undefined, intl, () => {
+            resolve({
+              variables: {
+                payload: JSON.stringify(payload)
+              }
+            });
+          }, currentTheme);
+        }}>
+          <FormattedMessage id="tasks.approve" />
+        </Button>
+      )}
+      {(dataActions?.getActions || []).includes("DISAPPROVED") && (
+        <Button variant="rounded" color="secondary" onClick={() => {
+          setResult("DISAPPROVED");
+          setOpenDisapprove(true);
+        }}>
+          <FormattedMessage id="tasks.disapprove" />
+        </Button>
+      )}  
       {(dataActions?.getActions || []).includes("RESOLVE") && (
         <Button variant="rounded" color="default-primary" onClick={() => {
           
@@ -450,13 +513,13 @@ const PersonalTasksUserRevalidation: FC<ListProps> = ({ dispatch, filtered = {},
 
   return (   
     <>
-      {(data?.getUserRevalidationTasks?.representation || []).length > 0 && (
-        <Tasks list={data?.getUserRevalidationTasks.representation || []} checked={checked} onCheck={handleCheck} type="USER_REVALIDATION_TASK" subType="userRevalidation" size={size} filteredString={filteredString}/>
+      {(data?.getUserTasks?.representation || []).length > 0 && (
+        <Tasks list={data?.getUserTasks.representation || []} checked={checked} onCheck={handleCheck} type="USER_TASK" subType="user" size={size} filteredString={filteredString}/>
       )}
-      {(data?.getUserRevalidationTasks?.representation || []).length === 0 && (
+      {(data?.getUserTasks?.representation || []).length === 0 && (
         <EmptyState image={EmptyStateTypeahead} title="task.empty" text="task.empty.text" bgColor="#FFFFFF"/>
       )}
-      {getLink("next", data?.getUserRevalidationTasks?.links || []) && (
+      {getLink("next", data?.getUserTasks?.links || []) && (
         <LoadMoreContent>
           <Button
             variant="contained"
@@ -507,4 +570,4 @@ const PersonalTasksUserRevalidation: FC<ListProps> = ({ dispatch, filtered = {},
 
 const mapStateToProps = () => ({});
 
-export default connect(mapStateToProps)(PersonalTasksUserRevalidation);
+export default connect(mapStateToProps)(PersonalTasksUser);

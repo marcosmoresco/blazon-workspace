@@ -499,10 +499,10 @@ export const TaskMutations = {
       throw error;
     }
   },
-  addUserRevalidationTaskComment: async (parent: any, args: any, context: any) => {
+  addUserTaskComment: async (parent: any, args: any, context: any) => {
     try {
       const result = await axios.post(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/${args.id}/comments`,
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/usertasks/${args.id}/comments`,
         {
           task: {
             identifier: args.id,
@@ -519,10 +519,10 @@ export const TaskMutations = {
       throw error;
     }
   },
-  assignToMeUserRevalidationTask: async (parent: any, args: any, context: any) => {
+  assignToMeUserTask: async (parent: any, args: any, context: any) => {
     try {
       await axios.post(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/assigntasktome`,
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/usertasks/assigntasktome`,
          JSON.parse(args?.payload),
          { ...config(context) }
       );
@@ -531,10 +531,10 @@ export const TaskMutations = {
       throw error;
     }
   },
-  unassignUserRevalidationTask: async (parent: any, args: any, context: any) => {
+  unassignUserTask: async (parent: any, args: any, context: any) => {
     try {
       await axios.post(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/unassigntask`,
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/usertasks/unassigntask`,
          JSON.parse(args?.payload),
          { ...config(context) }
       );
@@ -543,10 +543,10 @@ export const TaskMutations = {
       throw error;
     }
   },
-  forwardToUserUserRevalidationTask: async (parent: any, args: any, context: any) => {
+  forwardToUserUserTask: async (parent: any, args: any, context: any) => {
     try {
       await axios.post(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/forwardtasktouser`,
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/usertasks/forwardtasktouser`,
          JSON.parse(args?.payload),
          { ...config(context) }
       );
@@ -555,10 +555,10 @@ export const TaskMutations = {
       throw error;
     }
   },
-  forwardToQueueUserRevalidationTask: async (parent: any, args: any, context: any) => {
+  forwardToQueueUserTask: async (parent: any, args: any, context: any) => {
     try {
       await axios.post(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/forwardtasktoqueue`,
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/usertasks/forwardtasktoqueue`,
          JSON.parse(args?.payload),
          { ...config(context) }
       );
@@ -567,10 +567,10 @@ export const TaskMutations = {
       throw error;
     }
   },
-  resolveUserRevalidationTask: async (parent: any, args: any, context: any) => {
+  resolveUserTask: async (parent: any, args: any, context: any) => {
     try {     
       await axios.post(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/resolve`,
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/usertasks/resolve`,
         JSON.parse(args?.payload),
         { ...config(context) }
       );

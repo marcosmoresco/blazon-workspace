@@ -15,7 +15,7 @@ import Approval from "./Approval";
 import Certification from "./Certification";
 import Provisioning from "./Provisioning";
 import RoleRight from "./RoleRight";
-import UserRevalidation from "./UserRevalidation";
+import User from "./User";
 import SoD from "./SoD";
 
 const TasksDetails: React.FC = () => {
@@ -40,8 +40,8 @@ const TasksDetails: React.FC = () => {
       {type === "sod" && (
         <SoD />
       )}
-      {type === "userRevalidation" && (
-        <UserRevalidation />
+      {type === "user" && (
+        <User />
       )}
     </>
   );

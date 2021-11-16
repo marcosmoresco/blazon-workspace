@@ -20,17 +20,17 @@ import {
 
 //queries
 import { 
-  GET_USER_REVALIDATION_TASK
+  GET_USER_TASK
 } from "@modules/Task/queries";
 
-const UserRevalidation: React.FC = () => {
+const User: React.FC = () => {
 
   const router = useRouter();
   const { id } = router.query;  
 
   const { loading, error, data, refetch } = useQuery<{
-    getUserRevalidationTask: Task;
-  }>(GET_USER_REVALIDATION_TASK, {
+    getUserTask: Task;
+  }>(GET_USER_TASK, {
     variables: {
       id: Number(id)
     },
@@ -45,13 +45,13 @@ const UserRevalidation: React.FC = () => {
 
   return (
     <div>
-      <TitlePage onBack={() => router.push("/tasks")} task={data?.getUserRevalidationTask}/>
-      <Header task={data?.getUserRevalidationTask}/>
-      <UserInfo task={data?.getUserRevalidationTask}/>            
-      <GridAdditionalInformations task={data?.getUserRevalidationTask}/>
-      <GridHistory task={data?.getUserRevalidationTask}/>
+      <TitlePage onBack={() => router.push("/tasks")} task={data?.getUserTask}/>
+      <Header task={data?.getUserTask}/>
+      <UserInfo task={data?.getUserTask}/>            
+      <GridAdditionalInformations task={data?.getUserTask}/>
+      <GridHistory task={data?.getUserTask}/>
     </div>
   );
 };
 
-export default UserRevalidation;
+export default User;

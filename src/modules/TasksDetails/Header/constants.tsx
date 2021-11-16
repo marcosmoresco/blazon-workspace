@@ -5,7 +5,7 @@ import {
   GET_PROVISIONING_TASKS_AVAILABLE_ACTIONS,
   GET_ROLE_RIGHT_APPROVAL_TASKS_AVAILABLE_ACTIONS,
   GET_SOD_APPROVAL_TASKS_AVAILABLE_ACTIONS,
-  GET_USER_REVALIDATION_TASKS_AVAILABLE_ACTIONS
+  GET_USER_TASKS_AVAILABLE_ACTIONS
 } from "@modules/Task/queries";
 
 export const getAvailableActionsByType = (type: any): any => {
@@ -20,8 +20,8 @@ export const getAvailableActionsByType = (type: any): any => {
     query = GET_ROLE_RIGHT_APPROVAL_TASKS_AVAILABLE_ACTIONS;
   } else if(type === "sod") {
     query = GET_SOD_APPROVAL_TASKS_AVAILABLE_ACTIONS;
-  } else if (type === "userRevalidation") {
-    query = GET_USER_REVALIDATION_TASKS_AVAILABLE_ACTIONS;
+  } else if (type === "user") {
+    query = GET_USER_TASKS_AVAILABLE_ACTIONS;
   }
   
   return query;

@@ -72,13 +72,14 @@
   "task.keep": "Manter",
   "task.revoke": "Revogar",
   "task.inactivate": "Inativar",
+  "task.user": "User",
 
   "task.category.APPROVAL_TASK": "Aprovação",
   "task.category.CERTIFICATION_TASK": "Certificação",
   "task.category.PROVISIONING_TASK": "Provisionamento",
   "task.category.SOD_TASK": "SoD",
   "task.category.ROLE_RIGHT_TASK": "Direito de papel",
-  "task.category.USER_REVALIDATION_TASK": "Revalidação de usuário",
+  "task.category.USER_TASK": "Usuário",
 
   "task.type.CREATE_ACCOUNT": "Criação de conta",
   "task.type.UPDATE_ACCOUNT": "Atualização de conta",
@@ -96,5 +97,9 @@
   "task.type.REMOVE_ENTITLEMENT": "Remoção de direito",
   "task.type.UPDATE_ENTITLEMENT": "Atualização de direito",
   "task.type.CHECKIN_ADMIN_ACCOUNT_PASSWORD": "Checkin da conta administativa",
-  "task.type.CHANGE_PASSWORD": "Alteração de senha"
+  "task.type.CHANGE_PASSWORD": "Alteração de senha",
+  "task.type.USER_ACTIVATION": "Activação",
+  "task.type.USER_INACTIVATION": "Inactivação",
+  "task.type.USER_REVALIDATION": "Revalidação",
+  "task.type.USER_REVOCATION": "Revocação"
 }

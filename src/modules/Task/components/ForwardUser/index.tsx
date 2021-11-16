@@ -45,6 +45,7 @@ const ForwardDialogContent: React.FC<ForwardDialogContentProps> = ({ execute }) 
   const intl = useIntl();
   const { theme, setTheme } = useTheme();
   const currentTheme = themes[theme];
+  const [open, setOpen] = useState<boolean>(false);
 
   const { loading, error, data, refetch } = useQuery<{
     getUserFullText: User[];

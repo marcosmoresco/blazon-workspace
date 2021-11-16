@@ -72,13 +72,14 @@
   "task.keep": "Keep",
   "task.revoke": "Revoke",
   "task.inactivate": "Inactivate",
+  "task.user": "User",
 
   "task.category.APPROVAL_TASK": "Approval",
   "task.category.CERTIFICATION_TASK": "Certification",
   "task.category.PROVISIONING_TASK": "Provisioning",
   "task.category.SOD_TASK": "SoD",
   "task.category.ROLE_RIGHT_TASK": "Role Right",
-  "task.category.USER_REVALIDATION_TASK": "User Revalidation",
+  "task.category.USER_TASK": "User",
 
   "task.type.CREATE_ACCOUNT": "Create Account",
   "task.type.UPDATE_ACCOUNT": "Update Account",
@@ -96,5 +97,9 @@
   "task.type.REMOVE_ENTITLEMENT": "Remove Entitlement",
   "task.type.UPDATE_ENTITLEMENT": "Update Entitlement",
   "task.type.CHECKIN_ADMIN_ACCOUNT_PASSWORD": "Checkin Admin Account",
-  "task.type.CHANGE_PASSWORD": "Change Password"
+  "task.type.CHANGE_PASSWORD": "Change Password",
+  "task.type.USER_ACTIVATION": "Activation",
+  "task.type.USER_INACTIVATION": "Inactivation",
+  "task.type.USER_REVALIDATION": "Revalidation",
+  "task.type.USER_REVOCATION": "Revocation"
 }

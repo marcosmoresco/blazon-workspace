@@ -971,15 +971,15 @@ export const GET_PROVISIONING_TASK = gql`
   }
 `;
 
-export const GET_USER_REVALIDATION_TASKS_AVAILABLE_ACTIONS = gql`
-  query getUserRevalidationTasksAvailableActions($status: String) {
-    getActions: getUserRevalidationTasksAvailableActions(status: $status)
+export const GET_USER_TASKS_AVAILABLE_ACTIONS = gql`
+  query getUserTasksAvailableActions($payload: String) {
+    getActions: getUserTasksAvailableActions(payload: $payload)
   }
 `;
 
-export const GET_USER_REVALIDATION_TASKS = gql`
-  query getUserRevalidationTasks($page: Int, $size: Int, $ord: String, $filters: String) {
-    getUserRevalidationTasks(page: $page, size: $size, ord: $ord, filters: $filters) {   
+export const GET_USER_TASKS = gql`
+  query getUserTasks($page: Int, $size: Int, $ord: String, $filters: String) {
+    getUserTasks(page: $page, size: $size, ord: $ord, filters: $filters) {   
       representation {
         identifier
         type
@@ -1030,9 +1030,9 @@ export const GET_USER_REVALIDATION_TASKS = gql`
   }
 `;
 
-export const GET_USER_REVALIDATION_TASK = gql`
-  query getUserRevalidationTask($id: Int) {
-    getUserRevalidationTask(id: $id) {      
+export const GET_USER_TASK = gql`
+  query getUserTask($id: Int) {
+    getUserTask(id: $id) {      
       identifier
       justification
       disapprovalJustification
@@ -1251,7 +1251,7 @@ export const RESUME = gql`
       openProvisioningTasks
       openRoleRightsTasks
       openSodTasks
-      openUserRevalidationTasks
+      openUserTasks
       totalOpenTasks
     }    
   }
@@ -1398,9 +1398,9 @@ export const GET_SOD_MERGED_HISTORY = gql`
   }
 `;
 
-export const GET_USER_REVALIDATION_MERGED_HISTORY = gql`
-  query getUserRevalidationMergedHistory($id: Int) {
-    getHistory: getUserRevalidationMergedHistory(id: $id) {
+export const GET_USER_MERGED_HISTORY = gql`
+  query getUserMergedHistory($id: Int) {
+    getHistory: getUserMergedHistory(id: $id) {
       from {
         name
         type

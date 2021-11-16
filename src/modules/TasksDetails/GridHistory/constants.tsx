@@ -5,7 +5,7 @@ import {
   ADD_PROVISIONING_TASK_COMMENT,
   ADD_ROLE_RIGHT_APPROVAL_TASK_COMMENT, 
   ADD_SOD_APPROVAL_TASK_COMMENT,
-  ADD_USER_REVALIDATION_TASK_COMMENT
+  ADD_USER_TASK_COMMENT
 } from "@modules/Task/mutations";
 
 //queries
@@ -15,13 +15,13 @@ import {
   GET_PROVISIONING_TASK,
   GET_ROLE_RIGHT_APPROVAL_TASK,
   GET_SOD_APPROVAL_TASK,
-  GET_USER_REVALIDATION_TASK,
+  GET_USER_TASK,
   GET_APPROVAL_MERGED_HISTORY,
   GET_CERTIFICATION_MERGED_HISTORY,
   GET_PROVISIONING_MERGED_HISTORY,
   GET_ROLE_RIGHT_MERGED_HISTORY,
   GET_SOD_MERGED_HISTORY,
-  GET_USER_REVALIDATION_MERGED_HISTORY
+  GET_USER_MERGED_HISTORY
 } from "@modules/Task/queries";
 
 export const getHistoryByType = (type: any): any => {
@@ -36,8 +36,8 @@ export const getHistoryByType = (type: any): any => {
     query = GET_ROLE_RIGHT_MERGED_HISTORY;
   } else if(type === "sod") {
     query = GET_SOD_MERGED_HISTORY;
-  } else if(type === "userRevalidation") {
-    query = GET_USER_REVALIDATION_MERGED_HISTORY;
+  } else if(type === "user") {
+    query = GET_USER_MERGED_HISTORY;
   }
   return query;
 };
@@ -54,8 +54,8 @@ export const addCommentByType = (type: any): any => {
     mutation = ADD_ROLE_RIGHT_APPROVAL_TASK_COMMENT;
   } else if(type === "sod") {
     mutation = ADD_SOD_APPROVAL_TASK_COMMENT;
-  } else if(type === "userRevalidation") {
-    mutation = ADD_USER_REVALIDATION_TASK_COMMENT;
+  } else if(type === "user") {
+    mutation = ADD_USER_TASK_COMMENT;
   }
   return mutation;
 };
@@ -72,8 +72,8 @@ export const getQueryByType = (type: any): any => {
     query = GET_ROLE_RIGHT_APPROVAL_TASK;
   } else if(type === "sod") {
     query = GET_SOD_APPROVAL_TASK;
-  } else if(type === "userRevalidation") {
-    query = GET_USER_REVALIDATION_TASK;
+  } else if(type === "user") {
+    query = GET_USER_TASK;
   }
   
   return query;

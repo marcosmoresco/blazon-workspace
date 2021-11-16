@@ -210,39 +210,39 @@ export const RESOLVE_PROVISIONING_TASK = gql`
   }
 `;
 
-export const ADD_USER_REVALIDATION_TASK_COMMENT = gql`
-  mutation addUserRevalidationTaskComment($id: Int, $comment: String) {
-    addComment: addUserRevalidationTaskComment(id: $id, comment: $comment)
+export const ADD_USER_TASK_COMMENT = gql`
+  mutation addUserTaskComment($id: Int, $comment: String) {
+    addComment: addUserTaskComment(id: $id, comment: $comment)
   }
 `;
 
-export const ASSIGN_TO_ME_USER_REVALIDATION_TASK = gql`
-  mutation assignToMeUserRevalidationTask($payload: String) {
-    assignToMe: assignToMeUserRevalidationTask(payload: $payload)
+export const ASSIGN_TO_ME_USER_TASK = gql`
+  mutation assignToMeUserTask($payload: String) {
+    assignToMe: assignToMeUserTask(payload: $payload)
   }
 `;
 
-export const UNASSIGN_USER_REVALIDATION_TASK = gql`
-  mutation unassignUserRevalidationTask($payload: String) {
-    unassign: unassignUserRevalidationTask(payload: $payload)
+export const UNASSIGN_USER_TASK = gql`
+  mutation unassignUserTask($payload: String) {
+    unassign: unassignUserTask(payload: $payload)
   }
 `;
 
-export const FORWARD_TO_USER_USER_REVALIDATION_TASK = gql`
-  mutation forwardToUserUserRevalidationTask($payload: String) {
-    forwardToUser: forwardToUserUserRevalidationTask(payload: $payload)
+export const FORWARD_TO_USER_USER_TASK = gql`
+  mutation forwardToUserUserTask($payload: String) {
+    forwardToUser: forwardToUserUserTask(payload: $payload)
   }
 `;
 
-export const FORWARD_TO_QUEUE_USER_REVALIDATION_TASK = gql`
-  mutation forwardToQueueUserRevalidationTask($payload: String) {
-    forwardToQueue: forwardToQueueUserRevalidationTask(payload: $payload)
+export const FORWARD_TO_QUEUE_USER_TASK = gql`
+  mutation forwardToQueueUserTask($payload: String) {
+    forwardToQueue: forwardToQueueUserTask(payload: $payload)
   }
 `;
 
-export const RESOLVE_USER_REVALIDATION_TASK = gql`
-  mutation resolveUserRevalidationTask($payload: String) {
-    resolve: resolveUserRevalidationTask(payload: $payload)
+export const RESOLVE_USER_TASK = gql`
+  mutation resolveUserTask($payload: String) {
+    resolve: resolveUserTask(payload: $payload)
   }
 `;
 

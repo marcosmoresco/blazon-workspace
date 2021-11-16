@@ -37,6 +37,10 @@ import {
   getQueryByType 
 } from "@modules/Task/constants";
 
+import {
+  getHistoryByType
+} from "@modules/TasksDetails/GridHistory/constants";
+
 //types
 import { HeaderProps } from "./types";
 
@@ -69,7 +73,7 @@ import {
 } from "./style";
 
 const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setStage }) => {
-  console.log(stage);
+
   const dispatch = useDispatch();
   const router = useRouter();
   const intl = useIntl();
@@ -101,9 +105,15 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
   const { loading: loadingActions, data: dataActions } = useQuery<{
     getActions: string[]
   }>(getAvailableActionsByType(type || "approval"), {
-    variables: {
+    variables: type === "user" ? {
+      payload: JSON.stringify({
+        typeList: [task?.type],
+        statusList: [task?.headers?.status || "TODO"]
+      })
+    } : {
       status: `["${task?.headers?.status || "TODO"}"]`
-    },  
+    },
+    fetchPolicy: "network-only"      
   });
 
   const [assignToMe, {}] = useMutation(getActionsByType(type || "approval").assignToMe, { 
@@ -113,7 +123,12 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
         variables: {
           id: Number(id)
         }
-      },
+      }, {
+        query: getHistoryByType(type || "approval"),
+        variables: {
+          id: Number(id)
+        }
+      }
     ],  
     onCompleted: ({ assignToMe }) => {        
       if(assignToMe) {
@@ -155,7 +170,12 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
         variables: {
           id: Number(id)
         }
-      },
+      }, {
+        query: getHistoryByType(type || "approval"),
+        variables: {
+          id: Number(id)
+        }
+      }
     ],  
     onCompleted: ({ forwardToUser }) => {        
       if(forwardToUser) {
@@ -177,7 +197,12 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
         variables: {
           id: Number(id)
         }
-      },
+      }, {
+        query: getHistoryByType(type || "approval"),
+        variables: {
+          id: Number(id)
+        }
+      }
     ],  
     onCompleted: ({ forwardToQueue }) => {
       if(forwardToQueue) {
@@ -397,6 +422,14 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
               <FormattedMessage id="tasks.certify" />
             </Button>
           )}
+          {(dataActions?.getActions || []).includes("KEEPED") && (
+            <Button variant="contained" color="default-primary" onClick={() => {
+              setResult("KEEPED");
+              setOpenDisapprove(true);
+            }}>
+             <FormattedMessage id="task.keep" />
+            </Button>
+          )}  
           {(dataActions?.getActions || []).includes("REVOKED") && (
             <Button variant="contained" color="secondary" onClick={() => {
               setResult("REVOKED");

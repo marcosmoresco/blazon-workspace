@@ -55,7 +55,7 @@ const TitlePageTask: React.FC<TitleProps> = ({ intl, onBack, task }) => {
     href: "/tasks",
     children: [{
       formatedName: intl.formatMessage({id: `task.${type}`}),
-      children: !["roleRight", "userRevalidation"].includes(type || "") ? [{
+      children: (!["roleRight"].includes(type || "")) ? [{
         formatedName: intl.formatMessage({id: `task.type.${task?.type}`})
       }] : undefined
     }]  

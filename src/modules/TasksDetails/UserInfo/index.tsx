@@ -169,7 +169,8 @@ const UserInfo: React.FC<UserInfoProps> = ({ task }) => {
                 </BoxCardHeaderInfo>
               </BoxCardFooterInfo>
             </BoxCardFooter>            
-            {!["provisioning", "certification", "sod", "userRevalidation"].includes(type as string) && (
+            {(!["provisioning", "certification", "sod", "user"].includes(type as string) || 
+              type === "user" && task?.type !== "USER_REVALIDATION") && (
               <>
                 <JustificationDivider /> 
                 <BoxJustification>

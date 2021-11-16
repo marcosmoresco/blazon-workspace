@@ -85,6 +85,17 @@ export const TaskQueries = {
             } catch(e) {
               error(`Èrror in details item by identifier=${item?.identifier}`);
             }            
+          } else if(item?.headers?.category === "USER_TASK") {
+            try {
+              const task = await axios.get(
+                `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/usertasks/${item?.identifier}?expand=true`,           
+                { ...config(context) }
+              );
+              item.justification = task?.data?.justification;              
+              item.type = task?.data?.type;
+            } catch(e) {
+              error(`Èrror in details item by identifier=${item?.identifier}`);
+            }            
           }
         };
       }     
@@ -337,11 +348,11 @@ export const TaskQueries = {
       throw error;
     }
   }, 
-  getUserRevalidationTasksAvailableActions: async (parent: any, args: any, context: any) => {
+  getUserTasksAvailableActions: async (parent: any, args: any, context: any) => {
     try {
       const availableActions = await axios.post(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/availableactions`,   
-        JSON.parse(args?.status || "[]"),     
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/usertasks/availableactions`,   
+        JSON.parse(args?.payload || "{}"),     
         { ...config(context) }
       );
       return availableActions.data;
@@ -349,10 +360,10 @@ export const TaskQueries = {
       throw error;
     }
   },
-  getUserRevalidationTasks: async (parent: any, args: any, context: any) => {
+  getUserTasks: async (parent: any, args: any, context: any) => {
     try {
       const tasks = await axios.post(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/filter?expand=true&page=${args?.page}&size=${args?.size}${args?.ord ? `&ord=${args.ord}` : ""}`,   
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/usertasks/filter?expand=true&page=${args?.page}&size=${args?.size}${args?.ord ? `&ord=${args.ord}` : ""}`,   
         {...(JSON.parse(args?.filters || "{}"))},     
         { ...config(context) }
       );
@@ -361,10 +372,10 @@ export const TaskQueries = {
       throw error;
     }
   },
-  getUserRevalidationTask: async (parent: any, args: any, context: any) => {
+  getUserTask: async (parent: any, args: any, context: any) => {
     try {
       const task = await axios.get(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/${args?.id}?expand=true`,          
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/usertasks/${args?.id}?expand=true`,          
         { ...config(context) }
       );
       return task.data;
@@ -372,10 +383,10 @@ export const TaskQueries = {
       throw error;
     }
   },
-  getUserRevalidationTaskFilters: async (parent: any, args: any, context: any) => {
+  getUserTaskFilters: async (parent: any, args: any, context: any) => {
     try {
       const filters = await axios.get(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/filters?type=${args?.type || "ANY"}&statusList=${args?.statusList}`,        
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/usertasks/filters?type=${args?.type || "ANY"}&statusList=${args?.statusList}`,        
         { ...config(context) }
       );
       return filters.data;
@@ -438,10 +449,10 @@ export const TaskQueries = {
       throw error;
     }
   }, 
-  getUserRevalidationMergedHistory: async (parent: any, args: any, context: any) => {
+  getUserMergedHistory: async (parent: any, args: any, context: any) => {
     try {
       const filters = await axios.get(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/userrevalidations/approvaltasks/${args?.id}/mergedhistory`,        
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/usertasks/${args?.id}/mergedhistory`,        
         { ...config(context) }
       );
       return filters.data;
