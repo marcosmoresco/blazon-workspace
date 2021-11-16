@@ -329,7 +329,23 @@ export const queueTypes: {[key: string]: any} = {
   }, {
     label:  <FormattedMessage id="task.type.MEMBERSHIP_ROLE" />,
     value: 'MEMBERSHIP_ROLE'
-  }]
+  }],
+  'USER_TASK': [{
+    label:  <FormattedMessage id="task.any" />,
+    value: 'ANY'
+  }, {
+    label:  <FormattedMessage id="task.type.USER_REVALIDATION" />,
+    value: 'USER_REVALIDATION'
+  }, {
+    label:  <FormattedMessage id="task.type.USER_ACTIVATION" />,
+    value: 'USER_ACTIVATION'
+  }, {
+    label:  <FormattedMessage id="task.type.USER_INACTIVATION" />,
+    value: 'USER_INACTIVATION'
+  }, {
+    label:  <FormattedMessage id="task.type.USER_REVOCATION" />,
+    value: 'USER_REVOCATION'
+  }],
 };
 
 export const generateFilters = (intl: IntlShape, list: TaskFilter[]) => {
