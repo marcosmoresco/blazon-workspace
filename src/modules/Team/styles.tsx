@@ -4,7 +4,8 @@ import {
   withStyles
 } from "@material-ui/core/styles";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
-import MuiDialogContent from '@material-ui/core/DialogContent'
+import MuiDialogContent from "@material-ui/core/DialogContent";
+import Drawer from "@material-ui/core/Drawer";
 
 export const InputSearchBox = styled.div`
   display: flex;
@@ -152,4 +153,43 @@ export const LoadMoreContent = styled.div`
   justify-content: center;
   margin-top: 64px;
   margin-bottom: 30px;
+`;
+
+export const DrawerDetailUser = withStyles({
+  paper: {    
+    minWidth: 815,       
+  },
+})((props: any) => (
+  <Drawer        
+    {...props}
+  />
+));
+
+export const Header = styled.div`  
+  border-radius: 8px; 
+  display: flex;
+  padding: 20px;
+  justify-content: space-between;
+`;
+
+export const HeaderBox = styled.div`
+  position: relative;
+`;
+
+export const HeaderDisplayName = styled.div`
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 100%;
+  color: #26213F; 
+`;
+
+export const HeaderUsername = styled.div`
+  font-size: 16px;
+  line-height: 100%;
+  color: #26213F;
+  margin-bottom: 5px;
+`;
+
+export const HeaderClose = styled.div`  
+  cursor: pointer;
 `;

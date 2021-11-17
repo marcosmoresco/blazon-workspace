@@ -27,6 +27,8 @@ import EmptyState from "@components/EmptyState";
 import Snackbar from "@components/Snackbar";
 import DatePicker from "@components/DatePicker";
 import TextField from "@components/TextField";
+import Avatar from "@material-ui/core/Avatar";
+
 import TeamDetails from "./Details";
 
 // images
@@ -34,6 +36,7 @@ import EmptyStateImage from "@images/EmptyStateTypeahead.svg";
 
 // Icons
 import SearchIcon from "@icons/Search";
+import XIcon from "@icons/X";
 
 // Queries
 import {
@@ -59,6 +62,12 @@ import {
   Actions,
   DialogContent,
   LoadMoreContent,
+  DrawerDetailUser,
+  Header,
+  HeaderBox,
+  HeaderDisplayName,
+  HeaderUsername,
+  HeaderClose,
 } from "./styles";
 
 const validationSchema = Yup.object({
@@ -291,7 +300,24 @@ const Team: React.FC<TeamProps> = ({ intl }) => {
           </Button>
         </LoadMoreContent>
       )}
-      <Dialog
+      <DrawerDetailUser 
+        anchor="right" 
+        open={open} 
+        onClose={() => setOpen(false)}>
+          <>
+            <Header>  
+              <HeaderBox>                               
+                <HeaderUsername>{current?.username || " - "}</HeaderUsername>  
+                <HeaderDisplayName>{current?.displayName || " - "}</HeaderDisplayName>                             
+              </HeaderBox> 
+              <HeaderClose onClick={() => setOpen(false)}>
+                <XIcon />
+              </HeaderClose>                           
+            </Header>
+            <DialogContent dividers><Tabs tabs={tabs} /></DialogContent>  
+          </>              
+      </DrawerDetailUser>
+      {/*<Dialog
         open={open}
         onClose={() => setOpen(false)}
         title={current?.displayName}
@@ -316,7 +342,7 @@ const Team: React.FC<TeamProps> = ({ intl }) => {
         onSave={() => {
                     
         }}        
-      />  
+      /> */} 
       <Dialog
         open={modalOpen}
         onClose={() => setModalOpen(false)}
