@@ -45,6 +45,11 @@ export type TaskCertificationItemDetails = {
   accountIdentifier: string;
 };
 
+type TaskNewUserAttribute = {
+  key: string;
+  value: string;
+}
+
 export type TaskItemDetails = {
   action: string;
   justification: string;
@@ -52,6 +57,7 @@ export type TaskItemDetails = {
   roleName: string;
   roleDescription: string;
   roleRisk: string;
+  newUserAttributes: [TaskNewUserAttribute];
 };
 
 export type TaskProvisioningItemDetailAccount = {    

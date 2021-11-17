@@ -293,7 +293,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
       }     
     },
   });
-
+  
   const [resolve, {}] = useMutation(getActionsByType(_type).resolve, { 
     refetchQueries: [
       {
@@ -514,6 +514,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                   {(actions || []).includes("APPROVED") && (
                     <Button variant="contained" color="default-primary" onClick={() => {
                       if(task) {
+                        setCurrent(task);
                         approve(task, intl, () => {
                           resolve({
                             variables: {
@@ -541,6 +542,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                   {(actions || []).includes("CERTIFIED") && (
                     <Button variant="contained" color="default-primary" onClick={() => {
                       if(task) {
+                        setCurrent(task);
                         certify(task, intl, () => {
                           resolve({
                             variables: {
@@ -586,6 +588,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                   {(actions || []).includes("NOT_ALLOWED") && (
                     <Button variant="contained" color="secondary" onClick={() => {                     
                       if(task) {
+                        setCurrent(task);
                         notAllowed(task, intl, () => {
                           resolve({
                             variables: {
@@ -605,6 +608,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                     (!["CREATE_ACCOUNT", "CHANGE_PASSWORD"].includes(task?.type || "") || "WAITING_ASSING" === task?.headers?.status) && (
                     <Button variant="contained" color="default-primary" onClick={() => {
                       if(task) {
+                        setCurrent(task);
                         provision(task, intl, () => {
                           resolve({
                             variables: {

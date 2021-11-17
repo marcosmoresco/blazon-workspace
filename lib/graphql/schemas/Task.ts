@@ -84,6 +84,11 @@ export const Task = `
     entitlement: TaskProvisioningItemDetailEntitlement
   }
 
+  type TaskNewUserAttribute {
+    key: String
+    value: String
+  }
+
   type TaskItemDetails {
     action: String
     justification: String
@@ -91,6 +96,7 @@ export const Task = `
     roleName: String
     roleDescription: String
     roleRisk: String
+    newUserAttributes: [TaskNewUserAttribute]
   }
 
   type TaskComment {

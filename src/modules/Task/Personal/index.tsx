@@ -44,6 +44,7 @@ import {
   GET_PROVISIONING_TASK_FILTERS,
   GET_SOD_APPROVAL_TASK_FILTERS,
   GET_ROLE_RIGHT_APPROVAL_TASK_FILTERS,
+  GET_USER_TASK_FILTERS,
   RESUME 
 } from "@modules/Task/queries";
 import axios from "axios";
@@ -116,8 +117,10 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
       query = GET_PROVISIONING_TASK_FILTERS;
     } else if(categoryFilter === "SOD") {
       query = GET_SOD_APPROVAL_TASK_FILTERS;
-    }  else if(categoryFilter === "ROLE_RIGHT") {
+    } else if(categoryFilter === "ROLE_RIGHT") {
       query = GET_ROLE_RIGHT_APPROVAL_TASK_FILTERS;
+    } else if(categoryFilter === "USER") {
+      query = GET_USER_TASK_FILTERS;
     }
 
     if (query) {      

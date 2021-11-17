@@ -80,6 +80,22 @@ export const GET_PROVISIONING_TASK_FILTERS = gql`
   }
 `;
 
+export const GET_USER_TASK_FILTERS = gql`
+  query getUserTaskFilters($type: String, $statusList: String) {
+    getFilters: getUserTaskFilters(type: $type, statusList: $statusList) {
+      orderable
+      value
+      label
+      clauses {
+        label
+        type
+        value
+        fields
+      }
+    }
+  }
+`;
+
 export const GET_ASSIGN_ACTIONS = gql`
   query getAssignActions($status: String) {
     getAssignActions(status: $status)
@@ -1070,9 +1086,11 @@ export const GET_USER_TASK = gql`
         }
       }  
       itemDetails {  
-        justification     
-        roleName       
-        roleDescription
+        justification
+        newUserAttributes {
+          key 
+          value
+        }
       }
       comments {
         comment

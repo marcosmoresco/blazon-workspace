@@ -345,6 +345,9 @@ export const queueTypes: {[key: string]: any} = {
   }, {
     label:  <FormattedMessage id="task.type.USER_REVOCATION" />,
     value: 'USER_REVOCATION'
+  }, {
+    label: <FormattedMessage id="task.type.USER_CREATION" />,
+    value: 'USER_CREATION'
   }],
 };
 

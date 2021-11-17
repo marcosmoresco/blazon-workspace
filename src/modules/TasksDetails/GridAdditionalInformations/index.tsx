@@ -8,6 +8,7 @@ import GridAdditionalInformationsApproval from "./Approval";
 import GridAdditionalInformationsCertification from "./Certification";
 import GridAdditionalInformationsProvisioning from "./Provisioning";
 import GridAdditionalInformationsRoleRight from "./RoleRight";
+import GridAdditionalInformationsUser from "./User";
 
 // styles
 import {
@@ -45,36 +46,9 @@ const GridAdditionalInformations: React.FC<AdditionalInformationsProps> = ({ tas
       {type === "roleRight" && (
         <GridAdditionalInformationsRoleRight task={task} />
       )}
-      {/*type !== "approval" && (
-        <WorkArea>
-          <MenuDetail>
-            <StyleApprovalTab
-              selected={tab === "resource"}
-              onClick={() => setTab("resource")}
-            >
-              <FormattedMessage id="tasks.ResourceInformations" />
-            </StyleApprovalTab>
-            <StyleApprovalTab
-              selected={tab === "role"}
-              onClick={() => setTab("role")}
-            >
-              <FormattedMessage id="tasks.RoleRights" />
-            </StyleApprovalTab>
-          </MenuDetail>
-          <InsideLine />
-          <DeitalList>
-            {tab === "resource" ? (
-              <></>
-            ) : tab === "role" ? (
-              <GridArea>
-                <Roles />
-              </GridArea>
-            ) : (
-              <></>
-            )}
-          </DeitalList>
-        </WorkArea>
-            )*/}     
+       {type === "user" && (
+        <GridAdditionalInformationsUser task={task} />
+      )}          
     </>
   );
 };
