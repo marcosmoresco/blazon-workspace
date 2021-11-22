@@ -96,7 +96,7 @@ export const TaskQueuesQueries = {
   getTaskQueues: async (parent: any, args: any, context: any) => {
     try {
       const queues = await axios.post(
-        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/provisioning/taskqueues/filter?userid=${context.req?.session?.passport?.user?.id}`,             
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/provisioning/taskqueues/filter?userid=${context.req?.session?.passport?.user?.id}&size=1000`,             
         {},
         { ...config(context) }
       );

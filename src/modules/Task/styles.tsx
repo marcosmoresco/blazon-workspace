@@ -345,11 +345,22 @@ export const MenuItemContainer = styled.div`
   }
 `;
 
+export const QueueName = styled.div`
+  max-width: 154px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+`;
+
 export const MenuItemText = styled.div`
   font-weight: normal;
   font-size: 16px;
   line-height: 16px;
   color: #000000;
+  max-width: 150px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
 `;
 
 export const MenuItemInfo = styled.div`
@@ -408,7 +419,8 @@ export const StyledMenu = withStyles({
     background: "#F4F4F5",
     marginTop: 10,  
     width: 233,
-    padding: 10   
+    padding: 10,
+    maxHeight: 400   
   },
 })((props) => (
   <Menu    

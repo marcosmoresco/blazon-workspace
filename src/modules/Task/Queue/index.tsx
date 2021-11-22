@@ -5,6 +5,7 @@ import Button from "@components/Button";
 import Checkbox from "@components/Checkbox";
 import Filter from "@components/Filter";
 import Loading from "@components/Loading";
+import Tooltip from "@components/Tooltip";
 import DownloadSimpleIcon from "@icons/DownloadSimple";
 import ListBulletsIcon from "@icons/ListBullets";
 import CaretDownIcon from "@icons/CaretDown";
@@ -35,7 +36,8 @@ import {
   SelectBoxInfoIcon,
   HeaderFilterScrollLeft,
   HeaderFilterScrollRight,
-  HeaderFiltersContentScroll
+  HeaderFiltersContentScroll,
+  QueueName,
 } from "@modules/Task/styles";
 import QueueTasksSearch from "./Search";
 
@@ -205,7 +207,9 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
                     <SelectBoxInfoIcon>
                       <ListBulletsIcon width={21} height={21}/>
                     </SelectBoxInfoIcon>
-                    {queueName}
+                    <Tooltip title={queueName} placement="bottom">
+                      <QueueName>{queueName}</QueueName>
+                    </Tooltip>                    
                   </SelectBoxInfo>  
                   {(anchorEl === null && <CaretDownIcon width={21} height={21}/>) || <CaretUpIcon width={21} height={21}/>}             
                 </SelectBoxContainer>
@@ -274,16 +278,18 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
         onClose={() => setAnchorEl(null)}
       >
         {queues.map((q: any) => (
-          <MenuItemContainer key={`task-queue-${q.identifier}`} onClick={() => {
-            setQueueName(q.name);
-            handleChangeQueue(q.identifier);
-            setAnchorEl(null)
-          }}>
-           <MenuItemText>
-            {q.name}
-           </MenuItemText>
-           <MenuItemInfo>{q.amountTasks || 0}</MenuItemInfo>          
-         </MenuItemContainer>
+          <Tooltip title={q.name} placement="bottom" key={`task-queue-${q.identifier}`}>
+            <MenuItemContainer onClick={() => {
+                setQueueName(q.name);
+                handleChangeQueue(q.identifier);
+                setAnchorEl(null)
+              }}>           
+                <MenuItemText>
+                  {q.name}
+                </MenuItemText>
+                <MenuItemInfo>{q.amountTasks || 0}</MenuItemInfo>                                           
+            </MenuItemContainer>
+          </Tooltip>    
         ))}       
       </StyledMenu>  
       <StyledMenu        
@@ -294,15 +300,17 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
         onClose={() => setAnchorElCategory(null)}
       >
         {queueCategories.map((category: any) => (
-          <MenuItemContainer key={`task-category-${category.value}`} onClick={() => {
-            setQueueCategoryName(category.label);            
-            handleChangeCategory(category.value);
-            setAnchorElCategory(null)
-          }}>
-           <MenuItemText>
-            {category.label}
-           </MenuItemText>                     
-         </MenuItemContainer>
+          <Tooltip title={category.label} placement="bottom" key={`task-category-${category.value}`}>
+            <MenuItemContainer key={`task-category-${category.value}`} onClick={() => {
+              setQueueCategoryName(category.label);            
+              handleChangeCategory(category.value);
+              setAnchorElCategory(null)
+            }}>
+              <MenuItemText>
+                {category.label}
+              </MenuItemText>                     
+            </MenuItemContainer>
+          </Tooltip>            
         ))}       
       </StyledMenu>       
       {!["ROLE_RIGHT_TASK", "USER_REVALIDATION_TASK"].includes(queueCategoryValue || "") && (
@@ -314,15 +322,17 @@ const QueueTasks: FC<ListProps> = ({ dispatch }) => {
           onClose={() => setAnchorElType(null)}
         >
           {queueTypes[queueCategoryValue].map((type: any) => (
-            <MenuItemContainer key={`task-category-${type.value}`} onClick={() => {
-              setQueueTypeName(type.label);            
-              handleChangeType(type.value);
-              setAnchorElType(null)
-            }}>
-            <MenuItemText>
-              {type.label}
-            </MenuItemText>                   
-          </MenuItemContainer>
+            <Tooltip title={type.label} placement="bottom" key={`task-category-${type.value}`}>
+              <MenuItemContainer onClick={() => {
+                  setQueueTypeName(type.label);            
+                  handleChangeType(type.value);
+                  setAnchorElType(null)
+                }}>
+                <MenuItemText>
+                  {type.label}
+                </MenuItemText>                   
+              </MenuItemContainer>
+            </Tooltip>            
           ))}       
         </StyledMenu>
       )} 

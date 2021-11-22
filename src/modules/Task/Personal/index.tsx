@@ -6,6 +6,7 @@ import Button from "@components/Button";
 import Checkbox from "@components/Checkbox";
 import Loading from "@components/Loading";
 import Filter from "@components/Filter";
+import Tooltip from "@components/Tooltip";
 import Ordenation from "@components/Ordenation";
 import ListBulletsIcon from "@icons/ListBullets";
 import CaretDownIcon from "@icons/CaretDown";
@@ -272,25 +273,27 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
         onClose={() => setAnchorElCategory(null)}
       >
         {types.map((type: any) => (
-          <MenuItemContainer key={`task-category-${type.value}`} onClick={() => {
-            setCurrentCategoryName(type.label);            
-            handleChange(type.value);
-            setCurrentTypeName(intl.formatMessage({id: "task.any"}));
-            setAnchorElCategory(null);
-          }}>
-            <MenuItemText>
-              {type.label}
-            </MenuItemText>  
-            <MenuItemInfo>
-              {(type.value === "ALL" && dataResume?.getResume?.totalOpenTasks) ||
-               (type.value === "APPROVAL" && dataResume?.getResume?.openApprovalTasks) ||
-               (type.value === "CERTIFICATION" && dataResume?.getResume?.openCertificationTasks) ||
-               (type.value === "PROVISIONING" && dataResume?.getResume?.openProvisioningTasks) ||
-               (type.value === "ROLE_RIGHT" && dataResume?.getResume?.openRoleRightsTasks) || 
-               (type.value === "SOD" && dataResume?.getResume?.openSodTasks) || 
-               (type.value === "USER" && dataResume?.getResume?.openUserTasks) || 0}               
-            </MenuItemInfo>                  
-          </MenuItemContainer>
+          <Tooltip title={type.label} placement="bottom" key={`task-category-${type.value}`}>
+            <MenuItemContainer onClick={() => {
+              setCurrentCategoryName(type.label);            
+              handleChange(type.value);
+              setCurrentTypeName(intl.formatMessage({id: "task.any"}));
+              setAnchorElCategory(null);
+            }}>
+              <MenuItemText>
+                {type.label}
+              </MenuItemText>  
+              <MenuItemInfo>
+                {(type.value === "ALL" && dataResume?.getResume?.totalOpenTasks) ||
+                (type.value === "APPROVAL" && dataResume?.getResume?.openApprovalTasks) ||
+                (type.value === "CERTIFICATION" && dataResume?.getResume?.openCertificationTasks) ||
+                (type.value === "PROVISIONING" && dataResume?.getResume?.openProvisioningTasks) ||
+                (type.value === "ROLE_RIGHT" && dataResume?.getResume?.openRoleRightsTasks) || 
+                (type.value === "SOD" && dataResume?.getResume?.openSodTasks) || 
+                (type.value === "USER" && dataResume?.getResume?.openUserTasks) || 0}               
+              </MenuItemInfo>                  
+            </MenuItemContainer>
+          </Tooltip>            
         ))}       
       </StyledMenu> 
       <StyledMenu        
@@ -301,15 +304,17 @@ const PersonalTasks: FC<ListProps> = ({ resolved }) => {
         onClose={() => setAnchorEl(null)}
       >
         {(queueTypes[`${type}_TASK`] || []).map((type: any) => (
-          <MenuItemContainer key={`task-type-${type.value}`} onClick={() => {
-            setCurrentTypeName(type.label);            
-            handleChangeType(type.value);
-            setAnchorEl(null)
-          }}>
-           <MenuItemText>
-            {type.label}
-           </MenuItemText>                   
-         </MenuItemContainer>
+          <Tooltip title={type.label} placement="bottom" key={`task-type-${type.value}`}>
+            <MenuItemContainer onClick={() => {
+                setCurrentTypeName(type.label);            
+                handleChangeType(type.value);
+                setAnchorEl(null)
+              }}>
+              <MenuItemText>
+                {type.label}
+              </MenuItemText>                   
+            </MenuItemContainer>
+          </Tooltip>            
         ))}       
       </StyledMenu> 
     </Box>  
