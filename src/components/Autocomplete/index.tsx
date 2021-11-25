@@ -9,6 +9,11 @@ import CaretDownIcon from "@icons/CaretDown";
 
 const useStyles = makeStyles(() => ({
   root: {
+    "&.freeSolo": {
+      "& .MuiAutocomplete-clearIndicator": {
+        bottom: 0
+      }
+    },
     "& .MuiAutocomplete-tag": {
       height: 28,
     },
@@ -23,7 +28,7 @@ const useStyles = makeStyles(() => ({
     },
     "& .Mui-error": {
       marginLeft: 0
-    }
+    },
   },
   inputFilter: {
     padding: "0 !important",
@@ -38,7 +43,7 @@ type Ref = {
 
 export default function CustomizedAutocomplete(props: any) {
   const classes = useStyles();
-  const { label, async, getOptionLabel, helperText, error, ...other } = props;
+  const { label, async, getOptionLabel, helperText, error, renderInput, ...other } = props;
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState(props.options || []);
   const [query, setQuery] = React.useState(null);
@@ -78,13 +83,18 @@ export default function CustomizedAutocomplete(props: any) {
   }, [async, query, options, firstSearch, props]);
 
   const handleChange = (event: any) => {
-    if (async) {
+    if (async && !other.freeSolo) {
       if (autoCompleteRef.current) {
         autoCompleteRef.current.changed = true;
       }
       setQuery(event.target.value);
       setLoading(true);
-    }
+    }  
+    if(other.freeSolo && other.onChange && !other?.disableInput) {
+      let value = {};
+      value[label] = event.target.value
+      other.onChange(event, value);
+    }  
   };
 
   const filterOptions = async
@@ -99,7 +109,7 @@ export default function CustomizedAutocomplete(props: any) {
     <Autocomplete
       {...other}
       ref={autoCompleteRef}
-      className={classes.root}
+      className={`${classes.root} ${other.freeSolo && "freeSolo"}`}
       open={open}
       onOpen={() => {
         setOpen(true);
@@ -119,29 +129,57 @@ export default function CustomizedAutocomplete(props: any) {
       }
       popupIcon={<CaretDownIcon />}
       renderInput={(params) => (
-        <div ref={params.InputProps.ref}>
-          <TextField
-            {...params}
-            helperText={helperText}
-            error={Boolean(error)} 
-            InputProps={{
-              ...params.InputProps,
-              ...props.inputprops,              
-              classes: { input: classes.inputFilter },
-              onChange: handleChange,
-              endAdornment: (
-                <React.Fragment>
-                  {loading ? (
-                    <CircularProgress color="inherit" size={20} />
-                  ) : null}
-                  {params.InputProps.endAdornment}
-                </React.Fragment>
-              ),
-            }}
-            placeholder=""
-            variant="outlined"
-          />
-        </div>
+        <>
+          {renderInput && renderInput(params) || (
+            <div ref={params.InputProps.ref}>
+              <TextField
+                {...params}
+                helperText={helperText}
+                error={Boolean(error)} 
+                disabled={!!other?.disableInput}
+                onKeyPress={(event: any) => {
+                  if(!!other?.disableInput) {
+                    event.preventDefault();                                     
+                  }
+                }} 
+                onKeyDown={(event: any) => {
+                  if(!!other?.disableInput) {
+                    event.preventDefault();                                     
+                  }
+                }}
+                onClick={() => {
+                  if(other.freeSolo && autoCompleteRef?.current) {                    
+                    setLoading(true);
+                    async(query, (results: any) => {
+                      setLoading(false);
+                      results.map((r: any) => {
+                        r.refId = query || "FILTER";
+                        return r;
+                      });
+                      setOptions(results);                      
+                    });
+                  }
+                }}                
+                InputProps={{
+                  ...params.InputProps,
+                  ...props.inputprops,              
+                  classes: { input: classes.inputFilter },
+                  onChange: handleChange,                                   
+                  endAdornment: (
+                    <React.Fragment>
+                      {loading ? (
+                        <CircularProgress color="inherit" size={20} />
+                      ) : null}
+                      {params.InputProps.endAdornment}
+                    </React.Fragment>
+                  ),
+                }}
+                placeholder=""
+                variant="outlined"
+              />
+            </div>
+          )}          
+        </>
       )}
     />
   );

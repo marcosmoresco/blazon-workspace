@@ -20,3 +20,9 @@ export const FORM_RENDER = gql`
     formFieldRender(formId: $formId)
   }
 `;
+
+export const GENERATE_USERNAMES = gql`
+  query generateUsernames($formId: Int, $amountSuggestions: Int, $usernamePolicyId: Int, $payload: String) {
+    generateUsernames(formId: $formId, amountSuggestions: $amountSuggestions, usernamePolicyId: $usernamePolicyId, payload: $payload)
+  }
+`;

@@ -17,11 +17,13 @@ import Radio from "@material-ui/core/Radio";
 import RadioGroup from '@material-ui/core/RadioGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import FormHelperText from '@material-ui/core/FormHelperText';
+import CircularProgress from '@material-ui/core/CircularProgress';
 import Loading from "@components/Loading";
 import MinusCircleIcon from "@icons/MinusCircle";
 import InfoIcon from "@icons/Info/index";
 import Status from "./Status";
 import Autocomplete from "@components/Autocomplete";
+import MuiAutocomplete from "@material-ui/lab/Autocomplete";
 import Button from "@components/Button";
 import DatePicker from "@components/DatePicker";
 import Switch from "@components/Switch";
@@ -61,7 +63,12 @@ import { findItemByCatalogItemId } from "./constants";
 //queries
 import { GET_SELF_SERVICE_ITEM, SEARCH_ITEMS } from "@portal/Search/queries";
 import { GET_SELF_SERVICE_CART } from "@requestCart/queries";
-import { GET_FORM_DATAS, GET_APPLICATION_ACCOUNTS_BY_ENTITLEMENT, FORM_RENDER } from "@modules/Checkout/queries";
+import { 
+  GET_FORM_DATAS, 
+  GET_APPLICATION_ACCOUNTS_BY_ENTITLEMENT, 
+  FORM_RENDER, 
+  GENERATE_USERNAMES 
+} from "@modules/Checkout/queries";
 
 //mutations
 import { 
@@ -327,7 +334,10 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                     options: attribute.listValues || [],
                     identifier: attribute.identifier,
                     help: attribute.help,
-                    orgType: attribute.orgType,
+                    orgType: attribute.orgType,   
+                    amountSuggestions: attribute.amountSuggestions,
+                    usernamePolicyId: attribute.usernamePolicyId,
+                    allowUserInput: attribute.allowUserInput,                 
                     required: attribute.required                   
                   });
                 }                               
@@ -601,6 +611,24 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
     });   
   }
 
+  const asyncUsernames = (formId: number, amountSuggestions: number, usernamePolicyId: number, payload: string, callback: any) => {
+    
+    apolloClient
+    .query({
+      query: GENERATE_USERNAMES,
+      variables: { 
+        formId,
+        amountSuggestions,
+        usernamePolicyId,
+        payload                      
+      },
+      fetchPolicy: "network-only"
+    })
+    .then(async ({ data }) => {
+      callback((data?.generateUsernames || []).map((u: string) => ({label: u}))) 
+    });   
+  }
+
   return (
     <UserCardStyle>
       <UserCardTitle>
@@ -797,7 +825,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                           />
                         </>  
                         )}
-                        {["LIST", "USERNAME"].includes(attribute.displayType) && (
+                        {["LIST"].includes(attribute.displayType) && (
                         <div>
                           <Help>
                             <label>{attribute.label}{attribute.required && "*"}</label>
@@ -815,7 +843,30 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                             onChange={(event: any, value: string) => form.setFieldValue("instance." + attribute.name, value, false)}
                             key={index}                                          
                           />
-                        </div>)}                        
+                        </div>)}   
+                        {["USERNAME"].includes(attribute.displayType) && (
+                        <div>
+                          <Help>
+                            <label>{attribute.label}{attribute.required && "*"}</label>
+                            {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
+                          </Help>                           
+                          <Autocomplete
+                            freeSolo
+                            disableInput={!attribute.allowUserInput}
+                            filterSelectedOptions
+                            loading={attribute.loading}                            
+                            label="label"    
+                            name={"instance." + attribute.name}                                                                                                                                                    
+                            value={fieldValue}                          
+                            required={attribute.required}                           
+                            helperText={currentError}
+                            error={Boolean(currentError)}                                                       
+                            onChange={(event: any, value: string) => form.setFieldValue("instance." + attribute.name, value, false)}
+                            key={index}  
+                            async={(query: string, callback: any) => 
+                              asyncUsernames(Number(formDatas.formId), Number(attribute.amountSuggestions), Number(attribute.usernamePolicyId), JSON.stringify(form?.values?.instance || {}), callback)}                                                        
+                          />  
+                        </div>)}                       
                         {["DATE", "DATETIME"].includes(attribute.displayType) && (
                           <>
                             <Help className={`${attribute.help && "Add"}`}>

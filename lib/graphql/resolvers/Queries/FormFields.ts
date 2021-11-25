@@ -32,5 +32,18 @@ export const FormFieldsQueries = {
     } catch (error) {
       throw error;
     }
-  }  
+  },
+  generateUsernames: async (parent: any, args: any, context: any) => {
+    try {
+      const usernames = await axios.post(
+        `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/forms/${args?.formId}/generateUsernames?amountSuggestions=${args?.amountSuggestions}&usernamePolicyId=${args?.usernamePolicyId}`,
+        {values: JSON.parse(args?.payload || "{}")},
+        { ...config(context) }
+      );
+
+      return usernames?.data?.usernames || [];
+    } catch (error) {
+      return [];
+    }
+  },  
 };
