@@ -625,7 +625,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
       fetchPolicy: "network-only"
     })
     .then(async ({ data }) => {
-      callback((data?.generateUsernames || []).map((u: string) => ({label: u}))) 
+      callback((data?.generateUsernames || []).map((u: string) => ({label: u, title: intl.formatMessage({id: "checkout.usernameSuggestions"})}))) 
     });   
   }
 
@@ -852,6 +852,7 @@ const UserCard: React.FC<CheckouitemIstanceProps> = ({
                           </Help>                           
                           <Autocomplete
                             freeSolo
+                            groupBy={(option: any) => option.title}
                             disableInput={!attribute.allowUserInput}
                             filterSelectedOptions
                             loading={attribute.loading}                            
