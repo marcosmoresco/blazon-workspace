@@ -230,7 +230,7 @@ export const ListItemIconContent = styled.div`
 export const ListItemText = styled.div`
   font-weight: normal;
   font-size: 18px;
-  line-height: 100%;
+  line-height: 23px;
   color: #26213f;
   margin-left: 15px;
   text-overflow: ellipsis;
@@ -246,7 +246,7 @@ export const ListItemTextDescription = styled.div`
   line-height: 21px;
   color: #26213f;
   margin-left: 15px;  
-  margin-top: 5px;
+  margin-top: 0px;
   text-overflow: ellipsis;
   white-space: nowrap;
   overflow: hidden;
