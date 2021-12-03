@@ -60,7 +60,7 @@ const Filters: FC<FilterProps> = ({ classes, open, setOpen, intl, activeType, in
   
   
   useEffect(() => {
-    if(Object.keys(filterMapReference).length === 0) {
+    if(Object.keys(filterMapReference).length === 0 && filters.length) {
       setFilters([]);
     } else if(filterList?.length && !filters.length) { 
       setFilters(filterList);                  

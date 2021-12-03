@@ -271,7 +271,7 @@ export const CenterAlign = styled.div`
   display: flex;
   align-items: center;
   justify-content: center;  
-  height: calc(100vh - 180px);
+  height: calc(100vh - 380px);
 `
 
 export const StyledMenu = withStyles({

@@ -267,372 +267,362 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
         initFilters={initFilters}
         open={openFilters}
         setOpen={setOpenFilters}
-      />
-      {loading && (
-        <CenterAlign>
-          <Loading container/>
-        </CenterAlign> 
-      ) || (
-        <div className="Default-content">
-          <div className={classes.root}>
-            <InputSearchBox>
-              <ClickAwayListener
-                mouseEvent="onMouseDown"
-                touchEvent="onTouchStart"
-                onClickAway={() => setOpenText(false)}
-              >
-                <div>
-                  <OutlinedInputSearch
-                    value={filter}
-                    placeholder={intl.formatMessage({id: "search.found.message"})}
-                    onClick={(event: any) => setOpenText(true)}
-                    onChange={async (e: any) => {
-                      setFilter(e?.target?.value);
-                      debounce(async () => {                    
-                        setPage(0);
-                        setTotal(20);              
-                        setLoadingAdvancedChanged(true);
-                        const result = await refetch({
-                          q: e?.target?.value || "",
-                          type: active,
-                          filters: filtered,
-                          size: 20,
-                          page: 0
-                        });              
-                        setLoadingAdvancedChanged(false);
-                        setItems(result.data?.getSelfServiceAdvanced?.representation);
-                        setLinks(result.data?.getSelfServiceAdvanced?.links || []);
-                      }, 1000);                   
-                    }}            
-                    startAdornment={
-                      <InputAdornment position="start">
-                        <SearchIcon />
-                      </InputAdornment>
-                    }
-                    labelWidth={0}
-                  />
-                  {openText && (
-                  <MenuItemContainer>
-                    <MenuItemText onClick={() => {
-                      setCurrentText("name");                                             
-                    }}>
-                      {filter} 
-                      <MenuItemTextValue> <FormattedMessage id="search.in"/> 
-                        <MenuItemTextValueType className={currentText === "name" && "Selected" || ""}>{`'${intl.formatMessage({id: "search.in.name"})}'`}</MenuItemTextValueType>
-                      </MenuItemTextValue>
-                    </MenuItemText>  
-                    <MenuItemText onClick={() => {
-                      setCurrentText("description");                                               
-                    }}>
-                      {filter} 
-                      <MenuItemTextValue> <FormattedMessage id="search.in"/> 
-                        <MenuItemTextValueType className={currentText === "description" && "Selected" || ""}>{`'${intl.formatMessage({id: "search.in.description"})}'`}</MenuItemTextValueType>
-                      </MenuItemTextValue>
-                    </MenuItemText> 
-                    <MenuItemText onClick={() => {
-                      setCurrentText("tags");                                               
-                    }}>
-                      {filter} 
-                      <MenuItemTextValue> <FormattedMessage id="search.in"/> 
-                        <MenuItemTextValueType className={currentText === "tags" && "Selected" || ""}>{`'${intl.formatMessage({id: "search.in.tags"})}'`}</MenuItemTextValueType>
-                      </MenuItemTextValue>
-                    </MenuItemText>   
-                    <MenuItemText onClick={() => {
-                      setCurrentText("all");                                               
-                    }}>
-                      {filter} 
-                      <MenuItemTextValue> <FormattedMessage id="search.in"/> 
-                        <MenuItemTextValueType className={currentText === "all" && "Selected" || ""}>{`'${intl.formatMessage({id: "search.in.all"})}'`}</MenuItemTextValueType>
-                      </MenuItemTextValue>
-                    </MenuItemText>               
-                  </MenuItemContainer>)}
-                </div>  
-              </ClickAwayListener>                     
-            </InputSearchBox>         
-            <Section
-              list={sections}
-              defaultValue={active}
-              onSelect={async (section) => {
-                setItems([]);
-                setActive(section.value);
-                setPage(0);
-                setTotal(20);  
-                setFilterMapReference({});
-                setFiltered("[]");
-                apolloClient
-                  .query({
-                    query: GET_SELF_SERVICE_FILTERS,
-                    variables: {
-                      type: section.value
-                    },
-                  })
-                  .then(({ data }) => {       
-                    setFilterList(deepCopyFunction(data.getSelfServiceFilters));                  
-                    setFilteredValue({
-                      total: 0,   
-                      ...initFilters(data.getSelfServiceFilters, {})   
-                    });                                
-                  });                                        
-              }}
-            />
-            <DividerSearch />          
-              <>
-                <TotalFiltersBox>
-                <div className={classes.totalItens}>
-                  {((listAdvanced || list)?.length > 20 || getLink("next", data?.getSelfServiceAdvanced?.links || [])) && "20+" || (listAdvanced || list)?.length} <FormattedMessage id="search.items.found" />
-                </div>
-                <OptionListFiltersContent>
-                  <OptionListContent>
-                    <OptionList
-                      onClick={() => setType("GRID")}
-                      className={`${(type === "GRID" && "Active") || ""}`}
-                    >
-                      <SquaresFourIcon width={21} />
-                    </OptionList>
-                    <OptionList
-                      onClick={() => setType("LIST")}
-                      className={`${(type === "LIST" && "Active") || ""}`}
-                    >
-                      <ListBulletsIcon width={21} />
-                    </OptionList>
-                  </OptionListContent>
-                  <Badge
-                    badgeContent={filteredValue?.total}
-                    color="primary"
-                    anchorOrigin={{
-                      vertical: "top",
-                      horizontal: "left",
-                    }}
+      />      
+      <div className="Default-content">
+        <div className={classes.root}>
+          <InputSearchBox>
+            <ClickAwayListener
+              mouseEvent="onMouseDown"
+              touchEvent="onTouchStart"
+              onClickAway={() => setOpenText(false)}
+            >
+              <div>
+                <OutlinedInputSearch
+                  value={filter}
+                  placeholder={intl.formatMessage({id: "search.found.message"})}
+                  onClick={(event: any) => setOpenText(true)}
+                  onChange={async (e: any) => {
+                    setPage(0);
+                    setTotal(20);
+                    setFilter(e?.target?.value);
+                    setItems([]);                                       
+                  }}            
+                  startAdornment={
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  }
+                  labelWidth={0}
+                />
+                {openText && (
+                <MenuItemContainer>
+                  <MenuItemText onClick={() => {
+                    setCurrentText("name");                                             
+                  }}>
+                    {filter} 
+                    <MenuItemTextValue> <FormattedMessage id="search.in"/> 
+                      <MenuItemTextValueType className={currentText === "name" && "Selected" || ""}>{`'${intl.formatMessage({id: "search.in.name"})}'`}</MenuItemTextValueType>
+                    </MenuItemTextValue>
+                  </MenuItemText>  
+                  <MenuItemText onClick={() => {
+                    setCurrentText("description");                                               
+                  }}>
+                    {filter} 
+                    <MenuItemTextValue> <FormattedMessage id="search.in"/> 
+                      <MenuItemTextValueType className={currentText === "description" && "Selected" || ""}>{`'${intl.formatMessage({id: "search.in.description"})}'`}</MenuItemTextValueType>
+                    </MenuItemTextValue>
+                  </MenuItemText> 
+                  <MenuItemText onClick={() => {
+                    setCurrentText("tags");                                               
+                  }}>
+                    {filter} 
+                    <MenuItemTextValue> <FormattedMessage id="search.in"/> 
+                      <MenuItemTextValueType className={currentText === "tags" && "Selected" || ""}>{`'${intl.formatMessage({id: "search.in.tags"})}'`}</MenuItemTextValueType>
+                    </MenuItemTextValue>
+                  </MenuItemText>   
+                  <MenuItemText onClick={() => {
+                    setCurrentText("all");                                               
+                  }}>
+                    {filter} 
+                    <MenuItemTextValue> <FormattedMessage id="search.in"/> 
+                      <MenuItemTextValueType className={currentText === "all" && "Selected" || ""}>{`'${intl.formatMessage({id: "search.in.all"})}'`}</MenuItemTextValueType>
+                    </MenuItemTextValue>
+                  </MenuItemText>               
+                </MenuItemContainer>)}
+              </div>  
+            </ClickAwayListener>                     
+          </InputSearchBox>         
+          <Section
+            list={sections}
+            defaultValue={active}
+            onSelect={async (section) => {
+              setItems([]);
+              setActive(section.value);
+              setPage(0);
+              setTotal(20);  
+              setFilterMapReference({});
+              setFiltered("[]");
+              apolloClient
+                .query({
+                  query: GET_SELF_SERVICE_FILTERS,
+                  variables: {
+                    type: section.value
+                  },
+                })
+                .then(({ data }) => {       
+                  setFilterList(deepCopyFunction(data.getSelfServiceFilters));                  
+                  setFilteredValue({
+                    total: 0,   
+                    ...initFilters(data.getSelfServiceFilters, {})   
+                  });                                
+                });                                        
+            }}
+          />
+          <DividerSearch />          
+            <>
+              <TotalFiltersBox>
+              <div className={classes.totalItens}>
+                {((listAdvanced || list)?.length > 20 || getLink("next", data?.getSelfServiceAdvanced?.links || [])) && "20+" || (listAdvanced || list)?.length} <FormattedMessage id="search.items.found" />
+              </div>
+              <OptionListFiltersContent>
+                <OptionListContent>
+                  <OptionList
+                    onClick={() => setType("GRID")}
+                    className={`${(type === "GRID" && "Active") || ""}`}
                   >
-                    <BoxButton>
-                      <ButtonFilter onClick={() => setOpenFilters(true)}>
-                        <ButtonFilterIcon>
-                          <FilterIcon width={20} height={20} />
-                        </ButtonFilterIcon>
-                        <FormattedMessage id="filters"/>
-                        <ButtonFilterIconCaretRight>
-                          <CaretRightIcon width={20} height={20} />
-                        </ButtonFilterIconCaretRight>
-                      </ButtonFilter>
-                    </BoxButton>               
-                  </Badge>
-                  <OrdenationContent>
-                    <Ordenation list={ordenationList} onChange={handleOrderBy} orderBy={orderBy}/>
-                  </OrdenationContent>  
-                </OptionListFiltersContent>
-                </TotalFiltersBox>
-                {type === "GRID" && (
-                  <>       
-                    {loadingAdvancedChanged && <Loading />}         
-                    <div>
-                      <Grid container spacing={3}>
-                        {items.map((item, index) => (
-                          <Grid item xs={3} key={`search-card-item-${index}`}>
-                            <div
-                              className={classes.searchCard}
-                              onClick={() =>
-                                router.push(
-                                  `/search/selfService/${item.type
-                                    .replaceAll("_", "")
-                                    .toLocaleLowerCase()}/${item.identifier}`
-                                )
-                              }
-                            >
-                              <div className={classes.searchCardContent}>
-                                <div className={classes.searchCardContentHeader}>
-                                  <div className={classes.searchCardContentHeaderImage}>
-                                    {iconByType[`${item.type}${(item.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", item.attributes)) || ""}`]}
-                                  </div>
-                                </div>
-                                <Tooltip title={item.name || " - "} placement="bottom">
-                                  <div className={classes.searchCardContentHeaderTitle}>
-                                    {item?.type === "ENTITLEMENT" && (
-                                      <ItemTitleParent>
-                                        {getSelfServiceAttributeValue(
-                                          "resourceName",
-                                          item.attributes
-                                        ) || " - "}{" "}
-                                        /{" "}
-                                      </ItemTitleParent>
-                                    )}
-                                    {item?.type === "ADMIN_PASSWORD" && (
-                                      <ItemTitleParent>
-                                        {getSelfServiceAttributeValue(
-                                          "resourceName",
-                                          item.attributes
-                                        ) || " - "}{" "}
-                                        /{" "}
-                                      </ItemTitleParent>
-                                    )}
-                                    {item.name}
-                                  </div>
-                                </Tooltip>
-                                <Divider />
-                                <div className={classes.searchCartContent}>
-                                  {addedItems.indexOf(item.identifier) === -1 && (
-                                    <>
-                                      {loadingItems.includes(item.identifier) && (
-                                        <div className="Disabled-action">
-                                          <Loading type="blue"/>
-                                        </div>
-                                      )}
-                                      {!loadingItems.includes(item.identifier) && (
-                                        <div
-                                          onClick={(e) => {
-                                          e.stopPropagation();
-                                          e.nativeEvent.stopImmediatePropagation();   
-                                          setLoadingItems([...loadingItems, item.identifier as string]);                                                  
-                                          addSelfServiceCartItem({
-                                            variables: {
-                                              id: item.identifier                                  
-                                            },
-                                          });
-                                        }}
-                                        >
-                                          <div className="Icon-content">
-                                            <ShoppingCartIcon width={25} height={25} />
-                                          </div>
-                                          {intl.formatMessage({id: "cart.add"})}
-                                        </div>
-                                        )}
-                                    </>                              
-                                  )}   
-                                  {addedItems.indexOf(item.identifier) > -1 && (
-                                    <div>
-                                      <div className="Icon-content">
-                                        <CheckCircleIcon width={25} height={25} color="#26213F"/>
-                                      </div>
-                                      {intl.formatMessage({id: "search.selfService.added"})}
+                    <SquaresFourIcon width={21} />
+                  </OptionList>
+                  <OptionList
+                    onClick={() => setType("LIST")}
+                    className={`${(type === "LIST" && "Active") || ""}`}
+                  >
+                    <ListBulletsIcon width={21} />
+                  </OptionList>
+                </OptionListContent>
+                <Badge
+                  badgeContent={filteredValue?.total}
+                  color="primary"
+                  anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "left",
+                  }}
+                >
+                  <BoxButton>
+                    <ButtonFilter onClick={() => setOpenFilters(true)}>
+                      <ButtonFilterIcon>
+                        <FilterIcon width={20} height={20} />
+                      </ButtonFilterIcon>
+                      <FormattedMessage id="filters"/>
+                      <ButtonFilterIconCaretRight>
+                        <CaretRightIcon width={20} height={20} />
+                      </ButtonFilterIconCaretRight>
+                    </ButtonFilter>
+                  </BoxButton>               
+                </Badge>
+                <OrdenationContent>
+                  <Ordenation list={ordenationList} onChange={handleOrderBy} orderBy={orderBy}/>
+                </OrdenationContent>  
+              </OptionListFiltersContent>
+              </TotalFiltersBox>
+              {loading && (
+                <CenterAlign>
+                  <Loading container/>
+                </CenterAlign> 
+              ) || (
+                <>
+                  {type === "GRID" && (
+                    <>       
+                      {loadingAdvancedChanged && <Loading />}         
+                      <div>
+                        <Grid container spacing={3}>
+                          {items.map((item, index) => (
+                            <Grid item xs={3} key={`search-card-item-${index}`}>
+                              <div
+                                className={classes.searchCard}
+                                onClick={() =>
+                                  router.push(
+                                    `/search/selfService/${item.type
+                                      .replaceAll("_", "")
+                                      .toLocaleLowerCase()}/${item.identifier}`
+                                  )
+                                }
+                              >
+                                <div className={classes.searchCardContent}>
+                                  <div className={classes.searchCardContentHeader}>
+                                    <div className={classes.searchCardContentHeaderImage}>
+                                      {iconByType[`${item.type}${(item.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", item.attributes)) || ""}`]}
                                     </div>
-                                  )}                        
+                                  </div>
+                                  <Tooltip title={item.name || " - "} placement="bottom">
+                                    <div className={classes.searchCardContentHeaderTitle}>
+                                      {item?.type === "ENTITLEMENT" && (
+                                        <ItemTitleParent>
+                                          {getSelfServiceAttributeValue(
+                                            "resourceName",
+                                            item.attributes
+                                          ) || " - "}{" "}
+                                          /{" "}
+                                        </ItemTitleParent>
+                                      )}
+                                      {item?.type === "ADMIN_PASSWORD" && (
+                                        <ItemTitleParent>
+                                          {getSelfServiceAttributeValue(
+                                            "resourceName",
+                                            item.attributes
+                                          ) || " - "}{" "}
+                                          /{" "}
+                                        </ItemTitleParent>
+                                      )}
+                                      {item.name}
+                                    </div>
+                                  </Tooltip>
+                                  <Divider />
+                                  <div className={classes.searchCartContent}>
+                                    {addedItems.indexOf(item.identifier) === -1 && (
+                                      <>
+                                        {loadingItems.includes(item.identifier) && (
+                                          <div className="Disabled-action">
+                                            <Loading type="blue"/>
+                                          </div>
+                                        )}
+                                        {!loadingItems.includes(item.identifier) && (
+                                          <div
+                                            onClick={(e) => {
+                                            e.stopPropagation();
+                                            e.nativeEvent.stopImmediatePropagation();   
+                                            setLoadingItems([...loadingItems, item.identifier as string]);                                                  
+                                            addSelfServiceCartItem({
+                                              variables: {
+                                                id: item.identifier                                  
+                                              },
+                                            });
+                                          }}
+                                          >
+                                            <div className="Icon-content">
+                                              <ShoppingCartIcon width={25} height={25} />
+                                            </div>
+                                            {intl.formatMessage({id: "cart.add"})}
+                                          </div>
+                                          )}
+                                      </>                              
+                                    )}   
+                                    {addedItems.indexOf(item.identifier) > -1 && (
+                                      <div>
+                                        <div className="Icon-content">
+                                          <CheckCircleIcon width={25} height={25} color="#26213F"/>
+                                        </div>
+                                        {intl.formatMessage({id: "search.selfService.added"})}
+                                      </div>
+                                    )}                        
+                                  </div>
                                 </div>
                               </div>
-                            </div>
-                          </Grid>
-                        ))}
-                      </Grid>
-                    </div>
-                  </>                
-                )}
-                {type === "LIST" && (
-                  <>        
-                    {loadingAdvancedChanged && <Loading />}        
-                    {items.map((item, index) => (
-                      <ListItemBox
-                        onClick={() =>
-                          router.push(
-                            `/search/selfService/${item.type
-                              .replaceAll("_", "")
-                              .toLocaleLowerCase()}/${item.identifier}`
-                          )
-                        }
-                        key={`search-list-item-${index}`}
+                            </Grid>
+                          ))}
+                        </Grid>
+                      </div>
+                    </>                
+                  )}
+                  {type === "LIST" && (
+                    <>        
+                      {loadingAdvancedChanged && <Loading />}        
+                      {items.map((item, index) => (
+                        <ListItemBox
+                          onClick={() =>
+                            router.push(
+                              `/search/selfService/${item.type
+                                .replaceAll("_", "")
+                                .toLocaleLowerCase()}/${item.identifier}`
+                            )
+                          }
+                          key={`search-list-item-${index}`}
+                        >
+                          <ListItemContent>
+                            <ListItemIconContent color={currentTheme.palette.primary.main}>
+                              {iconByType[`${item.type}${(item.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", item.attributes)) || ""}`]}
+                            </ListItemIconContent>
+                            <div>
+                              <Tooltip title={item.name || " - "} placement="bottom">
+                                <ListItemText>
+                                  {item?.type === "ENTITLEMENT" && (
+                                    <ItemTitleParent>
+                                      {getSelfServiceAttributeValue(
+                                        "resourceName",
+                                        item.attributes
+                                      ) || " - "}{" "}
+                                      /{" "}
+                                    </ItemTitleParent>
+                                  )}
+                                  {item?.type === "ADMIN_PASSWORD" && (
+                                    <ItemTitleParent>
+                                      {getSelfServiceAttributeValue(
+                                        "resourceName",
+                                        item.attributes
+                                      ) || " - "}{" "}
+                                      /{" "}
+                                    </ItemTitleParent>
+                                  )}
+                                  {item.name}
+                                </ListItemText>
+                              </Tooltip>
+                              <Tooltip title={item?.description || " - "} placement="bottom">
+                                <ListItemTextDescription>{item?.description}</ListItemTextDescription>
+                              </Tooltip>  
+                            </div>                    
+                          </ListItemContent>
+                          {addedItems.indexOf(item.identifier) === -1 && (
+                            <>
+                              {loadingItems.includes(item.identifier) && (
+                                <ListItemIconContent className="Disabled-action">
+                                  <Loading type="blue"/>
+                                </ListItemIconContent>
+                              )} 
+                              {!loadingItems.includes(item.identifier) && (
+                                <ListItemIconContent
+                                  className="Selectable"
+                                  color={currentTheme.palette.primary.main}
+                                  onClick={(e) => {
+                                    e.stopPropagation();
+                                    e.nativeEvent.stopImmediatePropagation();
+                                    setLoadingItems([...loadingItems, item.identifier as string]); 
+                                    addSelfServiceCartItem({
+                                      variables: { id: item.identifier },
+                                    });
+                                  }}
+                                >
+                                  <ShoppingCartIcon width={21} />
+                                </ListItemIconContent>
+                              )}
+                            </>
+                          )}
+                          {addedItems.indexOf(item.identifier) > -1 && (
+                          <ListItemIconContent>
+                            <CheckCircleIcon width={21} color="#26213F"/>
+                          </ListItemIconContent>)}
+                        </ListItemBox>
+                      ))}
+                    </>
+                  )}
+                  {getLink("next", links || []) && (
+                    <LoadMoreContent>
+                      <Button
+                        variant="contained"
+                        color="primary"
+                        isLoading={loadingAdvanced ? 1 : 0}
+                        onClick={async () => {  
+                          setLoadingAdvanced(true);                    
+                          const result = await refetch({
+                            q: filter,
+                            type: active,
+                            filters: filtered,
+                            size: 20,
+                            page: page + 1
+                          });
+                          setPage(page + 1);
+                          setLoadingAdvanced(false);
+                          setItems([
+                            ...items,
+                            ...result?.data?.getSelfServiceAdvanced?.representation
+                          ])                     
+                          setLinks(result.data?.getSelfServiceAdvanced?.links || []);                                  
+                        }}
                       >
-                        <ListItemContent>
-                          <ListItemIconContent color={currentTheme.palette.primary.main}>
-                            {iconByType[`${item.type}${(item.type === "RESOURCE" && getSelfServiceAttributeValue("resourceType", item.attributes)) || ""}`]}
-                          </ListItemIconContent>
-                          <div>
-                            <Tooltip title={item.name || " - "} placement="bottom">
-                              <ListItemText>
-                                {item?.type === "ENTITLEMENT" && (
-                                  <ItemTitleParent>
-                                    {getSelfServiceAttributeValue(
-                                      "resourceName",
-                                      item.attributes
-                                    ) || " - "}{" "}
-                                    /{" "}
-                                  </ItemTitleParent>
-                                )}
-                                {item?.type === "ADMIN_PASSWORD" && (
-                                  <ItemTitleParent>
-                                    {getSelfServiceAttributeValue(
-                                      "resourceName",
-                                      item.attributes
-                                    ) || " - "}{" "}
-                                    /{" "}
-                                  </ItemTitleParent>
-                                )}
-                                {item.name}
-                              </ListItemText>
-                            </Tooltip>
-                            <Tooltip title={item?.description || " - "} placement="bottom">
-                              <ListItemTextDescription>{item?.description}</ListItemTextDescription>
-                            </Tooltip>  
-                          </div>                    
-                        </ListItemContent>
-                        {addedItems.indexOf(item.identifier) === -1 && (
-                          <>
-                            {loadingItems.includes(item.identifier) && (
-                              <ListItemIconContent className="Disabled-action">
-                                <Loading type="blue"/>
-                              </ListItemIconContent>
-                            )} 
-                            {!loadingItems.includes(item.identifier) && (
-                              <ListItemIconContent
-                                className="Selectable"
-                                color={currentTheme.palette.primary.main}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  e.nativeEvent.stopImmediatePropagation();
-                                  setLoadingItems([...loadingItems, item.identifier as string]); 
-                                  addSelfServiceCartItem({
-                                    variables: { id: item.identifier },
-                                  });
-                                }}
-                              >
-                                <ShoppingCartIcon width={21} />
-                              </ListItemIconContent>
-                            )}
-                          </>
-                        )}
-                        {addedItems.indexOf(item.identifier) > -1 && (
-                        <ListItemIconContent>
-                          <CheckCircleIcon width={21} color="#26213F"/>
-                        </ListItemIconContent>)}
-                      </ListItemBox>
-                    ))}
-                  </>
-                )}
-                {getLink("next", links || []) && (
-                  <LoadMoreContent>
-                    <Button
-                      variant="contained"
-                      color="primary"
-                      isLoading={loadingAdvanced ? 1 : 0}
-                      onClick={async () => {  
-                        setLoadingAdvanced(true);                    
-                        const result = await refetch({
-                          q: filter,
-                          type: active,
-                          filters: filtered,
-                          size: 20,
-                          page: page + 1
-                        });
-                        setPage(page + 1);
-                        setLoadingAdvanced(false);
-                        setItems([
-                          ...items,
-                          ...result?.data?.getSelfServiceAdvanced?.representation
-                        ])                     
-                        setLinks(result.data?.getSelfServiceAdvanced?.links || []);                                  
-                      }}
-                    >
-                      <FormattedMessage id="loadMore" />
-                    </Button>
-                  </LoadMoreContent>
-                )}
-                {!loadingAdvanced && !items.length && (
-                  <EmptyState
-                    image={EmptyStateTypeahead}
-                    title="no.result"
-                    text="search.no.result"
-                  />
-                )}
-              </>                             
-          </div>
+                        <FormattedMessage id="loadMore" />
+                      </Button>
+                    </LoadMoreContent>
+                  )}
+                  {!loadingAdvanced && !items.length && (
+                    <EmptyState
+                      image={EmptyStateTypeahead}
+                      title="no.result"
+                      text="search.no.result"
+                    />
+                  )}
+                </>
+              )}              
+            </>                             
         </div>
-      )}
+      </div>      
     </>    
   );
 };
