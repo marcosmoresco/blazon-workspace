@@ -152,7 +152,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
     getSelfServiceAdvanced: SelfServiceRepresentation;
   }>(GET_SELF_SERVICE_ADVANCED, {
     variables: {
-      q: router.query.q || "",
+      q: filter || "",
       size: 20,    
       page: 0, 
       filters: filtered,
