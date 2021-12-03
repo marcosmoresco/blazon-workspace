@@ -123,3 +123,7 @@ export const download = (data: any, fileName?: string) => {
 
   downloadClick(element);  
 }
+
+export const debounce = (func: any, wait: number) => {
+	setTimeout(func, wait);
+}

@@ -26,6 +26,7 @@ import UserIcon from '@icons/User'
 import InfoIcon from '@icons/Info'
 import SignOutIcon from '@icons/SignOut'
 import ProfileUserIcon from '@icons/ProfileUser'
+import SearchIcon from '@icons/Search'
 import Message from '@portal/Message/index'
 import Cart from '@portal/Cart/index'
 import Tooltip from '@components/Tooltip'
@@ -89,13 +90,34 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
             <div className={classes.menuLogo} onClick={() => router.push('/')}>
               <img src="/api/logo" alt="Logo" />
             </div>
-            {!['/search', '/checkout', '/checkout-finishing', '/checkout-finished'].includes(router.pathname) && (
+            {/*!['/search', '/checkout', '/checkout-finishing', '/checkout-finished'].includes(router.pathname) && (
               <HeaderAutocomplete classes={classes} theme={currentTheme}/>
-            ) || <HeaderFixAutocomplete />}
+            ) || <HeaderFixAutocomplete />*/}
           </div>
           <div className={classes.menuOptionsContent}>
             {!['/checkout', '/checkout-finishing', '/checkout-finished'].includes(router.pathname) && (
               <div className={classes.menuOptions}>
+                <Tooltip
+                  title={intl.formatMessage({id: 'search.new.access'})}
+                  placement='bottom'
+                  >
+                  <div
+                    className={`${classes.optionImage} ${
+                      router.pathname === '/search' && 'Active'
+                    }`}
+                    onClick={() => router.push('/search')}
+                  >
+                    <SearchIcon
+                      width={21}
+                      height={21}
+                      color={
+                        (router.pathname === '/requests' && currentTheme.palette.primary.main) ||
+                        currentTheme.palette.header.contrastText
+                      }      
+                      stroke={1.5}              
+                    />  
+                  </div>  
+                </Tooltip>
                 <Tooltip
                   title={intl.formatMessage({ id: 'requests' })}
                   placement='bottom'

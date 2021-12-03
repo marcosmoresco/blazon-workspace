@@ -31,9 +31,9 @@ export const SelfServiceQueries = {
           process.env.SERVER_HOST
         }/blazon-workspace-backend/workspace/selfservice/items/advanced?size=${
           args?.size || 10000
-        }${args?.type && args?.type !== "ALL" ? `&type=${args.type}` : ""}${
+        }&page=${args?.page || 0}${args?.type && args?.type !== "ALL" ? `&type=${args.type}` : ""}${
           args?.q ? `&q=${encodeURIComponent(args.q)}` : ""
-        }`,
+        }${args?.ord && `&ord=${args.ord}` || ""}${args?.fullTextAttrib && `&fullTextAttrib=${args.fullTextAttrib}` || ""}`,
         JSON.parse(args?.filters || "[]"),
         { ...config(context) }
       );

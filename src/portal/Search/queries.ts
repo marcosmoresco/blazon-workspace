@@ -46,10 +46,13 @@ export const GET_SELF_SERVICE_ADVANCED = gql`
   query getSelfServiceAdvanced(
     $q: String
     $size: Int
+    $page: Int
+    $ord: String
+    $fullTextAttrib: String
     $type: String
     $filters: String
   ) {
-    getSelfServiceAdvanced(q: $q, size: $size, type: $type, filters: $filters) {
+    getSelfServiceAdvanced(q: $q, size: $size, page: $page, ord: $ord, fullTextAttrib: $fullTextAttrib, type: $type, filters: $filters) {
       representation {
         name
         description

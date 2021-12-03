@@ -101,6 +101,6 @@
   "task.type.USER_ACTIVATION": "Activação",
   "task.type.USER_INACTIVATION": "Inactivação",
   "task.type.USER_REVALIDATION": "Revalidação",
-  "task.type.USER_REVOCATION": "Revocação",
+  "task.type.USER_REVOCATION": "Revogação",
   "task.type.USER_CREATION": "Criação"
 }

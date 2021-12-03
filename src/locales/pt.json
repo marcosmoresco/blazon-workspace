@@ -115,6 +115,7 @@
   "category": "Categoria",
   "type": "Tipo",
   "search.found.message": "Encontre aqui seu acesso...",
+  "search.new.access": "Procure por um novo acesso",
   "continue": "Continuar",
   "conclude": "Concluir",
   "message.success": "Sucesso",
@@ -143,5 +144,6 @@
   "team": "Time",
   "revoke": "Revogar",
   "inactivate": "Inativar",
-  "activate": "Ativar" 
+  "activate": "Ativar",
+  "score": "Relevância" 
 }

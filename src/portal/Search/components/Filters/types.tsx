@@ -3,7 +3,16 @@ import { IntlShape } from "react-intl";
 export type FilterProps = {
   intl: IntlShape;
   activeType: string;
-  onSave(filtered: {[key: string]: any}, total: number): void 
+  onSave(filtered: {[key: string]: any}, total: number, noChangeOpen: boolean | undefined): void; 
+  setTotalFiltered(total: number): void;
+  filterList: any;
+  filteredValue: {[key: string]: any};
+  filterMapReference: {[key: string]: any};
+  open: boolean;
+  setOpen(value: boolean): void;
+  setFilteredValue(value: {[key: string]: any}): void;
+  setFilterMapReference(value: {[key: string]: any}): void;
+  initFilters(filters: any, filterMapReference: any): void;
   classes: {
     root: string;
     totalItens: string;

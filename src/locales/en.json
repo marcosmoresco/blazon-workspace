@@ -115,6 +115,7 @@
   "category": "Category",
   "type": "Type",
   "search.found.message": "Find your access here...",
+  "search.new.access": "Search for new access",
   "continue": "Continue",
   "conclude": "Conclude",
   "message.success": "Success",
@@ -143,5 +144,6 @@
   "team": "Team",
   "revoke": "Revoke",
   "inactivate": "Inactivate",
-  "activate": "Activate"
+  "activate": "Activate",
+  "score": "Score"
 }

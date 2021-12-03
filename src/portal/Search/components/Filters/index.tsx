@@ -53,57 +53,23 @@ import {
   BoxHeaderInputFilter,
 } from "./styles";
 
-const initFilters = (filters: any, filterMapReference: any) => {
-  const _filteredItems: { [key: string]: any } = {};
-  filters.forEach((f:FilterType) => {
-    _filteredItems[f.name] = {};
-    const ref = {
-      name: f.name,
-      type: f.type,
-      values: []
-    };
-
-    filterMapReference[f.name] = ref  
-  });
-  return _filteredItems;
-};
-
-const Filters: FC<FilterProps> = ({ classes, intl, activeType, onSave }) => {
-  const [open, setOpen] = useState(false);
+const Filters: FC<FilterProps> = ({ classes, open, setOpen, intl, activeType, initFilters, onSave, filterMapReference = {}, setFilterMapReference, filteredValue = {}, setFilteredValue, filterList }) => { 
   const [filter, setFilter] = useState("");        
-  const [filters, setFilters] = useState([]);
-  const [filtered, setFiltered] = useState<{[key: string]: any}>({}); 
-  const [filterMapReference, setFilterMapReference] = useState<{[key: string]: any}>({});
-  const [current, setCurrent] = useState<string>("");
-
+  const [filters, setFilters] = useState(filterList || []);
+  const [current, setCurrent] = useState<string>(activeType);
+  
   useEffect(() => {
-    if(!current || (current !== activeType)) {
-
-      apolloClient
-      .query({
-        query: GET_SELF_SERVICE_FILTERS,
-        variables: {
-          type: activeType
-        },
-      })
-      .then(({ data }) => {
-        setFilters(deepCopyFunction(data.getSelfServiceFilters));        
-        setFiltered({
-          total: 0,   
-          ...initFilters(data.getSelfServiceFilters, filterMapReference)   
-        })      
-      });
-      
-      setCurrent(activeType);
+    if(filterList?.length && !filters.length) { 
+      setFilters(filterList);                  
     }  
-  }, [current, activeType, filterMapReference]);  
+  }, [filters, filterList]);  
 
   const clearAll = (): void => {    
-    setFiltered({
+    setFilteredValue({
       total: 0,   
       ...initFilters(filters, filterMapReference)   
     });
-    onSave(filterMapReference, 0);
+    onSave(filterMapReference, 0, undefined);
   };
 
   const closeFilters = (event: any): void => {
@@ -116,8 +82,8 @@ const Filters: FC<FilterProps> = ({ classes, intl, activeType, onSave }) => {
     setOpen(false);
   };
 
-  const changeFilter = (filter: FilterType, value: any, property: string, options?: FilterValueType[], valueObject?: any): void => {
-    let _filtered = {...filtered};     
+  const changeFilter = (filter: FilterType, value: any, property: string, options?: FilterValueType[], valueObject?: any, noChangeOpen?: boolean): void => {
+    let _filtered = {...filteredValue};     
     if(options) {
       options.forEach((o) => {  
         if(value) {
@@ -162,7 +128,7 @@ const Filters: FC<FilterProps> = ({ classes, intl, activeType, onSave }) => {
         }
       }
     } else {
-      if(isDefined(value) && !isDefined(filtered[filter.name].selected)) {
+      if(isDefined(value) && !isDefined(filteredValue[filter.name].selected)) {
         _filtered.total++;                  
       } else if(!isDefined(value)) {
         _filtered.total--;
@@ -170,8 +136,10 @@ const Filters: FC<FilterProps> = ({ classes, intl, activeType, onSave }) => {
     }     
     
     _filtered[filter.name][property] = value; 
-    setFiltered(_filtered);
-    onSave(filterMapReference, _filtered?.total);
+    setFilteredValue(_filtered);
+    if(!noChangeOpen) {
+      onSave(filterMapReference, _filtered?.total, undefined);
+    }    
   };
 
   const currentFilter: { [key: string]: any } = {
@@ -228,9 +196,9 @@ const Filters: FC<FilterProps> = ({ classes, intl, activeType, onSave }) => {
             <HeaderDivider />
             <BoxHeader>
               <BoxHeaderTitle>
-                {filtered.total > 0 ? (
+                {filteredValue.total > 0 ? (
                   <>
-                    {filtered.total} {filtered.total === 1 ? <FormattedMessage id="filter.selected" /> : <FormattedMessage id="filters.selected" />}
+                    {filteredValue.total} {filteredValue.total === 1 ? <FormattedMessage id="filter.selected" /> : <FormattedMessage id="filters.selected" />}
                   </>
                 ) : (
                   <>
@@ -275,7 +243,7 @@ const Filters: FC<FilterProps> = ({ classes, intl, activeType, onSave }) => {
                     {f.type === "MULTTEXT" ? (
                       <Checkbox
                         label={f.label}   
-                        value={filtered[f.name]?.selected}                     
+                        value={filteredValue[f.name]?.selected}                     
                         onChange={(value:any) => changeFilter(f, value, "selected", f.values)}
                       />
                     ) : null}
@@ -301,7 +269,7 @@ const Filters: FC<FilterProps> = ({ classes, intl, activeType, onSave }) => {
                         >
                           <Checkbox
                             label={v.label}
-                            value={filtered[f.name][v.value]}
+                            value={filteredValue[f.name] && filteredValue[f.name][v.value] || ""}
                             onChange={(value:any) => changeFilter(f, value, v.value, undefined, v)}
                           />
                         </BoxFilterContent>
@@ -314,7 +282,7 @@ const Filters: FC<FilterProps> = ({ classes, intl, activeType, onSave }) => {
                           value="right"
                           control={
                             <Radio 
-                              checked={filtered[f.name]['selected'] || false}
+                              checked={filteredValue[f.name]['selected'] || false}
                               onChange={() =>changeFilter(f, true, 'selected')}
                             />
                           }
@@ -327,7 +295,7 @@ const Filters: FC<FilterProps> = ({ classes, intl, activeType, onSave }) => {
                           value="right"
                           control={
                             <Radio
-                              checked={filtered[f.name]['selected'] === false || false} 
+                              checked={filteredValue[f.name]['selected'] === false || false} 
                               onChange={() =>changeFilter(f, false, 'selected')}
                             />
                           }
@@ -352,8 +320,11 @@ const Filters: FC<FilterProps> = ({ classes, intl, activeType, onSave }) => {
               ) :  (
                 <BoxHeaderInputFilter
                   placeholder={f.label}    
-                  value={filtered[f.name]?.resourceName}                                            
-                  onChange={(e:any) => changeFilter(f, e?.target?.value, "resourceName", undefined, {value: e?.target?.value})}
+                  value={filteredValue[f.name]?.resourceName}   
+                  onBlur={() => onSave(filterMapReference, filteredValue.total, undefined)}                                         
+                  onChange={(e:any) => {                    
+                    changeFilter(f, e?.target?.value, "resourceName", undefined, {value: e?.target?.value}, true);                                        
+                  }}
                 />
               )
             )}

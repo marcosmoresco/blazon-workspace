@@ -1,10 +1,12 @@
 import {
   styled as styledMui,
   createStyles,
+  withStyles,
   Theme,
 } from "@material-ui/core/styles";
 import Divider from "@material-ui/core/Divider";
 import OutlinedInput from "@material-ui/core/OutlinedInput";
+import Menu from '@material-ui/core/Menu';
 import styled from "styled-components";
 
 export const useStyles = (theme: Theme) =>
@@ -257,3 +259,69 @@ export const CenterAlign = styled.div`
   justify-content: center;  
   height: calc(100vh - 180px);
 `
+
+export const StyledMenu = withStyles({
+  paper: {
+    border: "1px solid #d3d4d5",
+    boxShadow: "0px 4px 74px rgba(0, 0, 0, 0.25)",
+    background: "#F4F4F5",
+    marginTop: 10,  
+    width: 800,
+    padding: 10,
+    maxHeight: 400,
+    "& .MuiList-root": {
+      paddingTop: 0,
+      paddingBottom: 0,
+    }   
+  },
+})((props: any) => (
+  <Menu    
+    getContentAnchorEl={null}
+    anchorOrigin={{
+      vertical: 'bottom',
+      horizontal: 'center',
+    }}
+    transformOrigin={{
+      vertical: 'top',
+      horizontal: 'center',
+    }}
+    {...props}
+  />
+));
+
+export const MenuItemContainer = styled.div`   
+  outline: 0;
+  background: #FFFFFF;
+  border: 1px solid #BEBECB;
+  box-sizing: border-box;
+  box-shadow: 0px 24px 71px 5px rgba(0, 0, 0, 0.25);
+  border-radius: 8px;
+  margin-top: 15px;
+  width: 800px;
+  position: absolute;
+  z-index: 10;  
+`;
+
+export const MenuItemText = styled.div`
+  position: relative;
+  cursor: pointer;  
+  padding: 10px 20px;
+  &:hover {
+    background-color: #f6f6f6;
+  } 
+`;
+
+export const MenuItemTextValue = styled.span`
+  opacity: 0.6;
+`;
+
+export const MenuItemTextValueType = styled.span`
+  margin-left: 5px;
+  &.Selected {
+    font-weight: 600;
+  }
+`;
+
+export const OrdenationContent = styled.div`
+  margin-bottom: 7px;
+`;

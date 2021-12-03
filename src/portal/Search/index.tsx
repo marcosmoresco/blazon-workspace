@@ -9,11 +9,13 @@ import Badge from "@material-ui/core/Badge";
 import Divider from "@material-ui/core/Divider";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Grid from "@material-ui/core/Grid";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
 import Button from "@components/Button";
 import EmptyState from "@components/EmptyState";
 import Section from "@components/Section";
 import Tooltip from "@components/Tooltip";
 import Loading from "@components/Loading";
+import Ordenation from "@components/Ordenation";
 import SharedAccountIcon from "@icons/SharedAccount";
 import ApplicationAccountIcon from "@icons/ApplicationAccount";
 import RegularAccountIcon from "@icons/RegularAccount";
@@ -35,10 +37,11 @@ import {
   ADD_SELF_SERVICE_CART_ITEM,
 } from "@requestCart/mutations";
 import {
-  GET_SELF_SERVICE_CART
+  GET_SELF_SERVICE_CART,
 } from "@requestCart/queries";
-import { paginate, getSelfServiceAttributeValue } from "@utils/index";
-import type { SearchProps, SelfServiceRepresentation } from "./types";
+import { GET_SELF_SERVICE_FILTERS } from "@portal/Search/queries";
+import { debounce, getSelfServiceAttributeValue, getLink, deepCopyFunction } from "@utils/index";
+import type { SearchProps, SelfServiceRepresentation, SelfService } from "./types";
 import {
   useStyles,
   DividerSearch,
@@ -54,13 +57,19 @@ import {
   ListItemText,
   LoadMoreContent,
   ItemTitleParent,
-  CenterAlign
+  CenterAlign,
+  StyledMenu,
+  MenuItemContainer,
+  MenuItemText,
+  MenuItemTextValue,
+  MenuItemTextValueType,
+  OrdenationContent,
 } from "./styles";
 import { GET_SELF_SERVICE, GET_SELF_SERVICE_ADVANCED } from "./queries";
+import type { FilterType } from "@components/Filter/types";
 import { useTheme, themes } from "@theme/index";
 import WatchIcon from "@icons/Watch";
-
-import { filters } from "@modules/Task/constants";
+import { Link } from "@types";
 
 const Search: FC<SearchProps> = ({ intl, classes }) => {
   const { cart } = useCart();
@@ -71,15 +80,36 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
   const [active, setActive] = useState("ALL");
   const [filter, setFilter] = useState(router.query.q || "");
   const [filtered, setFiltered] = useState("[]");
+  const [filteredValue, setFilteredValue] = useState<{[key: string]: any}>({});
+  const [filterMapReference, setFilterMapReference] = useState<{[key: string]: any}>({});
   const [type, setType] = useState("LIST");
   const [page, setPage] = useState(0);
   const [total, setTotal] = useState(20);
+  const [loadingAdvancedChanged, setLoadingAdvancedChanged] = useState<boolean>(false);
   const [loadingAdvanced, setLoadingAdvanced] = useState<boolean>(false);
   const [filteredTotal, setTotalFiltered] = useState(0);
   const [listAdvanced, setListAdvanced] = useState(null);
   const [addedItems, setAddedItems] = useState<string[]>([]); 
   const [loadingItems, setLoadingItems] = useState<string[]>([]);
-  const [orderBy, setOrderBy] = useState<string>("createdAt:desc");
+  const [items, setItems] = useState<SelfService[]>([])
+  const [links, setLinks] = useState<Link[]>([])
+  const [orderBy, setOrderBy] = useState<string>("");
+  const [openText, setOpenText] = useState<boolean>(false);
+  const [currentText, setCurrentText] = useState("name");
+  const [filterList, setFilterList] = useState();
+  const [openFilters, setOpenFilters] = useState(false);
+
+  const ordenationList: FilterType[] = [{
+    orderable: true,
+    name: "name",
+    label: <FormattedMessage id="name" />,
+    type: "string"      
+  }, {
+    orderable: true,
+    name: "score",
+    label: <FormattedMessage id="score" />,
+    type: "number"       
+  }]
 
   useEffect(() => {
     if(cart && (cart.items || []).length) {
@@ -115,13 +145,24 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
   }>(GET_SELF_SERVICE_ADVANCED, {
     variables: {
       q: router.query.q || "",
-      size: 100,     
-      filters: "[]"
+      size: 20,    
+      page: 0, 
+      filters: filtered,
+      fullTextAttrib: currentText,
+      ord: orderBy,
+      type: active
     },
     fetchPolicy: "network-only"
   });
 
   const list = data?.getSelfServiceAdvanced?.representation || [];
+
+  if(list.length && !items.length && !loading) {
+    setItems(list);
+    setLinks(data?.getSelfServiceAdvanced?.links || []);
+  } else if(loading && items.length) {
+    setItems([]);
+  }
 
   if(loading) {
     return (
@@ -131,22 +172,18 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
     )
   }
 
-  const save = async (filteredMapReference: any, total: number) => {    
+  const save = async (filteredMapReference: any, total: number, noChangeOpen?: boolean) => {    
     setTotalFiltered(total);    
     const _filters: any[] = [];
     Object.keys(filteredMapReference).forEach((f: any) => {
       _filters.push(filteredMapReference[f]);
     });
-
-    setLoadingAdvanced(true);
-    await refetch({
-      q: filter,
-      type: active,
-      filters: JSON.stringify(_filters),
-      size: 100
-    });
-    setLoadingAdvanced(false);
-    setFiltered(JSON.stringify(_filters));   
+    setFiltered(JSON.stringify(_filters));    
+    setPage(0);
+    setItems([]);   
+    if(!noChangeOpen) {
+      setOpenFilters(false);
+    } 
   };
 
   const iconByType: { [key: string]: any } = {
@@ -194,61 +231,136 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
     },    
   ];
 
-  const handleOrderBy = (orderBy: any) => {
-    setOrderBy(orderBy);
+  const handleOrderBy = async (orderBy: any) => {
+    setOrderBy(orderBy);    
+    setPage(0);
+    setItems([]);    
+  };
+
+  const initFilters = (filters: any, filterMapReference: any) => {
+    const _filteredItems: { [key: string]: any } = {};
+    filters.forEach((f:FilterType) => {
+      _filteredItems[f.name] = {};
+      const ref = {
+        name: f.name,
+        type: f.type,
+        values: []
+      };
+  
+      filterMapReference[f.name] = ref  
+    });
+    setFilterMapReference(filterMapReference);
+    return _filteredItems;
   };
 
   return (
     <div className="Default-content">
       <div className={classes.root}>
         <InputSearchBox>
-          <OutlinedInputSearch
-            value={filter}
-            placeholder={intl.formatMessage({id: "search.found.message"})}
-            onChange={async (e: any) => {
-              setFilter(e?.target?.value);
-              setPage(0);
-              setTotal(20);
-              setLoadingAdvanced(true);
-              await refetch({
-                q: e?.target?.value || "",
-                type: active,
-                filters: filtered,
-                size: 100
-              });              
-              setLoadingAdvanced(false);
-            }}            
-            startAdornment={
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            }
-            labelWidth={0}
-          />
-        </InputSearchBox>
+          <ClickAwayListener
+            mouseEvent="onMouseDown"
+            touchEvent="onTouchStart"
+            onClickAway={() => setOpenText(false)}
+          >
+            <div>
+              <OutlinedInputSearch
+                value={filter}
+                placeholder={intl.formatMessage({id: "search.found.message"})}
+                onClick={(event: any) => setOpenText(true)}
+                onChange={async (e: any) => {
+                  setFilter(e?.target?.value);
+                  debounce(async () => {                    
+                    setPage(0);
+                    setTotal(20);              
+                    setLoadingAdvancedChanged(true);
+                    const result = await refetch({
+                      q: e?.target?.value || "",
+                      type: active,
+                      filters: filtered,
+                      size: 20,
+                      page: 0
+                    });              
+                    setLoadingAdvancedChanged(false);
+                    setItems(result.data?.getSelfServiceAdvanced?.representation);
+                    setLinks(result.data?.getSelfServiceAdvanced?.links || []);
+                  }, 1000);                   
+                }}            
+                startAdornment={
+                  <InputAdornment position="start">
+                    <SearchIcon />
+                  </InputAdornment>
+                }
+                labelWidth={0}
+              />
+              {openText && (
+              <MenuItemContainer>
+                <MenuItemText onClick={() => {
+                  setCurrentText("name");                                             
+                }}>
+                  {filter} 
+                  <MenuItemTextValue> - buscar em 
+                    <MenuItemTextValueType className={currentText === "name" && "Selected" || ""}>{"'nome'"}</MenuItemTextValueType>
+                  </MenuItemTextValue>
+                </MenuItemText>  
+                <MenuItemText onClick={() => {
+                  setCurrentText("description");                                               
+                }}>
+                  {filter} 
+                  <MenuItemTextValue> - buscar em 
+                    <MenuItemTextValueType className={currentText === "description" && "Selected" || ""}>{"'descrição'"}</MenuItemTextValueType>
+                  </MenuItemTextValue>
+                </MenuItemText> 
+                <MenuItemText onClick={() => {
+                  setCurrentText("tags");                                               
+                }}>
+                  {filter} 
+                  <MenuItemTextValue> - buscar em 
+                    <MenuItemTextValueType className={currentText === "tags" && "Selected" || ""}>{"'tags'"}</MenuItemTextValueType>
+                  </MenuItemTextValue>
+                </MenuItemText>   
+                <MenuItemText onClick={() => {
+                  setCurrentText("all");                                               
+                }}>
+                  {filter} 
+                  <MenuItemTextValue> - buscar em 
+                    <MenuItemTextValueType className={currentText === "all" && "Selected" || ""}>{"'todos os campos'"}</MenuItemTextValueType>
+                  </MenuItemTextValue>
+                </MenuItemText>               
+              </MenuItemContainer>)}
+            </div>  
+          </ClickAwayListener>                     
+        </InputSearchBox>         
         <Section
           list={sections}
-          defaultValue="ALL"
+          defaultValue={active}
           onSelect={async (section) => {
+            setItems([]);
             setActive(section.value);
             setPage(0);
-            setTotal(20);
-            setLoadingAdvanced(true);
-
-            await refetch({
-              q: filter,
-              type: section.value,
-              filters: filtered,
-              size: 100
-            });  
-            setLoadingAdvanced(false);            
+            setTotal(20);  
+            setFilterMapReference({});
+            setFiltered("[]");
+            apolloClient
+              .query({
+                query: GET_SELF_SERVICE_FILTERS,
+                variables: {
+                  type: section.value
+                },
+              })
+              .then(({ data }) => {       
+                setFilterList(deepCopyFunction(data.getSelfServiceFilters));                  
+                setFilteredValue({
+                  total: 0,   
+                  ...initFilters(data.getSelfServiceFilters, {})   
+                });                                
+              });                                        
           }}
         />
         <DividerSearch />          
           <>
             <TotalFiltersBox>
             <div className={classes.totalItens}>
-              {(listAdvanced || list)?.length > 20 && "20+" || (listAdvanced || list)?.length} <FormattedMessage id="search.items.found" />
+              {((listAdvanced || list)?.length > 20 || getLink("next", data?.getSelfServiceAdvanced?.links || [])) && "20+" || (listAdvanced || list)?.length} <FormattedMessage id="search.items.found" />
             </div>
             <OptionListFiltersContent>
               <OptionListContent>
@@ -266,26 +378,38 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                 </OptionList>
               </OptionListContent>
               <Badge
-                badgeContent={filteredTotal}
+                badgeContent={filteredValue?.total}
                 color="primary"
                 anchorOrigin={{
                   vertical: "top",
                   horizontal: "left",
                 }}
               >
-                <Filters onSave={save} activeType={active} />
+                <Filters 
+                  onSave={save} 
+                  activeType={active} 
+                  filterMapReference={filterMapReference}
+                  setFilterMapReference={setFilterMapReference}
+                  setFilteredValue={setFilteredValue} 
+                  filteredValue={filteredValue} 
+                  setTotalFiltered={setTotalFiltered} 
+                  filterList={filterList}
+                  initFilters={initFilters}
+                  open={openFilters}
+                  setOpen={setOpenFilters}
+                />
               </Badge>
-              {/*<Ordenation list={filters} onChange={handleOrderBy} composed={type} orderBy={orderBy}/> */}
+              <OrdenationContent>
+                <Ordenation list={ordenationList} onChange={handleOrderBy} orderBy={orderBy}/>
+              </OrdenationContent>  
             </OptionListFiltersContent>
             </TotalFiltersBox>
             {type === "GRID" && (
-              <>
-                {loadingAdvanced && (
-                  <Loading container/>
-                )}
+              <>       
+                {loadingAdvancedChanged && <Loading />}         
                 <div>
                   <Grid container spacing={3}>
-                    {paginate(listAdvanced || list, total, 0).map((item, index) => (
+                    {items.map((item, index) => (
                       <Grid item xs={3} key={`search-card-item-${index}`}>
                         <div
                           className={classes.searchCard}
@@ -374,11 +498,9 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
               </>                
             )}
             {type === "LIST" && (
-              <>
-                {loadingAdvanced && (
-                  <Loading container/>
-                )} 
-                {!loadingAdvanced && paginate(listAdvanced || list, total, 0).map((item, index) => (
+              <>        
+                {loadingAdvancedChanged && <Loading />}        
+                {items.map((item, index) => (
                   <ListItemBox
                     onClick={() =>
                       router.push(
@@ -450,21 +572,35 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                 ))}
               </>
             )}
-            {!loadingAdvanced && paginate(listAdvanced || list, 20, page + 1).length > 0 && (
+            {getLink("next", links || []) && (
               <LoadMoreContent>
                 <Button
                   variant="contained"
                   color="primary"
-                  onClick={async () => {                   
+                  isLoading={loadingAdvanced ? 1 : 0}
+                  onClick={async () => {  
+                    setLoadingAdvanced(true);                    
+                    const result = await refetch({
+                      q: filter,
+                      type: active,
+                      filters: filtered,
+                      size: 20,
+                      page: page + 1
+                    });
                     setPage(page + 1);
-                    setTotal(total + 20);
+                    setLoadingAdvanced(false);
+                    setItems([
+                      ...items,
+                      ...result?.data?.getSelfServiceAdvanced?.representation
+                    ])                     
+                    setLinks(result.data?.getSelfServiceAdvanced?.links || []);                                  
                   }}
                 >
                   <FormattedMessage id="loadMore" />
                 </Button>
               </LoadMoreContent>
             )}
-            {!loadingAdvanced && !paginate(listAdvanced || list, total, 0).length && (
+            {!loadingAdvanced && !items.length && (
               <EmptyState
                 image={EmptyStateTypeahead}
                 title="no.result"
