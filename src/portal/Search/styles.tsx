@@ -205,7 +205,7 @@ export const ListItemBox = styled.div`
 export const ListItemContent = styled.div`
   display: flex;
   align-items: center;
-  max-width: 90%;
+  max-width: 95%;
 `;
 
 export const ListItemIconContent = styled.div`
@@ -238,6 +238,20 @@ export const ListItemText = styled.div`
   overflow: hidden;
   padding-right: 15px;
   max-width: 1000px;
+`;
+
+export const ListItemTextDescription = styled.div`
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 21px;
+  color: #26213f;
+  margin-left: 15px;  
+  margin-top: 5px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+  padding-right: 15px;
+  max-width: 1155px;
 `;
 
 export const LoadMoreContent = styled.div`

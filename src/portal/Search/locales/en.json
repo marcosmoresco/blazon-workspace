@@ -11,5 +11,10 @@
   "search.detail.rights.entitlement.empty.title": "No entitlement",
   "search.detail.rights.entitlement.empty.text": "No entitlements found",
   "search.detail.no.external.reference": "There is no external reference",
-  "search.items.found": "Items found"
+  "search.items.found": "Items found",
+  "search.in": "- search in",
+  "search.in.name": "name",
+  "search.in.description": "description",
+  "search.in.tags": "tags",
+  "search.in.all": "all fields"
 }

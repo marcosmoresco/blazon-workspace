@@ -197,10 +197,6 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                     </div>
                   </Badge>                    
                 </Tooltip>
-                <HeaderNotifications
-                  currentTheme={currentTheme}
-                  classes={classes}
-                />
                 <Tooltip
                   title={intl.formatMessage({id: 'team'})}
                   placement='Bottom'>
@@ -217,6 +213,10 @@ const Header: FC<HeaderProps> = ({ classes, intl }) => {
                       />
                     </div>                      
                 </Tooltip>
+                <HeaderNotifications
+                  currentTheme={currentTheme}
+                  classes={classes}
+                />                
               </div>
             )}            
             <Button

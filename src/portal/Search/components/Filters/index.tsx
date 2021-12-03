@@ -1,4 +1,4 @@
-import React, { FC, useState, useEffect } from "react";
+import React, { FC, useState, useEffect, createRef } from "react";
 import { withStyles } from "@material-ui/core/styles";
 import { FormattedMessage, injectIntl } from "react-intl";
 import Drawer from "@material-ui/core/Drawer";
@@ -21,7 +21,7 @@ import SearchIcon from "@icons/Search";
 import UserIcon from "@icons/UserAdd";
 import { isDefined } from '@utils/index';
 import type { FilterProps, FilterType, FilterValueType } from "./types";
-import { deepCopyFunction } from "@utils/index";
+import { debounce } from "@utils/index";
 import apolloClient from "@utils/apollo-client";
 import { GET_SELF_SERVICE_FILTERS } from "@portal/Search/queries";
 import { 
@@ -56,13 +56,16 @@ import {
 const Filters: FC<FilterProps> = ({ classes, open, setOpen, intl, activeType, initFilters, onSave, filterMapReference = {}, setFilterMapReference, filteredValue = {}, setFilteredValue, filterList }) => { 
   const [filter, setFilter] = useState("");        
   const [filters, setFilters] = useState(filterList || []);
-  const [current, setCurrent] = useState<string>(activeType);
+  const resourceInput = createRef();
+  
   
   useEffect(() => {
-    if(filterList?.length && !filters.length) { 
+    if(Object.keys(filterMapReference).length === 0) {
+      setFilters([]);
+    } else if(filterList?.length && !filters.length) { 
       setFilters(filterList);                  
     }  
-  }, [filters, filterList]);  
+  }, [filters, filterList, filterMapReference]);  
 
   const clearAll = (): void => {    
     setFilteredValue({
@@ -169,19 +172,8 @@ const Filters: FC<FilterProps> = ({ classes, open, setOpen, intl, activeType, in
     }
   };
 
-  return (
-    <>
-      <BoxButton>
-        <ButtonFilter onClick={() => setOpen(true)}>
-          <ButtonFilterIcon>
-            <FilterIcon width={20} height={20} />
-          </ButtonFilterIcon>
-          <FormattedMessage id="filters"/>
-          <ButtonFilterIconCaretRight>
-            <CaretRightIcon width={20} height={20} />
-          </ButtonFilterIconCaretRight>
-        </ButtonFilter>
-      </BoxButton>
+  return (    
+    <>      
       <Drawer anchor="right" open={open} onClose={closeFilters}>
         <BoxFilters>
           <BoxFiltersHeader>    
@@ -319,11 +311,15 @@ const Filters: FC<FilterProps> = ({ classes, open, setOpen, intl, activeType, in
                 </div>
               ) :  (
                 <BoxHeaderInputFilter
+                  id="Box-Header-Input-Filter"
+                  ref={resourceInput}
                   placeholder={f.label}    
-                  value={filteredValue[f.name]?.resourceName}   
-                  onBlur={() => onSave(filterMapReference, filteredValue.total, undefined)}                                         
+                  value={filteredValue[f.name]?.resourceName}                                                            
                   onChange={(e:any) => {                    
-                    changeFilter(f, e?.target?.value, "resourceName", undefined, {value: e?.target?.value}, true);                                        
+                    changeFilter(f, e?.target?.value, "resourceName", undefined, {value: e?.target?.value}, true);  
+                    debounce(() => {
+                      onSave(filterMapReference, filteredValue.total, true);
+                    }, 500);                                                     
                   }}
                 />
               )
