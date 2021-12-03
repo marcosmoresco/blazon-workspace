@@ -342,7 +342,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                     }}>
                       {filter} 
                       <MenuItemTextValue> <FormattedMessage id="search.in"/> 
-                        <MenuItemTextValueType className={currentText === "all" && "Selected" || ""}>{`'${intl.formatMessage({id: "search.in.name"})}'`}</MenuItemTextValueType>
+                        <MenuItemTextValueType className={currentText === "all" && "Selected" || ""}>{`'${intl.formatMessage({id: "search.in.all"})}'`}</MenuItemTextValueType>
                       </MenuItemTextValue>
                     </MenuItemText>               
                   </MenuItemContainer>)}
