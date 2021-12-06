@@ -172,7 +172,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
     setItems([]);
   } 
 
-  const save = async (filteredMapReference: any, total: number, noChangeOpen?: boolean) => {    
+  const save = async (filteredMapReference: any, total: number) => {    
     setTotalFiltered(total);    
     const _filters: any[] = [];
     Object.keys(filteredMapReference).forEach((f: any) => {
@@ -180,10 +180,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
     });
     setFiltered(JSON.stringify(_filters));    
     setPage(0);
-    setItems([]);   
-    if(!noChangeOpen) {
-      setOpenFilters(false);
-    } 
+    setItems([]);    
   };
 
   const iconByType: { [key: string]: any } = {

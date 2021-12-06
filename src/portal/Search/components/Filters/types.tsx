@@ -3,7 +3,7 @@ import { IntlShape } from "react-intl";
 export type FilterProps = {
   intl: IntlShape;
   activeType: string;
-  onSave(filtered: {[key: string]: any}, total: number, noChangeOpen: boolean | undefined): void; 
+  onSave(filtered: {[key: string]: any}, total: number): void; 
   setTotalFiltered(total: number): void;
   filterList: any;
   filteredValue: {[key: string]: any};

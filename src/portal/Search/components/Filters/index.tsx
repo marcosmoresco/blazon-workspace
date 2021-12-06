@@ -140,9 +140,7 @@ const Filters: FC<FilterProps> = ({ classes, open, setOpen, intl, activeType, in
     
     _filtered[filter.name][property] = value; 
     setFilteredValue(_filtered);
-    if(!noChangeOpen) {
-      onSave(filterMapReference, _filtered?.total, undefined);
-    }    
+    onSave(filterMapReference, _filtered?.total);   
   };
 
   const currentFilter: { [key: string]: any } = {
@@ -316,9 +314,9 @@ const Filters: FC<FilterProps> = ({ classes, open, setOpen, intl, activeType, in
                   placeholder={f.label}    
                   value={filteredValue[f.name]?.resourceName}                                                            
                   onChange={(e:any) => {                    
-                    changeFilter(f, e?.target?.value, "resourceName", undefined, {value: e?.target?.value}, true);  
+                    changeFilter(f, e?.target?.value, "resourceName", undefined, {value: e?.target?.value});  
                     debounce(() => {
-                      onSave(filterMapReference, filteredValue.total, true);
+                      onSave(filterMapReference, filteredValue.total);
                     }, 500);                                                     
                   }}
                 />
