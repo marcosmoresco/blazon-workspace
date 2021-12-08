@@ -29,6 +29,9 @@ const useStyles = makeStyles(() => ({
     "& .Mui-error": {
       marginLeft: 0
     },
+    "& .MuiInputLabel-outlined:not(.Mui-focused)": {
+      top: -7
+    }
   },
   inputFilter: {
     padding: "0 !important",
@@ -43,7 +46,7 @@ type Ref = {
 
 export default function CustomizedAutocomplete(props: any) {
   const classes = useStyles();
-  const { label, async, getOptionLabel, helperText, error, renderInput, ...other } = props;
+  const { label, inputPlaceholder, async, getOptionLabel, helperText, error, renderInput, ...other } = props;
   const [open, setOpen] = React.useState(false);
   const [options, setOptions] = React.useState(props.options || []);
   const [query, setQuery] = React.useState(null);
@@ -134,6 +137,7 @@ export default function CustomizedAutocomplete(props: any) {
             <div ref={params.InputProps.ref}>
               <TextField
                 {...params}
+                label={inputPlaceholder || ""}
                 helperText={helperText}
                 error={Boolean(error)} 
                 disabled={!!other?.disableInput}

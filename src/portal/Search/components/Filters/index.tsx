@@ -7,6 +7,7 @@ import InputAdornment from "@material-ui/core/InputAdornment";
 import Button from "@components/Button";
 import Checkbox from "@components/Checkbox";
 import Radio from "@components/Radio";
+import Autocomplete from "@components/Autocomplete";
 import MagnifyingGlassPlusIcon from "@icons/MagnifyingGlassPlus";
 import SquaresFourIcon from "@icons/SquaresFour";
 import CheckCircleIcon from "@icons/CheckCircle";
@@ -23,7 +24,7 @@ import { isDefined } from '@utils/index';
 import type { FilterProps, FilterType, FilterValueType } from "./types";
 import { debounce } from "@utils/index";
 import apolloClient from "@utils/apollo-client";
-import { GET_SELF_SERVICE_FILTERS } from "@portal/Search/queries";
+import { GET_SELF_SERVICE_ADVANCED } from "@portal/Search/queries";
 import { 
   useStyles, 
   BoxButton,
@@ -51,6 +52,7 @@ import {
   BoxFilterClear,
   BoxFooter,
   BoxHeaderInputFilter,
+  ContentHeaderInputFilter,
 } from "./styles";
 
 const Filters: FC<FilterProps> = ({ classes, open, setOpen, intl, activeType, initFilters, onSave, filterMapReference = {}, setFilterMapReference, filteredValue = {}, setFilteredValue, filterList }) => { 
@@ -169,6 +171,28 @@ const Filters: FC<FilterProps> = ({ classes, open, setOpen, intl, activeType, in
       text: <FormattedMessage id="users" />,
     }
   };
+
+  const async = (query: string, callback: any) => {    
+
+    apolloClient
+    .query({
+      query: GET_SELF_SERVICE_ADVANCED,
+      variables: {
+        q: query || "",
+        size: 10,    
+        page: 0,
+        type: "RESOURCE"
+      },
+      fetchPolicy: "no-cache"
+    })
+    .then(({ data }) => {
+      callback(data.getSelfServiceAdvanced?.representation.map((r: any) => ({
+        identifier: r.identifier,
+        name: r.name
+      })))
+    });
+  }
+
 
   return (    
     <>      
@@ -308,18 +332,33 @@ const Filters: FC<FilterProps> = ({ classes, open, setOpen, intl, activeType, in
                   ) : null}
                 </div>
               ) :  (
-                <BoxHeaderInputFilter
-                  id="Box-Header-Input-Filter"
-                  ref={resourceInput}
-                  placeholder={f.label}    
-                  value={filteredValue[f.name]?.resourceName}                                                            
-                  onChange={(e:any) => {                    
-                    changeFilter(f, e?.target?.value, "resourceName", undefined, {value: e?.target?.value});  
-                    debounce(() => {
-                      onSave(filterMapReference, filteredValue.total);
-                    }, 500);                                                     
-                  }}
-                />
+                <>
+                  <ContentHeaderInputFilter>
+                    <Autocomplete
+                      inputPlaceholder={f.label}
+                      required
+                      async={(query: string, callback: any) => async(query, callback)}
+                      //value={form.newResponsible || {identifier: -1, displayName: ''}}
+                      filterSelectedOptions
+                      label="name"
+                      getOptionSelected={(option: any, value: any) => option.identifier === value.identifier}                    
+                      onChange={(event: any, value: any) =>  changeFilter(f, value?.name || "", "resourceName", undefined, {value: value?.name || ""})}                    
+                    />
+                  </ContentHeaderInputFilter>  
+
+                  {/*<BoxHeaderInputFilter
+                    id="Box-Header-Input-Filter"
+                    ref={resourceInput}
+                    placeholder={f.label}    
+                    value={filteredValue[f.name]?.resourceName}                                                            
+                    onChange={(e:any) => {                    
+                      changeFilter(f, e?.target?.value, "resourceName", undefined, {value: e?.target?.value});  
+                      debounce(() => {
+                        onSave(filterMapReference, filteredValue.total);
+                      }, 500);                                                     
+                    }}
+                  />*/}
+                </>  
               )
             )}
           </>
