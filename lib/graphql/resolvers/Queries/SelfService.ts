@@ -23,6 +23,18 @@ export const SelfServiceQueries = {
     } catch (error) {
       throw error;
     }
+  }, 
+  getProcessedSearch: async (parent: any, args: any, context: any) => {
+    try {
+      const items = await axios.post(
+      `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/selfservice/items/processedSearch?size=${args?.size || 10000}&page=${args?.page || 0}`,
+        JSON.parse(args?.filters),
+        { ...config(context) }
+      );
+      return items.data;
+    } catch (error) {
+      throw error;
+    }
   },
   getSelfServiceAdvanced: async (parent: any, args: any, context: any) => {
     try {

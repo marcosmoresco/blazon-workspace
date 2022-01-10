@@ -9,6 +9,7 @@ export const FormFieldsQueries = {
         { ...config(context) }
       );
       const result: {[key: string]: any} = {
+        needRendering: formFields.data?.needRendering,
         attributes: {}
       };
       for( const category of Object.keys(formFields.data?.attributes) ) {     
@@ -24,6 +25,28 @@ export const FormFieldsQueries = {
               { ...config(context) }
             );
             _att.listValues = listValues.data || [];
+          } else if(attribute.type === "CATEGORY") {
+            if(attribute.entryType) {
+              const values = await axios.get(
+                `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/forms/fields/system/category/values?entryType=${attribute?.entryType}`,
+                { ...config(context) }
+              );
+              _att.listValues = values.data || [];
+            }            
+          } else if(attribute.type === "CLASSIFICATION") {
+            if(attribute.entryType) {
+              const values = await axios.get(
+                `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/forms/fields/system/classification/values?entryType=${attribute?.entryType}`,
+                { ...config(context) }
+              );
+              _att.listValues = values.data || [];
+            }  
+          } else if(attribute.type === "ENVIRONMENT") {
+            const values = await axios.get(
+              `${process.env.SERVER_HOST}/blazon-workspace-backend/workspace/forms/fields/system/environment/values`,
+              { ...config(context) }
+            );
+            _att.listValues = values.data || [];
           }
           result["attributes"][category].fields.push(_att);      
         }

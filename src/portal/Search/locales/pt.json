@@ -16,5 +16,6 @@
   "search.in.name": "nome",
   "search.in.description": "descrição",
   "search.in.tags": "tags",
-  "search.in.all": "todos os campos"
+  "search.in.all": "todos os campos",
+  "search.predefined.filter": "Buscar filtro predefinido"
 }

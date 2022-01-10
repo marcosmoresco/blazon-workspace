@@ -4,18 +4,30 @@ import { useRouter } from "next/router";
 import { withStyles } from "@material-ui/core/styles";
 import { useQuery, useMutation } from "@apollo/client";
 import { FormattedMessage, injectIntl } from "react-intl";
+import { Form, Formik, withFormik, useFormikContext } from "formik";
+import { IMaskInput } from 'react-imask';
+import { get } from "lodash";
 import apolloClient from "@utils/apollo-client";
+import * as Yup from "yup";
 import Badge from "@material-ui/core/Badge";
 import Divider from "@material-ui/core/Divider";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Grid from "@material-ui/core/Grid";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Autocomplete from "@components/Autocomplete";
 import Button from "@components/Button";
 import EmptyState from "@components/EmptyState";
-import Section from "@components/Section";
+import TextField from "@components/TextField";
 import Tooltip from "@components/Tooltip";
 import Loading from "@components/Loading";
 import Ordenation from "@components/Ordenation";
+import DatePicker from "@components/DatePicker";
+import Switch from "@components/Switch";
+import UserThumb from "@components/UserThumb";
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import FormHelperText from '@material-ui/core/FormHelperText';
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from '@material-ui/core/RadioGroup';
 import SharedAccountIcon from "@icons/SharedAccount";
 import ApplicationAccountIcon from "@icons/ApplicationAccount";
 import RegularAccountIcon from "@icons/RegularAccount";
@@ -29,8 +41,11 @@ import SquaresFourIcon from "@icons/SquaresFour";
 import ListBulletsIcon from "@icons/ListBullets";
 import CheckCircleIcon from "@icons/CheckCircle";
 import UserIcon from "@icons/UserAdd";
-import FilterIcon from "@icons/Filter";
+import FiltersIcon from "@icons/Filters";
 import CaretRightIcon from "@icons/CaretRight";
+import ArrowLeft from "@icons/ArrowLeft";
+import CloseIcon from "@icons/Close";
+import InfoIcon from "@icons/Info/index";
 import EmptyStateTypeahead from "@images/EmptyStateTypeahead.svg";
 import Filters from "./components/Filters";
 import { useCart } from "@requestCart/index";
@@ -41,9 +56,13 @@ import {
 import {
   GET_SELF_SERVICE_CART,
 } from "@requestCart/queries";
-import { GET_SELF_SERVICE_FILTERS } from "@portal/Search/queries";
+import { GET_SEARCH_TEMPLATES, GET_PROCESSED_SEARCH, SEARCH_ITEMS } from "@portal/Search/queries";
 import { debounce, getSelfServiceAttributeValue, getLink, deepCopyFunction } from "@utils/index";
-import type { SearchProps, SelfServiceRepresentation, SelfService } from "./types";
+import type { SearchProps, SelfServiceRepresentation, SelfService, SearchTemplate } from "./types";
+import { 
+  FORM_RENDER, 
+  GENERATE_USERNAMES,  
+} from "@modules/Checkout/queries";
 import {
   useStyles,
   DividerSearch,
@@ -52,6 +71,7 @@ import {
   OptionList,
   InputSearchBox,
   OutlinedInputSearch,
+  OutlinedInputSearchFilters,
   TotalFiltersBox,
   ListItemBox,
   ListItemContent,
@@ -62,10 +82,19 @@ import {
   CenterAlign,
   ListItemTextDescription,
   MenuItemContainer,
+  MenuItemContainerScroll,
+  MenuItemInputContainer,
   MenuItemText,
   MenuItemTextValue,
   MenuItemTextValueType,
   OrdenationContent,
+  FilterItem,
+  FilterItemContent,
+  FilterItemName,
+  FilterItemDescription,
+  FilterSelectedContent,
+  FilterSelectedArrowLeft,
+  FilterSelectedDivider,
 } from "./styles";
 import {    
   BoxButton,
@@ -78,6 +107,37 @@ import type { FilterType } from "@components/Filter/types";
 import { useTheme, themes } from "@theme/index";
 import WatchIcon from "@icons/Watch";
 import { Link } from "@types";
+import {
+  Line,
+  AddDados,
+  UserBottomArea,
+  Category,
+  DateType,
+  Help,
+  CheckboxContent
+} from "@modules/Checkout/CheckoutItem/UserCard/styles";
+
+interface CustomProps {
+  onChange: (event: { target: { name: string; value: string } }) => void;
+  name: string;
+  mask: string;
+}
+
+const TextMaskCustom = React.forwardRef<HTMLElement, CustomProps>(
+  function TextMaskCustom(props, ref) {
+    const { mask, onChange, ...other } = props;
+    return (
+      <IMaskInput
+        {...other}
+        mask={mask}            
+        inputRef={ref}
+        onAccept={(value: any) => onChange({ target: { name: props.name, value } })}
+        overwrite
+        unmask={true}
+      />
+    );
+  },
+);
 
 const Search: FC<SearchProps> = ({ intl, classes }) => {
   const { cart } = useCart();
@@ -106,6 +166,8 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
   const [currentText, setCurrentText] = useState("name");
   const [filterList, setFilterList] = useState();
   const [openFilters, setOpenFilters] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState<SearchTemplate | null>(null);
+  const [filteredText, setFilteredText] = useState<string>("");
 
   const ordenationList: FilterType[] = [{
     orderable: true,
@@ -148,6 +210,30 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
     }
   });  
 
+  const { loading: loadingTemplates, error: errorTemplates, data: dataTemplates } = useQuery<{
+    getSearchTemplates: [SearchTemplate];
+  }>(GET_SEARCH_TEMPLATES, {    
+    fetchPolicy: "network-only"
+  });
+
+  let _filteredValue = filteredValue || {};
+
+  if(orderBy) {
+    _filteredValue.ord = orderBy;
+  }
+
+  const { loading: loadingProcessedSearch, data: dataProcessedSearch, refetch: refetchProcessedSearch } = useQuery<{
+    getProcessedSearch: SelfServiceRepresentation;
+  }>(GET_PROCESSED_SEARCH, {
+    variables: {      
+      size: 20,    
+      page: 0, 
+      filters: JSON.stringify(_filteredValue)
+    },
+    fetchPolicy: "network-only"
+  });
+
+
   const { loading, error, data, refetch } = useQuery<{
     getSelfServiceAdvanced: SelfServiceRepresentation;
   }>(GET_SELF_SERVICE_ADVANCED, {
@@ -163,12 +249,12 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
     fetchPolicy: "network-only"
   });
 
-  const list = data?.getSelfServiceAdvanced?.representation || [];
+  const list = dataProcessedSearch?.getProcessedSearch?.representation || [];
 
-  if(list.length && !items.length && !loading) {
+  if(list.length && !items.length && !loadingProcessedSearch) {
     setItems(list);
-    setLinks(data?.getSelfServiceAdvanced?.links || []);
-  } else if(loading && items.length) {
+    setLinks(dataProcessedSearch?.getProcessedSearch?.links || []);
+  } else if(loadingProcessedSearch && items.length) {
     setItems([]);
   } 
 
@@ -231,7 +317,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
   const handleOrderBy = async (orderBy: any) => {
     setOrderBy(orderBy);    
     setPage(0);
-    setItems([]);    
+    setItems([]);       
   };
 
   const initFilters = (filters: any, filterMapReference: any) => {
@@ -249,6 +335,124 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
     setFilterMapReference(filterMapReference);
     return _filteredItems;
   };
+  
+
+  let initialValues: {[key: string]: any} = {
+    instance: (filteredValue?.values && filteredValue?.values) || {}
+  };
+
+  const [formik, setFormik] = useState({  
+    render: false,  
+    validationSchema: {},
+    initialValues,
+    enableReinitialize: true,
+    isInitialValid: true,
+    onSubmit: (values: any) => {   
+
+      const submit = () => {        
+        const payload = {...values?.instance};
+        delete payload.expireAt;
+        delete payload.accountId;         
+        
+        formik.render = false;
+        setFormik(formik);
+        setPage(0);
+        setTotal(20);                              
+        setItems([]);
+        setSelectedFilter(null);
+        setFilteredValue({
+          templateName: values?.templateName,
+          formId: values?.formId,
+          values: payload
+        })
+      };
+
+      submit();                   
+    },
+  });
+
+  const [ formCategoryHelp, setFormCategoryHelp ] = useState<{[key: string]: any}>({});
+  const [formDatas, setFormDatas] = useState<{[key: string]: any}>();
+
+  const asyncUsernames = (formId: number, amountSuggestions: number, usernamePolicyId: number, payload: string, callback: any) => {
+    
+    apolloClient
+    .query({
+      query: GENERATE_USERNAMES,
+      variables: { 
+        formId,
+        amountSuggestions,
+        usernamePolicyId,
+        payload                      
+      },
+      fetchPolicy: "network-only"
+    })
+    .then(async ({ data }) => {
+      callback((data?.generateUsernames || []).map((u: string) => ({label: u, title: intl.formatMessage({id: "checkout.usernameSuggestions"})}))) 
+    });   
+  }
+
+  const async = (type: string, query: string, callback: any, orgType: string | null) => {   
+
+    if(type === "RESOURCE") {
+
+      apolloClient
+        .query({
+          query: GET_SELF_SERVICE_ADVANCED,
+          variables: {                      
+            q: query || "",
+            fullTextAttrib: "name",
+            size: 10,
+            type: "RESOURCE",
+            ord: "name:asc"      
+          },
+        })
+        .then(async ({ data }) => {
+          callback(data.getSelfServiceAdvanced.representation.map((item: SelfService) => ({
+            identifier: item.referenceTo.referenceToIdentifier,
+            name: item.name,            
+          })));
+        });
+
+    } else {
+
+      apolloClient
+        .query({
+          query: SEARCH_ITEMS,
+          variables: { 
+            payload: orgType && JSON.stringify([
+              {
+                "name": "organizationType",
+                "values": [
+                  {
+                    "value": orgType
+                  }	
+                ]
+              }	
+            ]) || "[]",         
+            q: query || "",
+            size: 10,
+            type      
+          },
+        })
+        .then(async ({ data }) => {
+          if(type === "USER") {
+            callback(data.searchItems.representation.map((item: SelfService) => ({
+              identifier: item.referenceTo.referenceToIdentifier,
+              displayName: getSelfServiceAttributeValue("displayName", item.attributes),
+              username: getSelfServiceAttributeValue("username", item.attributes),
+              image: `/api/images?url=${getSelfServiceAttributeValue("thumbImageLink", item.attributes)}`        
+            })));
+          } else {
+            callback(data.searchItems.representation.map((item: SelfService) => ({
+              identifier: item.referenceTo.referenceToIdentifier,
+              name: item.name,
+              type: getSelfServiceAttributeValue("organizationType", item.attributes),
+            })));
+          }         
+        });   
+    }        
+  }
 
   return (
     <>
@@ -274,26 +478,526 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
               onClickAway={() => setOpenText(false)}
             >
               <div>
-                <OutlinedInputSearch
-                  value={filter}
-                  placeholder={intl.formatMessage({id: "search.found.message"})}
+                <OutlinedInputSearch                  
+                  placeholder=""
+                  className="pointer-important"
+                  disabled
                   onClick={(event: any) => setOpenText(true)}
                   onChange={async (e: any) => {
                     setPage(0);
-                    setTotal(20);
-                    setFilter(e?.target?.value);
+                    setTotal(20);                    
                     setItems([]);                                       
                   }}            
                   startAdornment={
                     <InputAdornment position="start">
-                      <SearchIcon />
+                      <SearchIcon />{filteredValue?.templateName && 
+                      <>
+                        <span style={{color: "#7D7A8C", marginLeft: 10}}>Buscando por:</span>
+                        <span  style={{marginLeft: 10}}>{filteredValue?.templateName}</span>
+                      </> || <span style={{color: "#7D7A8C", marginLeft: 10, width: 670}}>{intl.formatMessage({id: "search.found.message"})}</span>
+                      } 
+                    </InputAdornment>
+                  }
+                  endAdornment={
+                    <InputAdornment position="end">
+                      {filteredValue?.templateName && <span style={{marginRight: 10, cursor: "pointer", marginTop: 3}} onClick={() => {
+                        setFilteredValue({});
+                        setSelectedFilter(null);
+                        setOrderBy("");
+                        formik.render = false;
+                        setFormik(formik);
+                      }}><CloseIcon /></span>}
+                      <FiltersIcon />
                     </InputAdornment>
                   }
                   labelWidth={0}
                 />
                 {openText && (
                 <MenuItemContainer>
-                  <MenuItemText onClick={() => {
+                  {!selectedFilter && (
+                  <MenuItemInputContainer>
+                    <OutlinedInputSearchFilters
+                      value={filteredText}
+                      placeholder={intl.formatMessage({id: "search.predefined.filter"})}
+                      onClick={(event: any) => setOpenText(true)}
+                      onChange={async (e: any) => {                        
+                        setFilteredText(e?.target?.value);                                                               
+                      }}            
+                      startAdornment={
+                        <InputAdornment position="start">
+                          <SearchIcon />
+                        </InputAdornment>
+                      }                   
+                      labelWidth={0}
+                    />
+                  </MenuItemInputContainer>) || (
+                    <>
+                      <FilterSelectedContent>
+                        <FilterSelectedArrowLeft onClick={() => {
+                          setSelectedFilter(null);
+                          formik.render = false;
+                          setFormik(formik);
+                          setFormDatas({});
+                        }}><ArrowLeft /></FilterSelectedArrowLeft> {selectedFilter?.name}
+                      </FilterSelectedContent>
+                      <FilterSelectedDivider />  
+                    </>  
+                  )} 
+                  <MenuItemContainerScroll>
+                    {!formik.render && (dataTemplates?.getSearchTemplates || [])
+                      .filter((template) => !filteredText || template.name.toLocaleLowerCase().indexOf(filteredText) > -1)
+                      .map((template) => (
+                      <FilterItem key={`search-template-${template.identifier}`} 
+                        onClick={() => {
+                          
+                          apolloClient
+                            .query({
+                              query: FORM_RENDER,
+                              variables: {          
+                                formId: Number(template.formId)      
+                              },
+                            })
+                            .then(async ({ data }) => {                            
+                              const result = JSON.parse(data?.formFieldRender);
+                              if(!result.needRendering) {
+                                setPage(0);
+                                setTotal(20);                              
+                                setItems([]);
+                                setFilteredValue({
+                                  templateName: template.name,
+                                  formId: template.formId,
+                                  values: {}
+                                })
+                              } else {                                                           
+
+                                setSelectedFilter(template);
+                                const formFields = JSON.parse(data?.formFieldRender);              
+                                const schema: {[key: string]: any} = {}; 
+                                const extraFormDatas: {[key: string]: any} = {formId: template.formId, templateName: template.name};
+                                const _formCategoryHelp: {[key: string]: any} = {};
+
+                                if(formFields) {                       
+                                  Object.keys(formFields?.attributes).map(async (category: any, index: number) => {
+                                    _formCategoryHelp[category] = formFields?.attributes[category].help;
+                                    formFields?.attributes[category].fields.forEach(async (attribute: any) => {  
+                                      if(!extraFormDatas[category]) {
+                                        extraFormDatas[category] = [];
+                                      }                             
+                                      if(["STRING", "TEXTAREA", "DATE"].includes(attribute.type)) {                  
+                                        if(attribute.required) {
+                                          const yupObject = Yup
+                                            .string()
+                                            .required(
+                                              intl.formatMessage({
+                                                id: "isRequired"                      
+                                              }, {
+                                                field: attribute.label
+                                              })
+                                            ); 
+                                          schema[attribute.name] = yupObject;                       
+                                        } else {
+                                          const yupObject = Yup
+                                            .string()
+                                            .nullable();                     
+                                          schema[attribute.name] = yupObject;
+                                        }
+                                        
+                                        let TextMaskCustomItem = deepCopyFunction(TextMaskCustom);
+                                        if(attribute.mask) {
+                                          TextMaskCustomItem.defaultProps = {mask: attribute.mask};
+                                        }                                   
+
+                                        extraFormDatas[category].push({
+                                          displayType: attribute.type,
+                                          name: attribute.name,
+                                          label: attribute.label,  
+                                          writable: !attribute.disabled,
+                                          required: attribute.required,
+                                          identifier: attribute.identifier,
+                                          mask: (attribute.mask && TextMaskCustomItem) || null,    
+                                          help: attribute.help,              
+                                          defaultValue: attribute.defaultValue,
+                                          options: attribute.listValues || []
+                                        });                                                               
+                                      } else if (attribute.type === "NUMBER") {                 
+
+                                        if(attribute.required) {
+                                          const yupObject = Yup
+                                          .number()
+                                          .required(
+                                            intl.formatMessage({
+                                              id: "isRequired"                      
+                                            }, {
+                                              field: attribute.label
+                                            })
+                                          ); 
+                                          schema[attribute.name] = yupObject;
+                                        } else {
+                                          const yupObject = Yup
+                                            .number()
+                                            .nullable();                     
+                                          schema[attribute.name] = yupObject;
+                                        }  
+                                        extraFormDatas[category].push({
+                                          displayType: attribute.type,
+                                          name: attribute.name,
+                                          label: attribute.label,       
+                                          writable: !attribute.disabled,  
+                                          required: attribute.required,  
+                                          identifier: attribute.identifier,
+                                          mask: attribute.mask,    
+                                          help: attribute.help,    
+                                          defaultValue: attribute.defaultValue,  
+                                          options: attribute.listValues || []
+                                        });                
+                                      } else if (attribute.type === "CHECKBOX") {
+                                        const yupObject = Yup
+                                        .bool();                     
+                                        schema[attribute.name] = yupObject;
+                                        extraFormDatas[category].push({
+                                          displayType: attribute.type,
+                                          name: attribute.name,
+                                          label: attribute.label,       
+                                          writable: !attribute.disabled,
+                                          required: attribute.required,
+                                          identifier: attribute.identifier,
+                                          help: attribute.help,       
+                                          defaultValue: new Boolean(attribute.defaultValue),                            
+                                        }); 
+                                      } else if (["USER", "ORGANIZATION", "RESOURCE", "LIST", "USERNAME", "CATEGORY", "CLASSIFICATION", "ENVIRONMENT"].includes(attribute.type)) {
+                                        if(attribute.required) {
+                                          const yupObject = Yup
+                                            .object()
+                                            .nullable()
+                                            .required(
+                                              intl.formatMessage({
+                                                id: "isRequired"                      
+                                              }, {
+                                                field: attribute?.label
+                                              })
+                                            ); 
+                                          schema[attribute.name] = yupObject;
+                                        } else {
+                                          const yupObject = Yup
+                                          .object()
+                                          .nullable();                    
+                                          schema[attribute.name] = yupObject;
+                                        }                                                  
+                                        extraFormDatas[category].push({
+                                          displayType: attribute.type,
+                                          name: attribute.name,
+                                          label: attribute.label,                    
+                                          options: attribute.listValues || [],
+                                          identifier: attribute.identifier,
+                                          help: attribute.help,
+                                          orgType: attribute.orgType,   
+                                          amountSuggestions: attribute.amountSuggestions,
+                                          usernamePolicyId: attribute.usernamePolicyId,
+                                          allowUserInput: attribute.allowUserInput,                 
+                                          multiSelect: attribute.multiSelect,
+                                          required: attribute.required                   
+                                        });
+                                      }                               
+                                    });
+                                  });                                        
+                                }
+
+                                const validationSchema = Yup.object({
+                                  instance: Yup.object({
+                                    ...schema
+                                  })    
+                                });
+
+                                formik.initialValues = {
+                                  instance: (filteredValue?.values && filteredValue?.values) || {}
+                                };
+                                formik.validationSchema = validationSchema;           
+                                formik.render = true;         
+                                    
+                                setFormik(formik);
+                                setFormDatas({...extraFormDatas});
+                                setFormCategoryHelp(_formCategoryHelp);
+                              }                           
+                            })
+                        }}>
+                        <FilterItemContent>
+                          <div>
+                            <FilterItemName>
+                              {template.name}
+                            </FilterItemName>
+                            <FilterItemDescription>
+                              {template.description || " - "}
+                            </FilterItemDescription>
+                          </div>
+                          <CaretRightIcon stroke={1.2} color={filteredValue?.templateName === template.name && "#0E46D7" || "black"}/>                      
+                        </FilterItemContent>                   
+                      </FilterItem> 
+                    ))}                
+                    {formDatas && !!Object.keys(formDatas).length && formik.render && (
+                      <Formik
+                        {...formik}
+                        render={(form) => {
+                        return (
+                          <Form>
+                            {Object.keys(formDatas)
+                            .filter((category: any) => {               
+                              if(category === "formId" || category === "templateName") {
+                                const fieldValue = get(form.values, category); 
+                                if(!fieldValue) {
+                                  form.setFieldValue(category, formDatas[category]);
+                                }                  
+                              }
+                              return "formId" !== category && "templateName" !== category;
+                            }) 
+                            .map((category: any, index: number) => (
+                              <>
+                                <Help className="Help-category">
+                                  <Category>{category}</Category>
+                                  {formCategoryHelp[category] && <Tooltip title={formCategoryHelp[category]} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
+                                </Help>
+
+                                {formDatas[category].map((attribute: any, key: number) => {                 
+                                  
+                                  const fieldValue = get(form.values.instance, attribute.name);                                                      
+                                  let currentError: any = form.submitCount > 0 && (!form?.values?.instance || !form?.values?.instance[attribute.name]) && form?.errors?.instance && form?.errors?.instance[attribute.name];
+                                                          
+                                  return (
+                                  <div key={`form-datas-attribute-${index}-${key}`}>
+                                    <AddDados>                                     
+                                      {["STRING", "TEXTAREA", "NUMBER"].includes(attribute.displayType) && (
+                                      <>
+                                        <Help>
+                                          <label>{attribute.label}{attribute.required && "*"}</label>
+                                          {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
+                                        </Help>                          
+                                        <TextField
+                                          className="Add-dados-textField"
+                                          form={form}
+                                          hideLabel={true}
+                                          type={attribute.displayType === "NUMBER" ? "number" : "text"}
+                                          name={"instance." + attribute.name}
+                                          required={attribute.required}
+                                          disabled={!attribute.writable}
+                                          error={Boolean(currentError)} 
+                                          helperText={currentError}
+                                          defaultValue={!fieldValue && attribute.defaultValue ? attribute.defaultValue : fieldValue}
+                                          value={fieldValue}
+                                          key={index}  
+                                          multiline={"TEXTAREA" === attribute.displayType} 
+                                          rows={"TEXTAREA" === attribute.displayType ? 3 : 0} 
+                                          inputComponent={attribute.mask && attribute.mask as any || undefined}  
+                                          onBlur={async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+                                            //handleValidateFormField(attribute, event.target.value, form);                            
+                                          }}                                    
+                                        />
+                                      </>  
+                                      )}
+                                      {["LIST", "CATEGORY", "CLASSIFICATION", "ENVIRONMENT"].includes(attribute.displayType) && (
+                                      <div>
+                                        <Help>
+                                          <label>{attribute.label}{attribute.required && "*"}</label>
+                                          {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
+                                        </Help>                           
+                                        <Autocomplete
+                                          multiple={attribute?.multiSelect}
+                                          filterSelectedOptions
+                                          options={attribute?.options}
+                                          label="label"                         
+                                          name={"instance." + attribute.name}                         
+                                          value={fieldValue}
+                                          required={attribute.required}                           
+                                          helperText={currentError}
+                                          error={Boolean(currentError)}                                                       
+                                          onChange={(event: any, value: string) => form.setFieldValue("instance." + attribute.name, value, false)}
+                                          key={index}                                          
+                                        />
+                                      </div>)}   
+                                      {["USERNAME"].includes(attribute.displayType) && (
+                                      <div>
+                                        <Help>
+                                          <label>{attribute.label}{attribute.required && "*"}</label>
+                                          {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
+                                        </Help>                           
+                                        <Autocomplete
+                                          freeSolo
+                                          groupBy={(option: any) => option.title}
+                                          disableInput={!attribute.allowUserInput}
+                                          filterSelectedOptions
+                                          loading={attribute.loading}                            
+                                          label="label"    
+                                          name={"instance." + attribute.name}                                                                                                                                                    
+                                          value={fieldValue}                          
+                                          required={attribute.required}                           
+                                          helperText={currentError}
+                                          error={Boolean(currentError)}                                                       
+                                          onChange={(event: any, value: string) => form.setFieldValue("instance." + attribute.name, value, false)}
+                                          key={index}  
+                                          async={(query: string, callback: any) => 
+                                            asyncUsernames(Number(formDatas.formId), Number(attribute.amountSuggestions), Number(attribute.usernamePolicyId), JSON.stringify(form?.values?.instance || {}), callback)}                                                        
+                                        />  
+                                      </div>)}                                                          
+                                      {["DATE", "DATETIME"].includes(attribute.displayType) && (
+                                        <>
+                                          <Help className={`${attribute.help && "Add"}`}>
+                                            <label>{attribute.label}{attribute.required && "*"}</label>
+                                            {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
+                                          </Help>
+                                          <DateType>                            
+                                            <DatePicker       
+                                              isTime={"DATETIME" === attribute.displayType}                    
+                                              label=""
+                                              key={index}
+                                              helperText={currentError}
+                                              error={Boolean(currentError)}
+                                              name={"instance." + attribute.name}                            
+                                              value={fieldValue}
+                                              onChange={(date: string) => form.setFieldValue("instance." + attribute.name, date, false)}
+                                            />
+                                          </DateType>                        
+                                        </>
+                                      )}
+                                      {["CHECKBOX"].includes(attribute.displayType) && (
+                                        <CheckboxContent>                                                       
+                                          <Switch                             
+                                            label=""    
+                                            defaultValue={!fieldValue && attribute.defaultValue ? attribute.defaultValue : fieldValue}                         
+                                            value={fieldValue}                              
+                                            onChange={(val: any) => form.setFieldValue("instance." + attribute.name, val, false)}
+                                            name={"instance." + attribute.name}
+                                            lab="true"
+                                            color="primary"
+                                          />
+                                          <Help>
+                                            <label>{attribute.label}{attribute.required && "*"}</label>
+                                            {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
+                                          </Help> 
+                                        </CheckboxContent>                                              
+                                      )}
+                                      {["RADIOBUTTON"].includes(attribute.displayType) && (
+                                        <RadioGroup  
+                                          name={"instance." + attribute.name} 
+                                          value={fieldValue} 
+                                          onChange={(e: any) => {
+                                            form.setFieldValue("instance." + attribute.name, e?.target?.value, false)
+                                          }}>
+                                          {(attribute?.options || []).map((opt: any) => (
+                                            <FormControlLabel 
+                                              key={`option.${index}.option.${opt[attribute?.bind["value"]]}`} 
+                                              value={String(opt[attribute?.bind["value"]])} 
+                                              control={<Radio color="primary"/>} 
+                                              label={opt[attribute?.bind["label"]] || " - "}/>
+                                          ))}    
+                                          <FormHelperText error>{currentError}</FormHelperText>                        
+                                        </RadioGroup>
+                                      )}
+                                      {["ORGANIZATION"].includes(attribute.displayType) && (
+                                      <div>
+                                        <Help>
+                                          <label>{attribute.label}{attribute.required && "*"}</label>
+                                          {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
+                                        </Help>                          
+                                        <Autocomplete
+                                          async={(query: string, callback: any) => async("ORGANIZATION_UNIT", query, callback, attribute.orgType)}
+                                          filterSelectedOptions                            
+                                          label="name"                         
+                                          name={"instance." + attribute.name}                         
+                                          value={fieldValue}
+                                          helperText={currentError}
+                                          error={Boolean(currentError)} 
+                                          renderOption={(option: any) => (
+                                            <div>
+                                              <div><b><FormattedMessage id={`organization.${option.type}`}/></b></div>
+                                              <div>{option.name}</div>
+                                            </div>
+                                          )} 
+                                          onChange={(event: any, value: string) => form.setFieldValue("instance." + attribute.name, value, false)}
+                                          key={index}                                          
+                                        />
+                                      </div>)}
+                                      {["RESOURCE"].includes(attribute.displayType) && (
+                                      <div>
+                                        <Help>
+                                          <label>{attribute.label}{attribute.required && "*"}</label>
+                                          {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
+                                        </Help>                          
+                                        <Autocomplete
+                                          async={(query: string, callback: any) => async("RESOURCE", query, callback, attribute.orgType)}
+                                          filterSelectedOptions                            
+                                          label="name"                         
+                                          name={"instance." + attribute.name}                         
+                                          value={fieldValue}
+                                          helperText={currentError}
+                                          error={Boolean(currentError)} 
+                                          renderOption={(option: any) => (
+                                            <div>                                            
+                                              <div>{option.name}</div>
+                                            </div>
+                                          )} 
+                                          onChange={(event: any, value: string) => form.setFieldValue("instance." + attribute.name, value, false)}
+                                          key={index}                                          
+                                        />
+                                      </div>)} 
+                                      {["USER"].includes(attribute.displayType) && (
+                                      <div>
+                                        <Help>
+                                          <label>{attribute.label}{attribute.required && "*"}</label>
+                                          {attribute.help && <Tooltip title={attribute.help} placement="bottom"><div><InfoIcon width={18} height={18} stroke={2}/></div></Tooltip>}
+                                        </Help>
+                                        <Autocomplete
+                                          async={(query: string, callback: any) => async("USER", query, callback, null)}
+                                          filterSelectedOptions                           
+                                          label="displayName"                         
+                                          name={"instance." + attribute.name}                         
+                                          value={fieldValue}
+                                          helperText={currentError}
+                                          error={Boolean(currentError)} 
+                                          renderOption={(option: any) => (
+                                            <React.Fragment>
+                                              <div style={{display: "flex", gap: 10, alignItems: "center"}}>
+                                                <div>
+                                                  <UserThumb user={option} image={option.image} />
+                                                </div>
+                                                <div>
+                                                  <div><b>{option.username}</b></div>
+                                                  <div>{option.displayName}</div>
+                                                </div>                                   
+                                              </div>
+                                            </React.Fragment>
+                                          )}          
+                                          inputprops={{
+                                            startAdornment: (
+                                              fieldValue && 
+                                              <div style={{marginRight: 10}}>
+                                                <UserThumb user={fieldValue} image={fieldValue?.image} notShowDisplayName isSmall/>   
+                                              </div>                         
+                                            )
+                                          }}
+                                          onChange={(event: any, value: string) => form.setFieldValue("instance." + attribute.name, value, false)}
+                                          key={index}                                          
+                                        />
+                                      </div>)}                                    
+                                    </AddDados>
+                                  </div>              
+                                )})} 
+                              </>
+                            ))}                          
+                            <Line className="Add-top"/>                          
+                            <UserBottomArea>
+                              <Button                    
+                                variant="contained"
+                                color="primary"
+                                onClick={async () => {                                      
+                                  form.submitForm();                                   
+                                }}
+                              >
+                                <FormattedMessage id="search" />
+                              </Button>
+                            </UserBottomArea>
+                          </Form>)          
+                      }} />                     
+                    )} 
+                  </MenuItemContainerScroll>                  
+                  {/*<MenuItemText onClick={() => {
                     setCurrentText("name");                                             
                   }}>
                     {filter} 
@@ -324,12 +1028,12 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                     <MenuItemTextValue> <FormattedMessage id="search.in"/> 
                       <MenuItemTextValueType className={currentText === "all" && "Selected" || ""}>{`'${intl.formatMessage({id: "search.in.all"})}'`}</MenuItemTextValueType>
                     </MenuItemTextValue>
-                  </MenuItemText>               
+                </MenuItemText> */}               
                 </MenuItemContainer>)}
               </div>  
             </ClickAwayListener>                     
           </InputSearchBox>         
-          <Section
+          {/*<Section
             list={sections}
             defaultValue={active}
             onSelect={async (section) => {
@@ -354,7 +1058,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                   });                                
                 });                                        
             }}
-          />
+          />*/}
           <DividerSearch />          
             <>
               <TotalFiltersBox>
@@ -376,7 +1080,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                     <ListBulletsIcon width={21} />
                   </OptionList>
                 </OptionListContent>
-                <Badge
+                {/*<Badge
                   badgeContent={filteredValue?.total}
                   color="primary"
                   anchorOrigin={{
@@ -395,7 +1099,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                       </ButtonFilterIconCaretRight>
                     </ButtonFilter>
                   </BoxButton>               
-                </Badge>
+                </Badge>*/}
                 <OrdenationContent>
                   <Ordenation list={ordenationList} onChange={handleOrderBy} orderBy={orderBy}/>
                 </OrdenationContent>  
@@ -416,13 +1120,16 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                             <Grid item xs={3} key={`search-card-item-${index}`}>
                               <div
                                 className={classes.searchCard}
-                                onClick={() =>
+                                onClick={() => {
+                                  if(item.type === "USER") {
+                                    return;
+                                  }
                                   router.push(
                                     `/search/selfService/${item.type
                                       .replaceAll("_", "")
                                       .toLocaleLowerCase()}/${item.identifier}`
                                   )
-                                }
+                                }}
                               >
                                 <div className={classes.searchCardContent}>
                                   <div className={classes.searchCardContentHeader}>
@@ -505,13 +1212,16 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                       {loadingAdvancedChanged && <Loading />}        
                       {items.map((item, index) => (
                         <ListItemBox
-                          onClick={() =>
+                          onClick={() => {
+                            if(item.type === "USER") {
+                              return;
+                            }
                             router.push(
                               `/search/selfService/${item.type
                                 .replaceAll("_", "")
                                 .toLocaleLowerCase()}/${item.identifier}`
                             )
-                          }
+                          }}
                           key={`search-list-item-${index}`}
                         >
                           <ListItemContent>

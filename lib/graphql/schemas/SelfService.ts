@@ -87,6 +87,7 @@ export const Queries = `
   getSelfServiceCart: SelfServiceCart 
   getSelfService(q: String, size: Int, type: String): [SelfService]  
   getSelfServiceAdvanced(q: String, size: Int, page: Int, ord: String, fullTextAttrib: String, type: String, filters: String): SelfServiceRepresentation 
+  getProcessedSearch(size: Int, page: Int, filters: String): SelfServiceRepresentation
   getSelfServiceFilters(type: String): [SelfServiceFilter]
   getSelfServiceItem(id: String): SelfService
 `;

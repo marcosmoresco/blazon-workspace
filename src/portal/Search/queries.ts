@@ -42,6 +42,36 @@ export const GET_SELF_SERVICE = gql`
   }
 `;
 
+export const GET_PROCESSED_SEARCH = gql`
+  query getProcessedSearch(   
+    $size: Int
+    $page: Int
+    $filters: String
+  ) {
+    getProcessedSearch(size: $size, page: $page, filters: $filters) {
+      representation {
+        name
+        description
+        type
+        identifier
+        referenceTo {
+          referenceToIdentifier
+          referenceToName
+          referenceToType
+        }
+        attributes {
+          name
+          value
+        }
+      }
+      links {
+        rel
+        href
+      }      
+    }
+  }
+`;
+
 export const GET_SELF_SERVICE_ADVANCED = gql`
   query getSelfServiceAdvanced(
     $q: String
@@ -198,6 +228,17 @@ export const GET_DIRECTORY_ROLE_RIGHT_ENTITLEMENTS = gql`
         rel
         href
       }
+    }
+  }
+`;
+
+export const GET_SEARCH_TEMPLATES = gql`
+  query getSearchTemplates {
+    getSearchTemplates {
+      identifier
+      name
+      description
+      formId
     }
   }
 `;

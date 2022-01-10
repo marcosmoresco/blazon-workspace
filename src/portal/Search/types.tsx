@@ -1,5 +1,4 @@
 import { IntlShape } from "react-intl";
-import { NumberSchema } from "yup";
 import type { Link } from "@types";
 
 export type SearchProps = {
@@ -76,7 +75,15 @@ export type RoleDirectory = {
 };
 
 export type RoleDirectoryRight = {
-  identifier: NumberSchema;
+  identifier: number;
   group: RoleDirectory;
   resource: ResourceDirectory;
+};
+
+
+export type SearchTemplate = {
+  identifier: number;
+  name: string;
+  description: string;
+  formId: number;
 };

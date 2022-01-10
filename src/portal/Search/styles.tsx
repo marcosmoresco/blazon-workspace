@@ -148,9 +148,20 @@ export const OutlinedInputSearch = styledMui(OutlinedInput)({
   border: "1px solid #BBBDC0",
   borderRadius: 8,
   background: "#FFFFFF",
-  width: 800,
+  width: 866,
   height: 48,
   marginTop: 20,
+  "& .MuiInputBase-input.Mui-disabled": {
+    cursor: "pointer !important"
+  }
+});
+
+export const OutlinedInputSearchFilters = styledMui(OutlinedInput)({
+  border: "1px solid #BBBDC0",
+  borderRadius: 8,
+  background: "#FFFFFF",
+  width: 830,
+  height: 48,
 });
 
 export const DividerSearch = styledMui(Divider)({
@@ -304,16 +315,25 @@ export const StyledMenu = withStyles({
 ));
 
 export const MenuItemContainer = styled.div`   
-  outline: 0;
-  background: #FFFFFF;
+  outline: 0;  
+  background: #FBFAFB;
   border: 1px solid #BEBECB;
   box-sizing: border-box;
   box-shadow: 0px 24px 71px 5px rgba(0, 0, 0, 0.25);
   border-radius: 8px;
   margin-top: 15px;
-  width: 800px;
+  width: 866px;
   position: absolute;
-  z-index: 10;  
+  z-index: 10;    
+`;
+
+export const MenuItemContainerScroll = styled.div`   
+  max-height: 530px;
+  overflow-y: auto;   
+`;
+
+export const MenuItemInputContainer = styled.div`   
+  padding: 18px 16px;     
 `;
 
 export const MenuItemText = styled.div`
@@ -338,4 +358,60 @@ export const MenuItemTextValueType = styled.span`
 
 export const OrdenationContent = styled.div`
   margin-bottom: 7px;
+`;
+
+export const FilterItem = styled.div`
+  height: 66px;
+  margin: 0 16px;  
+  background: #F6F6F7;
+  border: 1px solid #EDEDEF;
+  box-sizing: border-box;
+  border-radius: 8px;
+  padding: 14px; 
+  cursor: pointer;
+  margin-bottom: 10px;
+`;
+
+export const FilterItemContent = styled.div`  
+  display: flex;
+  justify-content: space-between;
+`;
+
+export const FilterItemName = styled.div`  
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 100%;
+  color: #26213F;
+`;
+
+export const FilterItemDescription = styled.div`  
+  font-size: 14px;
+  line-height: 100%;
+  color: #7D7A8C;
+  margin-top: 5px;
+`;
+
+export const FilterSelectedContent = styled.div`
+  height: 42px;
+  background: #F6F6F7;
+  border: 1px solid #EDEDEF;
+  box-sizing: border-box;
+  border-radius: 8px;
+  margin: 18px 16px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding-left: 7px;
+  color: #26213F;
+  font-weight: 600;
+`;
+
+export const FilterSelectedArrowLeft = styled.div`
+  cursor: pointer;
+`;
+
+export const FilterSelectedDivider = styled.div`
+  height: 1px;
+  background: #E9E9EA;
+  margin-top: 20px;
 `;

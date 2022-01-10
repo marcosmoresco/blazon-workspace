@@ -59,6 +59,10 @@ label {
   cursor: pointer;
 }
 
+.pointer-important {
+  cursor: pointer !important;
+}
+
 .pre-wrap {
   white-space: pre-wrap;
 }

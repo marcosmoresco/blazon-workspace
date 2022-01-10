@@ -43,6 +43,10 @@ import {
   Queries as TeamQueries, 
   Mutations as TeamMutations,
 } from "./Team";
+import {
+  SearchTemplates,
+  Queries as SearchTemplatesQueries
+} from "./SearchTemplates";
 
 export const typeDefs = gql`
   ${Link}
@@ -58,6 +62,7 @@ export const typeDefs = gql`
   ${Task}
   ${TaskQueue}
   ${Team}
+  ${SearchTemplates}
   
   type Query {
     ${ResumeQueries}      
@@ -73,6 +78,7 @@ export const typeDefs = gql`
     ${FormFieldsQueries}
     ${ItemsQueries}
     ${TeamQueries}
+    ${SearchTemplatesQueries}
   }
 
   type Mutation {

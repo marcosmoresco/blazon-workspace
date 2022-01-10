@@ -12,6 +12,7 @@ import { TaskQueuesQueries } from "./TaskQueues";
 import { FormFieldsQueries } from "./FormFields";
 import { ItemsQueries } from "./Items";
 import { TeamQueries } from "./Team";
+import { SearchTemplatesQueries } from "./SearchTemplates";
 
 export const Queries = {
   getResume: async (parent: any, args: any, context: any) => {
@@ -37,4 +38,5 @@ export const Queries = {
   ...FormFieldsQueries,
   ...ItemsQueries,
   ...TeamQueries,
+  ...SearchTemplatesQueries,
 };
