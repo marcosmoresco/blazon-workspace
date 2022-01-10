@@ -17,5 +17,7 @@
   "search.in.description": "description",
   "search.in.tags": "tags",
   "search.in.all": "all fields",
-  "search.predefined.filter": "Search predefined filter"
+  "search.predefined.filter": "Search predefined filter",
+  "search.new": "New search",
+  "search.for": "Searching for"
 }

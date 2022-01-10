@@ -13,7 +13,7 @@ import Badge from "@material-ui/core/Badge";
 import Divider from "@material-ui/core/Divider";
 import InputAdornment from "@material-ui/core/InputAdornment";
 import Grid from "@material-ui/core/Grid";
-import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Popover from "@material-ui/core/Popover";
 import Autocomplete from "@components/Autocomplete";
 import Button from "@components/Button";
 import EmptyState from "@components/EmptyState";
@@ -95,6 +95,7 @@ import {
   FilterSelectedContent,
   FilterSelectedArrowLeft,
   FilterSelectedDivider,
+  UserBottomArea,
 } from "./styles";
 import {    
   BoxButton,
@@ -109,8 +110,7 @@ import WatchIcon from "@icons/Watch";
 import { Link } from "@types";
 import {
   Line,
-  AddDados,
-  UserBottomArea,
+  AddDados,  
   Category,
   DateType,
   Help,
@@ -168,6 +168,8 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
   const [openFilters, setOpenFilters] = useState(false);
   const [selectedFilter, setSelectedFilter] = useState<SearchTemplate | null>(null);
   const [filteredText, setFilteredText] = useState<string>("");
+  const [open, setOpen] = useState(false);
+  const [anchorEl, setAnchorEl] = React.useState<HTMLButtonElement | Element | null>(null);
 
   const ordenationList: FilterType[] = [{
     orderable: true,
@@ -353,18 +355,16 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
         const payload = {...values?.instance};
         delete payload.expireAt;
         delete payload.accountId;         
-        
-        formik.render = false;
-        setFormik(formik);
+               
         setPage(0);
         setTotal(20);                              
-        setItems([]);
-        setSelectedFilter(null);
+        setItems([]);        
         setFilteredValue({
           templateName: values?.templateName,
           formId: values?.formId,
           values: payload
         })
+        setOpen(false);
       };
 
       submit();                   
@@ -472,46 +472,74 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
       <div className="Default-content">
         <div className={classes.root}>
           <InputSearchBox>
-            <ClickAwayListener
-              mouseEvent="onMouseDown"
-              touchEvent="onTouchStart"
-              onClickAway={() => setOpenText(false)}
+            <div id="search-input-filter">
+              <OutlinedInputSearch   
+                value={filter}                  
+                disabled={!!filteredValue?.templateName }            
+                placeholder={(!filteredValue?.templateName && intl.formatMessage({id: "search.found.message"})) || ""}                                    
+                onClick={(event: any) => setOpenText(true)}
+                onChange={async (e: any) => {
+                  setPage(0);
+                  setTotal(20);                    
+                  setItems([]); 
+                  setFilter(e.target.value);
+                  debounce(() => {
+                    setFilteredValue({
+                      query: e.target.value
+                    }); 
+                  }, 500);                                                         
+                }}            
+                startAdornment={
+                  <InputAdornment position="start">
+                    <SearchIcon />{filteredValue?.templateName && 
+                    <div className="pointer" onClick={() => {
+                      setOpen(true);
+                      setAnchorEl(document.querySelector('#search-input-filter'));
+                      setFilter("");
+                      formik.initialValues = {
+                        instance: (filteredValue?.values && filteredValue?.values) || {}
+                      };                                               
+                      setFormik(formik);
+                    }}>
+                      <span style={{color: "#7D7A8C", marginLeft: 10}}><FormattedMessage id="search.for" />:</span>
+                      <span  style={{marginLeft: 10}}>{filteredValue?.templateName}</span>
+                    </div>
+                    } 
+                  </InputAdornment>
+                }
+                endAdornment={
+                  <InputAdornment position="end">
+                    {filteredValue?.templateName && <span style={{marginRight: 10, cursor: "pointer", marginTop: 3}} onClick={() => {
+                      setFilteredValue({});
+                      setSelectedFilter(null);
+                      setOrderBy("");
+                      formik.render = false;
+                      setFormik(formik);
+                    }}><CloseIcon /></span>}
+                    <div className="pointer-important" onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
+                      setOpen(true);
+                      setAnchorEl(document.querySelector('#search-input-filter'));
+                      setFilter("");
+                      formik.initialValues = {
+                        instance: (filteredValue?.values && filteredValue?.values) || {}
+                      };                                               
+                      setFormik(formik);
+                    }}><FiltersIcon /></div>
+                  </InputAdornment>
+                }
+                labelWidth={0}
+              />
+            </div>            
+            <Popover
+              open={open}
+              anchorEl={anchorEl}
+              onClose={() => setOpen(false)}
+              anchorOrigin={{
+                vertical: 'bottom',
+                horizontal: 'left',
+              }}              
             >
-              <div>
-                <OutlinedInputSearch                  
-                  placeholder=""
-                  className="pointer-important"
-                  disabled
-                  onClick={(event: any) => setOpenText(true)}
-                  onChange={async (e: any) => {
-                    setPage(0);
-                    setTotal(20);                    
-                    setItems([]);                                       
-                  }}            
-                  startAdornment={
-                    <InputAdornment position="start">
-                      <SearchIcon />{filteredValue?.templateName && 
-                      <>
-                        <span style={{color: "#7D7A8C", marginLeft: 10}}>Buscando por:</span>
-                        <span  style={{marginLeft: 10}}>{filteredValue?.templateName}</span>
-                      </> || <span style={{color: "#7D7A8C", marginLeft: 10, width: 670}}>{intl.formatMessage({id: "search.found.message"})}</span>
-                      } 
-                    </InputAdornment>
-                  }
-                  endAdornment={
-                    <InputAdornment position="end">
-                      {filteredValue?.templateName && <span style={{marginRight: 10, cursor: "pointer", marginTop: 3}} onClick={() => {
-                        setFilteredValue({});
-                        setSelectedFilter(null);
-                        setOrderBy("");
-                        formik.render = false;
-                        setFormik(formik);
-                      }}><CloseIcon /></span>}
-                      <FiltersIcon />
-                    </InputAdornment>
-                  }
-                  labelWidth={0}
-                />
+              <div>                
                 {openText && (
                 <MenuItemContainer>
                   {!selectedFilter && (
@@ -536,6 +564,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                         <FilterSelectedArrowLeft onClick={() => {
                           setSelectedFilter(null);
                           formik.render = false;
+                          formik.initialValues = {};                                 
                           setFormik(formik);
                           setFormDatas({});
                         }}><ArrowLeft /></FilterSelectedArrowLeft> {selectedFilter?.name}
@@ -568,6 +597,10 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                                   formId: template.formId,
                                   values: {}
                                 })
+                                formik.initialValues = {
+                                  instance: {}
+                                };                                               
+                                setFormik(formik);
                               } else {                                                           
 
                                 setSelectedFilter(template);
@@ -708,9 +741,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                                   })    
                                 });
 
-                                formik.initialValues = {
-                                  instance: (filteredValue?.values && filteredValue?.values) || {}
-                                };
+                                formik.initialValues = {};
                                 formik.validationSchema = validationSchema;           
                                 formik.render = true;         
                                     
@@ -983,6 +1014,18 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                             ))}                          
                             <Line className="Add-top"/>                          
                             <UserBottomArea>
+                              <Button
+                                variant="contained"
+                                color="default-primary"
+                                onClick={() => {
+                                  setSelectedFilter(null);
+                                  formik.render = false;
+                                  formik.initialValues = {};                                 
+                                  setFormik(formik);
+                                  setFormDatas({});                                 
+                                }}>
+                                <FormattedMessage id="search.new" />
+                              </Button>
                               <Button                    
                                 variant="contained"
                                 color="primary"
@@ -1031,7 +1074,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                 </MenuItemText> */}               
                 </MenuItemContainer>)}
               </div>  
-            </ClickAwayListener>                     
+            </Popover>                     
           </InputSearchBox>         
           {/*<Section
             list={sections}

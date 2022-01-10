@@ -320,15 +320,13 @@ export const MenuItemContainer = styled.div`
   border: 1px solid #BEBECB;
   box-sizing: border-box;
   box-shadow: 0px 24px 71px 5px rgba(0, 0, 0, 0.25);
-  border-radius: 8px;
-  margin-top: 15px;
-  width: 866px;
-  position: absolute;
-  z-index: 10;    
+  border-radius: 8px; 
+  width: 866px; 
+  margin-top: 4px;   
 `;
 
 export const MenuItemContainerScroll = styled.div`   
-  max-height: 530px;
+  max-height: 300px;
   overflow-y: auto;   
 `;
 
@@ -414,4 +412,16 @@ export const FilterSelectedDivider = styled.div`
   height: 1px;
   background: #E9E9EA;
   margin-top: 20px;
+`;
+
+export const UserBottomArea = styled.div`
+  display: flex;
+  align-content: center;
+  justify-content: flex-end;
+  padding: 24px;  
+  gap: 15px;
+
+  Button {
+    min-width: 156px;
+  }
 `;
