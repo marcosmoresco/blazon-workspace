@@ -326,7 +326,12 @@ export const MenuItemContainer = styled.div`
 `;
 
 export const MenuItemContainerScroll = styled.div`   
-  max-height: 300px;
+  max-height: 362px;
+  overflow-y: auto;   
+`;
+
+export const MenuItemContainerFormScroll = styled.div`   
+  max-height: 272px;
   overflow-y: auto;   
 `;
 
@@ -423,5 +428,64 @@ export const UserBottomArea = styled.div`
 
   Button {
     min-width: 156px;
+  }
+`;
+
+export const Line = styled.div`
+  width: 100%;
+  height: 1px;
+  background: #d1d2d4;  
+  &.Add-top {
+    margin-top: 18px;
+  }
+`;
+
+export const AddDados = styled.div`
+  margin-top: 16px;
+  padding: 0 24px;
+  > span {
+    font-size: 14px;
+    color: #26213f;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+  input {
+    background-color: #FFFFFF;
+    padding: 11.5px 8px;
+  }
+  .MuiInputBase-root {
+    background: #fff;
+  }
+`;
+
+export const Category = styled.div`
+  font-weight: 600;
+  font-size: 18px;
+  line-height: 100%;
+  color: #1B202A;
+  margin-left: 24px;   
+`;
+
+export const DateType = styled.div`
+  width: 300px;
+`;
+
+export const Help = styled.div`
+  display: flex;
+  gap: 5px;
+  align-items: center;
+  position: relative;
+  &.Add {
+    height: 12px;
+  }  
+  &.Help-category {
+    margin-top: 24px;
+  }
+`;
+
+export const CheckboxContent = styled.div`
+  display: flex; 
+  .MuiFormControlLabel-root {
+    margin-right: 0;
   }
 `;

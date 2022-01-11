@@ -83,10 +83,8 @@ import {
   ListItemTextDescription,
   MenuItemContainer,
   MenuItemContainerScroll,
-  MenuItemInputContainer,
-  MenuItemText,
-  MenuItemTextValue,
-  MenuItemTextValueType,
+  MenuItemContainerFormScroll,
+  MenuItemInputContainer, 
   OrdenationContent,
   FilterItem,
   FilterItemContent,
@@ -96,27 +94,18 @@ import {
   FilterSelectedArrowLeft,
   FilterSelectedDivider,
   UserBottomArea,
+  Line,
+  AddDados,
+  Category,
+  DateType,
+  Help,
+  CheckboxContent,
 } from "./styles";
-import {    
-  BoxButton,
-  ButtonFilter,
-  ButtonFilterIcon,
-  ButtonFilterIconCaretRight,  
-} from "@portal/Search/components/Filters/styles";
-import { GET_SELF_SERVICE, GET_SELF_SERVICE_ADVANCED } from "./queries";
+import { GET_SELF_SERVICE_ADVANCED } from "./queries";
 import type { FilterType } from "@components/Filter/types";
 import { useTheme, themes } from "@theme/index";
 import WatchIcon from "@icons/Watch";
 import { Link } from "@types";
-import {
-  Line,
-  AddDados,  
-  Category,
-  DateType,
-  Help,
-  CheckboxContent
-} from "@modules/Checkout/CheckoutItem/UserCard/styles";
-
 interface CustomProps {
   onChange: (event: { target: { name: string; value: string } }) => void;
   name: string;
@@ -572,54 +561,93 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                       <FilterSelectedDivider />  
                     </>  
                   )} 
-                  <MenuItemContainerScroll>
-                    {!formik.render && (dataTemplates?.getSearchTemplates || [])
-                      .filter((template) => !filteredText || template.name.toLocaleLowerCase().indexOf(filteredText) > -1)
-                      .map((template) => (
-                      <FilterItem key={`search-template-${template.identifier}`} 
-                        onClick={() => {
-                          
-                          apolloClient
-                            .query({
-                              query: FORM_RENDER,
-                              variables: {          
-                                formId: Number(template.formId)      
-                              },
-                            })
-                            .then(async ({ data }) => {                            
-                              const result = JSON.parse(data?.formFieldRender);
-                              if(!result.needRendering) {
-                                setPage(0);
-                                setTotal(20);                              
-                                setItems([]);
-                                setFilteredValue({
-                                  templateName: template.name,
-                                  formId: template.formId,
-                                  values: {}
-                                })
-                                formik.initialValues = {
-                                  instance: {}
-                                };                                               
-                                setFormik(formik);
-                              } else {                                                           
+                  {!formik.render && (
+                    <MenuItemContainerScroll>
+                      {!formik.render && (dataTemplates?.getSearchTemplates || [])
+                        .filter((template) => !filteredText || template.name.toLocaleLowerCase().indexOf(filteredText) > -1)
+                        .map((template) => (
+                        <FilterItem key={`search-template-${template.identifier}`} 
+                          onClick={() => {
+                            
+                            apolloClient
+                              .query({
+                                query: FORM_RENDER,
+                                variables: {          
+                                  formId: Number(template.formId)      
+                                },
+                              })
+                              .then(async ({ data }) => {                            
+                                const result = JSON.parse(data?.formFieldRender);
+                                if(!result.needRendering) {
+                                  setPage(0);
+                                  setTotal(20);                              
+                                  setItems([]);
+                                  setFilteredValue({
+                                    templateName: template.name,
+                                    formId: template.formId,
+                                    values: {}
+                                  })
+                                  formik.initialValues = {
+                                    instance: {}
+                                  };                                               
+                                  setFormik(formik);
+                                  setOpen(false);
+                                } else {                                                           
 
-                                setSelectedFilter(template);
-                                const formFields = JSON.parse(data?.formFieldRender);              
-                                const schema: {[key: string]: any} = {}; 
-                                const extraFormDatas: {[key: string]: any} = {formId: template.formId, templateName: template.name};
-                                const _formCategoryHelp: {[key: string]: any} = {};
+                                  setSelectedFilter(template);
+                                  const formFields = JSON.parse(data?.formFieldRender);              
+                                  const schema: {[key: string]: any} = {}; 
+                                  const extraFormDatas: {[key: string]: any} = {formId: template.formId, templateName: template.name};
+                                  const _formCategoryHelp: {[key: string]: any} = {};
 
-                                if(formFields) {                       
-                                  Object.keys(formFields?.attributes).map(async (category: any, index: number) => {
-                                    _formCategoryHelp[category] = formFields?.attributes[category].help;
-                                    formFields?.attributes[category].fields.forEach(async (attribute: any) => {  
-                                      if(!extraFormDatas[category]) {
-                                        extraFormDatas[category] = [];
-                                      }                             
-                                      if(["STRING", "TEXTAREA", "DATE"].includes(attribute.type)) {                  
-                                        if(attribute.required) {
-                                          const yupObject = Yup
-                                            .string()
+                                  if(formFields) {                       
+                                    Object.keys(formFields?.attributes).map(async (category: any, index: number) => {
+                                      _formCategoryHelp[category] = formFields?.attributes[category].help;
+                                      formFields?.attributes[category].fields.forEach(async (attribute: any) => {  
+                                        if(!extraFormDatas[category]) {
+                                          extraFormDatas[category] = [];
+                                        }                             
+                                        if(["STRING", "TEXTAREA", "DATE"].includes(attribute.type)) {                  
+                                          if(attribute.required) {
+                                            const yupObject = Yup
+                                              .string()
+                                              .required(
+                                                intl.formatMessage({
+                                                  id: "isRequired"                      
+                                                }, {
+                                                  field: attribute.label
+                                                })
+                                              ); 
+                                            schema[attribute.name] = yupObject;                       
+                                          } else {
+                                            const yupObject = Yup
+                                              .string()
+                                              .nullable();                     
+                                            schema[attribute.name] = yupObject;
+                                          }
+                                          
+                                          let TextMaskCustomItem = deepCopyFunction(TextMaskCustom);
+                                          if(attribute.mask) {
+                                            TextMaskCustomItem.defaultProps = {mask: attribute.mask};
+                                          }                                   
+
+                                          extraFormDatas[category].push({
+                                            displayType: attribute.type,
+                                            name: attribute.name,
+                                            label: attribute.label,  
+                                            writable: !attribute.disabled,
+                                            required: attribute.required,
+                                            identifier: attribute.identifier,
+                                            mask: (attribute.mask && TextMaskCustomItem) || null,    
+                                            help: attribute.help,              
+                                            defaultValue: attribute.defaultValue,
+                                            options: attribute.listValues || []
+                                          });                                                               
+                                        } else if (attribute.type === "NUMBER") {                 
+
+                                          if(attribute.required) {
+                                            const yupObject = Yup
+                                            .number()
                                             .required(
                                               intl.formatMessage({
                                                 id: "isRequired"                      
@@ -627,149 +655,115 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                                                 field: attribute.label
                                               })
                                             ); 
-                                          schema[attribute.name] = yupObject;                       
-                                        } else {
+                                            schema[attribute.name] = yupObject;
+                                          } else {
+                                            const yupObject = Yup
+                                              .number()
+                                              .nullable();                     
+                                            schema[attribute.name] = yupObject;
+                                          }  
+                                          extraFormDatas[category].push({
+                                            displayType: attribute.type,
+                                            name: attribute.name,
+                                            label: attribute.label,       
+                                            writable: !attribute.disabled,  
+                                            required: attribute.required,  
+                                            identifier: attribute.identifier,
+                                            mask: attribute.mask,    
+                                            help: attribute.help,    
+                                            defaultValue: attribute.defaultValue,  
+                                            options: attribute.listValues || []
+                                          });                
+                                        } else if (attribute.type === "CHECKBOX") {
                                           const yupObject = Yup
-                                            .string()
-                                            .nullable();                     
+                                          .bool();                     
                                           schema[attribute.name] = yupObject;
-                                        }
-                                        
-                                        let TextMaskCustomItem = deepCopyFunction(TextMaskCustom);
-                                        if(attribute.mask) {
-                                          TextMaskCustomItem.defaultProps = {mask: attribute.mask};
-                                        }                                   
-
-                                        extraFormDatas[category].push({
-                                          displayType: attribute.type,
-                                          name: attribute.name,
-                                          label: attribute.label,  
-                                          writable: !attribute.disabled,
-                                          required: attribute.required,
-                                          identifier: attribute.identifier,
-                                          mask: (attribute.mask && TextMaskCustomItem) || null,    
-                                          help: attribute.help,              
-                                          defaultValue: attribute.defaultValue,
-                                          options: attribute.listValues || []
-                                        });                                                               
-                                      } else if (attribute.type === "NUMBER") {                 
-
-                                        if(attribute.required) {
-                                          const yupObject = Yup
-                                          .number()
-                                          .required(
-                                            intl.formatMessage({
-                                              id: "isRequired"                      
-                                            }, {
-                                              field: attribute.label
-                                            })
-                                          ); 
-                                          schema[attribute.name] = yupObject;
-                                        } else {
-                                          const yupObject = Yup
-                                            .number()
-                                            .nullable();                     
-                                          schema[attribute.name] = yupObject;
-                                        }  
-                                        extraFormDatas[category].push({
-                                          displayType: attribute.type,
-                                          name: attribute.name,
-                                          label: attribute.label,       
-                                          writable: !attribute.disabled,  
-                                          required: attribute.required,  
-                                          identifier: attribute.identifier,
-                                          mask: attribute.mask,    
-                                          help: attribute.help,    
-                                          defaultValue: attribute.defaultValue,  
-                                          options: attribute.listValues || []
-                                        });                
-                                      } else if (attribute.type === "CHECKBOX") {
-                                        const yupObject = Yup
-                                        .bool();                     
-                                        schema[attribute.name] = yupObject;
-                                        extraFormDatas[category].push({
-                                          displayType: attribute.type,
-                                          name: attribute.name,
-                                          label: attribute.label,       
-                                          writable: !attribute.disabled,
-                                          required: attribute.required,
-                                          identifier: attribute.identifier,
-                                          help: attribute.help,       
-                                          defaultValue: new Boolean(attribute.defaultValue),                            
-                                        }); 
-                                      } else if (["USER", "ORGANIZATION", "RESOURCE", "LIST", "USERNAME", "CATEGORY", "CLASSIFICATION", "ENVIRONMENT"].includes(attribute.type)) {
-                                        if(attribute.required) {
-                                          const yupObject = Yup
+                                          extraFormDatas[category].push({
+                                            displayType: attribute.type,
+                                            name: attribute.name,
+                                            label: attribute.label,       
+                                            writable: !attribute.disabled,
+                                            required: attribute.required,
+                                            identifier: attribute.identifier,
+                                            help: attribute.help,       
+                                            defaultValue: new Boolean(attribute.defaultValue),                            
+                                          }); 
+                                        } else if (["USER", "ORGANIZATION", "RESOURCE", "LIST", "USERNAME", "CATEGORY", "CLASSIFICATION", "ENVIRONMENT"].includes(attribute.type)) {
+                                          if(attribute.required) {
+                                            const yupObject = Yup
+                                              .object()
+                                              .nullable()
+                                              .required(
+                                                intl.formatMessage({
+                                                  id: "isRequired"                      
+                                                }, {
+                                                  field: attribute?.label
+                                                })
+                                              ); 
+                                            schema[attribute.name] = yupObject;
+                                          } else {
+                                            const yupObject = Yup
                                             .object()
-                                            .nullable()
-                                            .required(
-                                              intl.formatMessage({
-                                                id: "isRequired"                      
-                                              }, {
-                                                field: attribute?.label
-                                              })
-                                            ); 
-                                          schema[attribute.name] = yupObject;
-                                        } else {
-                                          const yupObject = Yup
-                                          .object()
-                                          .nullable();                    
-                                          schema[attribute.name] = yupObject;
-                                        }                                                  
-                                        extraFormDatas[category].push({
-                                          displayType: attribute.type,
-                                          name: attribute.name,
-                                          label: attribute.label,                    
-                                          options: attribute.listValues || [],
-                                          identifier: attribute.identifier,
-                                          help: attribute.help,
-                                          orgType: attribute.orgType,   
-                                          amountSuggestions: attribute.amountSuggestions,
-                                          usernamePolicyId: attribute.usernamePolicyId,
-                                          allowUserInput: attribute.allowUserInput,                 
-                                          multiSelect: attribute.multiSelect,
-                                          required: attribute.required                   
-                                        });
-                                      }                               
-                                    });
-                                  });                                        
-                                }
+                                            .nullable();                    
+                                            schema[attribute.name] = yupObject;
+                                          }                                                  
+                                          extraFormDatas[category].push({
+                                            displayType: attribute.type,
+                                            name: attribute.name,
+                                            label: attribute.label,                    
+                                            options: attribute.listValues || [],
+                                            identifier: attribute.identifier,
+                                            help: attribute.help,
+                                            orgType: attribute.orgType,   
+                                            amountSuggestions: attribute.amountSuggestions,
+                                            usernamePolicyId: attribute.usernamePolicyId,
+                                            allowUserInput: attribute.allowUserInput,                 
+                                            multiSelect: attribute.multiSelect,
+                                            required: attribute.required                   
+                                          });
+                                        }                               
+                                      });
+                                    });                                        
+                                  }
 
-                                const validationSchema = Yup.object({
-                                  instance: Yup.object({
-                                    ...schema
-                                  })    
-                                });
+                                  const validationSchema = Yup.object({
+                                    instance: Yup.object({
+                                      ...schema
+                                    })    
+                                  });
 
-                                formik.initialValues = {};
-                                formik.validationSchema = validationSchema;           
-                                formik.render = true;         
-                                    
-                                setFormik(formik);
-                                setFormDatas({...extraFormDatas});
-                                setFormCategoryHelp(_formCategoryHelp);
-                              }                           
-                            })
-                        }}>
-                        <FilterItemContent>
-                          <div>
-                            <FilterItemName>
-                              {template.name}
-                            </FilterItemName>
-                            <FilterItemDescription>
-                              {template.description || " - "}
-                            </FilterItemDescription>
-                          </div>
-                          <CaretRightIcon stroke={1.2} color={filteredValue?.templateName === template.name && "#0E46D7" || "black"}/>                      
-                        </FilterItemContent>                   
-                      </FilterItem> 
-                    ))}                
-                    {formDatas && !!Object.keys(formDatas).length && formik.render && (
-                      <Formik
-                        {...formik}
-                        render={(form) => {
-                        return (
-                          <Form>
+                                  formik.initialValues = {};
+                                  formik.validationSchema = validationSchema;           
+                                  formik.render = true;         
+                                      
+                                  setFormik(formik);
+                                  setFormDatas({...extraFormDatas});
+                                  setFormCategoryHelp(_formCategoryHelp);
+                                }                           
+                              })
+                          }}>
+                          <FilterItemContent>
+                            <div>
+                              <FilterItemName>
+                                {template.name}
+                              </FilterItemName>
+                              <FilterItemDescription>
+                                {template.description || " - "}
+                              </FilterItemDescription>
+                            </div>
+                            <CaretRightIcon stroke={1.2} color={filteredValue?.templateName === template.name && "#0E46D7" || "black"}/>                      
+                          </FilterItemContent>                   
+                        </FilterItem> 
+                      ))}  
+                    </MenuItemContainerScroll>  
+                  )}               
+                  {formDatas && !!Object.keys(formDatas).length && formik.render && (                    
+                    <Formik
+                      {...formik}
+                      render={(form) => {
+                      return (
+                        <Form>
+                          <MenuItemContainerFormScroll>
                             {Object.keys(formDatas)
                             .filter((category: any) => {               
                               if(category === "formId" || category === "templateName") {
@@ -1011,35 +1005,36 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                                   </div>              
                                 )})} 
                               </>
-                            ))}                          
-                            <Line className="Add-top"/>                          
-                            <UserBottomArea>
-                              <Button
-                                variant="contained"
-                                color="default-primary"
-                                onClick={() => {
-                                  setSelectedFilter(null);
-                                  formik.render = false;
-                                  formik.initialValues = {};                                 
-                                  setFormik(formik);
-                                  setFormDatas({});                                 
-                                }}>
-                                <FormattedMessage id="search.new" />
-                              </Button>
-                              <Button                    
-                                variant="contained"
-                                color="primary"
-                                onClick={async () => {                                      
-                                  form.submitForm();                                   
-                                }}
-                              >
-                                <FormattedMessage id="search" />
-                              </Button>
-                            </UserBottomArea>
-                          </Form>)          
-                      }} />                     
-                    )} 
-                  </MenuItemContainerScroll>                  
+                            ))} 
+                          </MenuItemContainerFormScroll>                         
+                          <Line className="Add-top"/>                          
+                          <UserBottomArea>
+                            <Button
+                              variant="contained"
+                              color="default-primary"
+                              onClick={() => {
+                                setSelectedFilter(null);
+                                formik.render = false;
+                                formik.initialValues = {};                                 
+                                setFormik(formik);
+                                setFormDatas({});                                 
+                              }}>
+                              <FormattedMessage id="search.new" />
+                            </Button>
+                            <Button                    
+                              variant="contained"
+                              color="primary"
+                              onClick={async () => {                                      
+                                form.submitForm();                                   
+                              }}
+                            >
+                              <FormattedMessage id="search" />
+                            </Button>
+                          </UserBottomArea>
+                        </Form>)          
+                    }} />                     
+                  )} 
+                                 
                   {/*<MenuItemText onClick={() => {
                     setCurrentText("name");                                             
                   }}>
@@ -1340,21 +1335,19 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                         color="primary"
                         isLoading={loadingAdvanced ? 1 : 0}
                         onClick={async () => {  
-                          setLoadingAdvanced(true);                    
-                          const result = await refetch({
-                            q: filter,
-                            type: active,
-                            filters: filtered,
+                          setLoadingAdvanced(true);                                                      
+                          const result = await refetchProcessedSearch({                            
                             size: 20,
-                            page: page + 1
+                            page: page + 1,
+                            filters: JSON.stringify(_filteredValue)
                           });
                           setPage(page + 1);
                           setLoadingAdvanced(false);
                           setItems([
                             ...items,
-                            ...result?.data?.getSelfServiceAdvanced?.representation
+                            ...result?.data?.getProcessedSearch?.representation
                           ])                     
-                          setLinks(result.data?.getSelfServiceAdvanced?.links || []);                                  
+                          setLinks(result.data?.getProcessedSearch?.links || []);                                  
                         }}
                       >
                         <FormattedMessage id="loadMore" />
