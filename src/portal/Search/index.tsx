@@ -505,6 +505,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                       formik.render = false;
                       setFormik(formik);
                     }}><CloseIcon /></span>}
+                    {(dataTemplates?.getSearchTemplates || []).length > 0 && 
                     <div className="pointer-important" onClick={(event: React.MouseEvent<HTMLButtonElement>) => {
                       setOpen(true);
                       setAnchorEl(document.querySelector('#search-input-filter'));
@@ -513,7 +514,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                         instance: (filteredValue?.values && filteredValue?.values) || {}
                       };                                               
                       setFormik(formik);
-                    }}><FiltersIcon /></div>
+                    }}><FiltersIcon /></div>}
                   </InputAdornment>
                 }
                 labelWidth={0}
@@ -642,7 +643,12 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                                             help: attribute.help,              
                                             defaultValue: attribute.defaultValue,
                                             options: attribute.listValues || []
-                                          });                                                               
+                                          }); 
+                                          
+                                          if(attribute.defaultValue) {
+                                            formik.initialValues.instance[attribute.name] = attribute.defaultValue;
+                                          }
+
                                         } else if (attribute.type === "NUMBER") {                 
 
                                           if(attribute.required) {
@@ -673,7 +679,11 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                                             help: attribute.help,    
                                             defaultValue: attribute.defaultValue,  
                                             options: attribute.listValues || []
-                                          });                
+                                          });  
+
+                                           if(attribute.defaultValue) {
+                                            formik.initialValues.instance[attribute.name] = attribute.defaultValue;
+                                          }              
                                         } else if (attribute.type === "CHECKBOX") {
                                           const yupObject = Yup
                                           .bool();                     
@@ -687,7 +697,11 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                                             identifier: attribute.identifier,
                                             help: attribute.help,       
                                             defaultValue: new Boolean(attribute.defaultValue),                            
-                                          }); 
+                                          });
+                                          
+                                          if(attribute.defaultValue) {
+                                            formik.initialValues.instance[attribute.name] = attribute.defaultValue;
+                                          }
                                         } else if (["USER", "ORGANIZATION", "RESOURCE", "LIST", "USERNAME", "CATEGORY", "CLASSIFICATION", "ENVIRONMENT"].includes(attribute.type)) {
                                           if(attribute.required) {
                                             const yupObject = Yup
@@ -731,8 +745,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                                       ...schema
                                     })    
                                   });
-
-                                  formik.initialValues = {};
+                               
                                   formik.validationSchema = validationSchema;           
                                   formik.render = true;         
                                       
@@ -811,7 +824,7 @@ const Search: FC<SearchProps> = ({ intl, classes }) => {
                                           multiline={"TEXTAREA" === attribute.displayType} 
                                           rows={"TEXTAREA" === attribute.displayType ? 3 : 0} 
                                           inputComponent={attribute.mask && attribute.mask as any || undefined}  
-                                          onBlur={async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+                                          onBlur={async (event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>) => {                                            
                                             //handleValidateFormField(attribute, event.target.value, form);                            
                                           }}                                    
                                         />
