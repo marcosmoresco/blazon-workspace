@@ -117,6 +117,7 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({
       q: "",
       size: 10,
     },
+    fetchPolicy: "network-only"
   });
 
   const users = data?.getUserFullText || [];
@@ -262,7 +263,7 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({
                     },
                   });
                 }}
-                options={types}
+                options={(["APPLICATION", "APPLICATION_RESOURCE"].includes(item?.resourceType) && types.filter((type) => type?.value === "TO_ME")) || types}
                 view="name"
                 bind="value"
                 value={item.assignType}
@@ -276,7 +277,7 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({
                       <FormattedMessage id="checkout.AddAUser" />
                     </span>
                     <AutocompleteUsers
-                      loading={loading}
+                      loading={loading}                      
                       open={open}
                       onOpen={() => {
                         setOpen(true);
@@ -288,6 +289,7 @@ const CheckoutItem: React.FC<CheckouitemProps> = ({
                       getOptionSelected={(option: any, value: any) =>
                         option.identifier === value.identifier
                       }
+                      filterOptions={(options, state) => options}
                       getOptionLabel={(option: any) => option.displayName}
                       options={users}
                       renderOption={(option: any) => (
