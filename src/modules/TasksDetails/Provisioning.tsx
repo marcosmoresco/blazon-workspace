@@ -49,7 +49,7 @@ const Approval: React.FC = () => {
     <div>
       <TitlePage onBack={() => router.push("/tasks")} task={data?.getProvisioningTask}/>     
       <Header task={data?.getProvisioningTask} payload={payload} setPayload={setPayload} setStage={setStage} stage={stage}/>
-      {["CREATE_ACCOUNT", "CHANGE_PASSWORD"].includes(data?.getProvisioningTask?.type || "") 
+      {["CREATE_ACCOUNT", "CHANGE_PASSWORD", "GRANT_ENTITLEMENT"].includes(data?.getProvisioningTask?.type || "") 
       && !["WAITING_ASSIGN", "DONE"].includes(data?.getProvisioningTask?.headers?.status || "") &&  <Continue task={data?.getProvisioningTask} stage={stage} payload={payload} setPayload={setPayload}/>}
       <UserInfo task={data?.getProvisioningTask}/>          
       <GridAdditionalInformations task={data?.getProvisioningTask}/>

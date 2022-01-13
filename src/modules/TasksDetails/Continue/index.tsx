@@ -1,5 +1,5 @@
 // vendors
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useIntl } from "react-intl";
 import { IconButton, InputAdornment } from "@material-ui/core";
 
@@ -20,16 +20,24 @@ const Continue: React.FC<ContinueProps> = ({ task, stage, payload, setPayload })
 
   const intl = useIntl();
   const [showPassword, setShowPassword] = useState<boolean>(false);
+  const [defaultSet, setDefaultSet] = useState<boolean>(false);
+
+  useEffect(() => {
+    if(task?.type === "GRANT_ENTITLEMENT" && !defaultSet && task?.provisioningItemDetail?.account?.accountIdentifier) {
+      setPayload({accountIdentifier: task?.provisioningItemDetail?.account?.accountIdentifier});
+      setDefaultSet(true);
+    }
+  }, [payload, defaultSet, setPayload, task])
 
   if(!stage) {
     return <></>
-  }
+  }    
 
   return (
     <>
       <Box>
         <BoxCard>
-          {task?.type === "CREATE_ACCOUNT" && (
+          {["GRANT_ENTITLEMENT", "CREATE_ACCOUNT"].includes(task?.type || "") && (
            <>
             {stage !== "SET_USERNAME_PASSWORD" && (
               <>

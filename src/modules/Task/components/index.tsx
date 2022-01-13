@@ -476,7 +476,7 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
             </BoxJustification>}  
             {(["PROVISIONING_TASK"].includes(task?.headers?.category || "") || ["PROVISIONING_TASK"].includes(type || "")) &&
              (["UPDATE_ACCOUNT", "ACTIVATE_ACCOUNT", "INACTIVATE_ACCOUNT", "REVOKE_ACCOUNT", "CHANGE_PASSWORD", "GRANT_ENTITLEMENT", 
-               "REVOKE_ENTITLEMENT"]).includes(task?.type) && 
+               "REVOKE_ENTITLEMENT"]).includes(task?.type || "") && 
             <BoxJustification>
               <TitleJustification>
                 <FormattedMessage id="accountIdentifier" />
@@ -605,7 +605,8 @@ const TaskDetail: FC<ListProps> = ({ task, type, id, checked = [], onCheck, subT
                     </Button>
                   )}   
                   {(actions || []).includes("PROVISIONED") && 
-                    (!["CREATE_ACCOUNT", "CHANGE_PASSWORD"].includes(task?.type || "") || "WAITING_ASSING" === task?.headers?.status) && (
+                    ((["GRANT_ENTITLEMENT"].includes(task?.type || "") && !!task?.provisioningItemDetail?.account?.accountIdentifier) 
+                    || (!["CREATE_ACCOUNT", "CHANGE_PASSWORD", "GRANT_ENTITLEMENT"].includes(task?.type || ""))) && (
                     <Button variant="contained" color="default-primary" onClick={() => {
                       if(task) {
                         setCurrent(task);

@@ -455,7 +455,8 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
             </Button>
           )}   
           {(dataActions?.getActions || []).includes("PROVISIONED") && 
-            (!["CREATE_ACCOUNT", "CHANGE_PASSWORD"].includes(task?.type || "") || "WAITING_ASSING" === task?.headers?.status) && (
+            ((["GRANT_ENTITLEMENT"].includes(task?.type || "") && !!task?.provisioningItemDetail?.account?.accountIdentifier && !stage)
+            || (!["CREATE_ACCOUNT", "CHANGE_PASSWORD", "GRANT_ENTITLEMENT"].includes(task?.type || ""))) && (
             <Button variant="contained" color="default-primary" onClick={() => {
               if(task) {
                 provision(task, intl, () => {
@@ -481,9 +482,9 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
              <FormattedMessage id="tasks.notProvisioned" />
             </Button>
           )}
-          {(dataActions?.getActions || []).includes("PROVISIONED") && ["CREATE_ACCOUNT", "CHANGE_PASSWORD"].includes(task?.type || "") && (
+          {(dataActions?.getActions || []).includes("PROVISIONED") && ["CREATE_ACCOUNT", "CHANGE_PASSWORD", "GRANT_ENTITLEMENT"].includes(task?.type || "") && (
             <>
-              {"CREATE_ACCOUNT" === task?.type && !stage && (
+              {["CREATE_ACCOUNT", "GRANT_ENTITLEMENT"].includes(task?.type || "") && !stage && (
                 <Button 
                   variant="contained" 
                   color="primary"                  
@@ -493,7 +494,7 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
                   <FormattedMessage id="continue" />
                 </Button>
               )}
-              {"CREATE_ACCOUNT" === task?.type && stage === "SET_ACCOUNT_IDENTIFIER" && (
+              {["CREATE_ACCOUNT", "GRANT_ENTITLEMENT"].includes(task?.type || "") && stage === "SET_ACCOUNT_IDENTIFIER" && (
                 <Button 
                   variant="contained" 
                   color="primary" 
@@ -509,19 +510,31 @@ const Header: React.FC<HeaderProps> = ({ task, payload, setPayload, stage, setSt
                   <FormattedMessage id="continue" />
                 </Button>
               )}
-              {"CREATE_ACCOUNT" === task?.type && stage === "SET_USERNAME_PASSWORD" && (
+              {["CREATE_ACCOUNT", "GRANT_ENTITLEMENT"].includes(task?.type || "") && stage === "SET_USERNAME_PASSWORD" && (
                 <Button 
                   variant="contained" 
                   color="primary" 
-                  disabled={!payload?.username || !payload?.password}
-                  onClick={() => {             
-                    defineUsernamePasswordProvisioningTask({
-                      variables: {
-                        id: Number(id),
-                        username: payload?.username,
-                        password: payload?.password
-                      }                  
-                    });
+                  disabled={task?.type === "CREATE_ACCOUNT" && (!payload?.username || !payload?.password)}
+                  onClick={() => {      
+                    if(!payload?.username || !payload?.password) {
+                      setAnchorEl(null);      
+                      resolve({
+                        variables: {
+                          payload: JSON.stringify([{
+                            taskId: Number(id),
+                            result: "PROVISIONED"                    
+                          }])
+                        }
+                      });
+                    } else {
+                      defineUsernamePasswordProvisioningTask({
+                        variables: {
+                          id: Number(id),
+                          username: payload?.username,
+                          password: payload?.password
+                        }                  
+                      });
+                    }                           
                   }}>
                   <FormattedMessage id="conclude" />
                 </Button>
